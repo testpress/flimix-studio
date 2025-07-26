@@ -1,69 +1,158 @@
-# React + TypeScript + Vite
+# Flimix Studio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A WYSIWYG block-based landing page builder for OTT platforms. The editor outputs JSON schema representing structured page layouts.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Block-based Editor**: Drag and drop interface for building landing pages
+- **WYSIWYG Interface**: Real-time visual editing
+- **JSON Schema Output**: Structured data representation of page layouts
+- **Modern UI**: Built with React, TypeScript, and Tailwind CSS
+- **Responsive Design**: Works across different screen sizes
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4
+- **Development**: Hot Module Replacement (HMR)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📁 Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+flimix-studio/
+├── src/
+│   ├── components/
+│   │   ├── TopBar.tsx      # Top toolbar with actions
+│   │   ├── Canvas.tsx      # Block editor canvas
+│   │   └── Sidebar.tsx     # Settings and configuration panel
+│   ├── App.tsx             # Main application component
+│   ├── main.tsx            # Application entry point
+│   └── index.css           # Global styles with Tailwind
+├── vite.config.ts          # Vite configuration
+└── package.json            # Dependencies and scripts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎯 Current Implementation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Layout Components
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. **TopBar** - Contains the application title and action buttons (Save, Preview)
+2. **Canvas** - Main editing area where blocks can be dragged and dropped
+3. **Sidebar** - Settings panel with block properties and page configuration
+
+### Styling
+
+- Uses Tailwind CSS v4 with `@tailwindcss/vite` plugin
+- Responsive flexbox layout
+- Modern dark/light theme with proper contrast
+- Clean, professional UI design
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd flimix-studio
 ```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 🔧 Development
+
+### Adding New Blocks
+
+The editor is designed to support various block types:
+- Hero Sections
+- Content Blocks
+- Media Galleries
+- Call-to-Action Components
+
+### JSON Schema Structure
+
+The editor will output structured JSON representing the page layout:
+
+```json
+{
+  "page": {
+    "title": "Landing Page",
+    "metaDescription": "Page description",
+    "blocks": [
+      {
+        "type": "hero",
+        "id": "hero-1",
+        "properties": {
+          "title": "Welcome to Flimix",
+          "subtitle": "Your OTT platform",
+          "backgroundImage": "url"
+        }
+      }
+    ]
+  }
+}
+```
+
+## 📝 Git History
+
+- `Initial scaffold: Vite + React + TypeScript setup`
+- `Add Tailwind CSS with basic configuration`
+- `Add editor layout: TopBar, Canvas, Sidebar with Tailwind`
+
+## 🎨 Design Philosophy
+
+Flimix Studio follows a clean, intuitive design approach:
+- **Minimalist Interface**: Focus on content creation
+- **Visual Feedback**: Clear indication of selected blocks and actions
+- **Responsive Layout**: Adapts to different screen sizes
+- **Accessibility**: Proper contrast and keyboard navigation support
+
+## 🔮 Roadmap
+
+- [ ] Block library implementation
+- [ ] Drag and drop functionality
+- [ ] Block property editing
+- [ ] JSON schema generation
+- [ ] Preview mode
+- [ ] Export functionality
+- [ ] Template system
+- [ ] Collaboration features
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+Built with ❤️ for OTT platform creators
