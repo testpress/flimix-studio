@@ -5,23 +5,50 @@ export type Padding = 'none' | 'sm' | 'md' | 'lg';
 // Platform types for visibility
 export type Platform = 'tv' | 'mobile' | 'desktop';
 
-// Base style properties
-export interface StyleProps {
-  theme?: Theme;
-  padding?: Padding;
-  textColor?: string;
-}
+// Text alignment options
+export type TextAlign = 'left' | 'center' | 'right';
 
-// Visibility configuration
+// Border radius options
+export type BorderRadius = 'none' | 'sm' | 'md' | 'lg';
+
+// Box shadow options
+export type BoxShadow = 'none' | 'sm' | 'md' | 'lg';
+
+// Enhanced visibility configuration
 export interface VisibilityProps {
+  isLoggedIn?: boolean;
+  isSubscribed?: boolean;
+  subscriptionTier?: string;
+  region?: string[];
   platform?: Platform[];
 }
 
-// Event tracking
+// Comprehensive event tracking
 export interface EventProps {
-  onCTAClick?: string;
+  onClick?: string;
   onView?: string;
-  onInteraction?: string;
+  onFocus?: string;
+  onHover?: string;
+  onSubmit?: string;
+  onPlay?: string;
+  onPause?: string;
+  onExpand?: string;
+  onCollapse?: string;
+  onSwitch?: string;
+  onSelect?: string;
+}
+
+// Enhanced style properties
+export interface StyleProps {
+  theme?: Theme;
+  padding?: Padding;
+  margin?: Padding;
+  textAlign?: TextAlign;
+  backgroundColor?: string;
+  textColor?: string;
+  borderRadius?: BorderRadius;
+  boxShadow?: BoxShadow;
+  maxWidth?: string;
 }
 
 // Hero block specific props
@@ -40,14 +67,15 @@ export interface TextBlockProps {
   content?: string;
 }
 
-// Base block interface
+// Base block interface with nested children support
 export interface Block {
   type: string;
   id: string;
-  props: HeroBlockProps | TextBlockProps;
+  props: HeroBlockProps | TextBlockProps; // TODO: expand as needed
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;
+  children?: BlockType[];
 }
 
 // Typed block interfaces for specific block types
