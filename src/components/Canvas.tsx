@@ -1,18 +1,52 @@
 import React from 'react';
+import BlockRenderer from './BlockRenderer';
+
+// Hardcoded sample schema
+const sampleSchema = {
+  title: "Flimix Landing",
+  blocks: [
+    {
+      type: "hero",
+      id: "hero-001",
+      props: {
+        title: "Watch Anywhere",
+        subtitle: "Stream your favorites",
+        backgroundImage: "https://cdn.example.com/bg.jpg",
+        ctaButton: {
+          label: "Start Watching",
+          link: "/subscribe"
+        }
+      },
+      style: {
+        theme: "dark",
+        padding: "lg"
+      }
+    },
+    {
+      type: "text",
+      id: "text-001",
+      props: {
+        content: "Enjoy Flimix across all your devices."
+      }
+    }
+  ]
+};
 
 const Canvas: React.FC = () => {
   return (
     <div className="flex-1 bg-gray-100 p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8 min-h-[600px] border-2 border-dashed border-gray-300">
-        <div className="text-center text-gray-500">
-          <h2 className="text-2xl font-semibold mb-4">Block Editor Canvas</h2>
-          <p className="text-lg">Drag and drop blocks here to build your landing page</p>
-          <div className="mt-8 text-sm text-gray-400">
-            <p>• Hero Section</p>
-            <p>• Content Blocks</p>
-            <p>• Media Galleries</p>
-            <p>• Call-to-Action</p>
-          </div>
+      <div className="bg-white rounded-lg shadow-lg p-8 min-h-[600px]">
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            {sampleSchema.title}
+          </h2>
+          <p className="text-gray-600">Rendering {sampleSchema.blocks.length} blocks</p>
+        </div>
+        
+        <div className="space-y-6">
+          {sampleSchema.blocks.map((block) => (
+            <BlockRenderer key={block.id} block={block} />
+          ))}
         </div>
       </div>
     </div>
