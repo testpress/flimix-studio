@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BlockRenderer from './BlockRenderer';
 import type { PageSchema, Theme, Platform } from '../schema/blockTypes';
+import type { RenderContext } from '../types/RenderContext';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
 const showDebug = true; // Enables debug placeholder for hidden blocks
@@ -102,28 +103,54 @@ const sampleSchema: PageSchema = {
   ]
 };
 
+const initialRenderContext: RenderContext = {
+  isLoggedIn: true,
+  isSubscribed: false,
+  subscriptionTier: 'basic',
+  region: 'IN',
+  platform: 'mobile',
+};
+
 const Canvas: React.FC = () => {
+  const [renderContext, setRenderContext] = useState<RenderContext>(initialRenderContext);
+
   return (
     <div className="flex-1 bg-gray-100 p-6">
       <div className="bg-white rounded-lg shadow-lg p-8 min-h-[600px]">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-            {sampleSchema.title}
-          </h2>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              {sampleSchema.title}
+            </h2>
+            <div className="flex items-center gap-2">
+              <label htmlFor="platform-select" className="text-sm text-gray-700 font-medium">Platform:</label>
+              <select
+                id="platform-select"
+                className="border rounded px-2 py-1 text-sm"
+                value={renderContext.platform}
+                onChange={e => setRenderContext(ctx => ({ ...ctx, platform: e.target.value as Platform }))}
+              >
+                <option value="mobile">Mobile</option>
+                <option value="desktop">Desktop</option>
+                <option value="tv">TV</option>
+              </select>
+            </div>
+          </div>
           <p className="text-gray-600">Rendering {sampleSchema.blocks.length} blocks</p>
-          <p className="text-sm text-gray-500 mt-1">
-            Context: Logged in, Not subscribed, Basic tier, IN region, Mobile platform
-          </p>
           {showDebug && (
-            <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
-              🔍 Debug mode enabled - hidden blocks will show debug messages
-            </p>
+            <>
+              <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
+                🔍 Debug mode enabled - hidden blocks will show debug messages
+              </p>
+              <pre className="text-xs text-gray-700 bg-gray-50 rounded p-2 mt-2 overflow-x-auto">
+                {JSON.stringify(renderContext, null, 2)}
+              </pre>
+            </>
           )}
         </div>
-        
         <div className="space-y-6">
           {sampleSchema.blocks.map((block) => (
-            <BlockRenderer key={block.id} block={block} showDebug={showDebug} />
+            <BlockRenderer key={block.id} block={block} showDebug={showDebug} renderContext={renderContext} />
           ))}
         </div>
       </div>

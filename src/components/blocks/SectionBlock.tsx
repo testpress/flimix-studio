@@ -1,12 +1,15 @@
 import React from 'react';
 import BlockRenderer from '../BlockRenderer';
 import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow } from '../../schema/blockTypes';
+import type { RenderContext } from '../../types/RenderContext';
 
 interface SectionBlockProps {
   block: SectionBlockType;
+  renderContext: RenderContext;
+  showDebug?: boolean;
 }
 
-const SectionBlock: React.FC<SectionBlockProps> = ({ block }) => {
+const SectionBlock: React.FC<SectionBlockProps> = ({ block, renderContext, showDebug = false }) => {
   const { props, style, children } = block;
   const { title, description } = props;
   
@@ -60,7 +63,7 @@ const SectionBlock: React.FC<SectionBlockProps> = ({ block }) => {
       {children && children.length > 0 ? (
         <div className="space-y-4">
           {children.map((childBlock) => (
-            <BlockRenderer key={childBlock.id} block={childBlock} />
+            <BlockRenderer key={childBlock.id} block={childBlock} renderContext={renderContext} showDebug={showDebug} />
           ))}
         </div>
       ) : (

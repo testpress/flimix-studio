@@ -6,21 +6,13 @@ import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, Sec
 import type { RenderContext } from '../types/RenderContext';
 import { evaluateVisibility } from '../utils/visibility';
 
-// Mock render context for testing visibility rules
-const renderContext: RenderContext = {
-  isLoggedIn: true,
-  isSubscribed: false,
-  subscriptionTier: 'basic',
-  region: 'IN',
-  platform: 'mobile',
-};
-
 interface BlockRendererProps {
   block: Block;
   showDebug?: boolean;
+  renderContext: RenderContext;
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false }) => {
+const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false, renderContext }) => {
   // Evaluate visibility before rendering
   if (!evaluateVisibility(block.visibility, renderContext)) {
     if (showDebug) {
@@ -64,7 +56,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false 
     case 'text':
       return <TextBlock block={block as TextBlockType} />;
     case 'section':
-      return <SectionBlock block={block as SectionBlockType} />;
+      // Pass renderContext and showDebug to SectionBlock via a custom prop
+      return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} />;
     default:
       return (
         <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
