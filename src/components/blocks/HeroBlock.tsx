@@ -15,15 +15,19 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ block }) => {
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
   const textColor = style?.textColor || (isDark ? 'text-white' : 'text-gray-900');
 
+  // Determine background styling
+  const hasCustomBackground = !!style?.backgroundColor;
+  const defaultBackgroundClass = isDark ? 'bg-gray-900' : 'bg-gray-100';
+  const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
+
   return (
     <div 
-      className={`relative rounded-lg overflow-hidden ${paddingClass} ${
-        isDark ? 'bg-gray-900' : 'bg-gray-100'
-      }`}
+      className={`relative rounded-lg overflow-hidden ${paddingClass} ${backgroundClass}`}
       style={{
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
       }}
     >
       {/* Overlay for better text readability */}

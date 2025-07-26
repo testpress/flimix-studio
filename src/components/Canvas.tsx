@@ -49,7 +49,8 @@ const sampleSchema: PageSchema = {
           },
           style: {
             textAlign: "center",
-            padding: "md"
+            padding: "md",
+            backgroundColor: "#f8f9fa"
           }
         },
         {
@@ -60,7 +61,8 @@ const sampleSchema: PageSchema = {
           },
           style: {
             textAlign: "center",
-            padding: "sm"
+            padding: "sm",
+            backgroundColor: "#f8f9fa"
           }
         }
       ]
