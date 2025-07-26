@@ -10,9 +10,17 @@ interface BlockRendererProps {
   block: Block;
   showDebug?: boolean;
   renderContext: RenderContext;
+  onSelect?: (block: Block) => void;
+  isSelected?: boolean;
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false, renderContext }) => {
+const BlockRenderer: React.FC<BlockRendererProps> = ({ 
+  block, 
+  showDebug = false, 
+  renderContext, 
+  onSelect, 
+  isSelected = false 
+}) => {
   // Evaluate visibility before rendering
   if (!evaluateVisibility(block.visibility, renderContext)) {
     if (showDebug) {
@@ -50,22 +58,38 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false,
     }
   }
 
-  switch (block.type) {
-    case 'hero':
-      return <HeroBlock block={block as HeroBlockType} />;
-    case 'text':
-      return <TextBlock block={block as TextBlockType} />;
-    case 'section':
-      // Pass renderContext and showDebug to SectionBlock via a custom prop
-      return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} />;
-    default:
-      return (
-        <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
-          <p className="text-red-600 font-medium">Unknown block type: {block.type}</p>
-          <p className="text-red-500 text-sm mt-1">Block ID: {block.id}</p>
-        </div>
-      );
-  }
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling to parent blocks
+    onSelect?.(block);
+  };
+
+  const renderBlock = () => {
+    switch (block.type) {
+      case 'hero':
+        return <HeroBlock block={block as HeroBlockType} />;
+      case 'text':
+        return <TextBlock block={block as TextBlockType} />;
+      case 'section':
+        // Pass renderContext and showDebug to SectionBlock via a custom prop
+        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} />;
+      default:
+        return (
+          <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
+            <p className="text-red-600 font-medium">Unknown block type: {block.type}</p>
+            <p className="text-red-500 text-sm mt-1">Block ID: {block.id}</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div 
+      onClick={handleClick}
+      className={`cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+    >
+      {renderBlock()}
+    </div>
+  );
 };
 
 export default BlockRenderer; 

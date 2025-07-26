@@ -1,15 +1,23 @@
 import React from 'react';
 import BlockRenderer from '../BlockRenderer';
-import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow } from '../../schema/blockTypes';
+import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow, Block } from '../../schema/blockTypes';
 import type { RenderContext } from '../../types/RenderContext';
 
 interface SectionBlockProps {
   block: SectionBlockType;
   renderContext: RenderContext;
   showDebug?: boolean;
+  onSelect?: (block: Block) => void;
+  isSelected?: boolean;
 }
 
-const SectionBlock: React.FC<SectionBlockProps> = ({ block, renderContext, showDebug = false }) => {
+const SectionBlock: React.FC<SectionBlockProps> = ({ 
+  block, 
+  renderContext, 
+  showDebug = false, 
+  onSelect, 
+  isSelected = false 
+}) => {
   const { props, style, children } = block;
   const { title, description } = props;
   
@@ -29,15 +37,21 @@ const SectionBlock: React.FC<SectionBlockProps> = ({ block, renderContext, showD
                         style?.boxShadow === 'md' ? 'shadow-md' : 
                         style?.boxShadow === 'sm' ? 'shadow-sm' : '';
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling to parent blocks
+    onSelect?.(block);
+  };
+
   return (
     <section 
       className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} ${
         isDark ? 'bg-gray-800' : 'bg-white'
-      }`}
+      } cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
       style={{
         backgroundColor: style?.backgroundColor,
         maxWidth: style?.maxWidth,
       }}
+      onClick={handleClick}
     >
       {/* Section header */}
       {(title || description) && (
@@ -63,7 +77,14 @@ const SectionBlock: React.FC<SectionBlockProps> = ({ block, renderContext, showD
       {children && children.length > 0 ? (
         <div className="space-y-4">
           {children.map((childBlock) => (
-            <BlockRenderer key={childBlock.id} block={childBlock} renderContext={renderContext} showDebug={showDebug} />
+            <BlockRenderer 
+              key={childBlock.id} 
+              block={childBlock} 
+              renderContext={renderContext} 
+              showDebug={showDebug}
+              onSelect={onSelect}
+              isSelected={false} // Child blocks have their own selection state
+            />
           ))}
         </div>
       ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BlockRenderer from './BlockRenderer';
-import type { PageSchema, Theme, Platform } from '../schema/blockTypes';
+import type { PageSchema, Theme, Platform, Block } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
@@ -131,8 +131,18 @@ const initialRenderContext: RenderContext = {
   platform: 'mobile',
 };
 
-const Canvas: React.FC = () => {
+interface CanvasProps {
+  selectedBlockId: string | null;
+  setSelectedBlockId: (id: string | null) => void;
+  onBlockSelect: (block: Block) => void;
+}
+
+const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, onBlockSelect }) => {
   const [renderContext, setRenderContext] = useState<RenderContext>(initialRenderContext);
+
+  const handleBlockSelect = (block: Block) => {
+    onBlockSelect(block);
+  };
 
   return (
     <div className="flex-1 bg-gray-100 p-6">
@@ -227,7 +237,14 @@ const Canvas: React.FC = () => {
         
         <div className="space-y-6">
           {sampleSchema.blocks.map((block) => (
-            <BlockRenderer key={block.id} block={block} showDebug={showDebug} renderContext={renderContext} />
+            <BlockRenderer 
+              key={block.id} 
+              block={block} 
+              showDebug={showDebug} 
+              renderContext={renderContext}
+              onSelect={handleBlockSelect}
+              isSelected={selectedBlockId === block.id}
+            />
           ))}
         </div>
       </div>
