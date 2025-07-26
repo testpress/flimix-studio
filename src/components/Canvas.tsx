@@ -2,6 +2,9 @@ import React from 'react';
 import BlockRenderer from './BlockRenderer';
 import type { PageSchema, Theme, Platform } from '../schema/blockTypes';
 
+// Debug flag for development - shows hidden blocks due to visibility rules
+const showDebug = true; // Enables debug placeholder for hidden blocks
+
 // Hardcoded sample schema with proper typing and visibility rules
 const sampleSchema: PageSchema = {
   title: "Flimix Landing",
@@ -111,11 +114,16 @@ const Canvas: React.FC = () => {
           <p className="text-sm text-gray-500 mt-1">
             Context: Logged in, Not subscribed, Basic tier, IN region, Mobile platform
           </p>
+          {showDebug && (
+            <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
+              🔍 Debug mode enabled - hidden blocks will show debug messages
+            </p>
+          )}
         </div>
         
         <div className="space-y-6">
           {sampleSchema.blocks.map((block) => (
-            <BlockRenderer key={block.id} block={block} />
+            <BlockRenderer key={block.id} block={block} showDebug={showDebug} />
           ))}
         </div>
       </div>

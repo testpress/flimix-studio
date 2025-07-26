@@ -17,12 +17,45 @@ const renderContext: RenderContext = {
 
 interface BlockRendererProps {
   block: Block;
+  showDebug?: boolean;
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ block }) => {
+const BlockRenderer: React.FC<BlockRendererProps> = ({ block, showDebug = false }) => {
   // Evaluate visibility before rendering
   if (!evaluateVisibility(block.visibility, renderContext)) {
-    return null; // Skip rendering if not visible
+    if (showDebug) {
+      return (
+        <div className="p-4 border border-yellow-300 bg-yellow-50 text-yellow-800 rounded-md text-sm">
+          ⚠️ Block <code className="font-mono bg-yellow-100 px-1 rounded">{block.type}</code> 
+          (ID: <code className="font-mono bg-yellow-100 px-1 rounded">{block.id}</code>) 
+          skipped due to visibility rules.
+          {block.visibility && (
+            <div className="mt-2 text-xs">
+              <strong>Visibility rules:</strong>
+              <ul className="mt-1 space-y-1">
+                {block.visibility.isLoggedIn !== undefined && (
+                  <li>• isLoggedIn: {block.visibility.isLoggedIn.toString()}</li>
+                )}
+                {block.visibility.isSubscribed !== undefined && (
+                  <li>• isSubscribed: {block.visibility.isSubscribed.toString()}</li>
+                )}
+                {block.visibility.subscriptionTier && (
+                  <li>• subscriptionTier: {block.visibility.subscriptionTier}</li>
+                )}
+                {block.visibility.region && (
+                  <li>• region: {block.visibility.region.join(', ')}</li>
+                )}
+                {block.visibility.platform && (
+                  <li>• platform: {block.visibility.platform.join(', ')}</li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 
   switch (block.type) {
