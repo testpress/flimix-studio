@@ -82,6 +82,26 @@ const sampleSchema: PageSchema = {
           visibility: {
             subscriptionTier: "premium"
           }
+        },
+        {
+          type: "text",
+          id: "text-004",
+          props: {
+            content: "This message is shown only to VIP users in the US."
+          },
+          style: {
+            textAlign: "center",
+            padding: "md",
+            backgroundColor: "#fff",
+            borderRadius: "md",
+            boxShadow: "sm"
+          },
+          visibility: {
+            platform: ["mobile", "desktop"],
+            region: ["US"],
+            subscriptionTier: "vip",
+            isLoggedIn: true
+          }
         }
       ]
     },
