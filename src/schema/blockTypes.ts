@@ -67,11 +67,17 @@ export interface TextBlockProps {
   content?: string;
 }
 
+// Section block specific props (container for nested blocks)
+export interface SectionBlockProps {
+  title?: string;
+  description?: string;
+}
+
 // Base block interface with nested children support
 export interface Block {
   type: string;
   id: string;
-  props: HeroBlockProps | TextBlockProps; // TODO: expand as needed
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps; // TODO: expand as needed
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;
@@ -89,8 +95,14 @@ export interface TextBlock extends Omit<Block, 'props'> {
   props: TextBlockProps;
 }
 
+export interface SectionBlock extends Omit<Block, 'props'> {
+  type: 'section';
+  props: SectionBlockProps;
+  children: BlockType[]; // Section blocks must have children
+}
+
 // Union type for all block types
-export type BlockType = HeroBlock | TextBlock;
+export type BlockType = HeroBlock | TextBlock | SectionBlock;
 
 // Page schema interface
 export interface PageSchema {

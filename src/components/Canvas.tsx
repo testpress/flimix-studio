@@ -28,11 +28,42 @@ const sampleSchema: PageSchema = {
       }
     },
     {
-      type: "text",
-      id: "text-001",
+      type: "section",
+      id: "section-001",
       props: {
-        content: "Enjoy Flimix across all your devices."
-      }
+        title: "Featured Content",
+        description: "Discover our latest releases and popular shows"
+      },
+      style: {
+        theme: "light" as Theme,
+        padding: "lg",
+        backgroundColor: "#f8f9fa",
+        borderRadius: "lg"
+      },
+      children: [
+        {
+          type: "text",
+          id: "text-001",
+          props: {
+            content: "Enjoy Flimix across all your devices."
+          },
+          style: {
+            textAlign: "center",
+            padding: "md"
+          }
+        },
+        {
+          type: "text",
+          id: "text-002",
+          props: {
+            content: "From blockbuster movies to binge-worthy series, we have something for everyone."
+          },
+          style: {
+            textAlign: "center",
+            padding: "sm"
+          }
+        }
+      ]
     }
   ]
 };
