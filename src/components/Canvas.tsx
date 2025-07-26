@@ -2,7 +2,7 @@ import React from 'react';
 import BlockRenderer from './BlockRenderer';
 import type { PageSchema, Theme, Platform } from '../schema/blockTypes';
 
-// Hardcoded sample schema with proper typing
+// Hardcoded sample schema with proper typing and visibility rules
 const sampleSchema: PageSchema = {
   title: "Flimix Landing",
   theme: "dark" as Theme,
@@ -25,6 +25,10 @@ const sampleSchema: PageSchema = {
       style: {
         theme: "dark" as Theme,
         padding: "lg"
+      },
+      visibility: {
+        platform: ["mobile", "desktop"],
+        region: ["IN", "US"]
       }
     },
     {
@@ -40,6 +44,10 @@ const sampleSchema: PageSchema = {
         backgroundColor: "#f8f9fa",
         borderRadius: "lg"
       },
+      visibility: {
+        isLoggedIn: true,
+        platform: ["mobile", "desktop"]
+      },
       children: [
         {
           type: "text",
@@ -51,6 +59,9 @@ const sampleSchema: PageSchema = {
             textAlign: "center",
             padding: "md",
             backgroundColor: "#f8f9fa"
+          },
+          visibility: {
+            isSubscribed: false
           }
         },
         {
@@ -63,9 +74,27 @@ const sampleSchema: PageSchema = {
             textAlign: "center",
             padding: "sm",
             backgroundColor: "#f8f9fa"
+          },
+          visibility: {
+            subscriptionTier: "premium"
           }
         }
       ]
+    },
+    {
+      type: "text",
+      id: "text-003",
+      props: {
+        content: "This block should be hidden for mobile users."
+      },
+      style: {
+        textAlign: "center",
+        padding: "md",
+        backgroundColor: "#e9ecef"
+      },
+      visibility: {
+        platform: ["desktop", "tv"]
+      }
     }
   ]
 };
@@ -79,6 +108,9 @@ const Canvas: React.FC = () => {
             {sampleSchema.title}
           </h2>
           <p className="text-gray-600">Rendering {sampleSchema.blocks.length} blocks</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Context: Logged in, Not subscribed, Basic tier, IN region, Mobile platform
+          </p>
         </div>
         
         <div className="space-y-6">

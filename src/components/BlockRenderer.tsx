@@ -3,12 +3,28 @@ import HeroBlock from './blocks/HeroBlock';
 import TextBlock from './blocks/TextBlock';
 import SectionBlock from './blocks/SectionBlock';
 import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '../schema/blockTypes';
+import type { RenderContext } from '../types/RenderContext';
+import { evaluateVisibility } from '../utils/visibility';
+
+// Mock render context for testing visibility rules
+const renderContext: RenderContext = {
+  isLoggedIn: true,
+  isSubscribed: false,
+  subscriptionTier: 'basic',
+  region: 'IN',
+  platform: 'mobile',
+};
 
 interface BlockRendererProps {
   block: Block;
 }
 
 const BlockRenderer: React.FC<BlockRendererProps> = ({ block }) => {
+  // Evaluate visibility before rendering
+  if (!evaluateVisibility(block.visibility, renderContext)) {
+    return null; // Skip rendering if not visible
+  }
+
   switch (block.type) {
     case 'hero':
       return <HeroBlock block={block as HeroBlockType} />;
