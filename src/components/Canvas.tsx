@@ -1,9 +1,14 @@
 import React from 'react';
 import BlockRenderer from './BlockRenderer';
+import type { PageSchema, Theme, Platform } from '../schema/blockTypes';
 
-// Hardcoded sample schema
-const sampleSchema = {
+// Hardcoded sample schema with proper typing
+const sampleSchema: PageSchema = {
   title: "Flimix Landing",
+  theme: "dark" as Theme,
+  visibility: {
+    platform: ["mobile", "desktop"] as Platform[]
+  },
   blocks: [
     {
       type: "hero",
@@ -18,7 +23,7 @@ const sampleSchema = {
         }
       },
       style: {
-        theme: "dark",
+        theme: "dark" as Theme,
         padding: "lg"
       }
     },

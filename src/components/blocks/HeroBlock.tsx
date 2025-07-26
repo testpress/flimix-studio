@@ -1,30 +1,18 @@
 import React from 'react';
-
-interface HeroProps {
-  title?: string;
-  subtitle?: string;
-  backgroundImage?: string;
-  ctaButton?: {
-    label: string;
-    link: string;
-  };
-}
-
-interface HeroStyle {
-  theme?: string;
-  padding?: string;
-  textColor?: string;
-}
+import type { HeroBlock as HeroBlockType, Theme, Padding } from '../../schema/blockTypes';
 
 interface HeroBlockProps {
-  props: HeroProps;
-  style?: HeroStyle;
+  block: HeroBlockType;
 }
 
-const HeroBlock: React.FC<HeroBlockProps> = ({ props, style }) => {
+const HeroBlock: React.FC<HeroBlockProps> = ({ block }) => {
+  const { props, style } = block;
   const { title, subtitle, backgroundImage, ctaButton } = props;
+  
   const isDark = style?.theme === 'dark';
-  const paddingClass = style?.padding === 'lg' ? 'p-12' : 'p-8';
+  const paddingClass = style?.padding === 'lg' ? 'p-12' : 
+                      style?.padding === 'md' ? 'p-8' : 
+                      style?.padding === 'sm' ? 'p-4' : 'p-6';
   const textColor = style?.textColor || (isDark ? 'text-white' : 'text-gray-900');
 
   return (

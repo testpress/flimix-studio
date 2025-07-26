@@ -1,24 +1,18 @@
 import React from 'react';
-
-interface TextProps {
-  content?: string;
-}
-
-interface TextStyle {
-  theme?: string;
-  padding?: string;
-  textColor?: string;
-}
+import type { TextBlock as TextBlockType, Theme, Padding } from '../../schema/blockTypes';
 
 interface TextBlockProps {
-  props: TextProps;
-  style?: TextStyle;
+  block: TextBlockType;
 }
 
-const TextBlock: React.FC<TextBlockProps> = ({ props, style }) => {
+const TextBlock: React.FC<TextBlockProps> = ({ block }) => {
+  const { props, style } = block;
   const { content } = props;
+  
   const isDark = style?.theme === 'dark';
-  const paddingClass = style?.padding === 'lg' ? 'p-8' : 'p-6';
+  const paddingClass = style?.padding === 'lg' ? 'p-8' : 
+                      style?.padding === 'md' ? 'p-6' : 
+                      style?.padding === 'sm' ? 'p-4' : 'p-6';
   const textColor = style?.textColor || (isDark ? 'text-white' : 'text-gray-800');
 
   if (!content) {
