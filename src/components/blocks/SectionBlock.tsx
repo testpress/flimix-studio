@@ -9,6 +9,7 @@ interface SectionBlockProps {
   showDebug?: boolean;
   onSelect?: (block: Block) => void;
   isSelected?: boolean;
+  selectedBlockId?: string | null;
 }
 
 const SectionBlock: React.FC<SectionBlockProps> = ({ 
@@ -16,7 +17,8 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
   renderContext, 
   showDebug = false, 
   onSelect, 
-  isSelected = false 
+  isSelected = false,
+  selectedBlockId
 }) => {
   const { props, style, children } = block;
   const { title, description } = props;
@@ -83,7 +85,8 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
               renderContext={renderContext} 
               showDebug={showDebug}
               onSelect={onSelect}
-              isSelected={false} // Child blocks have their own selection state
+              selectedBlockId={selectedBlockId}
+              isSelected={selectedBlockId === childBlock.id}
             />
           ))}
         </div>

@@ -244,6 +244,7 @@ const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, on
               renderContext={renderContext}
               onSelect={handleBlockSelect}
               isSelected={selectedBlockId === block.id}
+              selectedBlockId={selectedBlockId}
             />
           ))}
         </div>

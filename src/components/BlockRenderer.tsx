@@ -12,6 +12,7 @@ interface BlockRendererProps {
   renderContext: RenderContext;
   onSelect?: (block: Block) => void;
   isSelected?: boolean;
+  selectedBlockId?: string | null;
 }
 
 const BlockRenderer: React.FC<BlockRendererProps> = ({ 
@@ -19,7 +20,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   showDebug = false, 
   renderContext, 
   onSelect, 
-  isSelected = false 
+  isSelected = false,
+  selectedBlockId
 }) => {
   // Evaluate visibility before rendering
   if (!evaluateVisibility(block.visibility, renderContext)) {
@@ -58,20 +60,15 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
     }
   }
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling to parent blocks
-    onSelect?.(block);
-  };
-
   const renderBlock = () => {
     switch (block.type) {
       case 'hero':
-        return <HeroBlock block={block as HeroBlockType} />;
+        return <HeroBlock block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} />;
       case 'text':
-        return <TextBlock block={block as TextBlockType} />;
+        return <TextBlock block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} />;
       case 'section':
         // Pass renderContext and showDebug to SectionBlock via a custom prop
-        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} />;
+        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
@@ -84,8 +81,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
 
   return (
     <div 
-      onClick={handleClick}
-      className={`cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+      className={`transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
     >
       {renderBlock()}
     </div>
