@@ -80,9 +80,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   };
 
   return (
-    <div 
-      className={`transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
-    >
+    <div>
       {renderBlock()}
     </div>
   );

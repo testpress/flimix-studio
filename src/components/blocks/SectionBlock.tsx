@@ -1,14 +1,14 @@
 import React from 'react';
 import BlockRenderer from '../BlockRenderer';
+import BaseBlock from './BaseBlock';
+import type { BaseBlockProps } from './BaseBlock';
 import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow, Block } from '../../schema/blockTypes';
 import type { RenderContext } from '../../types/RenderContext';
 
-interface SectionBlockProps {
+interface SectionBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: SectionBlockType;
   renderContext: RenderContext;
   showDebug?: boolean;
-  onSelect?: (block: Block) => void;
-  isSelected?: boolean;
   selectedBlockId?: string | null;
 }
 
@@ -39,21 +39,18 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
                         style?.boxShadow === 'md' ? 'shadow-md' : 
                         style?.boxShadow === 'sm' ? 'shadow-sm' : '';
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling to parent blocks
-    onSelect?.(block);
-  };
-
   return (
-    <section 
+    <BaseBlock 
+      block={block} 
+      onSelect={onSelect} 
+      isSelected={isSelected}
       className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} ${
         isDark ? 'bg-gray-800' : 'bg-white'
-      } cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+      }`}
       style={{
         backgroundColor: style?.backgroundColor,
         maxWidth: style?.maxWidth,
       }}
-      onClick={handleClick}
     >
       {/* Section header */}
       {(title || description) && (
@@ -95,7 +92,7 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
           <p className="text-gray-500 text-center">No content blocks in this section</p>
         </div>
       )}
-    </section>
+    </BaseBlock>
   );
 };
 

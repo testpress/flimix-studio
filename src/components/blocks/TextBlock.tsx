@@ -1,10 +1,10 @@
 import React from 'react';
-import type { TextBlock as TextBlockType, Theme, Padding, Block } from '../../schema/blockTypes';
+import BaseBlock from './BaseBlock';
+import type { BaseBlockProps } from './BaseBlock';
+import type { TextBlock as TextBlockType, Theme, Padding } from '../../schema/blockTypes';
 
-interface TextBlockProps {
+interface TextBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: TextBlockType;
-  onSelect?: (block: Block) => void;
-  isSelected?: boolean;
 }
 
 const TextBlock: React.FC<TextBlockProps> = ({ block, onSelect, isSelected = false }) => {
@@ -22,35 +22,34 @@ const TextBlock: React.FC<TextBlockProps> = ({ block, onSelect, isSelected = fal
   const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling to parent blocks
-    onSelect?.(block);
-  };
-
   if (!content) {
     return (
-      <div 
-        className={`${paddingClass} bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+      <BaseBlock 
+        block={block} 
+        onSelect={onSelect} 
+        isSelected={isSelected}
+        className={`${paddingClass} bg-gray-50 rounded-lg border-2 border-dashed border-gray-300`}
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-        onClick={handleClick}
       >
         <p className="text-gray-500 text-center">No content provided</p>
-      </div>
+      </BaseBlock>
     );
   }
 
   return (
-    <div 
-      className={`${paddingClass} ${backgroundClass} rounded-lg cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+    <BaseBlock 
+      block={block} 
+      onSelect={onSelect} 
+      isSelected={isSelected}
+      className={`${paddingClass} ${backgroundClass} rounded-lg`}
       style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-      onClick={handleClick}
     >
       <div className={`max-w-4xl mx-auto ${textColor}`}>
         <p className="text-lg leading-relaxed">
           {content}
         </p>
       </div>
-    </div>
+    </BaseBlock>
   );
 };
 

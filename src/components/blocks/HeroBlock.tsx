@@ -1,10 +1,10 @@
 import React from 'react';
-import type { HeroBlock as HeroBlockType, Theme, Padding, Block } from '../../schema/blockTypes';
+import BaseBlock from './BaseBlock';
+import type { BaseBlockProps } from './BaseBlock';
+import type { HeroBlock as HeroBlockType, Theme, Padding } from '../../schema/blockTypes';
 
-interface HeroBlockProps {
+interface HeroBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: HeroBlockType;
-  onSelect?: (block: Block) => void;
-  isSelected?: boolean;
 }
 
 const HeroBlock: React.FC<HeroBlockProps> = ({ block, onSelect, isSelected = false }) => {
@@ -22,21 +22,18 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ block, onSelect, isSelected = fal
   const defaultBackgroundClass = isDark ? 'bg-gray-900' : 'bg-gray-100';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling to parent blocks
-    onSelect?.(block);
-  };
-
   return (
-    <div 
-      className={`relative rounded-lg overflow-hidden ${paddingClass} ${backgroundClass} cursor-pointer transition-all duration-200 ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+    <BaseBlock 
+      block={block} 
+      onSelect={onSelect} 
+      isSelected={isSelected}
+      className={`relative rounded-lg overflow-hidden ${paddingClass} ${backgroundClass}`}
       style={{
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
       }}
-      onClick={handleClick}
     >
       {/* Overlay for better text readability */}
       {backgroundImage && (
@@ -62,7 +59,7 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ block, onSelect, isSelected = fal
           </button>
         )}
       </div>
-    </div>
+    </BaseBlock>
   );
 };
 
