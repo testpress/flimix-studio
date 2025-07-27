@@ -1,12 +1,10 @@
 import React from 'react';
-import type { Block, VisibilityProps, Platform } from '../schema/blockTypes';
+import { useSelection } from '../context/SelectionContext';
+import type { VisibilityProps, Platform } from '../schema/blockTypes';
 
-interface SidebarProps {
-  selectedBlock: Block | null;
-  onUpdateVisibility: (visibility: VisibilityProps) => void;
-}
+const Sidebar: React.FC = () => {
+  const { selectedBlock, updateSelectedBlockProps } = useSelection();
 
-const Sidebar: React.FC<SidebarProps> = ({ selectedBlock, onUpdateVisibility }) => {
   const handleVisibilityChange = (field: keyof VisibilityProps, value: any) => {
     if (!selectedBlock) return;
     
@@ -16,7 +14,9 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedBlock, onUpdateVisibility }) 
       [field]: value
     };
     
-    onUpdateVisibility(newVisibility);
+    // For now, we'll just log the visibility change
+    // In a real app, this would update the block in the schema
+    console.log('Updating visibility for block:', selectedBlock.id, newVisibility);
   };
 
   const handlePlatformChange = (platform: Platform, checked: boolean) => {
@@ -49,6 +49,112 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedBlock, onUpdateVisibility }) 
     }
     
     handleVisibilityChange('region', newRegions);
+  };
+
+  const renderBlockPropsEditor = () => {
+    if (!selectedBlock) {
+      return (
+        <div className="p-4 bg-gray-50 rounded-lg">
+          <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
+          <p className="text-sm text-gray-500">Select a block to edit properties</p>
+        </div>
+      );
+    }
+
+    switch (selectedBlock.type) {
+      case 'text':
+        return (
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-gray-700 mb-2">Text Properties</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Content</label>
+                <textarea
+                  value={(selectedBlock.props as any).content || ''}
+                  onChange={(e) => updateSelectedBlockProps({ content: e.target.value })}
+                  placeholder="Enter text content..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm h-20 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'section':
+        return (
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-gray-700 mb-2">Section Properties</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  value={(selectedBlock.props as any).title || ''}
+                  onChange={(e) => updateSelectedBlockProps({ title: e.target.value })}
+                  placeholder="Enter section title..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Description</label>
+                <textarea
+                  value={(selectedBlock.props as any).description || ''}
+                  onChange={(e) => updateSelectedBlockProps({ description: e.target.value })}
+                  placeholder="Enter section description..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm h-16 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'hero':
+        return (
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-gray-700 mb-2">Hero Properties</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  value={(selectedBlock.props as any).title || ''}
+                  onChange={(e) => updateSelectedBlockProps({ title: e.target.value })}
+                  placeholder="Enter hero title..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Subtitle</label>
+                <input
+                  type="text"
+                  value={(selectedBlock.props as any).subtitle || ''}
+                  onChange={(e) => updateSelectedBlockProps({ subtitle: e.target.value })}
+                  placeholder="Enter hero subtitle..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Background Image URL</label>
+                <input
+                  type="text"
+                  value={(selectedBlock.props as any).backgroundImage || ''}
+                  onChange={(e) => updateSelectedBlockProps({ backgroundImage: e.target.value })}
+                  placeholder="Enter image URL..."
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
+            <p className="text-sm text-gray-500">No editable props available for this block type</p>
+          </div>
+        );
+    }
   };
 
   return (
@@ -156,10 +262,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedBlock, onUpdateVisibility }) 
             </div>
           )}
           
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
-            <p className="text-sm text-gray-500">Select a block to edit properties</p>
-          </div>
+          {renderBlockPropsEditor()}
           
           <div className="p-4 bg-gray-50 rounded-lg">
             <h3 className="font-medium text-gray-700 mb-2">Styling</h3>

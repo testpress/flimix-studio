@@ -1,127 +1,11 @@
 import React, { useState } from 'react';
 import BlockRenderer from './BlockRenderer';
-import type { PageSchema, Theme, Platform, Block } from '../schema/blockTypes';
+import { useSelection } from '../context/SelectionContext';
+import type { Theme, Platform } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
 const showDebug = true; // Enables debug placeholder for hidden blocks
-
-// Hardcoded sample schema with proper typing and visibility rules
-const sampleSchema: PageSchema = {
-  title: "Flimix Landing",
-  theme: "dark" as Theme,
-  visibility: {
-    platform: ["mobile", "desktop"] as Platform[]
-  },
-  blocks: [
-    {
-      type: "hero",
-      id: "hero-001",
-      props: {
-        title: "Watch Anywhere",
-        subtitle: "Stream your favorites",
-        backgroundImage: "https://cdn.example.com/bg.jpg",
-        ctaButton: {
-          label: "Start Watching",
-          link: "/subscribe"
-        }
-      },
-      style: {
-        theme: "dark" as Theme,
-        padding: "lg"
-      },
-      visibility: {
-        platform: ["mobile", "desktop"],
-        region: ["IN", "US"]
-      }
-    },
-    {
-      type: "section",
-      id: "section-001",
-      props: {
-        title: "Featured Content",
-        description: "Discover our latest releases and popular shows"
-      },
-      style: {
-        theme: "light" as Theme,
-        padding: "lg",
-        backgroundColor: "#f8f9fa",
-        borderRadius: "lg"
-      },
-      visibility: {
-        isLoggedIn: true,
-        platform: ["mobile", "desktop"]
-      },
-      children: [
-        {
-          type: "text",
-          id: "text-001",
-          props: {
-            content: "Enjoy Flimix across all your devices."
-          },
-          style: {
-            textAlign: "center",
-            padding: "md",
-            backgroundColor: "#f8f9fa"
-          },
-          visibility: {
-            isSubscribed: false
-          }
-        },
-        {
-          type: "text",
-          id: "text-002",
-          props: {
-            content: "From blockbuster movies to binge-worthy series, we have something for everyone."
-          },
-          style: {
-            textAlign: "center",
-            padding: "sm",
-            backgroundColor: "#f8f9fa"
-          },
-          visibility: {
-            subscriptionTier: "premium"
-          }
-        },
-        {
-          type: "text",
-          id: "text-004",
-          props: {
-            content: "This message is shown only to VIP users in the US."
-          },
-          style: {
-            textAlign: "center",
-            padding: "md",
-            backgroundColor: "#fff",
-            borderRadius: "md",
-            boxShadow: "sm"
-          },
-          visibility: {
-            platform: ["mobile", "desktop"],
-            region: ["US"],
-            subscriptionTier: "vip",
-            isLoggedIn: true
-          }
-        }
-      ]
-    },
-    {
-      type: "text",
-      id: "text-003",
-      props: {
-        content: "This block should be hidden for mobile users."
-      },
-      style: {
-        textAlign: "center",
-        padding: "md",
-        backgroundColor: "#e9ecef"
-      },
-      visibility: {
-        platform: ["desktop", "tv"]
-      }
-    }
-  ]
-};
 
 const initialRenderContext: RenderContext = {
   isLoggedIn: true,
@@ -131,17 +15,18 @@ const initialRenderContext: RenderContext = {
   platform: 'mobile',
 };
 
-interface CanvasProps {
-  selectedBlockId: string | null;
-  setSelectedBlockId: (id: string | null) => void;
-  onBlockSelect: (block: Block) => void;
-}
-
-const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, onBlockSelect }) => {
+const Canvas: React.FC = () => {
+  const { 
+    selectedBlockId, 
+    setSelectedBlockId, 
+    setSelectedBlock, 
+    pageSchema 
+  } = useSelection();
   const [renderContext, setRenderContext] = useState<RenderContext>(initialRenderContext);
 
-  const handleBlockSelect = (block: Block) => {
-    onBlockSelect(block);
+  const handleBlockSelect = (block: any) => {
+    setSelectedBlock(block);
+    setSelectedBlockId(block.id);
   };
 
   return (
@@ -150,7 +35,7 @@ const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, on
         <div className="mb-6">
           <div className="flex flex-col gap-4 mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">
-              {sampleSchema.title}
+              {pageSchema.title}
             </h2>
             
             {/* Render Context Controls */}
@@ -222,7 +107,7 @@ const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, on
             </div>
           </div>
           
-          <p className="text-gray-600">Rendering {sampleSchema.blocks.length} blocks</p>
+          <p className="text-gray-600">Rendering {pageSchema.blocks.length} blocks</p>
           {showDebug && (
             <>
               <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
@@ -236,7 +121,7 @@ const Canvas: React.FC<CanvasProps> = ({ selectedBlockId, setSelectedBlockId, on
         </div>
         
         <div className="space-y-6">
-          {sampleSchema.blocks.map((block) => (
+          {pageSchema.blocks.map((block) => (
             <BlockRenderer 
               key={block.id} 
               block={block} 
