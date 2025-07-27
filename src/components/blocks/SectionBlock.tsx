@@ -39,6 +39,11 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
                         style?.boxShadow === 'md' ? 'shadow-md' : 
                         style?.boxShadow === 'sm' ? 'shadow-sm' : '';
 
+  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  const isHexColor = style?.textColor && style.textColor.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-gray-900' : 'text-gray-900')) : '';
+  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+
   return (
     <BaseBlock 
       block={block} 
@@ -56,16 +61,12 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
       {(title || description) && (
         <div className={`mb-6 ${textAlignClass}`}>
           {title && (
-            <h2 className={`text-2xl font-semibold mb-2 ${
-              style?.textColor || (isDark ? 'text-white' : 'text-gray-900')
-            }`}>
+            <h2 className={`text-2xl font-semibold mb-2 ${textColorClass}`} style={textColorStyle}>
               {title}
             </h2>
           )}
           {description && (
-            <p className={`text-lg ${
-              style?.textColor || (isDark ? 'text-gray-300' : 'text-gray-600')
-            }`}>
+            <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
               {description}
             </p>
           )}

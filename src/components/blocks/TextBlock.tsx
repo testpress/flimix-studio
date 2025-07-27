@@ -15,7 +15,11 @@ const TextBlock: React.FC<TextBlockProps> = ({ block, onSelect, isSelected = fal
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
-  const textColor = style?.textColor || (isDark ? 'text-white' : 'text-gray-800');
+  
+  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  const isHexColor = style?.textColor && style.textColor.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-800')) : '';
+  const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Determine background styling
   const hasCustomBackground = !!style?.backgroundColor;
@@ -44,7 +48,7 @@ const TextBlock: React.FC<TextBlockProps> = ({ block, onSelect, isSelected = fal
       className={`${paddingClass} ${backgroundClass} rounded-lg`}
       style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
     >
-      <div className={`max-w-4xl mx-auto ${textColor}`}>
+      <div className={`max-w-4xl mx-auto ${textColorClass}`} style={textColorStyle}>
         <p className="text-lg leading-relaxed">
           {content}
         </p>

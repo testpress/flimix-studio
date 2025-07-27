@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import type { Block, PageSchema } from '../schema/blockTypes';
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
+import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -8,6 +9,7 @@ interface SelectionContextType {
   setSelectedBlockId: (id: string | null) => void;
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
+  updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -25,7 +27,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
 
-    const updateBlockInSchema = (blocks: Block[]): Block[] => {
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
       return blocks.map(block => {
         if (block.id === selectedBlock.id) {
           return {
@@ -34,7 +36,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
               ...block.props,
               ...newProps
             }
-          };
+          } as BlockType;
         }
         
         // Recursively update children if this block has them
@@ -42,7 +44,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
           return {
             ...block,
             children: updateBlockInSchema(block.children)
-          };
+          } as BlockType;
         }
         
         return block;
@@ -58,7 +60,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setPageSchema(updatedSchema);
     
     // Update the selected block reference
-    const findUpdatedBlock = (blocks: Block[]): Block | null => {
+    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
       for (const block of blocks) {
         if (block.id === selectedBlock.id) {
           return {
@@ -67,7 +69,68 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
               ...block.props,
               ...newProps
             }
-          };
+          } as Block;
+        }
+        if (block.children) {
+          const found = findUpdatedBlock(block.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
+    if (updatedSelectedBlock) {
+      setSelectedBlock(updatedSelectedBlock);
+    }
+  };
+
+  const updateSelectedBlockStyle = (newStyle: Partial<StyleProps>) => {
+    if (!selectedBlock) return;
+
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
+      return blocks.map(block => {
+        if (block.id === selectedBlock.id) {
+          return {
+            ...block,
+            style: {
+              ...block.style,
+              ...newStyle
+            }
+          } as BlockType;
+        }
+        
+        // Recursively update children if this block has them
+        if (block.children) {
+          return {
+            ...block,
+            children: updateBlockInSchema(block.children)
+          } as BlockType;
+        }
+        
+        return block;
+      });
+    };
+
+    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+
+    setPageSchema(updatedSchema);
+    
+    // Update the selected block reference
+    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
+      for (const block of blocks) {
+        if (block.id === selectedBlock.id) {
+          return {
+            ...block,
+            style: {
+              ...block.style,
+              ...newStyle
+            }
+          } as Block;
         }
         if (block.children) {
           const found = findUpdatedBlock(block.children);
@@ -90,7 +153,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       selectedBlockId,
       setSelectedBlockId,
       pageSchema,
-      updateSelectedBlockProps
+      updateSelectedBlockProps,
+      updateSelectedBlockStyle
     }}>
       {children}
     </SelectionContext.Provider>
