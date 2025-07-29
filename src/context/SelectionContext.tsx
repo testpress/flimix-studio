@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
 import { swap } from '../utils/arrayUtils';
-import { findBlockAndParent, updateParentChildren } from '../utils/blockUtils';
+import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '../utils/blockUtils';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -16,6 +16,7 @@ interface SelectionContextType {
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
   moveBlockUp: () => void;
   moveBlockDown: () => void;
+  deleteSelectedBlock: () => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -261,6 +262,32 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setPageSchema(updatedSchema);
   };
 
+  const deleteSelectedBlock = () => {
+    if (!selectedBlockId) return;
+    
+    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
+    if (!result) return;
+
+    const { container, index } = result;
+    
+    // Create a new array without the deleted block
+    const newContainer = [...container] as BlockType[];
+    newContainer.splice(index, 1);
+    
+    // Update the schema
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: result.parent 
+        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        : newContainer
+    };
+    
+    setPageSchema(updatedSchema);
+    setSelectedBlockId(null);
+    setSelectedBlock(null);
+    setSelectedBlockParentId(null);
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -273,7 +300,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
       moveBlockUp,
-      moveBlockDown
+      moveBlockDown,
+      deleteSelectedBlock
     }}>
       {children}
     </SelectionContext.Provider>

@@ -7,7 +7,8 @@ const TopBar: React.FC = () => {
     selectedBlockId, 
     pageSchema, 
     moveBlockUp, 
-    moveBlockDown 
+    moveBlockDown,
+    deleteSelectedBlock
   } = useSelection();
 
   const position = selectedBlockId ? findBlockPositionForUI(selectedBlockId, pageSchema.blocks) : null;
@@ -20,11 +21,11 @@ const TopBar: React.FC = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Flimix Studio</h1>
         <div className="flex items-center space-x-4">
-          {/* Move Block Controls */}
+          {/* Block Actions */}
           {hasSelectedBlock && (
             <div className="flex items-center space-x-2 bg-gray-700 rounded-lg px-3 py-2">
               <span className="text-sm text-gray-300 mr-2">
-                {position?.isTopLevel ? 'Move Block' : 'Move Block (within parent)'}
+                {position?.isTopLevel ? 'Block Actions' : 'Block Actions (within parent)'}
               </span>
               <button
                 onClick={moveBlockUp}
@@ -53,6 +54,13 @@ const TopBar: React.FC = () => {
                 title="Move Block Down"
               >
                 ⬇️
+              </button>
+              <button
+                onClick={deleteSelectedBlock}
+                className="px-3 py-1 rounded text-sm font-medium transition-colors bg-red-600 text-white hover:bg-red-700 active:bg-red-800"
+                title="Delete Block"
+              >
+                🗑️
               </button>
             </div>
           )}
