@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelection } from '../context/SelectionContext';
+import { findBlockPositionForUI } from '../utils/blockUtils';
 
 const TopBar: React.FC = () => {
   const { 
@@ -9,38 +10,7 @@ const TopBar: React.FC = () => {
     moveBlockDown 
   } = useSelection();
 
-  // Helper function to find block position (works for both top-level and nested)
-  const findBlockPosition = (blockId: string, blocks: any[]): { isTopLevel: boolean; parentId: string | null; index: number; totalSiblings: number } => {
-    // Check top-level blocks first
-    const topLevelIndex = blocks.findIndex(block => block.id === blockId);
-    if (topLevelIndex !== -1) {
-      return {
-        isTopLevel: true,
-        parentId: null,
-        index: topLevelIndex,
-        totalSiblings: blocks.length
-      };
-    }
-
-    // Check nested blocks
-    for (const block of blocks) {
-      if (block.children) {
-        const childIndex = block.children.findIndex((child: any) => child.id === blockId);
-        if (childIndex !== -1) {
-          return {
-            isTopLevel: false,
-            parentId: block.id,
-            index: childIndex,
-            totalSiblings: block.children.length
-          };
-        }
-      }
-    }
-
-    return { isTopLevel: false, parentId: null, index: -1, totalSiblings: 0 };
-  };
-
-  const position = selectedBlockId ? findBlockPosition(selectedBlockId, pageSchema.blocks) : null;
+  const position = selectedBlockId ? findBlockPositionForUI(selectedBlockId, pageSchema.blocks) : null;
   const isFirst = position ? position.index === 0 : true;
   const isLast = position ? position.index === position.totalSiblings - 1 : true;
   const hasSelectedBlock = selectedBlockId && position && position.index !== -1;

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
 import { swap } from '../utils/arrayUtils';
+import { findBlockAndParent, updateParentChildren } from '../utils/blockUtils';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -205,36 +206,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setPageSchema(updatedSchema);
   };
 
-  // Helper function to find a block and its parent
-  const findBlockAndParent = (blockId: string, blocks: BlockType[]): { block: BlockType | null; parent: BlockType | null; parentIndex: number } => {
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i];
-      if (block.id === blockId) {
-        return { block, parent: null, parentIndex: i };
-      }
-      if (block.children) {
-        for (let j = 0; j < block.children.length; j++) {
-          if (block.children[j].id === blockId) {
-            return { block: block.children[j], parent: block, parentIndex: j };
-          }
-        }
-      }
-    }
-    return { block: null, parent: null, parentIndex: -1 };
-  };
 
-  // Helper function to update children array of a parent block
-  const updateParentChildren = (blocks: BlockType[], parentId: string, newChildren: BlockType[]): BlockType[] => {
-    return blocks.map(block => {
-      if (block.id === parentId) {
-        return {
-          ...block,
-          children: newChildren
-        } as BlockType;
-      }
-      return block;
-    });
-  };
 
   const moveBlockDown = () => {
     if (!selectedBlockId) {
