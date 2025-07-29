@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelection } from '../context/SelectionContext';
 import { findBlockPositionForUI } from '../utils/blockUtils';
+import Dropdown, { DropdownItem } from './Dropdown';
 
 const TopBar: React.FC = () => {
   const { 
@@ -56,20 +57,20 @@ const TopBar: React.FC = () => {
               >
                 ⬇️
               </button>
-              <button
-                onClick={duplicateSelectedBlock}
-                className="px-3 py-1 rounded text-sm font-medium transition-colors bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
-                title="Duplicate Block"
+              <Dropdown
+                trigger={
+                  <button className="px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800">
+                    ⋯
+                  </button>
+                }
               >
-                📋
-              </button>
-              <button
-                onClick={deleteSelectedBlock}
-                className="px-3 py-1 rounded text-sm font-medium transition-colors bg-red-600 text-white hover:bg-red-700 active:bg-red-800"
-                title="Delete Block"
-              >
-                🗑️
-              </button>
+                <DropdownItem onClick={duplicateSelectedBlock}>
+                  Copy
+                </DropdownItem>
+                <DropdownItem onClick={deleteSelectedBlock}>
+                  Remove
+                </DropdownItem>
+              </Dropdown>
             </div>
           )}
           
