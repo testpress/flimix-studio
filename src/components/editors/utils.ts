@@ -1,5 +1,3 @@
-import { get, set } from 'lodash';
-
 /**
  * Get a nested property value from an object using dot notation
  * @param obj - The object to get the property from
@@ -8,7 +6,19 @@ import { get, set } from 'lodash';
  * @returns The property value or default value
  */
 export function getNestedValue(obj: any, path: string, defaultValue: any = ''): any {
-  return get(obj, path, defaultValue);
+  if (!obj || !path) return defaultValue;
+  
+  const keys = path.split('.');
+  let current = obj;
+  
+  for (const key of keys) {
+    if (current === null || current === undefined || typeof current !== 'object') {
+      return defaultValue;
+    }
+    current = current[key];
+  }
+  
+  return current !== undefined ? current : defaultValue;
 }
 
 /**
@@ -19,8 +29,25 @@ export function getNestedValue(obj: any, path: string, defaultValue: any = ''): 
  * @returns A new object with the updated property
  */
 export function setNestedValue(obj: any, path: string, value: any): any {
+  if (!obj || !path) return obj;
+  
+  const keys = path.split('.');
   const newObj = { ...obj };
-  set(newObj, path, value);
+  let current = newObj;
+  
+  // Navigate to the parent of the target property
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i];
+    if (!(key in current) || typeof current[key] !== 'object' || current[key] === null) {
+      current[key] = {};
+    }
+    current = current[key];
+  }
+  
+  // Set the final property
+  const finalKey = keys[keys.length - 1];
+  current[finalKey] = value;
+  
   return newObj;
 }
 
