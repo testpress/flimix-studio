@@ -125,4 +125,27 @@ export function findBlockPositionForUI(
   }
 
   return { isTopLevel: false, parentId: null, index: -1, totalSiblings: 0 };
+}
+
+/**
+ * Generates a unique ID for blocks
+ * @returns A unique string ID
+ */
+function generateUniqueId(): string {
+  return crypto.randomUUID?.() ?? `block-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+/**
+ * Clones a block with new unique IDs for the block and all its children
+ * @param block - The block to clone
+ * @returns A deep copy of the block with new IDs
+ */
+export function cloneBlockWithNewIds(block: BlockType): BlockType {
+  const newId = generateUniqueId();
+  const cloned: BlockType = {
+    ...block,
+    id: newId,
+    children: block.children?.map(child => cloneBlockWithNewIds(child)),
+  } as BlockType;
+  return cloned;
 } 

@@ -8,7 +8,8 @@ const TopBar: React.FC = () => {
     pageSchema, 
     moveBlockUp, 
     moveBlockDown,
-    deleteSelectedBlock
+    deleteSelectedBlock,
+    duplicateSelectedBlock
   } = useSelection();
 
   const position = selectedBlockId ? findBlockPositionForUI(selectedBlockId, pageSchema.blocks) : null;
@@ -54,6 +55,13 @@ const TopBar: React.FC = () => {
                 title="Move Block Down"
               >
                 ⬇️
+              </button>
+              <button
+                onClick={duplicateSelectedBlock}
+                className="px-3 py-1 rounded text-sm font-medium transition-colors bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
+                title="Duplicate Block"
+              >
+                📋
               </button>
               <button
                 onClick={deleteSelectedBlock}

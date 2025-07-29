@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
 import { swap } from '../utils/arrayUtils';
-import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '../utils/blockUtils';
+import { findBlockAndParent, updateParentChildren, findBlockPositionById, cloneBlockWithNewIds } from '../utils/blockUtils';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -17,6 +17,7 @@ interface SelectionContextType {
   moveBlockUp: () => void;
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
+  duplicateSelectedBlock: () => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -288,6 +289,41 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(null);
   };
 
+  const duplicateSelectedBlock = () => {
+    if (!selectedBlockId) return;
+    
+    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
+    if (!result) return;
+
+    const { container, index } = result;
+    
+    // Find the original block
+    const originalBlock = container[index];
+    if (!originalBlock) return;
+    
+    // Clone the block with new IDs
+    const duplicatedBlock = cloneBlockWithNewIds(originalBlock as BlockType);
+    
+    // Insert the duplicated block immediately after the original
+    const newContainer = [...container] as BlockType[];
+    newContainer.splice(index + 1, 0, duplicatedBlock);
+    
+    // Update the schema
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: result.parent 
+        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        : newContainer
+    };
+    
+    setPageSchema(updatedSchema);
+    
+    // Optionally select the newly duplicated block
+    setSelectedBlockId(duplicatedBlock.id);
+    setSelectedBlock(duplicatedBlock as Block);
+    setSelectedBlockParentId(result.parent?.id || null);
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -301,7 +337,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       updateSelectedBlockStyle,
       moveBlockUp,
       moveBlockDown,
-      deleteSelectedBlock
+      deleteSelectedBlock,
+      duplicateSelectedBlock
     }}>
       {children}
     </SelectionContext.Provider>
