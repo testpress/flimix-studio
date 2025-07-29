@@ -10,7 +10,6 @@ interface SelectionContextType {
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
-  updatePageSchema: (newSchema: PageSchema) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -147,10 +146,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     }
   };
 
-  const updatePageSchema = (newSchema: PageSchema) => {
-    setPageSchema(newSchema);
-  };
-
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -159,8 +154,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       setSelectedBlockId,
       pageSchema,
       updateSelectedBlockProps,
-      updateSelectedBlockStyle,
-      updatePageSchema
+      updateSelectedBlockStyle
     }}>
       {children}
     </SelectionContext.Provider>

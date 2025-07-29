@@ -1,22 +1,7 @@
 import React, { useState } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import DraggableBlock from './DraggableBlock';
+import BlockRenderer from './BlockRenderer';
 import { useSelection } from '../context/SelectionContext';
-import type { Platform } from '../schema/blockTypes';
+import type { Theme, Platform } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
@@ -35,38 +20,13 @@ const Canvas: React.FC = () => {
     selectedBlockId, 
     setSelectedBlockId, 
     setSelectedBlock, 
-    pageSchema,
-    updatePageSchema
+    pageSchema 
   } = useSelection();
   const [renderContext, setRenderContext] = useState<RenderContext>(initialRenderContext);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
 
   const handleBlockSelect = (block: any) => {
     setSelectedBlock(block);
     setSelectedBlockId(block.id);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      const oldIndex = pageSchema.blocks.findIndex(block => block.id === active.id);
-      const newIndex = pageSchema.blocks.findIndex(block => block.id === over?.id);
-
-      const newBlocks = arrayMove(pageSchema.blocks, oldIndex, newIndex);
-      const newSchema = {
-        ...pageSchema,
-        blocks: newBlocks
-      };
-
-      updatePageSchema(newSchema);
-    }
   };
 
   return (
@@ -160,30 +120,19 @@ const Canvas: React.FC = () => {
           )}
         </div>
         
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={pageSchema.blocks.map(block => block.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className="space-y-6">
-              {pageSchema.blocks.map((block) => (
-                <DraggableBlock
-                  key={block.id}
-                  block={block}
-                  showDebug={showDebug}
-                  renderContext={renderContext}
-                  onSelect={handleBlockSelect}
-                  isSelected={selectedBlockId === block.id}
-                  selectedBlockId={selectedBlockId}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div className="space-y-6">
+          {pageSchema.blocks.map((block) => (
+            <BlockRenderer 
+              key={block.id} 
+              block={block} 
+              showDebug={showDebug} 
+              renderContext={renderContext}
+              onSelect={handleBlockSelect}
+              isSelected={selectedBlockId === block.id}
+              selectedBlockId={selectedBlockId}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
