@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
-import { swap, isTopLevelBlock } from '../utils/arrayUtils';
+import { swap } from '../utils/arrayUtils';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
   setSelectedBlock: (block: Block | null) => void;
   selectedBlockId: string | null;
   setSelectedBlockId: (id: string | null) => void;
+  selectedBlockParentId: string | null;
+  setSelectedBlockParentId: (id: string | null) => void;
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
@@ -25,6 +27,7 @@ interface SelectionProviderProps {
 export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, initialSchema }) => {
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
+  const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
   const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
@@ -150,16 +153,50 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   };
 
   const moveBlockUp = () => {
-    if (!selectedBlockId || !isTopLevelBlock(selectedBlockId, pageSchema.blocks)) {
+    if (!selectedBlockId) {
       return;
     }
 
-    const currentIndex = pageSchema.blocks.findIndex(block => block.id === selectedBlockId);
-    if (currentIndex <= 0) {
-      return; // Already at the top
+    const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
+    
+    if (!block) {
+      return;
     }
 
-    const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex - 1);
+    // Handle top-level blocks
+    if (!parent) {
+      // Check if it's actually a top-level block
+      const topLevelIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
+      if (topLevelIndex === -1) {
+        return;
+      }
+
+      const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
+      if (currentIndex <= 0) {
+        return; // Already at the top
+      }
+
+      const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex - 1);
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: newBlocks
+      };
+
+      setPageSchema(updatedSchema);
+      return;
+    }
+
+    // Handle nested blocks
+    if (!parent.children) {
+      return;
+    }
+
+    if (parentIndex <= 0) {
+      return; // Already at the top of children
+    }
+
+    const newChildren = swap(parent.children, parentIndex, parentIndex - 1);
+    const newBlocks = updateParentChildren(pageSchema.blocks, parent.id, newChildren);
     const updatedSchema = {
       ...pageSchema,
       blocks: newBlocks
@@ -168,17 +205,82 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setPageSchema(updatedSchema);
   };
 
+  // Helper function to find a block and its parent
+  const findBlockAndParent = (blockId: string, blocks: BlockType[]): { block: BlockType | null; parent: BlockType | null; parentIndex: number } => {
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i];
+      if (block.id === blockId) {
+        return { block, parent: null, parentIndex: i };
+      }
+      if (block.children) {
+        for (let j = 0; j < block.children.length; j++) {
+          if (block.children[j].id === blockId) {
+            return { block: block.children[j], parent: block, parentIndex: j };
+          }
+        }
+      }
+    }
+    return { block: null, parent: null, parentIndex: -1 };
+  };
+
+  // Helper function to update children array of a parent block
+  const updateParentChildren = (blocks: BlockType[], parentId: string, newChildren: BlockType[]): BlockType[] => {
+    return blocks.map(block => {
+      if (block.id === parentId) {
+        return {
+          ...block,
+          children: newChildren
+        } as BlockType;
+      }
+      return block;
+    });
+  };
+
   const moveBlockDown = () => {
-    if (!selectedBlockId || !isTopLevelBlock(selectedBlockId, pageSchema.blocks)) {
+    if (!selectedBlockId) {
       return;
     }
 
-    const currentIndex = pageSchema.blocks.findIndex(block => block.id === selectedBlockId);
-    if (currentIndex === -1 || currentIndex >= pageSchema.blocks.length - 1) {
-      return; // Already at the bottom
+    const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
+    
+    if (!block) {
+      return;
     }
 
-    const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex + 1);
+    // Handle top-level blocks
+    if (!parent) {
+      // Check if it's actually a top-level block
+      const topLevelIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
+      if (topLevelIndex === -1) {
+        return;
+      }
+
+      const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
+      if (currentIndex === -1 || currentIndex >= pageSchema.blocks.length - 1) {
+        return; // Already at the bottom
+      }
+
+      const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex + 1);
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: newBlocks
+      };
+
+      setPageSchema(updatedSchema);
+      return;
+    }
+
+    // Handle nested blocks
+    if (!parent.children) {
+      return;
+    }
+
+    if (parentIndex >= parent.children.length - 1) {
+      return; // Already at the bottom of children
+    }
+
+    const newChildren = swap(parent.children, parentIndex, parentIndex + 1);
+    const newBlocks = updateParentChildren(pageSchema.blocks, parent.id, newChildren);
     const updatedSchema = {
       ...pageSchema,
       blocks: newBlocks
@@ -193,6 +295,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       setSelectedBlock,
       selectedBlockId,
       setSelectedBlockId,
+      selectedBlockParentId,
+      setSelectedBlockParentId,
       pageSchema,
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
