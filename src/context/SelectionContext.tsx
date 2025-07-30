@@ -4,6 +4,51 @@ import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTy
 import { swap } from '../utils/arrayUtils';
 import { findBlockAndParent, updateParentChildren, findBlockPositionById, cloneBlockWithNewIds } from '../utils/blockUtils';
 
+// Block templates for insertion
+const blockTemplates: Record<string, BlockType> = {
+  text: {
+    type: 'text',
+    id: '', // Will be generated
+    props: {
+      content: 'New text block'
+    },
+    style: {
+      padding: 'md',
+      textAlign: 'left'
+    }
+  },
+  hero: {
+    type: 'hero',
+    id: '', // Will be generated
+    props: {
+      title: 'New Hero Section',
+      subtitle: 'Add your subtitle here',
+      backgroundImage: '',
+      ctaButton: {
+        label: 'Learn More',
+        link: '#'
+      }
+    },
+    style: {
+      padding: 'lg',
+      textAlign: 'center'
+    }
+  },
+  section: {
+    type: 'section',
+    id: '', // Will be generated
+    props: {
+      title: 'New Section',
+      description: 'Section description'
+    },
+    style: {
+      padding: 'md',
+      backgroundColor: '#f8f9fa'
+    },
+    children: []
+  }
+};
+
 interface SelectionContextType {
   selectedBlock: Block | null;
   setSelectedBlock: (block: Block | null) => void;
@@ -18,6 +63,8 @@ interface SelectionContextType {
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
   duplicateSelectedBlock: () => void;
+  insertBlockAfter: (blockType: string) => void;
+  insertBlockBefore: (blockType: string) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -324,6 +371,84 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
+  const generateBlockId = () => {
+    return `block-${Math.random().toString(36).slice(2, 9)}`;
+  };
+
+  const insertBlockAfter = (blockType: string) => {
+    if (!selectedBlockId) return;
+    
+    const template = blockTemplates[blockType];
+    if (!template) return;
+    
+    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
+    if (!result) return;
+
+    const { container, index } = result;
+    
+    // Create new block with generated ID
+    const newBlock: BlockType = {
+      ...template,
+      id: generateBlockId()
+    };
+    
+    // Insert the new block after the selected block
+    const newContainer = [...container] as BlockType[];
+    newContainer.splice(index + 1, 0, newBlock);
+    
+    // Update the schema
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: result.parent 
+        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        : newContainer
+    };
+    
+    setPageSchema(updatedSchema);
+    
+    // Select the newly inserted block
+    setSelectedBlockId(newBlock.id);
+    setSelectedBlock(newBlock as Block);
+    setSelectedBlockParentId(result.parent?.id || null);
+  };
+
+  const insertBlockBefore = (blockType: string) => {
+    if (!selectedBlockId) return;
+    
+    const template = blockTemplates[blockType];
+    if (!template) return;
+    
+    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
+    if (!result) return;
+
+    const { container, index } = result;
+    
+    // Create new block with generated ID
+    const newBlock: BlockType = {
+      ...template,
+      id: generateBlockId()
+    };
+    
+    // Insert the new block before the selected block
+    const newContainer = [...container] as BlockType[];
+    newContainer.splice(index, 0, newBlock);
+    
+    // Update the schema
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: result.parent 
+        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        : newContainer
+    };
+    
+    setPageSchema(updatedSchema);
+    
+    // Select the newly inserted block
+    setSelectedBlockId(newBlock.id);
+    setSelectedBlock(newBlock as Block);
+    setSelectedBlockParentId(result.parent?.id || null);
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -338,7 +463,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       moveBlockUp,
       moveBlockDown,
       deleteSelectedBlock,
-      duplicateSelectedBlock
+      duplicateSelectedBlock,
+      insertBlockAfter,
+      insertBlockBefore
     }}>
       {children}
     </SelectionContext.Provider>

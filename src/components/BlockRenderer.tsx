@@ -2,6 +2,7 @@ import React from 'react';
 import HeroBlock from './blocks/HeroBlock';
 import TextBlock from './blocks/TextBlock';
 import SectionBlock from './blocks/SectionBlock';
+import BlockInsertionMenu from './BlockInsertionMenu';
 import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
 import { evaluateVisibility } from '../utils/visibility';
@@ -81,7 +82,9 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
 
   return (
     <div>
+      <BlockInsertionMenu position="above" blockId={block.id} />
       {renderBlock()}
+      <BlockInsertionMenu position="below" blockId={block.id} />
     </div>
   );
 };
