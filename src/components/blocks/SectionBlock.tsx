@@ -1,6 +1,7 @@
 import React from 'react';
 import BlockRenderer from '../BlockRenderer';
 import BaseBlock from './BaseBlock';
+import BlockInsertionMenu from '../BlockInsertionMenu';
 import type { BaseBlockProps } from './BaseBlock';
 import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow, Block } from '../../schema/blockTypes';
 import type { RenderContext } from '../../types/RenderContext';
@@ -77,15 +78,18 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
       {children && children.length > 0 ? (
         <div className="space-y-4">
           {children.map((childBlock) => (
-            <BlockRenderer 
-              key={childBlock.id} 
-              block={childBlock} 
-              renderContext={renderContext} 
-              showDebug={showDebug}
-              onSelect={onSelect}
-              selectedBlockId={selectedBlockId}
-              isSelected={selectedBlockId === childBlock.id}
-            />
+            <div key={childBlock.id}>
+              <BlockInsertionMenu position="above" blockId={childBlock.id} />
+              <BlockRenderer 
+                block={childBlock} 
+                renderContext={renderContext} 
+                showDebug={showDebug}
+                onSelect={onSelect}
+                selectedBlockId={selectedBlockId}
+                isSelected={selectedBlockId === childBlock.id}
+              />
+              <BlockInsertionMenu position="below" blockId={childBlock.id} />
+            </div>
           ))}
         </div>
       ) : (

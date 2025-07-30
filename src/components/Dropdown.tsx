@@ -23,14 +23,19 @@ const Dropdown: React.FC<DropdownProps> = ({ trigger, children, className = '' }
     };
   }, []);
 
+  const handleTriggerClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className={`relative inline-block ${className}`} ref={dropdownRef}>
-      <div onClick={() => setIsOpen(!isOpen)}>
+      <div onClick={handleTriggerClick}>
         {trigger}
       </div>
       
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-[9999]">
           <div className="py-1">
             {children}
           </div>
@@ -51,9 +56,14 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   onClick, 
   className = '' 
 }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    onClick();
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={`w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ${className}`}
     >
       {children}

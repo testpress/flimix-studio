@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import BlockRenderer from './BlockRenderer';
+import BlockInsertionMenu from './BlockInsertionMenu';
 import { useSelection } from '../context/SelectionContext';
 import type { Theme, Platform } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
@@ -122,15 +123,18 @@ const Canvas: React.FC = () => {
         
         <div className="space-y-6">
           {pageSchema.blocks.map((block) => (
-            <BlockRenderer 
-              key={block.id} 
-              block={block} 
-              showDebug={showDebug} 
-              renderContext={renderContext}
-              onSelect={handleBlockSelect}
-              isSelected={selectedBlockId === block.id}
-              selectedBlockId={selectedBlockId}
-            />
+            <div key={block.id}>
+              <BlockInsertionMenu position="above" blockId={block.id} />
+              <BlockRenderer 
+                block={block} 
+                showDebug={showDebug} 
+                renderContext={renderContext}
+                onSelect={handleBlockSelect}
+                isSelected={selectedBlockId === block.id}
+                selectedBlockId={selectedBlockId}
+              />
+              <BlockInsertionMenu position="below" blockId={block.id} />
+            </div>
           ))}
         </div>
       </div>
