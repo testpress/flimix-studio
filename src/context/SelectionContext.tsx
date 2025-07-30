@@ -3,51 +3,7 @@ import type { ReactNode } from 'react';
 import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
 import { swap } from '../utils/arrayUtils';
 import { findBlockAndParent, updateParentChildren, findBlockPositionById, cloneBlockWithNewIds } from '../utils/blockUtils';
-
-// Block templates for insertion
-const blockTemplates: Record<string, BlockType> = {
-  text: {
-    type: 'text',
-    id: '', // Will be generated
-    props: {
-      content: 'New text block'
-    },
-    style: {
-      padding: 'md',
-      textAlign: 'left'
-    }
-  },
-  hero: {
-    type: 'hero',
-    id: '', // Will be generated
-    props: {
-      title: 'New Hero Section',
-      subtitle: 'Add your subtitle here',
-      backgroundImage: '',
-      ctaButton: {
-        label: 'Learn More',
-        link: '#'
-      }
-    },
-    style: {
-      padding: 'lg',
-      textAlign: 'center'
-    }
-  },
-  section: {
-    type: 'section',
-    id: '', // Will be generated
-    props: {
-      title: 'New Section',
-      description: 'Section description'
-    },
-    style: {
-      padding: 'md',
-      backgroundColor: '#f8f9fa'
-    },
-    children: []
-  }
-};
+import { createBlock } from '../utils/createBlock';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -371,26 +327,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
-  const generateBlockId = () => {
-    return `block-${Math.random().toString(36).slice(2, 9)}`;
-  };
-
   const insertBlockAfter = (blockType: string) => {
     if (!selectedBlockId) return;
-    
-    const template = blockTemplates[blockType];
-    if (!template) return;
     
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
 
     const { container, index } = result;
     
-    // Create new block with generated ID
-    const newBlock: BlockType = {
-      ...template,
-      id: generateBlockId()
-    };
+    // Create new block using the factory function
+    const newBlock = createBlock(blockType);
     
     // Insert the new block after the selected block
     const newContainer = [...container] as BlockType[];
@@ -415,19 +361,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const insertBlockBefore = (blockType: string) => {
     if (!selectedBlockId) return;
     
-    const template = blockTemplates[blockType];
-    if (!template) return;
-    
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
 
     const { container, index } = result;
     
-    // Create new block with generated ID
-    const newBlock: BlockType = {
-      ...template,
-      id: generateBlockId()
-    };
+    // Create new block using the factory function
+    const newBlock = createBlock(blockType);
     
     // Insert the new block before the selected block
     const newContainer = [...container] as BlockType[];
