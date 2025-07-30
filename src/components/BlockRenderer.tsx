@@ -5,6 +5,8 @@ import SectionBlock from './blocks/SectionBlock';
 import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '../schema/blockTypes';
 import type { RenderContext } from '../types/RenderContext';
 import { evaluateVisibility } from '../utils/visibility';
+import { useSelection } from '../context/SelectionContext';
+import { findBlockPositionForUI } from '../utils/blockUtils';
 
 interface BlockRendererProps {
   block: Block;
@@ -23,6 +25,44 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   isSelected = false,
   selectedBlockId
 }) => {
+  const { 
+    moveBlockUp, 
+    moveBlockDown, 
+    duplicateSelectedBlock, 
+    deleteSelectedBlock,
+    pageSchema 
+  } = useSelection();
+
+  // Get position information for the current block
+  const position = findBlockPositionForUI(block.id, pageSchema.blocks);
+  const canMoveUp = position && position.index > 0;
+  const canMoveDown = position && position.index < position.totalSiblings - 1;
+
+  // Block control handlers
+  const handleMoveUp = () => {
+    if (isSelected) {
+      moveBlockUp();
+    }
+  };
+
+  const handleMoveDown = () => {
+    if (isSelected) {
+      moveBlockDown();
+    }
+  };
+
+  const handleDuplicate = () => {
+    if (isSelected) {
+      duplicateSelectedBlock();
+    }
+  };
+
+  const handleRemove = () => {
+    if (isSelected) {
+      deleteSelectedBlock();
+    }
+  };
+
   // Evaluate visibility before rendering
   if (!evaluateVisibility(block.visibility, renderContext)) {
     if (showDebug) {
@@ -60,15 +100,24 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
     }
   }
 
+  const blockControlProps = {
+    canMoveUp,
+    canMoveDown,
+    onMoveUp: handleMoveUp,
+    onMoveDown: handleMoveDown,
+    onDuplicate: handleDuplicate,
+    onRemove: handleRemove
+  };
+
   const renderBlock = () => {
     switch (block.type) {
       case 'hero':
-        return <HeroBlock block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} />;
+        return <HeroBlock block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} {...blockControlProps} />;
       case 'text':
-        return <TextBlock block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} />;
+        return <TextBlock block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} {...blockControlProps} />;
       case 'section':
         // Pass renderContext and showDebug to SectionBlock via a custom prop
-        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} />;
+        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} {...blockControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

@@ -19,7 +19,13 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
   showDebug = false, 
   onSelect, 
   isSelected = false,
-  selectedBlockId
+  selectedBlockId,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onRemove
 }) => {
   const { props, style, children } = block;
   const { title, description } = props;
@@ -50,6 +56,12 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
+      canMoveUp={canMoveUp}
+      canMoveDown={canMoveDown}
+      onMoveUp={onMoveUp}
+      onMoveDown={onMoveDown}
+      onDuplicate={onDuplicate}
+      onRemove={onRemove}
       className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} ${
         isDark ? 'bg-gray-800' : 'bg-white'
       }`}

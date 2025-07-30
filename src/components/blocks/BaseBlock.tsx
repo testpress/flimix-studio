@@ -1,4 +1,5 @@
 import React from 'react';
+import BlockControls from '../BlockControls';
 import type { Block } from '../../schema/blockTypes';
 
 export interface BaseBlockProps {
@@ -8,6 +9,13 @@ export interface BaseBlockProps {
   children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  // Block control props
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  onDuplicate?: () => void;
+  onRemove?: () => void;
 }
 
 /**
@@ -17,6 +25,7 @@ export interface BaseBlockProps {
  * - Selection state management
  * - Common styling for selected state
  * - Extensible render method
+ * - Inline block controls when selected
  */
 const BaseBlock: React.FC<BaseBlockProps> = ({ 
   block, 
@@ -24,7 +33,13 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   isSelected = false, 
   children,
   className = '',
-  style = {}
+  style = {},
+  canMoveUp = false,
+  canMoveDown = false,
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onRemove
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling to parent blocks
@@ -35,6 +50,8 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
     'cursor-pointer',
     'transition-all',
     'duration-200',
+    'relative', // Added for absolute positioning of controls
+    'overflow-visible', // Ensure controls are visible even if they extend beyond block bounds
     isSelected ? 'ring-2 ring-blue-500' : '',
     className
   ].filter(Boolean).join(' ');
@@ -42,10 +59,26 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   return (
     <div 
       className={baseClasses}
-      style={style}
+      style={{
+        ...style,
+        // Add padding when selected to prevent content overlap with controls
+        paddingRight: isSelected ? '3rem' : undefined
+      }}
       onClick={handleClick}
     >
       {children}
+      
+      {/* Show block controls when selected */}
+      {isSelected && onMoveUp && onMoveDown && onDuplicate && onRemove && (
+        <BlockControls
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+        />
+      )}
     </div>
   );
 };

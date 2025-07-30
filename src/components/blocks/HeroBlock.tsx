@@ -7,7 +7,17 @@ interface HeroBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: HeroBlockType;
 }
 
-const HeroBlock: React.FC<HeroBlockProps> = ({ block, onSelect, isSelected = false }) => {
+const HeroBlock: React.FC<HeroBlockProps> = ({ 
+  block, 
+  onSelect, 
+  isSelected = false,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onRemove
+}) => {
   const { props, style } = block;
   const { title, subtitle, backgroundImage, ctaButton } = props;
   
@@ -31,6 +41,12 @@ const HeroBlock: React.FC<HeroBlockProps> = ({ block, onSelect, isSelected = fal
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
+      canMoveUp={canMoveUp}
+      canMoveDown={canMoveDown}
+      onMoveUp={onMoveUp}
+      onMoveDown={onMoveDown}
+      onDuplicate={onDuplicate}
+      onRemove={onRemove}
       className={`relative rounded-lg overflow-hidden ${paddingClass} ${backgroundClass}`}
       style={{
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
