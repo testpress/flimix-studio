@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useSelection } from '../context/SelectionContext';
+import type { BlockType } from '../schema/blockTypes';
 import Dropdown, { DropdownItem } from './Dropdown';
 
 interface BlockInsertionMenuProps {
@@ -17,7 +18,7 @@ const BlockInsertionMenu: React.FC<BlockInsertionMenuProps> = ({ position, block
     return null;
   }
 
-  const handleInsert = (blockType: string) => {
+  const handleInsert = (blockType: BlockType['type']) => {
     if (position === 'above') {
       insertBlockBefore(blockType);
     } else {
