@@ -5,8 +5,7 @@ export interface BlockTemplate {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square';
-  color: string;
+  icon: 'Star' | 'Type' | 'Blocks';
 }
 
 export const blockTemplates: BlockTemplate[] = [
@@ -14,22 +13,19 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'hero',
     name: 'Hero Block',
     description: 'Large banner with title, subtitle, and CTA button',
-    icon: 'Layout',
-    color: 'bg-gradient-to-r from-blue-500 to-purple-600'
+    icon: 'Star'
   },
   {
     type: 'text',
     name: 'Text Block',
     description: 'Simple text content with formatting options',
-    icon: 'Type',
-    color: 'bg-gradient-to-r from-green-500 to-teal-600'
+    icon: 'Type'
   },
   {
     type: 'section',
     name: 'Section Block',
     description: 'Container for organizing multiple blocks',
-    icon: 'Square',
-    color: 'bg-gradient-to-r from-orange-500 to-red-600'
+    icon: 'Blocks'
   }
 ];
 

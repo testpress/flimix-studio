@@ -4,6 +4,7 @@ import { useSelection } from '../context/SelectionContext';
 import type { Platform } from '../schema/blockTypes';
 import type { VisibilityContext } from '../schema/blockVisibility';
 import WidgetInsertionMenu from './WidgetInsertionMenu';
+import { Search } from 'lucide-react';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
 const showDebug = true; // Enables debug placeholder for hidden blocks
@@ -110,8 +111,9 @@ const Canvas: React.FC = () => {
             <p className="text-gray-600">Rendering {pageSchema.blocks.length} blocks</p>
             {showDebug && (
               <>
-                <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
-                  🔍 Debug mode enabled - hidden blocks will show debug messages
+                <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded flex items-center gap-2">
+                  <Search className="w-4 h-4" />
+                  Debug mode enabled - hidden blocks will show debug messages
                 </p>
                 <pre className="text-xs text-gray-700 bg-gray-50 rounded p-2 mt-2 overflow-x-auto">
                   {JSON.stringify(visibilityContext, null, 2)}

@@ -7,6 +7,7 @@ import type { VisibilityContext } from '../schema/blockVisibility';
 import { evaluateVisibility } from '../utils/visibility';
 import { useSelection } from '../context/SelectionContext';
 import { findBlockPositionForUI } from '../utils/blockUtils';
+import { AlertTriangle } from 'lucide-react';
 
 interface WidgetRendererProps {
   block: Block;
@@ -60,9 +61,14 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     if (showDebug) {
       return (
         <div className="p-4 border border-yellow-300 bg-yellow-50 text-yellow-800 rounded-md text-sm">
-          ⚠️ - Block <code className="font-mono bg-yellow-100 px-1 rounded">{block.type}</code> 
-          (ID: <code className="font-mono bg-yellow-100 px-1 rounded">{block.id}</code>) 
-          skipped due to visibility rules.
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4" />
+            <span>
+              Block <code className="font-mono bg-yellow-100 px-1 rounded">{block.type}</code> 
+              (ID: <code className="font-mono bg-yellow-100 px-1 rounded">{block.id}</code>) 
+              skipped due to visibility rules.
+            </span>
+          </div>
           {block.visibility && (
             <div className="mt-2 text-xs">
               <strong>Visibility rules:</strong>

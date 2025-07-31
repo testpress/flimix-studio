@@ -1,14 +1,16 @@
 import React from 'react';
-import { Plus, Layout, Type, Square } from 'lucide-react';
+import { Plus, Star, Type, Blocks } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '../context/SelectionContext';
 import { getAllBlockTemplates } from '../schema/blockTemplates';
+import type { BlockTemplate } from '../schema/blockTemplates';
 import type { BlockType } from '../schema/blockTypes';
 
 // Icon mapping for the templates
-const iconMap = {
-  Layout,
+const iconMap: Record<BlockTemplate['icon'], LucideIcon> = {
+  Star,
   Type,
-  Square
+  Blocks
 };
 
 const WidgetInserterSidebar: React.FC = () => {
@@ -40,7 +42,7 @@ const WidgetInserterSidebar: React.FC = () => {
       {/* Block Templates */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {allTemplates.map((template) => {
-          const IconComponent = iconMap[template.icon] || Layout;
+          const IconComponent = iconMap[template.icon] || Star;
           
           return (
             <button
@@ -50,7 +52,7 @@ const WidgetInserterSidebar: React.FC = () => {
             >
               <div className="flex items-center space-x-3">
                 {/* Icon */}
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white ${template.color}`}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700">
                   <IconComponent size={20} />
                 </div>
                 
