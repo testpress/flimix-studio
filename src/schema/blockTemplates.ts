@@ -1,9 +1,11 @@
+import type { BlockType } from './blockTypes';
+
 // Block template definitions for the inserter sidebar
 export interface BlockTemplate {
-  type: string;
+  type: BlockType['type'];
   name: string;
   description: string;
-  icon: string;
+  icon: 'Layout' | 'Type' | 'Square';
   color: string;
 }
 
