@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseBlock from './BaseBlock';
-import type { BaseBlockProps } from './BaseBlock';
-import type { TextBlock as TextBlockType } from '../../schema/blockTypes'; 
+import BaseWidget from './BaseWidget';
+import type { BaseWidgetProps } from './BaseWidget';
+import type { TextBlock as TextBlockType } from '../../schema/blockTypes';
 
-interface TextBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface TextWidgetProps extends Omit<BaseWidgetProps, 'block'> {
   block: TextBlockType;
 }
 
-const TextBlock: React.FC<TextBlockProps> = ({ 
+const TextWidget: React.FC<TextWidgetProps> = ({ 
   block, 
   onSelect, 
   isSelected = false,
@@ -41,7 +41,7 @@ const TextBlock: React.FC<TextBlockProps> = ({
 
   if (!content) {
     return (
-      <BaseBlock 
+      <BaseWidget 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -55,12 +55,12 @@ const TextBlock: React.FC<TextBlockProps> = ({
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
       >
         <p className="text-gray-500 text-center">No content provided</p>
-      </BaseBlock>
+      </BaseWidget>
     );
   }
 
   return (
-    <BaseBlock 
+    <BaseWidget 
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
@@ -78,8 +78,8 @@ const TextBlock: React.FC<TextBlockProps> = ({
           {content}
         </p>
       </div>
-    </BaseBlock>
+    </BaseWidget>
   );
 };
 
-export default TextBlock; 
+export default TextWidget; 

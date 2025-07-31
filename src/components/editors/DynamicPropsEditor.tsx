@@ -1,27 +1,27 @@
 import React from 'react';
 import type { Block } from '../../schema/blockTypes';
-import type { EditorField } from './schemas';
-import { getNestedValue, updateBlockProps } from './utils';
+import type { EditorField } from '../../schema/editorSchemas';
+import { getFormFieldValue, updateFormField } from '../../utils/editorFormUtils';
 
 interface DynamicPropsEditorProps {
   block: Block;
-  schema: EditorField[];
+  fieldDefinitions: EditorField[];
   updateProps: (newProps: Partial<any>) => void;
 }
 
 const DynamicPropsEditor: React.FC<DynamicPropsEditorProps> = ({ 
   block, 
-  schema, 
+  fieldDefinitions, 
   updateProps 
 }) => {
   const handleFieldChange = (path: string, value: any) => {
     const currentProps = block.props || {};
-    const updatedProps = updateBlockProps(currentProps, path, value);
+    const updatedProps = updateFormField(currentProps, path, value);
     updateProps(updatedProps);
   };
 
   const renderField = (field: EditorField) => {
-    const value = getNestedValue(block.props, field.key, '');
+    const value = getFormFieldValue(block.props, field.key, '');
     
     switch (field.type) {
       case 'text':
@@ -112,7 +112,7 @@ const DynamicPropsEditor: React.FC<DynamicPropsEditorProps> = ({
     <div className="p-4 bg-gray-50 rounded-lg">
       <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
       <div className="space-y-3">
-        {schema.map((field) => (
+        {fieldDefinitions.map((field) => (
           <div key={field.key}>
             <label className="block text-sm text-gray-700 mb-1">
               {field.label}

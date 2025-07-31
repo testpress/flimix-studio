@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseBlock from './BaseBlock';
-import type { BaseBlockProps } from './BaseBlock';
-import type { HeroBlock as HeroBlockType, Theme, Padding } from '../../schema/blockTypes';
+import BaseWidget from './BaseWidget';
+import type { BaseWidgetProps } from './BaseWidget';
+import type { HeroBlock as HeroBlockType } from '../../schema/blockTypes';
 
-interface HeroBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface HeroWidgetProps extends Omit<BaseWidgetProps, 'block'> {
   block: HeroBlockType;
 }
 
-const HeroBlock: React.FC<HeroBlockProps> = ({ 
+const HeroWidget: React.FC<HeroWidgetProps> = ({ 
   block, 
   onSelect, 
   isSelected = false,
@@ -37,7 +37,7 @@ const HeroBlock: React.FC<HeroBlockProps> = ({
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   return (
-    <BaseBlock 
+    <BaseWidget 
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
@@ -79,8 +79,8 @@ const HeroBlock: React.FC<HeroBlockProps> = ({
           </button>
         )}
       </div>
-    </BaseBlock>
+    </BaseWidget>
   );
 };
 
-export default HeroBlock; 
+export default HeroWidget; 
