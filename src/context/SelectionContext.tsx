@@ -4,6 +4,7 @@ import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTy
 import { swap } from '../utils/arrayUtils';
 import { findBlockAndParent, updateParentChildren, findBlockPositionById, cloneBlockWithNewIds } from '../utils/blockUtils';
 import { createBlock } from '../utils/createBlock';
+import { getAvailableBlockTypes } from '../schema/blockTemplates';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -21,6 +22,7 @@ interface SelectionContextType {
   duplicateSelectedBlock: () => void;
   insertBlockAfter: (blockType: BlockType['type']) => void;
   insertBlockBefore: (blockType: BlockType['type']) => void;
+  insertBlockAtEnd: (blockType: BlockType['type']) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -35,6 +37,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
   const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
+
+  // Helper function to validate block types
+  const isBlockTypeValid = (blockType: string): boolean => {
+    const availableTypes = getAvailableBlockTypes();
+    if (!availableTypes.includes(blockType)) {
+      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+      return false;
+    }
+    return true;
+  };
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
@@ -330,6 +342,11 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const insertBlockAfter = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
     
+    // Validate block type
+    if (!isBlockTypeValid(blockType)) {
+      return;
+    }
+    
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
 
@@ -367,6 +384,11 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const insertBlockBefore = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
     
+    // Validate block type
+    if (!isBlockTypeValid(blockType)) {
+      return;
+    }
+    
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
 
@@ -401,6 +423,29 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
+  const insertBlockAtEnd = (blockType: BlockType['type']) => {
+    // Validate block type
+    if (!isBlockTypeValid(blockType)) {
+      return;
+    }
+    
+    // Create new block using the factory function
+    const newBlock = createBlock(blockType);
+    
+    // Add the new block to the end of the page
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: [...pageSchema.blocks, newBlock]
+    };
+    
+    setPageSchema(updatedSchema);
+    
+    // Select the newly inserted block
+    setSelectedBlockId(newBlock.id);
+    setSelectedBlock(newBlock as Block);
+    setSelectedBlockParentId(null);
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -417,7 +462,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       deleteSelectedBlock,
       duplicateSelectedBlock,
       insertBlockAfter,
-      insertBlockBefore
+      insertBlockBefore,
+      insertBlockAtEnd
     }}>
       {children}
     </SelectionContext.Provider>
