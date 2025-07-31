@@ -38,6 +38,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
   const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
 
+  // Helper function to validate block types
+  const isBlockTypeValid = (blockType: string): boolean => {
+    const availableTypes = getAvailableBlockTypes();
+    if (!availableTypes.includes(blockType)) {
+      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+      return false;
+    }
+    return true;
+  };
+
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
 
@@ -333,9 +343,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     if (!selectedBlockId) return;
     
     // Validate block type
-    const availableTypes = getAvailableBlockTypes();
-    if (!availableTypes.includes(blockType)) {
-      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+    if (!isBlockTypeValid(blockType)) {
       return;
     }
     
@@ -377,9 +385,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     if (!selectedBlockId) return;
     
     // Validate block type
-    const availableTypes = getAvailableBlockTypes();
-    if (!availableTypes.includes(blockType)) {
-      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+    if (!isBlockTypeValid(blockType)) {
       return;
     }
     
@@ -417,11 +423,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
-  const insertBlockAtEnd = (blockType: string) => {
+  const insertBlockAtEnd = (blockType: BlockType['type']) => {
     // Validate block type
-    const availableTypes = getAvailableBlockTypes();
-    if (!availableTypes.includes(blockType)) {
-      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+    if (!isBlockTypeValid(blockType)) {
       return;
     }
     

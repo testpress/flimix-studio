@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus, Layout, Type, Square } from 'lucide-react';
 import { useSelection } from '../context/SelectionContext';
 import { getAllBlockTemplates } from '../schema/blockTemplates';
+import type { BlockType } from '../schema/blockTypes';
 
 // Icon mapping for the templates
 const iconMap = {
@@ -13,7 +14,7 @@ const iconMap = {
 const BlockInserterSidebar: React.FC = () => {
   const { selectedBlockId, insertBlockBefore, insertBlockAtEnd } = useSelection();
 
-  const handleBlockInsert = (blockType: string) => {
+  const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
       // Insert before the currently selected block
       insertBlockBefore(blockType);
@@ -39,7 +40,7 @@ const BlockInserterSidebar: React.FC = () => {
       {/* Block Templates */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {allTemplates.map((template) => {
-          const IconComponent = iconMap[template.icon as keyof typeof iconMap] || Layout;
+          const IconComponent = iconMap[template.icon] || Layout;
           
           return (
             <button
