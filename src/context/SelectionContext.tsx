@@ -19,8 +19,8 @@ interface SelectionContextType {
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
   duplicateSelectedBlock: () => void;
-  insertBlockAfter: (blockType: string) => void;
-  insertBlockBefore: (blockType: string) => void;
+  insertBlockAfter: (blockType: BlockType['type']) => void;
+  insertBlockBefore: (blockType: BlockType['type']) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -327,7 +327,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
-  const insertBlockAfter = (blockType: string) => {
+  const insertBlockAfter = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
     
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
@@ -336,7 +336,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const { container, index } = result;
     
     // Create new block using the factory function
-    const newBlock = createBlock(blockType);
+    let newBlock;
+    try {
+      newBlock = createBlock(blockType);
+    } catch (error) {
+      console.error('Failed to create block:', error);
+      return;
+    }
     
     // Insert the new block after the selected block
     const newContainer = [...container] as BlockType[];
@@ -358,7 +364,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
-  const insertBlockBefore = (blockType: string) => {
+  const insertBlockBefore = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
     
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
@@ -367,7 +373,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const { container, index } = result;
     
     // Create new block using the factory function
-    const newBlock = createBlock(blockType);
+    let newBlock;
+    try {
+      newBlock = createBlock(blockType);
+    } catch (error) {
+      console.error('Failed to create block:', error);
+      return;
+    }
     
     // Insert the new block before the selected block
     const newContainer = [...container] as BlockType[];

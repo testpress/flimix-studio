@@ -1,19 +1,12 @@
-import type { BlockType, TextBlock, HeroBlock, SectionBlock } from '../schema/blockTypes';
-
-/**
- * Generates a unique ID for blocks
- * @returns A unique string ID
- */
-function generateUniqueId(): string {
-  return crypto.randomUUID?.() ?? `block-${Math.random().toString(36).slice(2, 9)}`;
-}
+import type { BlockType } from '../schema/blockTypes';
+import { generateUniqueId } from './idUtils';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
  * @param type - The type of block to create ('text', 'hero', 'section')
  * @returns A new block with minimal valid properties
  */
-export function createBlock(type: string): BlockType {
+export function createBlock(type: BlockType['type']): BlockType {
   const id = generateUniqueId();
 
   switch (type) {
@@ -28,7 +21,7 @@ export function createBlock(type: string): BlockType {
           padding: 'md',
           textAlign: 'left'
         }
-      } as TextBlock;
+      };
 
     case 'hero':
       return {
@@ -47,7 +40,7 @@ export function createBlock(type: string): BlockType {
           padding: 'lg',
           textAlign: 'center'
         }
-      } as HeroBlock;
+      };
 
     case 'section':
       return {
@@ -62,9 +55,11 @@ export function createBlock(type: string): BlockType {
           backgroundColor: '#f8f9fa'
         },
         children: []
-      } as SectionBlock;
+      };
 
     default:
-      throw new Error(`Unknown block type: ${type}`);
+      // This will cause a compile-time error if a case is missed.
+      const exhaustiveCheck: never = type;
+      throw new Error(`Unhandled block type: ${exhaustiveCheck}`);
   }
 } 
