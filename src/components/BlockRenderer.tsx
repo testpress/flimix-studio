@@ -40,27 +40,19 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
 
   // Block control handlers
   const handleMoveUp = () => {
-    if (isSelected) {
-      moveBlockUp();
-    }
+    moveBlockUp();
   };
 
   const handleMoveDown = () => {
-    if (isSelected) {
-      moveBlockDown();
-    }
+    moveBlockDown();
   };
 
   const handleDuplicate = () => {
-    if (isSelected) {
-      duplicateSelectedBlock();
-    }
+    duplicateSelectedBlock();
   };
 
   const handleRemove = () => {
-    if (isSelected) {
-      deleteSelectedBlock();
-    }
+    deleteSelectedBlock();
   };
 
   // Evaluate visibility before rendering

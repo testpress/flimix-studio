@@ -69,7 +69,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
       {children}
       
       {/* Show block controls when selected */}
-      {isSelected && onMoveUp && onMoveDown && onDuplicate && onRemove && (
+      {isSelected && (onMoveUp || onMoveDown || onDuplicate || onRemove) && (
         <BlockControls
           canMoveUp={canMoveUp}
           canMoveDown={canMoveDown}
