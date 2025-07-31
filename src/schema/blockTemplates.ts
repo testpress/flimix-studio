@@ -5,7 +5,7 @@ export interface BlockTemplate {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Star' | 'Type' | 'Blocks';
+  icon: 'Layout' | 'Type' | 'Square';
 }
 
 export const blockTemplates: BlockTemplate[] = [
@@ -13,7 +13,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'hero',
     name: 'Hero Block',
     description: 'Large banner with title, subtitle, and CTA button',
-    icon: 'Star'
+    icon: 'Layout'
   },
   {
     type: 'text',
@@ -25,7 +25,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'section',
     name: 'Section Block',
     description: 'Container for organizing multiple blocks',
-    icon: 'Blocks'
+    icon: 'Square'
   }
 ];
 
