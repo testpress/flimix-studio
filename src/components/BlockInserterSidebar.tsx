@@ -1,29 +1,10 @@
 import React from 'react';
-import { Plus, Layout, Type, Square } from 'lucide-react';
 import { useSelection } from '../context/SelectionContext';
 import { getAllBlockTemplates } from '../schema/blockTemplates';
-import type { BlockType } from '../schema/blockTypes';
-
-// Icon mapping for the templates
-const iconMap = {
-  Layout,
-  Type,
-  Square
-};
+import DraggableBlockItem from './DraggableBlockItem';
 
 const BlockInserterSidebar: React.FC = () => {
-  const { selectedBlockId, insertBlockBefore, insertBlockAtEnd } = useSelection();
-
-  const handleBlockInsert = (blockType: BlockType['type']) => {
-    if (selectedBlockId) {
-      // Insert before the currently selected block
-      insertBlockBefore(blockType);
-    } else {
-      // If no block is selected, insert at the end of the page
-      insertBlockAtEnd(blockType);
-    }
-  };
-
+  const { selectedBlockId } = useSelection();
   // Get all block templates using the helper function
   const allTemplates = getAllBlockTemplates();
 
@@ -33,46 +14,15 @@ const BlockInserterSidebar: React.FC = () => {
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800">Block Library</h2>
         <p className="text-sm text-gray-600 mt-1">
-          Click to insert blocks into your page
+          Click or drag to insert blocks into your page
         </p>
       </div>
 
       {/* Block Templates */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {allTemplates.map((template) => {
-          const IconComponent = iconMap[template.icon] || Layout;
-          
-          return (
-            <button
-              key={template.type}
-              onClick={() => handleBlockInsert(template.type)}
-              className="w-full p-4 text-left bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200 group"
-            >
-              <div className="flex items-center space-x-3">
-                {/* Icon */}
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white ${template.color}`}>
-                  <IconComponent size={20} />
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {template.name}
-                    </h3>
-                    <Plus 
-                      size={16} 
-                      className="text-gray-400 group-hover:text-blue-500 transition-colors" 
-                    />
-                  </div>
-                  <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                    {template.description}
-                  </p>
-                </div>
-              </div>
-            </button>
-          );
-        })}
+        {allTemplates.map((template) => (
+          <DraggableBlockItem key={template.type} template={template} />
+        ))}
       </div>
 
       {/* Footer */}
