@@ -1,4 +1,5 @@
 import type { Block, BlockType } from '../schema/blockTypes';
+import { generateUniqueId } from './idUtils';
 
 export interface BlockPosition {
   parent: Block | null;
@@ -125,14 +126,6 @@ export function findBlockPositionForUI(
   }
 
   return { isTopLevel: false, parentId: null, index: -1, totalSiblings: 0 };
-}
-
-/**
- * Generates a unique ID for blocks
- * @returns A unique string ID
- */
-function generateUniqueId(): string {
-  return crypto.randomUUID?.() ?? `block-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 /**
