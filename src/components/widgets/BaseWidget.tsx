@@ -1,8 +1,8 @@
 import React from 'react';
-import BlockControls from '../BlockControls';
+import WidgetControls from '../WidgetControls';
 import type { Block } from '../../schema/blockTypes';
 
-export interface BaseBlockProps {
+export interface BaseWidgetProps {
   block: Block;
   onSelect?: (block: Block) => void;
   isSelected?: boolean;
@@ -19,7 +19,7 @@ export interface BaseBlockProps {
 }
 
 /**
- * BaseBlock - A base component that provides common selection functionality
+ * BaseWidget - A base component that provides common selection functionality
  * for all block components. Implements:
  * - Click handling with event bubbling prevention
  * - Selection state management
@@ -27,7 +27,7 @@ export interface BaseBlockProps {
  * - Extensible render method
  * - Inline block controls when selected
  */
-const BaseBlock: React.FC<BaseBlockProps> = ({ 
+const BaseWidget: React.FC<BaseWidgetProps> = ({ 
   block, 
   onSelect, 
   isSelected = false, 
@@ -70,7 +70,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
       
       {/* Show block controls when selected */}
       {isSelected && (onMoveUp || onMoveDown || onDuplicate || onRemove) && (
-        <BlockControls
+        <WidgetControls
           canMoveUp={canMoveUp}
           canMoveDown={canMoveDown}
           onMoveUp={onMoveUp}
@@ -83,4 +83,4 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   );
 };
 
-export default BaseBlock; 
+export default BaseWidget; 

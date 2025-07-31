@@ -1,8 +1,7 @@
-import React from 'react';
 import TopBar from './components/TopBar';
 import Canvas from './components/Canvas';
 import Sidebar from './components/Sidebar';
-import BlockInserterSidebar from './components/BlockInserterSidebar';
+import WidgetInserterSidebar from './components/WidgetInserterSidebar';
 import { SelectionProvider } from './context/SelectionContext';
 import type { PageSchema, Theme, Platform } from './schema/blockTypes';
 
@@ -129,7 +128,7 @@ function App() {
       <div className="h-screen flex flex-col bg-gray-50">
         <TopBar />
         <div className="flex-1 flex">
-          <BlockInserterSidebar />
+          <WidgetInserterSidebar />
           <Canvas />
           <Sidebar />
         </div>

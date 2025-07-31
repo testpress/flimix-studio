@@ -1,21 +1,21 @@
 import React from 'react';
-import BlockRenderer from '../BlockRenderer';
-import BaseBlock from './BaseBlock';
-import BlockInsertionMenu from '../BlockInsertionMenu';
-import type { BaseBlockProps } from './BaseBlock';
-import type { SectionBlock as SectionBlockType, Theme, Padding, TextAlign, BorderRadius, BoxShadow, Block } from '../../schema/blockTypes';
-import type { RenderContext } from '../../types/RenderContext';
+import WidgetRenderer from '../WidgetRenderer';
+import BaseWidget from './BaseWidget';
+import type { BaseWidgetProps } from './BaseWidget';
+import type { SectionBlock as SectionBlockType } from '../../schema/blockTypes';
+import WidgetInsertionMenu from '../WidgetInsertionMenu';
+import type { VisibilityContext } from '../../schema/blockVisibility';
 
-interface SectionBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface SectionWidgetProps extends Omit<BaseWidgetProps, 'block'> {
   block: SectionBlockType;
-  renderContext: RenderContext;
+  visibilityContext: VisibilityContext;
   showDebug?: boolean;
   selectedBlockId?: string | null;
 }
 
-const SectionBlock: React.FC<SectionBlockProps> = ({ 
+const SectionWidget: React.FC<SectionWidgetProps> = ({ 
   block, 
-  renderContext, 
+  visibilityContext, 
   showDebug = false, 
   onSelect, 
   isSelected = false,
@@ -52,7 +52,7 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   return (
-    <BaseBlock 
+    <BaseWidget 
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
@@ -91,16 +91,16 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
         <div className="space-y-4">
           {children.map((childBlock) => (
             <div key={childBlock.id}>
-              <BlockInsertionMenu position="above" blockId={childBlock.id} />
-              <BlockRenderer 
+              <WidgetInsertionMenu position="above" blockId={childBlock.id} />
+              <WidgetRenderer 
                 block={childBlock} 
-                renderContext={renderContext} 
+                visibilityContext={visibilityContext} 
                 showDebug={showDebug}
                 onSelect={onSelect}
                 selectedBlockId={selectedBlockId}
                 isSelected={selectedBlockId === childBlock.id}
               />
-              <BlockInsertionMenu position="below" blockId={childBlock.id} />
+              <WidgetInsertionMenu position="below" blockId={childBlock.id} />
             </div>
           ))}
         </div>
@@ -109,8 +109,8 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
           <p className="text-gray-500 text-center">No content blocks in this section</p>
         </div>
       )}
-    </BaseBlock>
+    </BaseWidget>
   );
 };
 
-export default SectionBlock; 
+export default SectionWidget; 

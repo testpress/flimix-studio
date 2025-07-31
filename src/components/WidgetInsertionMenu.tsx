@@ -4,12 +4,12 @@ import { useSelection } from '../context/SelectionContext';
 import type { BlockType } from '../schema/blockTypes';
 import Dropdown, { DropdownItem } from './Dropdown';
 
-interface BlockInsertionMenuProps {
+interface WidgetInsertionMenuProps {
   position: 'above' | 'below';
   blockId: string;
 }
 
-const BlockInsertionMenu: React.FC<BlockInsertionMenuProps> = ({ position, blockId }) => {
+const WidgetInsertionMenu: React.FC<WidgetInsertionMenuProps> = ({ position, blockId }) => {
   const { selectedBlockId, insertBlockAfter, insertBlockBefore } = useSelection();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -62,4 +62,4 @@ const BlockInsertionMenu: React.FC<BlockInsertionMenuProps> = ({ position, block
   );
 };
 
-export default BlockInsertionMenu; 
+export default WidgetInsertionMenu; 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface BlockControlsProps {
+interface WidgetControlsProps {
   canMoveUp: boolean;
   canMoveDown: boolean;
   onMoveUp?: () => void;
@@ -9,7 +9,7 @@ interface BlockControlsProps {
   onRemove?: () => void;
 }
 
-const BlockControls: React.FC<BlockControlsProps> = ({
+const WidgetControls: React.FC<WidgetControlsProps> = ({
   canMoveUp,
   canMoveDown,
   onMoveUp,
@@ -82,4 +82,4 @@ const BlockControls: React.FC<BlockControlsProps> = ({
   );
 };
 
-export default BlockControls; 
+export default WidgetControls; 

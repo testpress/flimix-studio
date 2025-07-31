@@ -1,9 +1,9 @@
 import type { VisibilityProps, Platform } from '../schema/blockTypes';
-import type { RenderContext } from '../types/RenderContext';
+import type { VisibilityContext } from '../schema/blockVisibility';
 
 export function evaluateVisibility(
   visibility?: VisibilityProps,
-  context?: RenderContext
+  context?: VisibilityContext
 ): boolean {
   if (!visibility) return true;
   if (!context) return false;

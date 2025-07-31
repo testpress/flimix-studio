@@ -1,13 +1,13 @@
 import React from 'react';
-import type { BlockEditorProps } from './types';
+import type { BlockEditorProps } from '../../types/editorTypes';
 import DynamicPropsEditor from './DynamicPropsEditor';
-import { textEditorFields } from './schemas';
+import { textEditorFields } from '../../schema/editorSchemas';
 
 const TextPropsEditor: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
   return (
     <DynamicPropsEditor
       block={block}
-      schema={textEditorFields}
+      fieldDefinitions={textEditorFields}
       updateProps={updateProps}
     />
   );

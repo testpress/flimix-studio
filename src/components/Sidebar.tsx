@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelection } from '../context/SelectionContext';
-import type { VisibilityProps, StyleProps } from '../schema/blockTypes';
+import type { StyleProps, VisibilityProps } from '../schema/blockTypes';
 import { HeroPropsEditor, TextPropsEditor, SectionPropsEditor, VisibilityEditor, StyleEditor, type BlockEditorProps } from './editors';
 
 const Sidebar: React.FC = () => {
@@ -15,9 +15,8 @@ const Sidebar: React.FC = () => {
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
     if (!selectedBlock) return;
-    
-    // For now, we'll just log the visibility change
-    // In a real app, this would update the block in the schema
+
+    // TODO: Implement visibility update logic. This should update the selected block's visibility property.
     console.log('Updating visibility for block:', selectedBlock.id, newVisibility);
   };
 

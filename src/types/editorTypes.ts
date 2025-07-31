@@ -1,4 +1,4 @@
-import type { Block } from '../../schema/blockTypes';
+import type { Block } from '../schema/blockTypes';
 
 export interface BlockEditorProps {
   block: Block;

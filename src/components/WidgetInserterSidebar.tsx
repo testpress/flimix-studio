@@ -11,7 +11,7 @@ const iconMap = {
   Square
 };
 
-const BlockInserterSidebar: React.FC = () => {
+const WidgetInserterSidebar: React.FC = () => {
   const { selectedBlockId, insertBlockBefore, insertBlockAtEnd } = useSelection();
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
@@ -89,4 +89,4 @@ const BlockInserterSidebar: React.FC = () => {
   );
 };
 
-export default BlockInserterSidebar; 
+export default WidgetInserterSidebar; 

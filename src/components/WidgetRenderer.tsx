@@ -1,26 +1,26 @@
 import React from 'react';
-import HeroBlock from './blocks/HeroBlock';
-import TextBlock from './blocks/TextBlock';
-import SectionBlock from './blocks/SectionBlock';
+import HeroWidget from './widgets/HeroWidget';
+import TextWidget from './widgets/TextWidget';
+import SectionWidget from './widgets/SectionWidget';
 import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '../schema/blockTypes';
-import type { RenderContext } from '../types/RenderContext';
+import type { VisibilityContext } from '../schema/blockVisibility';
 import { evaluateVisibility } from '../utils/visibility';
 import { useSelection } from '../context/SelectionContext';
 import { findBlockPositionForUI } from '../utils/blockUtils';
 
-interface BlockRendererProps {
+interface WidgetRendererProps {
   block: Block;
   showDebug?: boolean;
-  renderContext: RenderContext;
+  visibilityContext: VisibilityContext;
   onSelect?: (block: Block) => void;
   isSelected?: boolean;
   selectedBlockId?: string | null;
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ 
+const WidgetRenderer: React.FC<WidgetRendererProps> = ({ 
   block, 
   showDebug = false, 
-  renderContext, 
+  visibilityContext, 
   onSelect, 
   isSelected = false,
   selectedBlockId
@@ -56,11 +56,11 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   };
 
   // Evaluate visibility before rendering
-  if (!evaluateVisibility(block.visibility, renderContext)) {
+  if (!evaluateVisibility(block.visibility, visibilityContext)) {
     if (showDebug) {
       return (
         <div className="p-4 border border-yellow-300 bg-yellow-50 text-yellow-800 rounded-md text-sm">
-          ⚠️ Block <code className="font-mono bg-yellow-100 px-1 rounded">{block.type}</code> 
+          ⚠️ - Block <code className="font-mono bg-yellow-100 px-1 rounded">{block.type}</code> 
           (ID: <code className="font-mono bg-yellow-100 px-1 rounded">{block.id}</code>) 
           skipped due to visibility rules.
           {block.visibility && (
@@ -92,7 +92,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
     }
   }
 
-  const blockControlProps = {
+  const widgetControlProps = {
     canMoveUp,
     canMoveDown,
     onMoveUp: handleMoveUp,
@@ -104,12 +104,12 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   const renderBlock = () => {
     switch (block.type) {
       case 'hero':
-        return <HeroBlock block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} {...blockControlProps} />;
+        return <HeroWidget block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
       case 'text':
-        return <TextBlock block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} {...blockControlProps} />;
+        return <TextWidget block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
       case 'section':
-        // Pass renderContext and showDebug to SectionBlock via a custom prop
-        return <SectionBlock block={block as SectionBlockType} renderContext={renderContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} {...blockControlProps} />;
+        // Pass renderContext and showDebug to SectionWidget via a custom prop
+        return <SectionWidget block={block as SectionBlockType} visibilityContext={visibilityContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
@@ -127,4 +127,4 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   );
 };
 
-export default BlockRenderer; 
+export default WidgetRenderer; 

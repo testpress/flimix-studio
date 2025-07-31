@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import BlockRenderer from './BlockRenderer';
-import BlockInsertionMenu from './BlockInsertionMenu';
+import WidgetRenderer from './WidgetRenderer';
 import { useSelection } from '../context/SelectionContext';
-import type { Theme, Platform } from '../schema/blockTypes';
-import type { RenderContext } from '../types/RenderContext';
+import type { Platform } from '../schema/blockTypes';
+import type { VisibilityContext } from '../schema/blockVisibility';
+import WidgetInsertionMenu from './WidgetInsertionMenu';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
 const showDebug = true; // Enables debug placeholder for hidden blocks
 
-const initialRenderContext: RenderContext = {
+const initialVisibilityContext: VisibilityContext = {
   isLoggedIn: true,
   isSubscribed: false,
   subscriptionTier: 'basic',
@@ -23,7 +23,7 @@ const Canvas: React.FC = () => {
     setSelectedBlock, 
     pageSchema 
   } = useSelection();
-  const [renderContext, setRenderContext] = useState<RenderContext>(initialRenderContext);
+  const [visibilityContext, setVisibilityContext] = useState<VisibilityContext>(initialVisibilityContext);
 
   const handleBlockSelect = (block: any) => {
     setSelectedBlock(block);
@@ -45,8 +45,8 @@ const Canvas: React.FC = () => {
                 <label className="text-sm text-gray-700 font-medium">Platform:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={renderContext.platform}
-                  onChange={e => setRenderContext(ctx => ({ ...ctx, platform: e.target.value as Platform }))}
+                  value={visibilityContext.platform}
+                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, platform: e.target.value as Platform }))}
                 >
                   <option value="mobile">Mobile</option>
                   <option value="desktop">Desktop</option>
@@ -58,8 +58,8 @@ const Canvas: React.FC = () => {
                 <label className="text-sm text-gray-700 font-medium">Region:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={renderContext.region}
-                  onChange={e => setRenderContext(ctx => ({ ...ctx, region: e.target.value }))}
+                  value={visibilityContext.region}
+                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, region: e.target.value }))}
                 >
                   <option value="IN">India</option>
                   <option value="US">United States</option>
@@ -73,8 +73,8 @@ const Canvas: React.FC = () => {
                 <label className="text-sm text-gray-700 font-medium">Tier:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={renderContext.subscriptionTier}
-                  onChange={e => setRenderContext(ctx => ({ ...ctx, subscriptionTier: e.target.value }))}
+                  value={visibilityContext.subscriptionTier}
+                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, subscriptionTier: e.target.value }))}
                 >
                   <option value="basic">Basic</option>
                   <option value="premium">Premium</option>
@@ -86,8 +86,8 @@ const Canvas: React.FC = () => {
                 <label className="flex items-center gap-2 text-sm text-gray-700">
                   <input
                     type="checkbox"
-                    checked={renderContext.isLoggedIn}
-                    onChange={e => setRenderContext(ctx => ({ ...ctx, isLoggedIn: e.target.checked }))}
+                    checked={visibilityContext.isLoggedIn}
+                    onChange={e => setVisibilityContext(ctx => ({ ...ctx, isLoggedIn: e.target.checked }))}
                     className="rounded"
                   />
                   Logged In
@@ -98,44 +98,44 @@ const Canvas: React.FC = () => {
                 <label className="flex items-center gap-2 text-sm text-gray-700">
                   <input
                     type="checkbox"
-                    checked={renderContext.isSubscribed}
-                    onChange={e => setRenderContext(ctx => ({ ...ctx, isSubscribed: e.target.checked }))}
+                    checked={visibilityContext.isSubscribed}
+                    onChange={e => setVisibilityContext(ctx => ({ ...ctx, isSubscribed: e.target.checked }))}
                     className="rounded"
                   />
                   Subscribed
                 </label>
               </div>
             </div>
+            
+            <p className="text-gray-600">Rendering {pageSchema.blocks.length} blocks</p>
+            {showDebug && (
+              <>
+                <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
+                  🔍 Debug mode enabled - hidden blocks will show debug messages
+                </p>
+                <pre className="text-xs text-gray-700 bg-gray-50 rounded p-2 mt-2 overflow-x-auto">
+                  {JSON.stringify(visibilityContext, null, 2)}
+                </pre>
+              </>
+            )}
           </div>
           
-          <p className="text-gray-600">Rendering {pageSchema.blocks.length} blocks</p>
-          {showDebug && (
-            <>
-              <p className="text-xs text-yellow-600 mt-2 bg-yellow-50 p-2 rounded">
-                🔍 Debug mode enabled - hidden blocks will show debug messages
-              </p>
-              <pre className="text-xs text-gray-700 bg-gray-50 rounded p-2 mt-2 overflow-x-auto">
-                {JSON.stringify(renderContext, null, 2)}
-              </pre>
-            </>
-          )}
-        </div>
-        
-        <div className="space-y-6">
-          {pageSchema.blocks.map((block) => (
-            <div key={block.id}>
-              <BlockInsertionMenu position="above" blockId={block.id} />
-              <BlockRenderer 
-                block={block} 
-                showDebug={showDebug} 
-                renderContext={renderContext}
-                onSelect={handleBlockSelect}
-                isSelected={selectedBlockId === block.id}
-                selectedBlockId={selectedBlockId}
-              />
-              <BlockInsertionMenu position="below" blockId={block.id} />
-            </div>
-          ))}
+          <div className="space-y-6">
+            {pageSchema.blocks.map((block) => (
+              <div key={block.id}>
+                <WidgetInsertionMenu position="above" blockId={block.id} />
+                <WidgetRenderer 
+                  block={block} 
+                  showDebug={showDebug} 
+                  visibilityContext={visibilityContext}
+                  onSelect={handleBlockSelect}
+                  isSelected={selectedBlockId === block.id}
+                  selectedBlockId={selectedBlockId}
+                />
+                <WidgetInsertionMenu position="below" blockId={block.id} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
