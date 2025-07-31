@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import TopBar from './components/TopBar';
 import Canvas from './components/Canvas';
 import Sidebar from './components/Sidebar';
 import BlockInserterSidebar from './components/BlockInserterSidebar';
-import { SelectionProvider } from './context/SelectionContext';
+import DragOverlayContent from './components/DragOverlayContent';
+import { SelectionProvider, useSelection } from './context/SelectionContext';
 import type { PageSchema, Theme, Platform } from './schema/blockTypes';
 
 // Move the sample schema here so it can be shared
@@ -123,9 +126,37 @@ const sampleSchema: PageSchema = {
   ]
 };
 
-function App() {
+// Main app content with drag and drop functionality
+const AppContent: React.FC = () => {
+  const { insertBlockAtEnd } = useSelection();
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  }, []);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+  
+    // Reset activeId immediately (this disables DragOverlay instantly)
+    setActiveId(null);
+  
+    if (over && over.id === 'canvas-drop-zone' && active.data.current) {
+      const { type, blockType } = active.data.current;
+  
+      if (type === 'block-template' && blockType) {
+        insertBlockAtEnd(blockType);
+      }
+    }
+  }, [insertBlockAtEnd]);
+  
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   return (
-    <SelectionProvider initialSchema={sampleSchema}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
       <div className="h-screen flex flex-col bg-gray-50">
         <TopBar />
         <div className="flex-1 flex">
@@ -134,6 +165,17 @@ function App() {
           <Sidebar />
         </div>
       </div>
+      <DragOverlay dropAnimation={null}>
+        <DragOverlayContent activeId={activeId} />
+      </DragOverlay>
+    </DndContext>
+  );
+};
+
+function App() {
+  return (
+    <SelectionProvider initialSchema={sampleSchema}>
+      <AppContent />
     </SelectionProvider>
   );
 }
