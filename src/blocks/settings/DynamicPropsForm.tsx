@@ -1,15 +1,15 @@
 import React from 'react';
-import type { Block } from '../../schema/blockTypes';
-import type { EditorField } from '../../schema/editorSchemas';
-import { getFormFieldValue, updateFormField } from '../../utils/editorFormUtils';
+import type { Block } from '@schema/blockTypes';
+import type { EditorField } from '@schema/editorSchemas';
+import { getFormFieldValue, updateFormField } from '@utils/editorFormUtils';
 
-interface DynamicPropsEditorProps {
+interface DynamicPropsFormProps {
   block: Block;
   fieldDefinitions: EditorField[];
   updateProps: (newProps: Partial<any>) => void;
 }
 
-const DynamicPropsEditor: React.FC<DynamicPropsEditorProps> = ({ 
+const DynamicPropsForm: React.FC<DynamicPropsFormProps> = ({ 
   block, 
   fieldDefinitions, 
   updateProps 
@@ -126,4 +126,4 @@ const DynamicPropsEditor: React.FC<DynamicPropsEditorProps> = ({
   );
 };
 
-export default DynamicPropsEditor; 
+export default DynamicPropsForm; 

@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseWidget from './BaseWidget';
-import type { BaseWidgetProps } from './BaseWidget';
-import type { HeroBlock as HeroBlockType } from '../../schema/blockTypes';
+import BaseBlock from './BaseBlock';
+import type { BaseBlockProps } from './BaseBlock';
+import type { HeroBlock as HeroBlockType } from '@schema/blockTypes';
 
-interface HeroWidgetProps extends Omit<BaseWidgetProps, 'block'> {
+interface HeroBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: HeroBlockType;
 }
 
-const HeroWidget: React.FC<HeroWidgetProps> = ({ 
+const HeroBlock: React.FC<HeroBlockProps> = ({ 
   block, 
   onSelect, 
   isSelected = false,
@@ -37,7 +37,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   return (
-    <BaseWidget 
+    <BaseBlock 
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
@@ -57,7 +57,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     >
       {/* Overlay for better text readability */}
       {backgroundImage && (
-        <div className="absolute inset-0 bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
       )}
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">
@@ -79,8 +79,8 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
           </button>
         )}
       </div>
-    </BaseWidget>
+    </BaseBlock>
   );
 };
 
-export default HeroWidget; 
+export default HeroBlock; 

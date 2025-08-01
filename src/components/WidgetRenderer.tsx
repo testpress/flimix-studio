@@ -1,12 +1,12 @@
 import React from 'react';
-import HeroWidget from './widgets/HeroWidget';
-import TextWidget from './widgets/TextWidget';
-import SectionWidget from './widgets/SectionWidget';
-import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '../schema/blockTypes';
-import type { VisibilityContext } from '../schema/blockVisibility';
-import { evaluateVisibility } from '../utils/visibility';
-import { useSelection } from '../context/SelectionContext';
-import { findBlockPositionForUI } from '../utils/blockUtils';
+import HeroBlock from '@blocks/ui/HeroBlock';
+import TextBlock from '@blocks/ui/TextBlock';
+import SectionBlock from '@blocks/ui/SectionBlock';
+import type { Block, HeroBlock as HeroBlockType, TextBlock as TextBlockType, SectionBlock as SectionBlockType } from '@schema/blockTypes';
+import type { VisibilityContext } from '@schema/blockVisibility';
+import { evaluateVisibility } from '@utils/visibility';
+import { useSelection } from '@context/SelectionContext';
+import { findBlockPositionForUI } from '@utils/blockUtils';
 import { AlertTriangle } from 'lucide-react';
 
 interface WidgetRendererProps {
@@ -110,12 +110,12 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
   const renderBlock = () => {
     switch (block.type) {
       case 'hero':
-        return <HeroWidget block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
+        return <HeroBlock block={block as HeroBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
       case 'text':
-        return <TextWidget block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
+        return <TextBlock block={block as TextBlockType} onSelect={onSelect} isSelected={isSelected} {...widgetControlProps} />;
       case 'section':
-        // Pass renderContext and showDebug to SectionWidget via a custom prop
-        return <SectionWidget block={block as SectionBlockType} visibilityContext={visibilityContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} {...widgetControlProps} />;
+        // Pass renderContext and showDebug to SectionBlock via a custom prop
+        return <SectionBlock block={block as SectionBlockType} visibilityContext={visibilityContext} showDebug={showDebug} onSelect={onSelect} isSelected={isSelected} selectedBlockId={selectedBlockId} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

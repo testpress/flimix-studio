@@ -1,16 +1,16 @@
 import React from 'react';
-import { useSelection } from '../context/SelectionContext';
-import type { StyleProps, VisibilityProps } from '../schema/blockTypes';
-import { HeroPropsEditor, TextPropsEditor, SectionPropsEditor, VisibilityEditor, StyleEditor, type BlockEditorProps } from './editors';
+import { useSelection } from '@context/SelectionContext';
+import type { StyleProps, VisibilityProps } from '@schema/blockTypes';
+import { HeroPropsForm, TextPropsForm, SectionPropsForm, VisibilityEditor, StyleEditor, type BlockEditorProps } from '@blocks/settings';
 
 const Sidebar: React.FC = () => {
   const { selectedBlock, updateSelectedBlockProps, updateSelectedBlockStyle } = useSelection();
 
   // Block editor registry for dynamic lookup
   const BlockPropEditors: Record<string, React.FC<BlockEditorProps>> = {
-    hero: HeroPropsEditor,
-    text: TextPropsEditor,
-    section: SectionPropsEditor,
+    hero: HeroPropsForm,
+    text: TextPropsForm,
+    section: SectionPropsForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -80,8 +80,9 @@ const Sidebar: React.FC = () => {
           
           {selectedBlock && (
             <VisibilityEditor
+              block={selectedBlock}
               visibility={selectedBlock.visibility || {}}
-              onChange={handleVisibilityChange}
+              onUpdateVisibility={handleVisibilityChange}
             />
           )}
           

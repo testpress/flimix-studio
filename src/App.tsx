@@ -1,9 +1,9 @@
-import TopBar from './components/TopBar';
-import Canvas from './components/Canvas';
-import Sidebar from './components/Sidebar';
-import WidgetInserterSidebar from './components/WidgetInserterSidebar';
-import { SelectionProvider } from './context/SelectionContext';
-import type { PageSchema, Theme, Platform } from './schema/blockTypes';
+import TopBar from '@components/TopBar';
+import Canvas from '@components/Canvas';
+import Sidebar from '@components/Sidebar';
+import WidgetInserterSidebar from '@components/WidgetInserterSidebar';
+import { SelectionProvider } from '@context/SelectionContext';
+import type { PageSchema, Theme, Platform } from '@schema/blockTypes';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {

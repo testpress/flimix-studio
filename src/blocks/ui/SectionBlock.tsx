@@ -1,19 +1,19 @@
 import React from 'react';
-import WidgetRenderer from '../WidgetRenderer';
-import BaseWidget from './BaseWidget';
-import type { BaseWidgetProps } from './BaseWidget';
-import type { SectionBlock as SectionBlockType } from '../../schema/blockTypes';
-import WidgetInsertionMenu from '../WidgetInsertionMenu';
-import type { VisibilityContext } from '../../schema/blockVisibility';
+import WidgetRenderer from '@components/WidgetRenderer';
+import BaseBlock from './BaseBlock';
+import type { BaseBlockProps } from './BaseBlock';
+import type { SectionBlock as SectionBlockType } from '@schema/blockTypes';
+import WidgetInsertionMenu from '@components/WidgetInsertionMenu';
+import type { VisibilityContext } from '@schema/blockVisibility';
 
-interface SectionWidgetProps extends Omit<BaseWidgetProps, 'block'> {
+interface SectionBlockProps extends Omit<BaseBlockProps, 'block'> {
   block: SectionBlockType;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
   selectedBlockId?: string | null;
 }
 
-const SectionWidget: React.FC<SectionWidgetProps> = ({ 
+const SectionBlock: React.FC<SectionBlockProps> = ({ 
   block, 
   visibilityContext, 
   showDebug = false, 
@@ -52,7 +52,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   return (
-    <BaseWidget 
+    <BaseBlock 
       block={block} 
       onSelect={onSelect} 
       isSelected={isSelected}
@@ -109,8 +109,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           <p className="text-gray-500 text-center">No content blocks in this section</p>
         </div>
       )}
-    </BaseWidget>
+    </BaseBlock>
   );
 };
 
-export default SectionWidget; 
+export default SectionBlock; 
