@@ -1,9 +1,9 @@
 import React from 'react';
 import type { BlockEditorProps } from '../../types/editorTypes';
-import DynamicPropsForm from './DynamicPropsForm';
-import { textEditorFields } from '@schema/editorSchemas';
+import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
+import { textEditorFields } from './schema';
 
-const TextPropsForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
+const TextForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
   return (
     <DynamicPropsForm
       block={block}
@@ -13,4 +13,4 @@ const TextPropsForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
   );
 };
 
-export default TextPropsForm; 
+export default TextForm; 

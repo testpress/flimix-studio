@@ -1,9 +1,9 @@
 import React from 'react';
 import type { BlockEditorProps } from '../../types/editorTypes';
-import DynamicPropsForm from './DynamicPropsForm';
-import { heroEditorFields } from '@schema/editorSchemas';
+import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
+import { heroEditorFields } from './schema';
 
-const HeroPropsForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
+const HeroForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
   return (
     <DynamicPropsForm
       block={block}
@@ -13,4 +13,4 @@ const HeroPropsForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
   );
 };
 
-export default HeroPropsForm; 
+export default HeroForm; 

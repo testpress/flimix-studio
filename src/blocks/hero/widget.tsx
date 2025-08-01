@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseBlock from './BaseBlock';
-import type { BaseBlockProps } from './BaseBlock';
+import BaseBlock from '@blocks/shared/BaseBlock';
+import type { BaseBlockProps } from '@blocks/shared/BaseBlock';
 import type { HeroBlock as HeroBlockType } from '@schema/blockTypes';
 
-interface HeroBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface HeroWidgetProps extends Omit<BaseBlockProps, 'block'> {
   block: HeroBlockType;
 }
 
-const HeroBlock: React.FC<HeroBlockProps> = ({ 
+const HeroWidget: React.FC<HeroWidgetProps> = ({ 
   block, 
   onSelect, 
   isSelected = false,
@@ -83,4 +83,4 @@ const HeroBlock: React.FC<HeroBlockProps> = ({
   );
 };
 
-export default HeroBlock; 
+export default HeroWidget; 

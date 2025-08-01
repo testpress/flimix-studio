@@ -1,19 +1,19 @@
 import React from 'react';
 import WidgetRenderer from '@components/WidgetRenderer';
-import BaseBlock from './BaseBlock';
-import type { BaseBlockProps } from './BaseBlock';
+import BaseBlock from '@blocks/shared/BaseBlock';
+import type { BaseBlockProps } from '@blocks/shared/BaseBlock';
 import type { SectionBlock as SectionBlockType } from '@schema/blockTypes';
 import WidgetInsertionMenu from '@components/WidgetInsertionMenu';
 import type { VisibilityContext } from '@schema/blockVisibility';
 
-interface SectionBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface SectionWidgetProps extends Omit<BaseBlockProps, 'block'> {
   block: SectionBlockType;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
   selectedBlockId?: string | null;
 }
 
-const SectionBlock: React.FC<SectionBlockProps> = ({ 
+const SectionWidget: React.FC<SectionWidgetProps> = ({ 
   block, 
   visibilityContext, 
   showDebug = false, 
@@ -113,4 +113,4 @@ const SectionBlock: React.FC<SectionBlockProps> = ({
   );
 };
 
-export default SectionBlock; 
+export default SectionWidget; 

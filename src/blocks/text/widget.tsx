@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseBlock from './BaseBlock';
-import type { BaseBlockProps } from './BaseBlock';
+import BaseBlock from '@blocks/shared/BaseBlock';
+import type { BaseBlockProps } from '@blocks/shared/BaseBlock';
 import type { TextBlock as TextBlockType } from '@schema/blockTypes';
 
-interface TextBlockProps extends Omit<BaseBlockProps, 'block'> {
+interface TextWidgetProps extends Omit<BaseBlockProps, 'block'> {
   block: TextBlockType;
 }
 
-const TextBlock: React.FC<TextBlockProps> = ({ 
+const TextWidget: React.FC<TextWidgetProps> = ({ 
   block, 
   onSelect, 
   isSelected = false,
@@ -82,4 +82,4 @@ const TextBlock: React.FC<TextBlockProps> = ({
   );
 };
 
-export default TextBlock; 
+export default TextWidget; 
