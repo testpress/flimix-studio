@@ -1,7 +1,7 @@
 import React from 'react';
 import { Copy, Trash2, MoveUp, MoveDown } from 'lucide-react';
 
-interface WidgetControlsProps {
+interface ControlsProps {
   canMoveUp: boolean;
   canMoveDown: boolean;
   onMoveUp?: () => void;
@@ -10,7 +10,7 @@ interface WidgetControlsProps {
   onRemove?: () => void;
 }
 
-const WidgetControls: React.FC<WidgetControlsProps> = ({
+const Controls: React.FC<ControlsProps> = ({
   canMoveUp,
   canMoveDown,
   onMoveUp,
@@ -29,7 +29,7 @@ const WidgetControls: React.FC<WidgetControlsProps> = ({
           className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
           title="Move Up"
         >
-           <MoveUp className="w-3.5 h-3.5" />
+          <MoveUp className="w-3.5 h-3.5" />
         </button>
       )}
       
@@ -75,4 +75,4 @@ const WidgetControls: React.FC<WidgetControlsProps> = ({
   );
 };
 
-export default WidgetControls; 
+export default Controls; 

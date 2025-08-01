@@ -7,7 +7,7 @@ import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
 
-const Sidebar: React.FC = () => {
+const SettingsPanel: React.FC = () => {
   const { selectedBlock, updateSelectedBlockProps, updateSelectedBlockStyle } = useSelection();
 
   // Block editor registry for dynamic lookup
@@ -126,4 +126,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar; 
+export default SettingsPanel; 

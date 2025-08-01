@@ -12,7 +12,7 @@ import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@utils/blockUtils';
 import { AlertTriangle } from 'lucide-react';
 
-interface WidgetRendererProps {
+interface BlockRendererProps {
   block: Block;
   showDebug?: boolean;
   visibilityContext: VisibilityContext;
@@ -21,7 +21,7 @@ interface WidgetRendererProps {
   selectedBlockId?: string | null;
 }
 
-const WidgetRenderer: React.FC<WidgetRendererProps> = ({ 
+const BlockRenderer: React.FC<BlockRendererProps> = ({ 
   block, 
   showDebug = false, 
   visibilityContext, 
@@ -136,4 +136,4 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
   );
 };
 
-export default WidgetRenderer; 
+export default BlockRenderer; 

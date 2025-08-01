@@ -28,6 +28,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
+      "@layout/*": ["src/layout/*"],
+      "@renderer/*": ["src/renderer/*"],
       "@blocks/*": ["src/blocks/*"],
       "@blocks/ui/*": ["src/blocks/ui/*"],
       "@blocks/settings/*": ["src/blocks/settings/*"],

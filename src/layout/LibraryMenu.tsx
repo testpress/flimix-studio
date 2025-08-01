@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
-import Dropdown, { DropdownItem } from './Dropdown';
+import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
 
-interface WidgetInsertionMenuProps {
+interface LibraryMenuProps {
   position: 'above' | 'below';
   blockId: string;
 }
 
-const WidgetInsertionMenu: React.FC<WidgetInsertionMenuProps> = ({ position, blockId }) => {
+const LibraryMenu: React.FC<LibraryMenuProps> = ({ position, blockId }) => {
   const { selectedBlockId, insertBlockAfter, insertBlockBefore } = useSelection();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -62,4 +62,4 @@ const WidgetInsertionMenu: React.FC<WidgetInsertionMenuProps> = ({ position, blo
   );
 };
 
-export default WidgetInsertionMenu; 
+export default LibraryMenu; 

@@ -13,7 +13,7 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
   Square
 };
 
-const WidgetInserterSidebar: React.FC = () => {
+const LibraryPanel: React.FC = () => {
   const { selectedBlockId, insertBlockBefore, insertBlockAtEnd } = useSelection();
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
@@ -91,4 +91,4 @@ const WidgetInserterSidebar: React.FC = () => {
   );
 };
 
-export default WidgetInserterSidebar; 
+export default LibraryPanel; 

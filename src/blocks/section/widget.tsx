@@ -1,9 +1,9 @@
 import React from 'react';
-import WidgetRenderer from '@components/WidgetRenderer';
+import BlockRenderer from '@renderer/BlockRenderer';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { SectionBlock } from './schema';
-import WidgetInsertionMenu from '@components/WidgetInsertionMenu';
+import LibraryMenu from '@layout/LibraryMenu';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 
@@ -97,8 +97,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         <div className="space-y-4">
           {children.map((childBlock) => (
             <div key={childBlock.id}>
-              <WidgetInsertionMenu position="above" blockId={childBlock.id} />
-              <WidgetRenderer 
+              <LibraryMenu position="above" blockId={childBlock.id} />
+              <BlockRenderer 
                 block={childBlock} 
                 visibilityContext={visibilityContext} 
                 showDebug={showDebug}
@@ -106,7 +106,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
                 selectedBlockId={selectedBlockId}
                 isSelected={selectedBlockId === childBlock.id}
               />
-              <WidgetInsertionMenu position="below" blockId={childBlock.id} />
+              <LibraryMenu position="below" blockId={childBlock.id} />
             </div>
           ))}
         </div>

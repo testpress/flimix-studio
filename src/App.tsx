@@ -1,10 +1,9 @@
-import Canvas from '@components/Canvas';
-import Sidebar from '@components/Sidebar';
-import TopBar from '@components/TopBar';
+import Canvas from '@layout/Canvas';
+import SettingsPanel from '@layout/SettingsPanel';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { Theme } from '@blocks/shared/Style';
 import type { Platform } from '@blocks/shared/Visibility';
-import WidgetInserterSidebar from '@components/WidgetInserterSidebar';
+import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
 
 // Move the sample schema here so it can be shared
@@ -128,11 +127,10 @@ function App() {
   return (
     <SelectionProvider initialSchema={sampleSchema}>
       <div className="h-screen flex flex-col bg-gray-50">
-        <TopBar />
         <div className="flex-1 flex">
-          <WidgetInserterSidebar />
+          <LibraryPanel />
           <Canvas />
-          <Sidebar />
+          <SettingsPanel />
         </div>
       </div>
     </SelectionProvider>
