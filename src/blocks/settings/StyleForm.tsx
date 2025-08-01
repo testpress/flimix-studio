@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps } from '@schema/blockTypes';
+import type { StyleProps } from '@blocks/shared/Style';
 
 interface StyleFormProps {
   style: StyleProps;

@@ -1,5 +1,5 @@
-import type { VisibilityProps, Platform } from '../schema/blockTypes';
-import type { VisibilityContext } from '../schema/blockVisibility';
+import type { VisibilityProps, Platform } from '@blocks/shared/Visibility';
+import type { VisibilityContext } from '@blocks/shared/Visibility';
 
 export function evaluateVisibility(
   visibility?: VisibilityProps,

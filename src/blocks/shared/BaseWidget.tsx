@@ -1,10 +1,10 @@
 import React from 'react';
 import WidgetControls from '@components/WidgetControls';
-import type { Block } from '@schema/blockTypes';
+import type { Block } from './Block';
 
-export interface BaseBlockProps {
-  block: Block;
-  onSelect?: (block: Block) => void;
+export interface BaseWidgetProps<T extends Block = Block> {
+  block: T;
+  onSelect?: (block: T) => void;
   isSelected?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -19,7 +19,7 @@ export interface BaseBlockProps {
 }
 
 /**
- * BaseBlock - A base component that provides common selection functionality
+ * BaseWidget - A base component that provides common selection functionality
  * for all block components. Implements:
  * - Click handling with event bubbling prevention
  * - Selection state management
@@ -27,7 +27,7 @@ export interface BaseBlockProps {
  * - Extensible render method
  * - Inline block controls when selected
  */
-const BaseBlock: React.FC<BaseBlockProps> = ({ 
+const BaseWidget = <T extends Block = Block>({ 
   block, 
   onSelect, 
   isSelected = false, 
@@ -40,7 +40,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   onMoveDown,
   onDuplicate,
   onRemove
-}) => {
+}: BaseWidgetProps<T>) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling to parent blocks
     onSelect?.(block);
@@ -83,4 +83,4 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   );
 };
 
-export default BaseBlock; 
+export default BaseWidget; 

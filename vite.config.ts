@@ -9,13 +9,16 @@ export default defineConfig({
     alias: {
       '@': '/src',
       '@components': '/src/components',
+      '@context': '/src/context',
+      '@utils': '/src/utils',
+      '@types': '/src/types',
       '@blocks': '/src/blocks',
       '@blocks/ui': '/src/blocks/ui',
       '@blocks/settings': '/src/blocks/settings',
-      '@schema': '/src/schema',
-      '@utils': '/src/utils',
-      '@context': '/src/context',
-      '@types': '/src/types'
+      '@blocks/shared': '/src/blocks/shared',
+      '@blocks/hero': '/src/blocks/hero',
+      '@blocks/text': '/src/blocks/text',
+      '@blocks/section': '/src/blocks/section'
     }
   }
 })

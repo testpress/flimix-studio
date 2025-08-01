@@ -1,5 +1,5 @@
 import React from 'react';
-import type { VisibilityProps, Platform } from '@schema/blockTypes';
+import type { VisibilityProps, Platform } from '@blocks/shared/Visibility';
 
 interface VisibilityFormProps {
   block: any; // Using any for now to avoid type issues

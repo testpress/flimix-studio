@@ -31,7 +31,7 @@
       "@blocks/*": ["src/blocks/*"],
       "@blocks/ui/*": ["src/blocks/ui/*"],
       "@blocks/settings/*": ["src/blocks/settings/*"],
-      "@schema/*": ["src/schema/*"],
+      "@blocks/shared/*": ["src/blocks/shared/*"],
       "@utils/*": ["src/utils/*"],
       "@context/*": ["src/context/*"],
       "@types/*": ["src/types/*"]

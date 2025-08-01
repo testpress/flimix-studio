@@ -1,11 +1,11 @@
 import React from 'react';
-import type { Block } from '@schema/blockTypes';
-import type { EditorField } from '@schema/editorSchemas';
+import type { Block } from '@blocks/shared/Block';
+import type { Field } from '@blocks/shared/Field';
 import { getFormFieldValue, updateFormField } from '@utils/editorFormUtils';
 
 interface DynamicPropsFormProps {
   block: Block;
-  fieldDefinitions: EditorField[];
+  fieldDefinitions: Field[];
   updateProps: (newProps: Partial<any>) => void;
 }
 
@@ -20,7 +20,7 @@ const DynamicPropsForm: React.FC<DynamicPropsFormProps> = ({
     updateProps(updatedProps);
   };
 
-  const renderField = (field: EditorField) => {
+  const renderField = (field: Field) => {
     const value = getFormFieldValue(block.props, field.key, '');
     
     switch (field.type) {

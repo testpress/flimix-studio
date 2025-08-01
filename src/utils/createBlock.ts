@@ -1,5 +1,6 @@
-import type { BlockType } from '../schema/blockTypes';
+import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from './idUtils';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -14,9 +15,7 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'text',
         id,
-        props: {
-          content: 'New text'
-        },
+        props: TextLibraryItem.defaultProps,
         style: {
           padding: 'md',
           textAlign: 'left'
@@ -27,15 +26,7 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'hero',
         id,
-        props: {
-          title: 'New hero',
-          subtitle: 'Add your subtitle here',
-          backgroundImage: '',
-          ctaButton: {
-            label: 'Learn More',
-            link: '#'
-          }
-        },
+        props: HeroLibraryItem.defaultProps,
         style: {
           padding: 'lg',
           textAlign: 'center'
@@ -46,10 +37,7 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'section',
         id,
-        props: {
-          title: 'New section',
-          description: 'Section description'
-        },
+        props: SectionLibraryItem.defaultProps,
         style: {
           padding: 'md',
           backgroundColor: '#f8f9fa'

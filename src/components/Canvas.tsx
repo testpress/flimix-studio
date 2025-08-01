@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import WidgetRenderer from './WidgetRenderer';
-import { useSelection } from '../context/SelectionContext';
-import type { Platform } from '../schema/blockTypes';
-import type { VisibilityContext } from '../schema/blockVisibility';
-import WidgetInsertionMenu from './WidgetInsertionMenu';
+import React from 'react';
+import WidgetRenderer from '@components/WidgetRenderer';
+import WidgetInsertionMenu from '@components/WidgetInsertionMenu';
+import type { Platform, VisibilityContext } from '@blocks/shared/Visibility';
+import type { Block } from '@blocks/shared/Block';
+import { useSelection } from '@context/SelectionContext';
 import { Search } from 'lucide-react';
 
 // Debug flag for development - shows hidden blocks due to visibility rules
@@ -20,15 +20,15 @@ const initialVisibilityContext: VisibilityContext = {
 const Canvas: React.FC = () => {
   const { 
     selectedBlockId, 
-    setSelectedBlockId, 
-    setSelectedBlock, 
+    setSelectedBlockId,
+    setSelectedBlock,
     pageSchema 
   } = useSelection();
-  const [visibilityContext, setVisibilityContext] = useState<VisibilityContext>(initialVisibilityContext);
+  const [visibilityContext, setVisibilityContext] = React.useState<VisibilityContext>(initialVisibilityContext);
 
-  const handleBlockSelect = (block: any) => {
-    setSelectedBlock(block);
+  const handleBlockSelect = (block: Block) => {
     setSelectedBlockId(block.id);
+    setSelectedBlock(block);
   };
 
   return (
@@ -123,7 +123,7 @@ const Canvas: React.FC = () => {
           </div>
           
           <div className="space-y-6">
-            {pageSchema.blocks.map((block) => (
+            {pageSchema.blocks.map((block: Block) => (
               <div key={block.id}>
                 <WidgetInsertionMenu position="above" blockId={block.id} />
                 <WidgetRenderer 

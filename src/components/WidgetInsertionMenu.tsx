@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { useSelection } from '../context/SelectionContext';
-import type { BlockType } from '../schema/blockTypes';
+import type { BlockType } from '@blocks/shared/Block';
+import { useSelection } from '@context/SelectionContext';
 import Dropdown, { DropdownItem } from './Dropdown';
+import { Plus } from 'lucide-react';
 
 interface WidgetInsertionMenuProps {
   position: 'above' | 'below';

@@ -1,9 +1,20 @@
 import React from 'react';
-import type { BlockEditorProps } from '../../types/editorTypes';
+import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
-import { textEditorFields } from './schema';
+import type { Field } from '@blocks/shared/Field';
 
-const TextForm: React.FC<BlockEditorProps> = ({ block, updateProps }) => {
+// Text block editor schema
+const textEditorFields: Field[] = [
+  { 
+    key: 'content', 
+    label: 'Content', 
+    type: 'textarea',
+    placeholder: 'Enter text content...',
+    required: true
+  }
+];
+
+const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
     <DynamicPropsForm
       block={block}

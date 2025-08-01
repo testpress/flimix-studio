@@ -1,13 +1,13 @@
 import React from 'react';
 import { Plus, Type, Layout, Square } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useSelection } from '../context/SelectionContext';
-import { getAllBlockTemplates } from '../schema/blockTemplates';
-import type { BlockTemplate } from '../schema/blockTemplates';
-import type { BlockType } from '../schema/blockTypes';
+import { useSelection } from '@context/SelectionContext';
+import { getAllBlockLibraryItems } from '@blocks/shared/Library';
+import type { BlockLibraryItem } from '@blocks/shared/Library';
+import type { BlockType } from '@blocks/shared/Block';
 
 // Icon mapping for the templates
-const iconMap: Record<BlockTemplate['icon'], LucideIcon> = {
+const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
   Layout,
   Type,
   Square
@@ -27,7 +27,7 @@ const WidgetInserterSidebar: React.FC = () => {
   };
 
   // Get all block templates using the helper function
-  const allTemplates = getAllBlockTemplates();
+  const allTemplates = getAllBlockLibraryItems();
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">

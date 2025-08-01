@@ -1,4 +1,5 @@
-import type { Block, BlockType } from '../schema/blockTypes';
+import type { Block } from '@blocks/shared/Block';
+import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from './idUtils';
 
 export interface BlockPosition {

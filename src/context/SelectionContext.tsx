@@ -1,10 +1,12 @@
-import React, { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
-import type { Block, PageSchema, StyleProps, BlockType } from '../schema/blockTypes';
-import { swap } from '../utils/arrayUtils';
-import { findBlockAndParent, updateParentChildren, findBlockPositionById, cloneBlockWithNewIds } from '../utils/blockUtils';
-import { createBlock } from '../utils/createBlock';
-import { getAvailableBlockTypes } from '../schema/blockTemplates';
+import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import type { Block, BlockType } from '@blocks/shared/Block';
+import type { PageSchema } from '@blocks/shared/Page';
+import type { StyleProps } from '@blocks/shared/Style';
+import { cloneBlockWithNewIds } from '@utils/blockUtils';
+import { getAvailableBlockTypes } from '@blocks/shared/Library';
+import { swap } from '@utils/arrayUtils';
+import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '@utils/blockUtils';
+import { createBlock } from '@utils/createBlock';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
