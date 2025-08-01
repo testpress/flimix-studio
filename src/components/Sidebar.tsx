@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelection } from '@context/SelectionContext';
 import type { StyleProps, VisibilityProps } from '@schema/blockTypes';
-import { HeroPropsForm, TextPropsForm, SectionPropsForm, VisibilityEditor, StyleEditor, type BlockEditorProps } from '@blocks/settings';
+import { HeroPropsForm, TextPropsForm, SectionPropsForm, VisibilityForm, StyleForm, type BlockEditorProps } from '@blocks/settings';
 
 const Sidebar: React.FC = () => {
   const { selectedBlock, updateSelectedBlockProps, updateSelectedBlockStyle } = useSelection();
@@ -79,7 +79,7 @@ const Sidebar: React.FC = () => {
           </div>
           
           {selectedBlock && (
-            <VisibilityEditor
+            <VisibilityForm
               block={selectedBlock}
               visibility={selectedBlock.visibility || {}}
               onUpdateVisibility={handleVisibilityChange}
@@ -89,7 +89,7 @@ const Sidebar: React.FC = () => {
           {renderBlockPropsEditor()}
           
           {selectedBlock && (
-            <StyleEditor
+            <StyleForm
               style={selectedBlock.style || {}}
               onChange={handleStyleChange}
             />

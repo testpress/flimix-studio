@@ -1,13 +1,13 @@
 import React from 'react';
 import type { VisibilityProps, Platform } from '@schema/blockTypes';
 
-interface VisibilityEditorProps {
+interface VisibilityFormProps {
   block: any; // Using any for now to avoid type issues
   visibility: VisibilityProps;
   onUpdateVisibility: (visibility: VisibilityProps) => void;
 }
 
-const VisibilityEditor: React.FC<VisibilityEditorProps> = ({ 
+const VisibilityForm: React.FC<VisibilityFormProps> = ({ 
   visibility, 
   onUpdateVisibility 
 }) => {
@@ -142,4 +142,4 @@ const VisibilityEditor: React.FC<VisibilityEditorProps> = ({
   );
 };
 
-export default VisibilityEditor; 
+export default VisibilityForm; 
