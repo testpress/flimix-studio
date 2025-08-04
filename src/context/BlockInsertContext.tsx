@@ -1,8 +1,7 @@
 import React, { createContext, useContext, type ReactNode } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
-import { createBlock, updateBlockChildren } from '@domain/blocks/blockFactory';
+import { createBlock, updateBlockChildren, findBlockPositionById } from '@context/domain';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
-import { findBlockPositionById } from '@domain/blocks/blockTraversal';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Block } from '@blocks/shared/Block';
 import type { Field } from '@blocks/shared/Field';
-import { getFormFieldValue, updateFormField } from '@domain/blocks/dynamicFormAccess';
+import { getFormFieldValue, updateFormField } from '@blocks/settings/domain';
 
 interface DynamicPropsFormProps {
   block: Block;
