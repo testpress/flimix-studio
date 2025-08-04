@@ -2,10 +2,10 @@ import React, { createContext, useContext, useState, type ReactNode } from 'reac
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
-import { cloneBlockWithNewIds } from '@domain/blocks/blockTraversal';
+import { duplicateBlockWithNewIds, updateBlockChildren } from '@domain/blocks/blockFactory';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { swap } from '@utils/array';
-import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '@domain/blocks/blockTraversal';
+import { findBlockAndParent, findBlockPositionById } from '@domain/blocks/blockTraversal';
 import { createBlock } from '@domain/blocks/blockFactory';
 
 interface SelectionContextType {
@@ -216,7 +216,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     }
 
     const newChildren = swap(parent.children, parentIndex, parentIndex - 1);
-    const newBlocks = updateParentChildren(pageSchema.blocks, parent.id, newChildren);
+    const newBlocks = updateBlockChildren(pageSchema.blocks, parent.id, newChildren);
     const updatedSchema = {
       ...pageSchema,
       blocks: newBlocks
@@ -271,7 +271,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     }
 
     const newChildren = swap(parent.children, parentIndex, parentIndex + 1);
-    const newBlocks = updateParentChildren(pageSchema.blocks, parent.id, newChildren);
+    const newBlocks = updateBlockChildren(pageSchema.blocks, parent.id, newChildren);
     const updatedSchema = {
       ...pageSchema,
       blocks: newBlocks
@@ -296,7 +296,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const updatedSchema = {
       ...pageSchema,
       blocks: result.parent 
-        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
         : newContainer
     };
     
@@ -319,7 +319,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     if (!originalBlock) return;
     
     // Clone the block with new IDs
-    const duplicatedBlock = cloneBlockWithNewIds(originalBlock as BlockType);
+    const duplicatedBlock = duplicateBlockWithNewIds(originalBlock as BlockType);
     
     // Insert the duplicated block immediately after the original
     const newContainer = [...container] as BlockType[];
@@ -329,7 +329,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const updatedSchema = {
       ...pageSchema,
       blocks: result.parent 
-        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
         : newContainer
     };
     
@@ -371,7 +371,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const updatedSchema = {
       ...pageSchema,
       blocks: result.parent 
-        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
         : newContainer
     };
     
@@ -413,7 +413,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     const updatedSchema = {
       ...pageSchema,
       blocks: result.parent 
-        ? updateParentChildren(pageSchema.blocks, result.parent.id, newContainer)
+        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
         : newContainer
     };
     

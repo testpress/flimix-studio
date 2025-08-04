@@ -50,4 +50,44 @@ export function createBlock(type: BlockType['type']): BlockType {
       const exhaustiveCheck: never = type;
       throw new Error(`Unhandled block type: ${exhaustiveCheck}`);
   }
+}
+
+/**
+ * Creates a deep copy of a block with new unique IDs for the block and all its children
+ * Used for duplicating blocks in the editor
+ * @param block - The block to duplicate
+ * @returns A deep copy of the block with new IDs
+ */
+export function duplicateBlockWithNewIds(block: BlockType): BlockType {
+  const newId = generateUniqueId();
+  const duplicated: BlockType = {
+    ...block,
+    id: newId,
+    children: block.children?.map(child => duplicateBlockWithNewIds(child)),
+  } as BlockType;
+  return duplicated;
+}
+
+/**
+ * Updates the children array of a parent block in the block tree
+ * Used for modifying block hierarchy when blocks are moved, added, or removed
+ * @param blocks - Array of blocks to update
+ * @param parentId - ID of the parent block
+ * @param newChildren - New children array
+ * @returns Updated blocks array
+ */
+export function updateBlockChildren(
+  blocks: BlockType[], 
+  parentId: string, 
+  newChildren: BlockType[]
+): BlockType[] {
+  return blocks.map(block => {
+    if (block.id === parentId) {
+      return {
+        ...block,
+        children: newChildren
+      } as BlockType;
+    }
+    return block;
+  });
 } 

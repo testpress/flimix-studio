@@ -1,6 +1,5 @@
 import type { Block } from '@blocks/shared/Block';
 import type { BlockType } from '@blocks/shared/Block';
-import { generateUniqueId } from '@utils/id';
 
 export interface BlockPosition {
   parent: Block | null;
@@ -38,29 +37,6 @@ export function findBlockAndParent(
     }
   }
   return { block: null, parent: null, parentIndex: -1 };
-}
-
-/**
- * Updates the children array of a parent block
- * @param blocks - Array of blocks to update
- * @param parentId - ID of the parent block
- * @param newChildren - New children array
- * @returns Updated blocks array
- */
-export function updateParentChildren(
-  blocks: BlockType[], 
-  parentId: string, 
-  newChildren: BlockType[]
-): BlockType[] {
-  return blocks.map(block => {
-    if (block.id === parentId) {
-      return {
-        ...block,
-        children: newChildren
-      } as BlockType;
-    }
-    return block;
-  });
 }
 
 /**
@@ -127,19 +103,4 @@ export function findBlockPositionForUI(
   }
 
   return { isTopLevel: false, parentId: null, index: -1, totalSiblings: 0 };
-}
-
-/**
- * Clones a block with new unique IDs for the block and all its children
- * @param block - The block to clone
- * @returns A deep copy of the block with new IDs
- */
-export function cloneBlockWithNewIds(block: BlockType): BlockType {
-  const newId = generateUniqueId();
-  const cloned: BlockType = {
-    ...block,
-    id: newId,
-    children: block.children?.map(child => cloneBlockWithNewIds(child)),
-  } as BlockType;
-  return cloned;
 } 
