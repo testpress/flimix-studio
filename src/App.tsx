@@ -1,5 +1,6 @@
 import Canvas from '@layout/Canvas';
 import SettingsPanel from '@layout/SettingsPanel';
+import TopBar from '@layout/TopBar';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { Theme } from '@blocks/shared/Style';
 import type { Platform } from '@blocks/shared/Visibility';
@@ -127,6 +128,7 @@ function App() {
   return (
     <SelectionProvider initialSchema={sampleSchema}>
       <div className="h-screen flex flex-col bg-gray-50">
+        <TopBar />
         <div className="flex-1 flex">
           <LibraryPanel />
           <Canvas />
