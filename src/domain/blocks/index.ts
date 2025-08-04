@@ -2,4 +2,5 @@
 export * from './blockFactory';
 export * from './blockTraversal';
 export * from './visibilityRules';
-export * from './dynamicFormAccess'; 
+export * from './dynamicFormAccess';
+export * from './history'; 

@@ -7,6 +7,7 @@ import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { swap } from '@utils/array';
 import { findBlockAndParent, findBlockPositionById } from '@domain/blocks/blockTraversal';
 import { createBlock } from '@domain/blocks/blockFactory';
+import { useHistory } from './HistoryContext';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -31,14 +32,14 @@ const SelectionContext = createContext<SelectionContextType | undefined>(undefin
 
 interface SelectionProviderProps {
   children: ReactNode;
-  initialSchema: PageSchema;
 }
 
-export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, initialSchema }) => {
+export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }) => {
+  const { pageSchema, updatePageWithHistory } = useHistory();
+
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
-  const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
 
   // Helper function to validate block types
   const isBlockTypeValid = (blockType: string): boolean => {
@@ -83,7 +84,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: updatedBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
@@ -144,7 +145,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: updatedBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
@@ -202,7 +203,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         blocks: newBlocks
       };
 
-      setPageSchema(updatedSchema);
+      updatePageWithHistory(updatedSchema);
       return;
     }
 
@@ -222,10 +223,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: newBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
   };
-
-
 
   const moveBlockDown = () => {
     if (!selectedBlockId) {
@@ -257,7 +256,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         blocks: newBlocks
       };
 
-      setPageSchema(updatedSchema);
+      updatePageWithHistory(updatedSchema);
       return;
     }
 
@@ -277,7 +276,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: newBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
   };
 
   const deleteSelectedBlock = () => {
@@ -293,14 +292,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     newContainer.splice(index, 1);
     
     // Update the schema
+    const newBlocks = result.parent 
+      ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
+      : newContainer;
+    
     const updatedSchema = {
       ...pageSchema,
-      blocks: result.parent 
-        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-        : newContainer
+      blocks: newBlocks
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     setSelectedBlockId(null);
     setSelectedBlock(null);
     setSelectedBlockParentId(null);
@@ -333,7 +334,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Optionally select the newly duplicated block
     setSelectedBlockId(duplicatedBlock.id);
@@ -375,7 +376,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
@@ -417,7 +418,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
@@ -440,7 +441,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: [...pageSchema.blocks, newBlock]
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
