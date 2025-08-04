@@ -28,6 +28,8 @@ interface SelectionContextType {
   insertBlockAtEnd: (blockType: BlockType['type']) => void;
   undo: () => void;
   canUndo: boolean;
+  redo: () => void;
+  canRedo: boolean;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -38,16 +40,21 @@ interface SelectionProviderProps {
 }
 
 export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, initialSchema }) => {
+  // History management constants
+  const HISTORY_LIMIT = 50;
+
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
   const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
   const [undoStack, setUndoStack] = useState<BlockType[][]>([]);
+  const [redoStack, setRedoStack] = useState<BlockType[][]>([]);
 
   // Helper function to save current state before mutation
   const saveStateForUndo = () => {
     const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setUndoStack(prev => [...prev, currentBlocks].slice(-50)); // Limit history to 50 entries
+    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit history to 50 entries
+    setRedoStack([]); // Clear redo stack when new changes are made
   };
 
   // Helper function to validate block types
@@ -479,6 +486,10 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   const undo = () => {
     if (undoStack.length === 0) return;
     
+    // Save current state to redo stack before undoing
+    const currentBlocks = cloneBlocks(pageSchema.blocks);
+    setRedoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit redo history to 50 entries
+    
     const previousBlocks = undoStack[undoStack.length - 1];
     setPageSchema(prev => ({
       ...prev,
@@ -493,6 +504,28 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   };
 
   const canUndo = undoStack.length > 0;
+
+  const redo = () => {
+    if (redoStack.length === 0) return;
+    
+    // Save current state to undo stack before redoing
+    const currentBlocks = cloneBlocks(pageSchema.blocks);
+    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit undo history to 50 entries
+    
+    const nextBlocks = redoStack[redoStack.length - 1];
+    setPageSchema(prev => ({
+      ...prev,
+      blocks: nextBlocks
+    }));
+    setRedoStack(prev => prev.slice(0, -1));
+    
+    // Clear selection when redoing
+    setSelectedBlock(null);
+    setSelectedBlockId(null);
+    setSelectedBlockParentId(null);
+  };
+
+  const canRedo = redoStack.length > 0;
 
   return (
     <SelectionContext.Provider value={{
@@ -513,7 +546,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       insertBlockBefore,
       insertBlockAtEnd,
       undo,
-      canUndo
+      canUndo,
+      redo,
+      canRedo
     }}>
       {children}
     </SelectionContext.Provider>
