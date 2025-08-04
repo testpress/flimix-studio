@@ -7,9 +7,9 @@ import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
-import { evaluateVisibility } from '@utils/visibility';
+import { evaluateVisibility } from '@domain/blocks/visibilityRules';
 import { useSelection } from '@context/SelectionContext';
-import { findBlockPositionForUI } from '@utils/blockUtils';
+import { findBlockPositionForUI } from '@domain/blocks/blockTraversal';
 import { AlertTriangle } from 'lucide-react';
 
 interface BlockRendererProps {

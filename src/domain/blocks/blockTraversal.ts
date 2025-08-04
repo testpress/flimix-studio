@@ -1,6 +1,6 @@
 import type { Block } from '@blocks/shared/Block';
 import type { BlockType } from '@blocks/shared/Block';
-import { generateUniqueId } from './idUtils';
+import { generateUniqueId } from '@utils/id';
 
 export interface BlockPosition {
   parent: Block | null;

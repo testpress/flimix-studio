@@ -1,5 +1,5 @@
 import type { BlockType } from '@blocks/shared/Block';
-import { generateUniqueId } from './idUtils';
+import { generateUniqueId } from '@utils/id';
 import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem } from '@blocks/shared/Library';
 
 /**

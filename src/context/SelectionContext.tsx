@@ -2,11 +2,11 @@ import React, { createContext, useContext, useState, type ReactNode } from 'reac
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
-import { cloneBlockWithNewIds } from '@utils/blockUtils';
+import { cloneBlockWithNewIds } from '@domain/blocks/blockTraversal';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
-import { swap } from '@utils/arrayUtils';
-import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '@utils/blockUtils';
-import { createBlock } from '@utils/createBlock';
+import { swap } from '@utils/array';
+import { findBlockAndParent, updateParentChildren, findBlockPositionById } from '@domain/blocks/blockTraversal';
+import { createBlock } from '@domain/blocks/blockFactory';
 
 interface SelectionContextType {
   selectedBlock: Block | null;

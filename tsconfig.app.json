@@ -35,6 +35,7 @@
       "@blocks/settings/*": ["src/blocks/settings/*"],
       "@blocks/shared/*": ["src/blocks/shared/*"],
       "@utils/*": ["src/utils/*"],
+      "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],
       "@types/*": ["src/types/*"]
     }

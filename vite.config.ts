@@ -13,6 +13,7 @@ export default defineConfig({
       '@renderer': '/src/renderer',
       '@context': '/src/context',
       '@utils': '/src/utils',
+      '@domain': '/src/domain',
       '@types': '/src/types',
       '@blocks': '/src/blocks',
       '@blocks/ui': '/src/blocks/ui',

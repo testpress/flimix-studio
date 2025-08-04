@@ -1,7 +1,15 @@
 /**
- * Get a form field value from an object using dot notation path
- * Used for accessing nested form field values like 'ctaButton.label' in the editor
- * @param obj - The object containing the form data
+ * Block Property Editor Utilities
+ * 
+ * Domain-specific utilities for manipulating block properties in the editor.
+ * These functions handle nested property access and updates using dot notation,
+ * which is essential for the dynamic block property editing system.
+ */
+
+/**
+ * Get a form field value from block props using dot notation path
+ * Used for accessing nested block property values like 'ctaButton.label' in the editor
+ * @param obj - The block props object containing the form data
  * @param fieldPath - The dot-notation path (e.g., 'ctaButton.label')
  * @param defaultValue - Default value if field doesn't exist
  * @returns The field value or default value
@@ -23,9 +31,9 @@ export function getFormFieldValue(obj: any, fieldPath: string, defaultValue: any
 }
 
 /**
- * Set a form field value in an object using dot notation path
- * Used for updating nested form field values like 'ctaButton.label' in the editor
- * @param obj - The object containing the form data
+ * Set a form field value in block props using dot notation path
+ * Used for updating nested block property values like 'ctaButton.label' in the editor
+ * @param obj - The block props object containing the form data
  * @param fieldPath - The dot-notation path (e.g., 'ctaButton.label')
  * @param value - The new field value
  * @returns A new object with the updated field value
