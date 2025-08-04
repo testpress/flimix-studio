@@ -3,10 +3,8 @@ import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import { duplicateBlockWithNewIds, updateBlockChildren } from '@domain/blocks/blockFactory';
-import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { swap } from '@utils/array';
 import { findBlockAndParent, findBlockPositionById } from '@domain/blocks/blockTraversal';
-import { createBlock } from '@domain/blocks/blockFactory';
 import { useHistory } from './HistoryContext';
 
 interface SelectionContextType {
@@ -23,9 +21,6 @@ interface SelectionContextType {
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
   duplicateSelectedBlock: () => void;
-  insertBlockAfter: (blockType: BlockType['type']) => void;
-  insertBlockBefore: (blockType: BlockType['type']) => void;
-  insertBlockAtEnd: (blockType: BlockType['type']) => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -50,15 +45,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     }
   }, [pageSchema, selectedBlockId]);
 
-  // Helper function to validate block types
-  const isBlockTypeValid = (blockType: string): boolean => {
-    const availableTypes = getAvailableBlockTypes();
-    if (!availableTypes.includes(blockType)) {
-      console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
-      return false;
-    }
-    return true;
-  };
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
@@ -351,113 +337,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
-  const insertBlockAfter = (blockType: BlockType['type']) => {
-    if (!selectedBlockId) return;
-    
-    // Validate block type
-    if (!isBlockTypeValid(blockType)) {
-      return;
-    }
-    
-    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
-    if (!result) return;
-
-    const { container, index } = result;
-    
-    // Create new block using the factory function
-    let newBlock;
-    try {
-      newBlock = createBlock(blockType);
-    } catch (error) {
-      console.error('Failed to create block:', error);
-      return;
-    }
-    
-    // Insert the new block after the selected block
-    const newContainer = [...container] as BlockType[];
-    newContainer.splice(index + 1, 0, newBlock);
-    
-    // Update the schema
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: result.parent 
-        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-        : newContainer
-    };
-    
-    updatePageWithHistory(updatedSchema);
-    
-    // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as Block);
-    setSelectedBlockParentId(result.parent?.id || null);
-  };
-
-  const insertBlockBefore = (blockType: BlockType['type']) => {
-    if (!selectedBlockId) return;
-    
-    // Validate block type
-    if (!isBlockTypeValid(blockType)) {
-      return;
-    }
-    
-    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
-    if (!result) return;
-
-    const { container, index } = result;
-    
-    // Create new block using the factory function
-    let newBlock;
-    try {
-      newBlock = createBlock(blockType);
-    } catch (error) {
-      console.error('Failed to create block:', error);
-      return;
-    }
-    
-    // Insert the new block before the selected block
-    const newContainer = [...container] as BlockType[];
-    newContainer.splice(index, 0, newBlock);
-    
-    // Update the schema
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: result.parent 
-        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-        : newContainer
-    };
-    
-    updatePageWithHistory(updatedSchema);
-    
-    // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as Block);
-    setSelectedBlockParentId(result.parent?.id || null);
-  };
-
-  const insertBlockAtEnd = (blockType: BlockType['type']) => {
-    // Validate block type
-    if (!isBlockTypeValid(blockType)) {
-      return;
-    }
-    
-    // Create new block using the factory function
-    const newBlock = createBlock(blockType);
-    
-    // Add the new block to the end of the page
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: [...pageSchema.blocks, newBlock]
-    };
-    
-    updatePageWithHistory(updatedSchema);
-    
-    // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as Block);
-    setSelectedBlockParentId(null);
-  };
-
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -472,10 +351,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       moveBlockUp,
       moveBlockDown,
       deleteSelectedBlock,
-      duplicateSelectedBlock,
-      insertBlockAfter,
-      insertBlockBefore,
-      insertBlockAtEnd
+      duplicateSelectedBlock
     }}>
       {children}
     </SelectionContext.Provider>

@@ -7,6 +7,7 @@ import type { Platform } from '@blocks/shared/Visibility';
 import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
 import { HistoryProvider } from '@context/HistoryContext';
+import { BlockInsertProvider } from '@context/BlockInsertContext';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {
@@ -129,14 +130,16 @@ function App() {
   return (
     <HistoryProvider initialSchema={sampleSchema}>
       <SelectionProvider>
-        <div className="h-screen flex flex-col bg-gray-50">
-          <TopBar />
-          <div className="flex-1 flex">
-            <LibraryPanel />
-            <Canvas />
-            <SettingsPanel />
+        <BlockInsertProvider>
+          <div className="h-screen flex flex-col bg-gray-50">
+            <TopBar />
+            <div className="flex-1 flex">
+              <LibraryPanel />
+              <Canvas />
+              <SettingsPanel />
+            </div>
           </div>
-        </div>
+        </BlockInsertProvider>
       </SelectionProvider>
     </HistoryProvider>
   );

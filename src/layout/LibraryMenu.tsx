@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
 
@@ -10,7 +11,8 @@ interface LibraryMenuProps {
 }
 
 const LibraryMenu: React.FC<LibraryMenuProps> = ({ position, blockId }) => {
-  const { selectedBlockId, insertBlockAfter, insertBlockBefore } = useSelection();
+  const { selectedBlockId } = useSelection();
+  const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
   const [isHovered, setIsHovered] = useState(false);
 
   // Only show if this block is selected
