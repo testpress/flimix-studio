@@ -40,6 +40,9 @@ interface SelectionProviderProps {
 }
 
 export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, initialSchema }) => {
+  // History management constants
+  const HISTORY_LIMIT = 50;
+
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
@@ -50,7 +53,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   // Helper function to save current state before mutation
   const saveStateForUndo = () => {
     const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setUndoStack(prev => [...prev, currentBlocks].slice(-50)); // Limit history to 50 entries
+    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit history to 50 entries
     setRedoStack([]); // Clear redo stack when new changes are made
   };
 
@@ -485,7 +488,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     
     // Save current state to redo stack before undoing
     const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setRedoStack(prev => [...prev, currentBlocks].slice(-50)); // Limit redo history to 50 entries
+    setRedoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit redo history to 50 entries
     
     const previousBlocks = undoStack[undoStack.length - 1];
     setPageSchema(prev => ({
@@ -507,7 +510,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     
     // Save current state to undo stack before redoing
     const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setUndoStack(prev => [...prev, currentBlocks].slice(-50)); // Limit undo history to 50 entries
+    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit undo history to 50 entries
     
     const nextBlocks = redoStack[redoStack.length - 1];
     setPageSchema(prev => ({

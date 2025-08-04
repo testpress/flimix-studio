@@ -33,8 +33,8 @@ const TopBar: React.FC = () => {
             }`}
             title={canRedo ? 'Redo last undone action' : 'Nothing to redo'}
           >
-            <Redo className="w-4 h-4" />
             <span>Redo</span>
+            <Redo className="w-4 h-4" />
           </button>
           <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">
             Save
