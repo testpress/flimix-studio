@@ -46,8 +46,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   // Helper function to save current state before mutation
   const saveStateForUndo = () => {
-    const currentBlocks = cloneBlocks(pageSchema.blocks) as BlockType[];
-    setUndoStack(prev => [...prev, currentBlocks]);
+    const currentBlocks = cloneBlocks(pageSchema.blocks);
+    setUndoStack(prev => [...prev, currentBlocks].slice(-50)); // Limit history to 50 entries
   };
 
   // Helper function to validate block types
