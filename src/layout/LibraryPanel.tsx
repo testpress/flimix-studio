@@ -14,12 +14,12 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
 };
 
 const LibraryPanel: React.FC = () => {
-  const { selectedBlockId, insertBlockBefore, insertBlockAtEnd } = useSelection();
+  const { selectedBlockId, insertBlockAfter, insertBlockAtEnd } = useSelection();
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
-      // Insert before the currently selected block
-      insertBlockBefore(blockType);
+      // Insert After the currently selected block
+      insertBlockAfter(blockType);
     } else {
       // If no block is selected, insert at the end of the page
       insertBlockAtEnd(blockType);
