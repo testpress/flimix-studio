@@ -6,6 +6,7 @@ import type { Theme } from '@blocks/shared/Style';
 import type { Platform } from '@blocks/shared/Visibility';
 import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
+import { HistoryProvider } from '@context/HistoryContext';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {
@@ -126,16 +127,18 @@ const sampleSchema: PageSchema = {
 
 function App() {
   return (
-    <SelectionProvider initialSchema={sampleSchema}>
-      <div className="h-screen flex flex-col bg-gray-50">
-        <TopBar />
-        <div className="flex-1 flex">
-          <LibraryPanel />
-          <Canvas />
-          <SettingsPanel />
+    <HistoryProvider initialSchema={sampleSchema}>
+      <SelectionProvider>
+        <div className="h-screen flex flex-col bg-gray-50">
+          <TopBar />
+          <div className="flex-1 flex">
+            <LibraryPanel />
+            <Canvas />
+            <SettingsPanel />
+          </div>
         </div>
-      </div>
-    </SelectionProvider>
+      </SelectionProvider>
+    </HistoryProvider>
   );
 }
 

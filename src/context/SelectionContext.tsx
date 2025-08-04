@@ -5,9 +5,9 @@ import type { StyleProps } from '@blocks/shared/Style';
 import { duplicateBlockWithNewIds, updateBlockChildren } from '@domain/blocks/blockFactory';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { swap } from '@utils/array';
-import { cloneBlocks } from '@domain/blocks/history';
 import { findBlockAndParent, findBlockPositionById } from '@domain/blocks/blockTraversal';
 import { createBlock } from '@domain/blocks/blockFactory';
+import { useHistory } from './HistoryContext';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -26,36 +26,20 @@ interface SelectionContextType {
   insertBlockAfter: (blockType: BlockType['type']) => void;
   insertBlockBefore: (blockType: BlockType['type']) => void;
   insertBlockAtEnd: (blockType: BlockType['type']) => void;
-  undo: () => void;
-  canUndo: boolean;
-  redo: () => void;
-  canRedo: boolean;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
 
 interface SelectionProviderProps {
   children: ReactNode;
-  initialSchema: PageSchema;
 }
 
-export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, initialSchema }) => {
-  // History management constants
-  const HISTORY_LIMIT = 50;
+export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }) => {
+  const { pageSchema, updatePageWithHistory } = useHistory();
 
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
-  const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
-  const [undoStack, setUndoStack] = useState<BlockType[][]>([]);
-  const [redoStack, setRedoStack] = useState<BlockType[][]>([]);
-
-  // Helper function to save current state before mutation
-  const saveStateForUndo = () => {
-    const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit history to 50 entries
-    setRedoStack([]); // Clear redo stack when new changes are made
-  };
 
   // Helper function to validate block types
   const isBlockTypeValid = (blockType: string): boolean => {
@@ -69,8 +53,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
-
-    saveStateForUndo();
 
     const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
       return blocks.map(block => {
@@ -102,7 +84,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: updatedBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
@@ -132,8 +114,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   const updateSelectedBlockStyle = (newStyle: Partial<StyleProps>) => {
     if (!selectedBlock) return;
-
-    saveStateForUndo();
 
     const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
       return blocks.map(block => {
@@ -165,7 +145,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: updatedBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
@@ -198,8 +178,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       return;
     }
 
-    saveStateForUndo();
-
     const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
     
     if (!block) {
@@ -225,7 +203,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         blocks: newBlocks
       };
 
-      setPageSchema(updatedSchema);
+      updatePageWithHistory(updatedSchema);
       return;
     }
 
@@ -245,17 +223,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: newBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
   };
-
-
 
   const moveBlockDown = () => {
     if (!selectedBlockId) {
       return;
     }
-
-    saveStateForUndo();
 
     const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
     
@@ -282,7 +256,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         blocks: newBlocks
       };
 
-      setPageSchema(updatedSchema);
+      updatePageWithHistory(updatedSchema);
       return;
     }
 
@@ -302,13 +276,11 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: newBlocks
     };
 
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
   };
 
   const deleteSelectedBlock = () => {
     if (!selectedBlockId) return;
-    
-    saveStateForUndo();
     
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
@@ -320,14 +292,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
     newContainer.splice(index, 1);
     
     // Update the schema
+    const newBlocks = result.parent 
+      ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
+      : newContainer;
+    
     const updatedSchema = {
       ...pageSchema,
-      blocks: result.parent 
-        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-        : newContainer
+      blocks: newBlocks
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     setSelectedBlockId(null);
     setSelectedBlock(null);
     setSelectedBlockParentId(null);
@@ -335,8 +309,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   const duplicateSelectedBlock = () => {
     if (!selectedBlockId) return;
-    
-    saveStateForUndo();
     
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) return;
@@ -362,7 +334,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Optionally select the newly duplicated block
     setSelectedBlockId(duplicatedBlock.id);
@@ -372,8 +344,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   const insertBlockAfter = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
-    
-    saveStateForUndo();
     
     // Validate block type
     if (!isBlockTypeValid(blockType)) {
@@ -406,7 +376,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
@@ -416,8 +386,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
 
   const insertBlockBefore = (blockType: BlockType['type']) => {
     if (!selectedBlockId) return;
-    
-    saveStateForUndo();
     
     // Validate block type
     if (!isBlockTypeValid(blockType)) {
@@ -450,7 +418,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
         : newContainer
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
@@ -459,8 +427,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
   };
 
   const insertBlockAtEnd = (blockType: BlockType['type']) => {
-    saveStateForUndo();
-    
     // Validate block type
     if (!isBlockTypeValid(blockType)) {
       return;
@@ -475,57 +441,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       blocks: [...pageSchema.blocks, newBlock]
     };
     
-    setPageSchema(updatedSchema);
+    updatePageWithHistory(updatedSchema);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock as Block);
     setSelectedBlockParentId(null);
   };
-
-  const undo = () => {
-    if (undoStack.length === 0) return;
-    
-    // Save current state to redo stack before undoing
-    const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setRedoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit redo history to 50 entries
-    
-    const previousBlocks = undoStack[undoStack.length - 1];
-    setPageSchema(prev => ({
-      ...prev,
-      blocks: previousBlocks
-    }));
-    setUndoStack(prev => prev.slice(0, -1));
-    
-    // Clear selection when undoing
-    setSelectedBlock(null);
-    setSelectedBlockId(null);
-    setSelectedBlockParentId(null);
-  };
-
-  const canUndo = undoStack.length > 0;
-
-  const redo = () => {
-    if (redoStack.length === 0) return;
-    
-    // Save current state to undo stack before redoing
-    const currentBlocks = cloneBlocks(pageSchema.blocks);
-    setUndoStack(prev => [...prev, currentBlocks].slice(-HISTORY_LIMIT)); // Limit undo history to 50 entries
-    
-    const nextBlocks = redoStack[redoStack.length - 1];
-    setPageSchema(prev => ({
-      ...prev,
-      blocks: nextBlocks
-    }));
-    setRedoStack(prev => prev.slice(0, -1));
-    
-    // Clear selection when redoing
-    setSelectedBlock(null);
-    setSelectedBlockId(null);
-    setSelectedBlockParentId(null);
-  };
-
-  const canRedo = redoStack.length > 0;
 
   return (
     <SelectionContext.Provider value={{
@@ -544,11 +466,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children, 
       duplicateSelectedBlock,
       insertBlockAfter,
       insertBlockBefore,
-      insertBlockAtEnd,
-      undo,
-      canUndo,
-      redo,
-      canRedo
+      insertBlockAtEnd
     }}>
       {children}
     </SelectionContext.Provider>

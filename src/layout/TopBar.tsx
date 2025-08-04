@@ -1,9 +1,9 @@
 import React from 'react';
 import { Undo, Redo } from 'lucide-react';
-import { useSelection } from '@context/SelectionContext';
+import { useHistory } from '@context/HistoryContext';
 
 const TopBar: React.FC = () => {
-  const { undo, canUndo, redo, canRedo } = useSelection();
+  const { undo, canUndo, redo, canRedo } = useHistory();
 
   return (
     <div className="bg-gray-800 text-white p-4 border-b border-gray-700">
