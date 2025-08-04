@@ -6,6 +6,12 @@ import { findBlockPositionById } from '@domain/blocks/blockTraversal';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
 
+// Enum for insertion position relative to selected block
+enum InsertPosition {
+  BEFORE = 'before',
+  AFTER = 'after'
+}
+
 interface BlockInsertContextType {
   insertBlockAfter: (blockType: BlockType['type']) => void;
   insertBlockBefore: (blockType: BlockType['type']) => void;
@@ -19,7 +25,7 @@ interface BlockInsertProviderProps {
 }
 
 export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ children }) => {
-  const { pageSchema, updatePageWithHistory, recordState } = useHistory();
+  const { pageSchema, updatePageWithHistory } = useHistory();
   const { 
     selectedBlockId, 
     setSelectedBlockId, 
@@ -38,10 +44,11 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   };
 
   /**
-   * Inserts a new block after the currently selected block
+   * Private helper function to insert a block at a specific position relative to the selected block
    * @param blockType - Type of block to create and insert
+   * @param position - Position relative to the selected block (BEFORE or AFTER)
    */
-  const insertBlockAfter = (blockType: BlockType['type']) => {
+  const insertBlockRelative = (blockType: BlockType['type'], position: InsertPosition) => {
     if (!selectedBlockId) return;
     
     // Validate block type
@@ -58,10 +65,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
     
-    // Record current state before making changes
-    recordState(pageSchema.blocks);
-    
-    // Insert the new block after the selected block
+    // Find the position of the selected block
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) {
       console.error(`Target block with ID ${selectedBlockId} not found`);
@@ -70,7 +74,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
 
     const { container, index } = result;
     const newContainer = [...container] as BlockType[];
-    newContainer.splice(index + 1, 0, newBlock);
+    const insertIndex = position === InsertPosition.AFTER ? index + 1 : index;
+    newContainer.splice(insertIndex, 0, newBlock);
     
     const updatedBlocks = result.parent 
       ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
@@ -86,11 +91,18 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as BlockType);
+    setSelectedBlock(newBlock);
     
-    // Find the parent ID for the newly inserted block
-    const newResult = findBlockPositionById(updatedBlocks, newBlock.id);
-    setSelectedBlockParentId(newResult?.parent?.id || null);
+    // The parent of the new block is the same as the selected block's parent
+    setSelectedBlockParentId(result.parent?.id || null);
+  };
+
+  /**
+   * Inserts a new block after the currently selected block
+   * @param blockType - Type of block to create and insert
+   */
+  const insertBlockAfter = (blockType: BlockType['type']) => {
+    insertBlockRelative(blockType, InsertPosition.AFTER);
   };
 
   /**
@@ -98,55 +110,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    * @param blockType - Type of block to create and insert
    */
   const insertBlockBefore = (blockType: BlockType['type']) => {
-    if (!selectedBlockId) return;
-    
-    // Validate block type
-    if (!isBlockTypeValid(blockType)) {
-      return;
-    }
-    
-    // Create new block using the factory function
-    let newBlock;
-    try {
-      newBlock = createBlock(blockType);
-    } catch (error) {
-      console.error('Failed to create block:', error);
-      return;
-    }
-    
-    // Record current state before making changes
-    recordState(pageSchema.blocks);
-    
-    // Insert the new block before the selected block
-    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
-    if (!result) {
-      console.error(`Target block with ID ${selectedBlockId} not found`);
-      return;
-    }
-
-    const { container, index } = result;
-    const newContainer = [...container] as BlockType[];
-    newContainer.splice(index, 0, newBlock);
-    
-    const updatedBlocks = result.parent 
-      ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-      : newContainer;
-    
-    // Update the schema
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: updatedBlocks
-    };
-    
-    updatePageWithHistory(updatedSchema);
-    
-    // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as BlockType);
-    
-    // Find the parent ID for the newly inserted block
-    const newResult = findBlockPositionById(updatedBlocks, newBlock.id);
-    setSelectedBlockParentId(newResult?.parent?.id || null);
+    insertBlockRelative(blockType, InsertPosition.BEFORE);
   };
 
   /**
@@ -160,10 +124,13 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     }
     
     // Create new block using the factory function
-    const newBlock = createBlock(blockType);
-    
-    // Record current state before making changes
-    recordState(pageSchema.blocks);
+    let newBlock;
+    try {
+      newBlock = createBlock(blockType);
+    } catch (error) {
+      console.error('Failed to create block:', error);
+      return;
+    }
     
     // Add the new block to the end of the page
     const updatedSchema = {
