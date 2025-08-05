@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus, Type, Layout, Square } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockInsert } from '@context/BlockInsertContext';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
@@ -14,7 +15,8 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
 };
 
 const LibraryPanel: React.FC = () => {
-  const { selectedBlockId, insertBlockAfter, insertBlockAtEnd } = useSelection();
+  const { selectedBlockId } = useSelection();
+  const { insertBlockAfter, insertBlockAtEnd } = useBlockInsert();
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
