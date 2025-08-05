@@ -3,7 +3,7 @@ import BlockRenderer from '@renderer/BlockRenderer';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { SectionBlock } from './schema';
-import LibraryMenu from '@layout/LibraryMenu';
+import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 
@@ -97,7 +97,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         <div className="space-y-4">
           {children.map((childBlock) => (
             <div key={childBlock.id}>
-              <LibraryMenu position="above" blockId={childBlock.id} />
+              <BlockInsertDropdown position="above" blockId={childBlock.id} />
               <BlockRenderer 
                 block={childBlock} 
                 visibilityContext={visibilityContext} 
@@ -106,7 +106,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
                 selectedBlockId={selectedBlockId}
                 isSelected={selectedBlockId === childBlock.id}
               />
-              <LibraryMenu position="below" blockId={childBlock.id} />
+              <BlockInsertDropdown position="below" blockId={childBlock.id} />
             </div>
           ))}
         </div>

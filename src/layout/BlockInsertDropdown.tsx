@@ -5,12 +5,12 @@ import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
 
-interface LibraryMenuProps {
+interface BlockInsertDropdownProps {
   position: 'above' | 'below';
   blockId: string;
 }
 
-const LibraryMenu: React.FC<LibraryMenuProps> = ({ position, blockId }) => {
+const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId }) => {
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
   const [isHovered, setIsHovered] = useState(false);
@@ -64,4 +64,4 @@ const LibraryMenu: React.FC<LibraryMenuProps> = ({ position, blockId }) => {
   );
 };
 
-export default LibraryMenu; 
+export default BlockInsertDropdown; 

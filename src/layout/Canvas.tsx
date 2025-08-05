@@ -1,6 +1,6 @@
 import React from 'react';
 import BlockRenderer from '@renderer/BlockRenderer';
-import LibraryMenu from '@layout/LibraryMenu';
+import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { Platform, VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
@@ -125,7 +125,7 @@ const Canvas: React.FC = () => {
           <div className="space-y-6">
             {pageSchema.blocks.map((block: Block) => (
               <div key={block.id}>
-                <LibraryMenu position="above" blockId={block.id} />
+                <BlockInsertDropdown position="above" blockId={block.id} />
                 <BlockRenderer 
                   block={block} 
                   showDebug={showDebug} 
@@ -134,7 +134,7 @@ const Canvas: React.FC = () => {
                   isSelected={selectedBlockId === block.id}
                   selectedBlockId={selectedBlockId}
                 />
-                <LibraryMenu position="below" blockId={block.id} />
+                <BlockInsertDropdown position="below" blockId={block.id} />
               </div>
             ))}
           </div>
