@@ -4,7 +4,6 @@ import { createBlock, updateBlockChildren, findBlockPositionById } from '@contex
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
-import { toast } from 'react-toastify';
 
 // Enum for insertion position relative to selected block
 enum InsertPosition {
@@ -167,7 +166,6 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     if (blockType === 'section') {
       // Section is selected - use insertBlockRelative to insert after the selected Section
       insertBlockRelative(blockType, InsertPosition.AFTER);
-      toast.info("Section Inserted");
       return;
     }
 

@@ -35,7 +35,14 @@ const LibraryPanel: React.FC = () => {
     );
   };
 
+  // Get all block templates using the helper function
+  const allTemplates = getAllBlockLibraryItems();
+
   const handleBlockInsert = (blockType: BlockType['type']) => {
+    // Get the block template name for the toast message
+    const blockTemplate = allTemplates.find(template => template.type === blockType);
+    const blockName = blockTemplate?.name || blockType;
+
     if (selectedBlockId) {
       // Check if the selected block is a Section (only at top level)
       const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
@@ -43,33 +50,38 @@ const LibraryPanel: React.FC = () => {
       if (selectedBlock?.type === 'section') {
         // Insert into the children of the Section block (or after it if it's a Section)
         insertBlockInsideSection(blockType, selectedBlockId);
+        if (blockType === 'section') {
+          toast.success(`${blockName} inserted after selected section`);
+        } else {
+          toast.success(`${blockName} added inside section`);
+        }
       } else {
         // Check if the selected block is a child of a Section
         if (isChildBlock(selectedBlockId)) {
           // Child block is selected - allow other blocks but restrict Section blocks
           if (blockType === 'section') {
-            toast.error("You cannot insert a Section inside another Section!");
+            toast.error("Sections can't be nested! Try inserting it at the page level instead.");
             return;
           } else {
             // Find the parent Section and insert the block inside it
             const parentSection = findParentSection(selectedBlockId);
             if (parentSection) {
               insertBlockInsideSection(blockType, parentSection.id);
+              toast.success(`${blockName} added to section`);
             }
           }
         } else {
           // Default behavior: insert after the currently selected block
           insertBlockAfter(blockType);
+          toast.success(`${blockName} placed after selected block`);
         }
       }
     } else {
       // If no block is selected, insert at the end of the page
       insertBlockAtEnd(blockType);
+      toast.success(`${blockName} added to the end of page`);
     }
   };
-
-  // Get all block templates using the helper function
-  const allTemplates = getAllBlockLibraryItems();
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">

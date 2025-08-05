@@ -49,7 +49,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       if (isChildBlock(selectedBlockId)) {
         // Child block is selected - allow other blocks but restrict Section blocks
         if (blockType === 'section') {
-          toast.error("You cannot insert a Section inside another Section!");
+          toast.error("Sections can't be nested! Try inserting it at the page level instead.");
           return;
         } else {
           // Find the parent Section and insert the block inside it
