@@ -4,6 +4,7 @@ import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
+import { useHistory } from '@context/HistoryContext';
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -12,8 +13,25 @@ interface BlockInsertDropdownProps {
 
 const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId }) => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
+  const { insertBlockAfter, insertBlockBefore, insertBlockInsideSection } = useBlockInsert();
+  const { pageSchema } = useHistory();
   const [isHovered, setIsHovered] = useState(false);
+
+  // Recursive function to find a block by ID at any depth
+  const findBlockRecursively = (blocks: BlockType[], targetId: string): BlockType | null => {
+    for (const block of blocks) {
+      if (block.id === targetId) {
+        return block;
+      }
+      if (block.children && block.children.length > 0) {
+        const found = findBlockRecursively(block.children, targetId);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  };
 
   // Only show if this block is selected
   if (selectedBlockId !== blockId) {
@@ -21,10 +39,18 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }
 
   const handleInsert = (blockType: BlockType['type']) => {
-    if (position === 'above') {
-      insertBlockBefore(blockType);
+    // Check if the selected block is a Section (including nested ones)
+    const selectedBlock = findBlockRecursively(pageSchema.blocks, selectedBlockId);
+    if (selectedBlock?.type === 'section') {
+      // Insert inside the section's children
+      insertBlockInsideSection(blockType, selectedBlockId);
     } else {
-      insertBlockAfter(blockType);
+      // Default: insert either before or after the selected block
+      if (position === 'above') {
+        insertBlockBefore(blockType);
+      } else {
+        insertBlockAfter(blockType);
+      }
     }
   };
 

@@ -6,6 +6,7 @@ import { useBlockInsert } from '@context/BlockInsertContext';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
+import { useHistory } from '@context/HistoryContext';
 
 // Icon mapping for the templates
 const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
@@ -16,12 +17,36 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
 
 const LibraryPanel: React.FC = () => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockAtEnd } = useBlockInsert();
+  const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection } = useBlockInsert();
+  const { pageSchema } = useHistory();
+
+  // Recursive function to find a block by ID at any depth
+  const findBlockRecursively = (blocks: BlockType[], targetId: string): BlockType | null => {
+    for (const block of blocks) {
+      if (block.id === targetId) {
+        return block;
+      }
+      if (block.children && block.children.length > 0) {
+        const found = findBlockRecursively(block.children, targetId);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  };
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
-      // Insert After the currently selected block
-      insertBlockAfter(blockType);
+      // Check if the selected block is a Section (including nested ones)
+      const selectedBlock = findBlockRecursively(pageSchema.blocks, selectedBlockId);
+      if (selectedBlock?.type === 'section') {
+        // Insert into the children of the Section block
+        insertBlockInsideSection(blockType, selectedBlockId);
+      } else {
+        // Default behavior: insert after the currently selected block
+        insertBlockAfter(blockType);
+      }
     } else {
       // If no block is selected, insert at the end of the page
       insertBlockAtEnd(blockType);
@@ -83,7 +108,13 @@ const LibraryPanel: React.FC = () => {
       <div className="p-4 border-t border-gray-200 bg-gray-50">
         <div className="text-xs text-gray-500">
           {selectedBlockId ? (
-            <span>Will insert after selected block</span>
+            (() => {
+              const selectedBlock = findBlockRecursively(pageSchema.blocks, selectedBlockId);
+              if (selectedBlock?.type === 'section') {
+                return <span>Will insert inside section</span>;
+              }
+              return <span>Will insert after selected block</span>;
+            })()
           ) : (
             <span>Will insert at the end of the page</span>
           )}
