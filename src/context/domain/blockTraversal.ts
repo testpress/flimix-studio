@@ -74,7 +74,7 @@ export function findBlockPositionById(
  */
 export function findBlockPositionForUI(
   blockId: string, 
-  blocks: any[]
+  blocks: Block[]
 ): { isTopLevel: boolean; parentId: string | null; index: number; totalSiblings: number } {
   // Check top-level blocks first
   const topLevelIndex = blocks.findIndex(block => block.id === blockId);
@@ -90,7 +90,7 @@ export function findBlockPositionForUI(
   // Check nested blocks
   for (const block of blocks) {
     if (block.children) {
-      const childIndex = block.children.findIndex((child: any) => child.id === blockId);
+      const childIndex = block.children.findIndex((child: Block) => child.id === blockId);
       if (childIndex !== -1) {
         return {
           isTopLevel: false,

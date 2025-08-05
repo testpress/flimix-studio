@@ -3,6 +3,9 @@ import { HeroLibraryItem } from '@blocks/hero/libraryItem';
 import { TextLibraryItem } from '@blocks/text/libraryItem';
 import { SectionLibraryItem } from '@blocks/section/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
+import type { HeroBlockProps } from '@blocks/hero/schema';
+import type { TextBlockProps } from '@blocks/text/schema';
+import type { SectionBlockProps } from '@blocks/section/schema';
 
 // Export individual library items
 export { HeroLibraryItem } from '@blocks/hero/libraryItem';
@@ -15,7 +18,7 @@ export type BlockLibraryItem = {
   name: string;
   description: string;
   icon: 'Layout' | 'Type' | 'Square';
-  defaultProps: any;
+  defaultProps: HeroBlockProps | TextBlockProps | SectionBlockProps;
 };
 
 // Re-export all library items as an array for easy iteration

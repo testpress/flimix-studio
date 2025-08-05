@@ -1,8 +1,9 @@
 import React from 'react';
 import type { VisibilityProps, Platform } from '@blocks/shared/Visibility';
+import type { Block } from '@blocks/shared/Block';
 
 interface VisibilityFormProps {
-  block: any; // Using any for now to avoid type issues
+  block: Block; // Using the proper Block type
   visibility: VisibilityProps;
   onUpdateVisibility: (visibility: VisibilityProps) => void;
 }
