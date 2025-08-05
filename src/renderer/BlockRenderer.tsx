@@ -6,11 +6,57 @@ import type { Block } from '@blocks/shared/Block';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
-import type { VisibilityContext } from '@blocks/shared/Visibility';
-import { evaluateVisibility } from '@renderer/domain';
+import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
 import { AlertTriangle } from 'lucide-react';
+
+/**
+ * Evaluate if a block should be visible based on visibility rules and context
+ * @param visibility - The visibility rules for the block
+ * @param context - The current visibility context
+ * @returns true if the block should be visible, false otherwise
+ */
+function evaluateVisibility(
+  visibility?: VisibilityProps,
+  context?: VisibilityContext
+): boolean {
+  if (!visibility) return true;
+  if (!context) return false;
+
+  if (
+    visibility.isLoggedIn !== undefined &&
+    visibility.isLoggedIn !== context.isLoggedIn
+  )
+    return false;
+
+  if (
+    visibility.isSubscribed !== undefined &&
+    visibility.isSubscribed !== context.isSubscribed
+  )
+    return false;
+
+  if (
+    visibility.subscriptionTier &&
+    visibility.subscriptionTier !== context.subscriptionTier
+  )
+    return false;
+
+  if (
+    visibility.region &&
+    !visibility.region.includes(context.region ?? '')
+  )
+    return false;
+
+  if (
+    visibility.platform &&
+    context.platform &&
+    !visibility.platform.includes(context.platform as Platform)
+  )
+    return false;
+
+  return true;
+}
 
 interface BlockRendererProps {
   block: Block;

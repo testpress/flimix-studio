@@ -1,6 +1,6 @@
 import React from 'react';
+import BlockPropertiesForm from '@blocks/settings/BlockPropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
 import type { Field } from '@blocks/shared/Field';
 
 // Hero block editor schema
@@ -40,7 +40,7 @@ const heroEditorFields: Field[] = [
 
 const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
-    <DynamicPropsForm
+    <BlockPropertiesForm
       block={block}
       fieldDefinitions={heroEditorFields}
       updateProps={updateProps}
