@@ -36,9 +36,22 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
 
+  // Helper function to recursively check if a block exists in the schema
+  const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {
+    for (const block of blocks) {
+      if (block.id === blockId) {
+        return true;
+      }
+      if (block.children && blockExistsInSchema(blockId, block.children)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // Clear selectedId if it no longer exists in the schema after undo/redo
   useEffect(() => {
-    if (selectedBlockId && !pageSchema.blocks.some((block) => block.id === selectedBlockId)) {
+    if (selectedBlockId && !blockExistsInSchema(selectedBlockId, pageSchema.blocks)) {
       setSelectedBlockId(null);
       setSelectedBlock(null);
       setSelectedBlockParentId(null);
