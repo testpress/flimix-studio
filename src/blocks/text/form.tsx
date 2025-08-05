@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockPropertiesForm from '@blocks/settings/BlockPropertiesForm';
+import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
 
@@ -16,7 +16,7 @@ const textEditorFields: Field[] = [
 
 const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
-    <BlockPropertiesForm
+    <PropertiesForm
       block={block}
       fieldDefinitions={textEditorFields}
       updateProps={updateProps}

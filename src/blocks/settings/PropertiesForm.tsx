@@ -59,7 +59,7 @@ function setFormFieldValue(obj: any, fieldPath: string, value: any): any {
 
 /**
  * Update a form field in block props using dot notation path
- * Used by the BlockPropertiesForm to update block properties in the editor
+ * Used by the PropertiesForm to update block properties in the editor
  * @param currentProps - Current block props
  * @param fieldPath - The dot-notation path to update
  * @param value - The new field value
@@ -69,13 +69,13 @@ function updateFormField(currentProps: any, fieldPath: string, value: any): any 
   return setFormFieldValue(currentProps, fieldPath, value);
 }
 
-interface BlockPropertiesFormProps {
+interface PropertiesFormProps {
   block: Block;
   fieldDefinitions: Field[];
   updateProps: (newProps: Partial<any>) => void;
 }
 
-const BlockPropertiesForm: React.FC<BlockPropertiesFormProps> = ({ 
+const PropertiesForm: React.FC<PropertiesFormProps> = ({ 
   block, 
   fieldDefinitions, 
   updateProps 
@@ -192,4 +192,4 @@ const BlockPropertiesForm: React.FC<BlockPropertiesFormProps> = ({
   );
 };
 
-export default BlockPropertiesForm; 
+export default PropertiesForm; 
