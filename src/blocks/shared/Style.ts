@@ -11,7 +11,14 @@ export type BorderRadius = 'none' | 'sm' | 'md' | 'lg';
 // Box shadow options
 export type BoxShadow = 'none' | 'sm' | 'md' | 'lg';
 
-export type StyleValue = Theme | Padding | TextAlign | BorderRadius | BoxShadow | string;
+// Keep literal information *and* allow arbitrary strings
+export type StyleValue =
+  | Theme
+  | Padding
+  | TextAlign
+  | BorderRadius
+  | BoxShadow
+  | (string & {});
 
 // Enhanced style properties
 export interface StyleProps {

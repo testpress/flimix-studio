@@ -73,7 +73,7 @@ function updateFormField(currentProps: BlockProps, fieldPath: string, value: Fie
 interface PropertiesFormProps {
   block: Block;
   fieldDefinitions: Field[];
-  updateProps: (newProps: BlockProps) => void;
+  updateProps: (newProps: Partial<BlockProps>) => void;
 }
 
 const PropertiesForm: React.FC<PropertiesFormProps> = ({ 
@@ -82,8 +82,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
   updateProps 
 }) => {
   const handleFieldChange = (path: string, value: FieldValue) => {
-    const currentProps = block.props || {};
-    const updatedProps = updateFormField(currentProps as BlockProps, path, value);
+    const updatedProps = updateFormField(block.props, path, value);
     updateProps(updatedProps);
   };
 
