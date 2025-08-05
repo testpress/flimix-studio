@@ -4,6 +4,7 @@ import { createBlock, updateBlockChildren, findBlockPositionById } from '@contex
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
+import { toast } from 'react-toastify';
 
 // Enum for insertion position relative to selected block
 enum InsertPosition {
@@ -157,11 +158,19 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   };
 
   /**
-   * Inserts a new block as a child of a Section block (supports nested sections)
+   * Inserts a new block as a child of a Section block
    * @param blockType - Type of block to create and insert
    * @param sectionId - ID of the section block to insert into
    */
   const insertBlockInsideSection = (blockType: BlockType['type'], sectionId: string) => {
+    // If trying to insert a Section inside a Section, insert it after the Section instead
+    if (blockType === 'section') {
+      // Section is selected - use insertBlockRelative to insert after the selected Section
+      insertBlockRelative(blockType, InsertPosition.AFTER);
+      toast.info("Section Inserted");
+      return;
+    }
+
     // Validate block type
     if (!isBlockTypeValid(blockType)) {
       return;
@@ -176,37 +185,16 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
     
-    // Ensure Section blocks have children initialized
-    if (newBlock.type === 'section' && !newBlock.children) {
-      newBlock.children = []; // Initialize children array for nested Section blocks
-    }
-    
-    // Recursive function to find and update a section block at any depth
-    const updateSectionRecursively = (blocks: BlockType[]): BlockType[] => {
-      return blocks.map(block => {
-        if (block.id === sectionId) {
-          // Found the target section - update its children
-          return {
-            ...block,
-            children: [...(block.children || []), newBlock]
-          };
-        }
-        
-        // If this block has children, recursively search them
-        if (block.children && block.children.length > 0) {
-          return {
-            ...block,
-            children: updateSectionRecursively(block.children)
-          };
-        }
-        
-        // No match, return block unchanged
-        return block;
-      });
-    };
-    
-    // Update the blocks array recursively
-    const updatedBlocks = updateSectionRecursively(pageSchema.blocks);
+    // Simple find and update (no recursion needed since Section blocks are only at top level)
+    const updatedBlocks = pageSchema.blocks.map(block => {
+      if (block.id === sectionId) {
+        return {
+          ...block,
+          children: [...(block.children || []), newBlock]
+        };
+      }
+      return block;
+    });
     
     // Update the schema with the new blocks array
     const updatedSchema = {

@@ -7,6 +7,7 @@ import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
+import { toast } from 'react-toastify';
 
 // Icon mapping for the templates
 const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
@@ -20,32 +21,46 @@ const LibraryPanel: React.FC = () => {
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection } = useBlockInsert();
   const { pageSchema } = useHistory();
 
-  // Recursive function to find a block by ID at any depth
-  const findBlockRecursively = (blocks: BlockType[], targetId: string): BlockType | null => {
-    for (const block of blocks) {
-      if (block.id === targetId) {
-        return block;
-      }
-      if (block.children && block.children.length > 0) {
-        const found = findBlockRecursively(block.children, targetId);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
+  // Helper function to check if a block is a child of a Section
+  const isChildBlock = (blockId: string) => {
+    return pageSchema.blocks.some(block => 
+      block.children && block.children.some(child => child.id === blockId)
+    );
+  };
+
+  // Helper function to find the parent Section of a child block
+  const findParentSection = (blockId: string) => {
+    return pageSchema.blocks.find(block => 
+      block.children && block.children.some(child => child.id === blockId)
+    );
   };
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
-      // Check if the selected block is a Section (including nested ones)
-      const selectedBlock = findBlockRecursively(pageSchema.blocks, selectedBlockId);
+      // Check if the selected block is a Section (only at top level)
+      const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
+      
       if (selectedBlock?.type === 'section') {
-        // Insert into the children of the Section block
+        // Insert into the children of the Section block (or after it if it's a Section)
         insertBlockInsideSection(blockType, selectedBlockId);
       } else {
-        // Default behavior: insert after the currently selected block
-        insertBlockAfter(blockType);
+        // Check if the selected block is a child of a Section
+        if (isChildBlock(selectedBlockId)) {
+          // Child block is selected - allow other blocks but restrict Section blocks
+          if (blockType === 'section') {
+            toast.error("You cannot insert a Section inside another Section!");
+            return;
+          } else {
+            // Find the parent Section and insert the block inside it
+            const parentSection = findParentSection(selectedBlockId);
+            if (parentSection) {
+              insertBlockInsideSection(blockType, parentSection.id);
+            }
+          }
+        } else {
+          // Default behavior: insert after the currently selected block
+          insertBlockAfter(blockType);
+        }
       }
     } else {
       // If no block is selected, insert at the end of the page
@@ -109,11 +124,18 @@ const LibraryPanel: React.FC = () => {
         <div className="text-xs text-gray-500">
           {selectedBlockId ? (
             (() => {
-              const selectedBlock = findBlockRecursively(pageSchema.blocks, selectedBlockId);
+              const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
+              
               if (selectedBlock?.type === 'section') {
-                return <span>Will insert inside section</span>;
+                return <span>Will insert inside section (or after if it's a Section)</span>;
+              } else {
+                // Check if the selected block is a child of a Section
+                if (isChildBlock(selectedBlockId)) {
+                  return <span>Will insert inside section (Section blocks not allowed)</span>;
+                } else {
+                  return <span>Will insert after selected block</span>;
+                }
               }
-              return <span>Will insert after selected block</span>;
             })()
           ) : (
             <span>Will insert at the end of the page</span>
