@@ -81,7 +81,7 @@ const LibraryPanel: React.FC = () => {
       <div className="p-4 border-t border-gray-200 bg-gray-50">
         <div className="text-xs text-gray-500">
           {selectedBlockId ? (
-            <span>Will insert before selected block</span>
+            <span>Will insert after selected block</span>
           ) : (
             <span>Will insert at the end of the page</span>
           )}
