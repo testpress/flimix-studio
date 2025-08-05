@@ -33,7 +33,7 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
       ...pageSchema,
       blocks: currentBlocks
     };
-    const clonedCurrentSchema = { ...currentSchema };
+    const clonedCurrentSchema = structuredClone(currentSchema);
     setUndoStack(prev => [...prev, clonedCurrentSchema].slice(-HISTORY_LIMIT)); // Limit history to 50 entries
     setRedoStack([]); // Clear redo stack when new changes are made
   };
@@ -48,7 +48,7 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     if (undoStack.length === 0) return;
     
     // Save current state to redo stack before undoing
-    const clonedCurrentSchema = { ...pageSchema };
+    const clonedCurrentSchema = structuredClone(pageSchema);
     setRedoStack(prev => [...prev, clonedCurrentSchema].slice(-HISTORY_LIMIT)); // Limit redo history to 50 entries
     
     const previousSchema = undoStack[undoStack.length - 1];
@@ -62,7 +62,7 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     if (redoStack.length === 0) return;
     
     // Save current state to undo stack before redoing
-    const clonedCurrentSchema = { ...pageSchema };
+    const clonedCurrentSchema = structuredClone(pageSchema);
     setUndoStack(prev => [...prev, clonedCurrentSchema].slice(-HISTORY_LIMIT)); // Limit undo history to 50 entries
     
     const nextSchema = redoStack[redoStack.length - 1];

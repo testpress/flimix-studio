@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
@@ -40,6 +40,15 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
+
+  // Clear selectedId if it no longer exists in the schema after undo/redo
+  useEffect(() => {
+    if (selectedBlockId && !pageSchema.blocks.some((block) => block.id === selectedBlockId)) {
+      setSelectedBlockId(null);
+      setSelectedBlock(null);
+      setSelectedBlockParentId(null);
+    }
+  }, [pageSchema, selectedBlockId]);
 
   // Helper function to validate block types
   const isBlockTypeValid = (blockType: string): boolean => {
