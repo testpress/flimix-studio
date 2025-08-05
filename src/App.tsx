@@ -133,7 +133,7 @@ function App() {
         <BlockInsertProvider>
           <div className="h-screen flex flex-col bg-gray-50">
             <TopBar />
-            <div className="flex-1 flex">
+            <div className="flex-1 flex pt-16">
               <LibraryPanel />
               <Canvas />
               <SettingsPanel />

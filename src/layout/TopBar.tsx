@@ -6,7 +6,7 @@ const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo } = useHistory();
 
   return (
-    <div className="bg-gray-800 text-white p-4 border-b border-gray-700">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Flimix Studio</h1>
         <div className="flex items-center space-x-4">
