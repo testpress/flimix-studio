@@ -78,12 +78,42 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
       const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
       
-      // If the block exists and has different data, update the reference
-      if (currentBlockInSchema && JSON.stringify(currentBlockInSchema) !== JSON.stringify(selectedBlock)) {
+      // Compare specific properties that are likely to change
+      if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {
         setSelectedBlock(currentBlockInSchema as Block);
       }
     }
   }, [pageSchema, selectedBlockId, selectedBlock]);
+
+  // Efficient comparison function for block changes
+  const hasBlockChanged = (block1: BlockType, block2: Block): boolean => {
+    // Compare props (most likely to change)
+    if (JSON.stringify(block1.props) !== JSON.stringify(block2.props)) {
+      return true;
+    }
+    
+    // Compare style (likely to change)
+    if (JSON.stringify(block1.style) !== JSON.stringify(block2.style)) {
+      return true;
+    }
+    
+    // Compare visibility (likely to change)
+    if (JSON.stringify(block1.visibility) !== JSON.stringify(block2.visibility)) {
+      return true;
+    }
+    
+    // Compare children (less likely to change, but important)
+    if (JSON.stringify(block1.children) !== JSON.stringify(block2.children)) {
+      return true;
+    }
+    
+    // Compare events (less likely to change)
+    if (JSON.stringify(block1.events) !== JSON.stringify(block2.events)) {
+      return true;
+    }
+    
+    return false;
+  };
 
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
@@ -211,61 +241,47 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const updateSelectedBlockVisibility = (newVisibility: Partial<VisibilityProps>) => {
     if (!selectedBlock) return;
 
-    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
-      return blocks.map(block => {
+    const updateAndFindBlock = (blocks: BlockType[]): { updatedBlocks: BlockType[], foundBlock: Block | null } => {
+      let foundBlock: Block | null = null;
+
+      const updatedBlocks = blocks.map(block => {
+        if (foundBlock) return block; // Optimization: stop mapping after found
+
         if (block.id === selectedBlock.id) {
-          return {
+          const updatedBlock = {
             ...block,
             visibility: {
               ...block.visibility,
-              ...newVisibility
-            }
+              ...newVisibility,
+            },
           } as BlockType;
+          foundBlock = updatedBlock as Block;
+          return updatedBlock;
         }
-        
-        // Recursively update children if this block has them
+
         if (block.children) {
-          return {
-            ...block,
-            children: updateBlockInSchema(block.children)
-          } as BlockType;
+          const result = updateAndFindBlock(block.children);
+          if (result.foundBlock) {
+            foundBlock = result.foundBlock;
+            return { ...block, children: result.updatedBlocks };
+          }
         }
         
         return block;
       });
+
+      return { updatedBlocks, foundBlock };
     };
 
-    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: updatedBlocks
-    };
+    const { updatedBlocks, foundBlock } = updateAndFindBlock(pageSchema.blocks);
 
-    updatePageWithHistory(updatedSchema);
-    
-    // Update the selected block reference
-    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
-      for (const block of blocks) {
-        if (block.id === selectedBlock.id) {
-          return {
-            ...block,
-            visibility: {
-              ...block.visibility,
-              ...newVisibility
-            }
-          } as Block;
-        }
-        if (block.children) {
-          const found = findUpdatedBlock(block.children);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-
-    const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
-    if (updatedSelectedBlock) {
-      setSelectedBlock(updatedSelectedBlock);
+    if (foundBlock) {
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: updatedBlocks,
+      };
+      updatePageWithHistory(updatedSchema);
+      setSelectedBlock(foundBlock);
     }
   };
 

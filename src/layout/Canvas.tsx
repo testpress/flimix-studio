@@ -97,7 +97,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                 <label className="text-sm text-gray-700 font-medium">Login Status:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={visibilityContext.isLoggedIn === undefined ? 'false' : visibilityContext.isLoggedIn.toString()}
+                  value={visibilityContext.isLoggedIn!.toString()}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
                     isLoggedIn: e.target.value === 'true'
@@ -112,7 +112,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                 <label className="text-sm text-gray-700 font-medium">Subscription:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={visibilityContext.isSubscribed === undefined ? 'false' : visibilityContext.isSubscribed.toString()}
+                  value={visibilityContext.isSubscribed!.toString()}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
                     isSubscribed: e.target.value === 'true'
