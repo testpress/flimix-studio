@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
+import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, findBlockPositionById } from '@context/domain';
 import { swap } from '@utils/array';
 import { useHistory } from './HistoryContext';
@@ -16,6 +17,7 @@ interface SelectionContextType {
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
+  updateSelectedBlockVisibility: (newVisibility: Partial<VisibilityProps>) => void;
   moveBlockUp: () => void;
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
@@ -55,7 +57,63 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       setSelectedBlock(null);
       setSelectedBlockParentId(null);
     }
-  }, [pageSchema, selectedBlockId]);
+  }, [pageSchema, selectedBlockId, blockExistsInSchema]);
+
+  // Sync selectedBlock reference with page schema when it changes (undo/redo)
+  useEffect(() => {
+    if (selectedBlockId && selectedBlock) {
+      // Find the current version of the selected block in the schema
+      const findBlockInSchema = (blocks: BlockType[]): BlockType | null => {
+        for (const block of blocks) {
+          if (block.id === selectedBlockId) {
+            return block;
+          }
+          if (block.children) {
+            const found = findBlockInSchema(block.children);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
+      
+      // Compare specific properties that are likely to change
+      if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {
+        setSelectedBlock(currentBlockInSchema as Block);
+      }
+    }
+  }, [pageSchema, selectedBlockId, selectedBlock]);
+
+  // Efficient comparison function for block changes
+  const hasBlockChanged = (block1: BlockType, block2: Block): boolean => {
+    // Compare props (most likely to change)
+    if (JSON.stringify(block1.props) !== JSON.stringify(block2.props)) {
+      return true;
+    }
+    
+    // Compare style (likely to change)
+    if (JSON.stringify(block1.style) !== JSON.stringify(block2.style)) {
+      return true;
+    }
+    
+    // Compare visibility (likely to change)
+    if (JSON.stringify(block1.visibility) !== JSON.stringify(block2.visibility)) {
+      return true;
+    }
+    
+    // Compare children (less likely to change, but important)
+    if (JSON.stringify(block1.children) !== JSON.stringify(block2.children)) {
+      return true;
+    }
+    
+    // Compare events (less likely to change)
+    if (JSON.stringify(block1.events) !== JSON.stringify(block2.events)) {
+      return true;
+    }
+    
+    return false;
+  };
 
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
@@ -177,6 +235,53 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
     if (updatedSelectedBlock) {
       setSelectedBlock(updatedSelectedBlock);
+    }
+  };
+
+  const updateSelectedBlockVisibility = (newVisibility: Partial<VisibilityProps>) => {
+    if (!selectedBlock) return;
+
+    const updateAndFindBlock = (blocks: BlockType[]): { updatedBlocks: BlockType[], foundBlock: Block | null } => {
+      let foundBlock: Block | null = null;
+
+      const updatedBlocks = blocks.map(block => {
+        if (foundBlock) return block; // Optimization: stop mapping after found
+
+        if (block.id === selectedBlock.id) {
+          const updatedBlock = {
+            ...block,
+            visibility: {
+              ...block.visibility,
+              ...newVisibility,
+            },
+          } as BlockType;
+          foundBlock = updatedBlock as Block;
+          return updatedBlock;
+        }
+
+        if (block.children) {
+          const result = updateAndFindBlock(block.children);
+          if (result.foundBlock) {
+            foundBlock = result.foundBlock;
+            return { ...block, children: result.updatedBlocks };
+          }
+        }
+        
+        return block;
+      });
+
+      return { updatedBlocks, foundBlock };
+    };
+
+    const { updatedBlocks, foundBlock } = updateAndFindBlock(pageSchema.blocks);
+
+    if (foundBlock) {
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: updatedBlocks,
+      };
+      updatePageWithHistory(updatedSchema);
+      setSelectedBlock(foundBlock);
     }
   };
 
@@ -360,6 +465,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       pageSchema,
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
+      updateSelectedBlockVisibility,
       moveBlockUp,
       moveBlockDown,
       deleteSelectedBlock,

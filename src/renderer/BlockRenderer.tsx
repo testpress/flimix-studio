@@ -38,19 +38,21 @@ function evaluateVisibility(
 
   if (
     visibility.subscriptionTier &&
+    context.subscriptionTier && // Only check if context has a specific tier
     visibility.subscriptionTier !== context.subscriptionTier
   )
     return false;
 
   if (
     visibility.region &&
-    !visibility.region.includes(context.region ?? '')
+    context.region && // Only check if context has a specific region
+    !visibility.region.includes(context.region)
   )
     return false;
 
   if (
     visibility.platform &&
-    context.platform &&
+    context.platform && // Only check if context has a specific platform
     !visibility.platform.includes(context.platform as Platform)
   )
     return false;
