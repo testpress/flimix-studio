@@ -13,9 +13,6 @@ interface CanvasProps {
 const initialVisibilityContext: VisibilityContext = {
   isLoggedIn: true,
   isSubscribed: false,
-  subscriptionTier: 'basic',
-  region: 'IN',
-  platform: 'mobile',
 };
 
 const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
@@ -47,9 +44,13 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                 <label className="text-sm text-gray-700 font-medium">Platform:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={visibilityContext.platform}
-                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, platform: e.target.value as Platform }))}
+                  value={visibilityContext.platform || 'all'}
+                  onChange={e => setVisibilityContext(ctx => ({ 
+                    ...ctx, 
+                    platform: e.target.value === 'all' ? undefined : e.target.value as Platform 
+                  }))}
                 >
+                  <option value="all">All Platforms</option>
                   <option value="mobile">Mobile</option>
                   <option value="desktop">Desktop</option>
                   <option value="tv">TV</option>
@@ -60,9 +61,13 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                 <label className="text-sm text-gray-700 font-medium">Region:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={visibilityContext.region}
-                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, region: e.target.value }))}
+                  value={visibilityContext.region || 'all'}
+                  onChange={e => setVisibilityContext(ctx => ({ 
+                    ...ctx, 
+                    region: e.target.value === 'all' ? undefined : e.target.value 
+                  }))}
                 >
+                  <option value="all">All Regions</option>
                   <option value="IN">India</option>
                   <option value="US">United States</option>
                   <option value="UK">United Kingdom</option>
@@ -75,9 +80,13 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                 <label className="text-sm text-gray-700 font-medium">Tier:</label>
                 <select
                   className="border rounded px-2 py-1 text-sm"
-                  value={visibilityContext.subscriptionTier}
-                  onChange={e => setVisibilityContext(ctx => ({ ...ctx, subscriptionTier: e.target.value }))}
+                  value={visibilityContext.subscriptionTier || 'all'}
+                  onChange={e => setVisibilityContext(ctx => ({ 
+                    ...ctx, 
+                    subscriptionTier: e.target.value === 'all' ? undefined : e.target.value 
+                  }))}
                 >
+                  <option value="all">All Tiers</option>
                   <option value="basic">Basic</option>
                   <option value="premium">Premium</option>
                   <option value="vip">VIP</option>
@@ -85,27 +94,33 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="flex items-center gap-2 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={visibilityContext.isLoggedIn}
-                    onChange={e => setVisibilityContext(ctx => ({ ...ctx, isLoggedIn: e.target.checked }))}
-                    className="rounded"
-                  />
-                  Logged In
-                </label>
+                <label className="text-sm text-gray-700 font-medium">Login Status:</label>
+                <select
+                  className="border rounded px-2 py-1 text-sm"
+                  value={visibilityContext.isLoggedIn === undefined ? 'false' : visibilityContext.isLoggedIn.toString()}
+                  onChange={e => setVisibilityContext(ctx => ({ 
+                    ...ctx, 
+                    isLoggedIn: e.target.value === 'true'
+                  }))}
+                >
+                  <option value="true">Logged In User</option>
+                  <option value="false">Logged Out User</option>
+                </select>
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="flex items-center gap-2 text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={visibilityContext.isSubscribed}
-                    onChange={e => setVisibilityContext(ctx => ({ ...ctx, isSubscribed: e.target.checked }))}
-                    className="rounded"
-                  />
-                  Subscribed
-                </label>
+                <label className="text-sm text-gray-700 font-medium">Subscription:</label>
+                <select
+                  className="border rounded px-2 py-1 text-sm"
+                  value={visibilityContext.isSubscribed === undefined ? 'false' : visibilityContext.isSubscribed.toString()}
+                  onChange={e => setVisibilityContext(ctx => ({ 
+                    ...ctx, 
+                    isSubscribed: e.target.value === 'true'
+                  }))}
+                >
+                  <option value="true">Subscribed User</option>
+                  <option value="false">Unsubscribed User</option>
+                </select>
               </div>
             </div>
             
@@ -126,7 +141,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
           <div className="space-y-6">
             {pageSchema.blocks.map((block: Block) => (
               <div key={block.id}>
-                <BlockInsertDropdown position="above" blockId={block.id} />
+                <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
                 <BlockRenderer 
                   block={block} 
                   showDebug={showDebug} 
@@ -135,7 +150,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                   isSelected={selectedBlockId === block.id}
                   selectedBlockId={selectedBlockId}
                 />
-                <BlockInsertDropdown position="below" blockId={block.id} />
+                <BlockInsertDropdown position="below" blockId={block.id} visibilityContext={visibilityContext} />
               </div>
             ))}
           </div>

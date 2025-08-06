@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
+import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, findBlockPositionById } from '@context/domain';
 import { swap } from '@utils/array';
 import { useHistory } from './HistoryContext';
@@ -16,6 +17,7 @@ interface SelectionContextType {
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
+  updateSelectedBlockVisibility: (newVisibility: Partial<VisibilityProps>) => void;
   moveBlockUp: () => void;
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
@@ -55,7 +57,33 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       setSelectedBlock(null);
       setSelectedBlockParentId(null);
     }
-  }, [pageSchema, selectedBlockId]);
+  }, [pageSchema, selectedBlockId, blockExistsInSchema]);
+
+  // Sync selectedBlock reference with page schema when it changes (undo/redo)
+  useEffect(() => {
+    if (selectedBlockId && selectedBlock) {
+      // Find the current version of the selected block in the schema
+      const findBlockInSchema = (blocks: BlockType[]): BlockType | null => {
+        for (const block of blocks) {
+          if (block.id === selectedBlockId) {
+            return block;
+          }
+          if (block.children) {
+            const found = findBlockInSchema(block.children);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
+      
+      // If the block exists and has different data, update the reference
+      if (currentBlockInSchema && JSON.stringify(currentBlockInSchema) !== JSON.stringify(selectedBlock)) {
+        setSelectedBlock(currentBlockInSchema as Block);
+      }
+    }
+  }, [pageSchema, selectedBlockId, selectedBlock]);
 
 
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
@@ -163,6 +191,67 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             style: {
               ...block.style,
               ...newStyle
+            }
+          } as Block;
+        }
+        if (block.children) {
+          const found = findUpdatedBlock(block.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
+    if (updatedSelectedBlock) {
+      setSelectedBlock(updatedSelectedBlock);
+    }
+  };
+
+  const updateSelectedBlockVisibility = (newVisibility: Partial<VisibilityProps>) => {
+    if (!selectedBlock) return;
+
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
+      return blocks.map(block => {
+        if (block.id === selectedBlock.id) {
+          return {
+            ...block,
+            visibility: {
+              ...block.visibility,
+              ...newVisibility
+            }
+          } as BlockType;
+        }
+        
+        // Recursively update children if this block has them
+        if (block.children) {
+          return {
+            ...block,
+            children: updateBlockInSchema(block.children)
+          } as BlockType;
+        }
+        
+        return block;
+      });
+    };
+
+    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+
+    updatePageWithHistory(updatedSchema);
+    
+    // Update the selected block reference
+    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
+      for (const block of blocks) {
+        if (block.id === selectedBlock.id) {
+          return {
+            ...block,
+            visibility: {
+              ...block.visibility,
+              ...newVisibility
             }
           } as Block;
         }
@@ -360,6 +449,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       pageSchema,
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
+      updateSelectedBlockVisibility,
       moveBlockUp,
       moveBlockDown,
       deleteSelectedBlock,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
+import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
@@ -9,9 +10,57 @@ import { useHistory } from '@context/HistoryContext';
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
   blockId: string;
+  visibilityContext: VisibilityContext;
 }
 
-const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId }) => {
+/**
+ * Evaluate if a block should be visible based on visibility rules and context
+ * @param visibility - The visibility rules for the block
+ * @param context - The current visibility context
+ * @returns true if the block should be visible, false otherwise
+ */
+function evaluateVisibility(
+  visibility?: VisibilityProps,
+  context?: VisibilityContext
+): boolean {
+  if (!visibility) return true;
+  if (!context) return false;
+
+  if (
+    visibility.isLoggedIn !== undefined &&
+    visibility.isLoggedIn !== context.isLoggedIn
+  )
+    return false;
+
+  if (
+    visibility.isSubscribed !== undefined &&
+    visibility.isSubscribed !== context.isSubscribed
+  )
+    return false;
+
+  if (
+    visibility.subscriptionTier &&
+    visibility.subscriptionTier !== context.subscriptionTier
+  )
+    return false;
+
+  if (
+    visibility.region &&
+    !visibility.region.includes(context.region ?? '')
+  )
+    return false;
+
+  if (
+    visibility.platform &&
+    context.platform &&
+    !visibility.platform.includes(context.platform as Platform)
+  )
+    return false;
+
+  return true;
+}
+
+const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId, visibilityContext }) => {
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockBefore, insertBlockInsideSection } = useBlockInsert();
   const { pageSchema } = useHistory();
@@ -30,6 +79,29 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       block.children && block.children.some(child => child.id === blockId)
     );
   };
+
+  // Helper function to find a block by ID (including nested blocks)
+  const findBlockById = (blockId: string): BlockType | null => {
+    for (const block of pageSchema.blocks) {
+      if (block.id === blockId) {
+        return block;
+      }
+      if (block.children) {
+        for (const child of block.children) {
+          if (child.id === blockId) {
+            return child;
+          }
+        }
+      }
+    }
+    return null;
+  };
+
+  // Find the block and check its visibility
+  const block = findBlockById(blockId);
+  if (!block || !evaluateVisibility(block.visibility, visibilityContext)) {
+    return null;
+  }
 
   // Only show if this block is selected
   if (selectedBlockId !== blockId) {

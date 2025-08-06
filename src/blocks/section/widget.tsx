@@ -97,7 +97,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         <div className="space-y-4">
           {children.map((childBlock) => (
             <div key={childBlock.id}>
-              <BlockInsertDropdown position="above" blockId={childBlock.id} />
+              <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
               <BlockRenderer 
                 block={childBlock} 
                 visibilityContext={visibilityContext} 
@@ -106,7 +106,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
                 selectedBlockId={selectedBlockId}
                 isSelected={selectedBlockId === childBlock.id}
               />
-              <BlockInsertDropdown position="below" blockId={childBlock.id} />
+              <BlockInsertDropdown position="below" blockId={childBlock.id} visibilityContext={visibilityContext} />
             </div>
           ))}
         </div>

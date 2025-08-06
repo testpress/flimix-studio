@@ -13,7 +13,7 @@ interface SettingsPanelProps {
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDebug }) => {
-  const { selectedBlock, updateSelectedBlockProps, updateSelectedBlockStyle } = useSelection();
+  const { selectedBlock, updateSelectedBlockProps, updateSelectedBlockStyle, updateSelectedBlockVisibility } = useSelection();
 
   // Block editor registry for dynamic lookup
   const BlockPropEditors: Record<string, React.FC<BlockFormProps>> = {
@@ -24,9 +24,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
     if (!selectedBlock) return;
-
-    // TODO: Implement visibility update logic. This should update the selected block's visibility property.
-    console.log('Updating visibility for block:', selectedBlock.id, newVisibility);
+    
+    updateSelectedBlockVisibility(newVisibility);
   };
 
   const handleStyleChange = (newStyle: StyleProps) => {
