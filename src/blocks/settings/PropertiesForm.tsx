@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Block } from '@blocks/shared/Block';
-import type { Field } from '@blocks/shared/Field';
+import type { Field, FieldValue, NestedFormData } from '@blocks/shared/Field';
+import type { BlockProps } from '@blocks/shared/FormTypes';
 
 /**
  * Get a form field value from block props using dot notation path
@@ -10,20 +11,20 @@ import type { Field } from '@blocks/shared/Field';
  * @param defaultValue - Default value if field doesn't exist
  * @returns The field value or default value
  */
-function getFormFieldValue(obj: any, fieldPath: string, defaultValue: any = ''): any {
+function getFormFieldValue(obj: BlockProps | undefined, fieldPath: string, defaultValue: FieldValue = ''): FieldValue {
   if (!obj || !fieldPath) return defaultValue;
   
   const keys = fieldPath.split('.');
-  let current = obj;
+  let current: NestedFormData = obj as NestedFormData;
   
   for (const key of keys) {
     if (current === null || current === undefined || typeof current !== 'object') {
       return defaultValue;
     }
-    current = current[key];
+    current = current[key] as NestedFormData;
   }
   
-  return current !== undefined ? current : defaultValue;
+  return current !== undefined ? current as FieldValue : defaultValue;
 }
 
 /**
@@ -34,12 +35,12 @@ function getFormFieldValue(obj: any, fieldPath: string, defaultValue: any = ''):
  * @param value - The new field value
  * @returns A new object with the updated field value
  */
-function setFormFieldValue(obj: any, fieldPath: string, value: any): any {
+function setFormFieldValue(obj: BlockProps, fieldPath: string, value: FieldValue): BlockProps {
   if (!obj || !fieldPath) return obj;
   
   const keys = fieldPath.split('.');
   const newObj = { ...obj };
-  let current = newObj;
+  let current: NestedFormData = newObj as NestedFormData;
   
   // Navigate to the parent of the target field
   for (let i = 0; i < keys.length - 1; i++) {
@@ -47,7 +48,7 @@ function setFormFieldValue(obj: any, fieldPath: string, value: any): any {
     if (!(key in current) || typeof current[key] !== 'object' || current[key] === null) {
       current[key] = {};
     }
-    current = current[key];
+    current = current[key] as NestedFormData;
   }
   
   // Set the final field value
@@ -65,14 +66,14 @@ function setFormFieldValue(obj: any, fieldPath: string, value: any): any {
  * @param value - The new field value
  * @returns Updated props object
  */
-function updateFormField(currentProps: any, fieldPath: string, value: any): any {
+function updateFormField(currentProps: BlockProps, fieldPath: string, value: FieldValue): BlockProps {
   return setFormFieldValue(currentProps, fieldPath, value);
 }
 
 interface PropertiesFormProps {
   block: Block;
   fieldDefinitions: Field[];
-  updateProps: (newProps: Partial<any>) => void;
+  updateProps: (newProps: Partial<BlockProps>) => void;
 }
 
 const PropertiesForm: React.FC<PropertiesFormProps> = ({ 
@@ -80,9 +81,8 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
   fieldDefinitions, 
   updateProps 
 }) => {
-  const handleFieldChange = (path: string, value: any) => {
-    const currentProps = block.props || {};
-    const updatedProps = updateFormField(currentProps, path, value);
+  const handleFieldChange = (path: string, value: FieldValue) => {
+    const updatedProps = updateFormField(block.props, path, value);
     updateProps(updatedProps);
   };
 
@@ -94,7 +94,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
         return (
           <input
             type="text"
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
             className="w-full p-2 border border-gray-300 rounded text-sm"
@@ -105,7 +105,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
       case 'textarea':
         return (
           <textarea
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
             className="w-full p-2 border border-gray-300 rounded text-sm h-20 resize-none"
@@ -117,7 +117,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
         return (
           <input
             type="text"
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
             className="w-full p-2 border border-gray-300 rounded text-sm"
@@ -128,7 +128,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
         return (
           <input
             type="color"
-            value={value || '#000000'}
+            value={String(value) || '#000000'}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             className="w-full h-10 border border-gray-300 rounded text-sm"
           />
@@ -138,7 +138,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
         return (
           <input
             type="checkbox"
-            checked={value || false}
+            checked={Boolean(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.checked)}
             className="rounded"
           />
@@ -147,7 +147,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
       case 'select':
         return (
           <select
-            value={value || ''}
+            value={String(value) || ''}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
             required={field.required}
@@ -165,7 +165,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
         return (
           <input
             type="text"
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
             className="w-full p-2 border border-gray-300 rounded text-sm"

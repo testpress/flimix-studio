@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps } from '@blocks/shared/Style';
+import type { StyleProps, Theme, Padding, TextAlign, BorderRadius, BoxShadow, StyleValue } from '@blocks/shared/Style';
 
 interface StyleFormProps {
   style: StyleProps;
@@ -7,7 +7,7 @@ interface StyleFormProps {
 }
 
 const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
-  const handleStyleChange = (key: keyof StyleProps, value: any) => {
+  const handleStyleChange = (key: keyof StyleProps, value: StyleValue) => {
     onChange({
       ...style,
       [key]: value
@@ -24,7 +24,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Theme</label>
           <select
             value={style.theme || 'light'}
-            onChange={(e) => handleStyleChange('theme', e.target.value)}
+            onChange={(e) => handleStyleChange('theme', e.target.value as Theme)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="light">Light</option>
@@ -37,7 +37,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Padding</label>
           <select
             value={style.padding || 'md'}
-            onChange={(e) => handleStyleChange('padding', e.target.value)}
+            onChange={(e) => handleStyleChange('padding', e.target.value as Padding)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="none">None</option>
@@ -52,7 +52,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Margin</label>
           <select
             value={style.margin || 'none'}
-            onChange={(e) => handleStyleChange('margin', e.target.value)}
+            onChange={(e) => handleStyleChange('margin', e.target.value as Padding)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="none">None</option>
@@ -67,7 +67,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Text Alignment</label>
           <select
             value={style.textAlign || 'left'}
-            onChange={(e) => handleStyleChange('textAlign', e.target.value)}
+            onChange={(e) => handleStyleChange('textAlign', e.target.value as TextAlign)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="left">Left</option>
@@ -103,7 +103,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Border Radius</label>
           <select
             value={style.borderRadius || 'none'}
-            onChange={(e) => handleStyleChange('borderRadius', e.target.value)}
+            onChange={(e) => handleStyleChange('borderRadius', e.target.value as BorderRadius)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="none">None</option>
@@ -118,7 +118,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
           <label className="block text-sm text-gray-700 mb-1">Box Shadow</label>
           <select
             value={style.boxShadow || 'none'}
-            onChange={(e) => handleStyleChange('boxShadow', e.target.value)}
+            onChange={(e) => handleStyleChange('boxShadow', e.target.value as BoxShadow)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           >
             <option value="none">None</option>

@@ -5,4 +5,12 @@ export interface Field {
   placeholder?: string;
   options?: { value: string; label: string }[];
   required?: boolean;
-} 
+}
+
+// Define a type for form field values with specific types for form controls
+export type FieldValue = string | boolean | number | Record<string, unknown>;
+
+// Define a recursive type for nested form data structures
+export type NestedFormData = {
+  [key: string]: FieldValue | NestedFormData;
+}; 
