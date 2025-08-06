@@ -7,7 +7,6 @@ import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
-import { toast } from 'react-toastify';
 
 // Icon mapping for the templates
 const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
@@ -39,10 +38,6 @@ const LibraryPanel: React.FC = () => {
   const allTemplates = getAllBlockLibraryItems();
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
-    // Get the block template name for the toast message
-    const blockTemplate = allTemplates.find(template => template.type === blockType);
-    const blockName = blockTemplate?.name || blockType;
-
     if (selectedBlockId) {
       // Check if the selected block is a Section (only at top level)
       const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
@@ -50,36 +45,28 @@ const LibraryPanel: React.FC = () => {
       if (selectedBlock?.type === 'section') {
         // Insert into the children of the Section block (or after it if it's a Section)
         insertBlockInsideSection(blockType, selectedBlockId);
-        if (blockType === 'section') {
-          toast.success(`${blockName} inserted after selected section`);
-        } else {
-          toast.success(`${blockName} added inside section`);
-        }
       } else {
         // Check if the selected block is a child of a Section
         if (isChildBlock(selectedBlockId)) {
           // Child block is selected - allow other blocks but restrict Section blocks
           if (blockType === 'section') {
-            toast.error("Sections can't be nested! Try inserting it at the page level instead.");
+            // Sections can't be nested - silently ignore or you could add console.warn here
             return;
           } else {
             // Find the parent Section and insert the block inside it
             const parentSection = findParentSection(selectedBlockId);
             if (parentSection) {
               insertBlockInsideSection(blockType, parentSection.id);
-              toast.success(`${blockName} added to section`);
             }
           }
         } else {
           // Default behavior: insert after the currently selected block
           insertBlockAfter(blockType);
-          toast.success(`${blockName} placed after selected block`);
         }
       }
     } else {
       // If no block is selected, insert at the end of the page
       insertBlockAtEnd(blockType);
-      toast.success(`${blockName} added to the end of page`);
     }
   };
 
@@ -139,18 +126,18 @@ const LibraryPanel: React.FC = () => {
               const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
               
               if (selectedBlock?.type === 'section') {
-                return <span>Will insert inside section (or after if it's a Section)</span>;
+                return <span>Adding inside section (Text/Hero go inside, Section goes after)</span>;
               } else {
                 // Check if the selected block is a child of a Section
                 if (isChildBlock(selectedBlockId)) {
-                  return <span>Will insert inside section (Section blocks not allowed)</span>;
+                  return <span>Adding to parent section (no nested sections)</span>;
                 } else {
-                  return <span>Will insert after selected block</span>;
+                  return <span>Adding after selected block</span>;
                 }
               }
             })()
           ) : (
-            <span>Will insert at the end of the page</span>
+            <span>Adding to the end of page</span>
           )}
         </div>
       </div>

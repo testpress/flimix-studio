@@ -5,11 +5,13 @@ import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
 
-// Enum for insertion position relative to selected block
-enum InsertPosition {
-  BEFORE = 'before',
-  AFTER = 'after'
-}
+// Const for insertion position relative to selected block
+const InsertPosition = {
+  BEFORE: 'before',
+  AFTER: 'after'
+} as const;
+
+type InsertPositionType = typeof InsertPosition[keyof typeof InsertPosition];
 
 interface BlockInsertContextType {
   insertBlockAfter: (blockType: BlockType['type']) => void;
@@ -48,7 +50,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    * @param blockType - Type of block to create and insert
    * @param position - Position relative to the selected block (BEFORE or AFTER)
    */
-  const insertBlockRelative = (blockType: BlockType['type'], position: InsertPosition) => {
+  const insertBlockRelative = (blockType: BlockType['type'], position: InsertPositionType) => {
     if (!selectedBlockId) return;
     
     // Validate block type

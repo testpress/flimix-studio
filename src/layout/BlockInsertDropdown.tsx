@@ -5,7 +5,6 @@ import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
-import { toast } from 'react-toastify';
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -49,7 +48,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       if (isChildBlock(selectedBlockId)) {
         // Child block is selected - allow other blocks but restrict Section blocks
         if (blockType === 'section') {
-          toast.error("Sections can't be nested! Try inserting it at the page level instead.");
+          // Sections can't be nested - silently ignore or you could add console.warn here
           return;
         } else {
           // Find the parent Section and insert the block inside it
