@@ -21,7 +21,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, layout, itemShape, items } = props;
-  const { addItemToBlock, selectArrayItem, isItemSelected } = useSelection();
+  const { addBlockItem, selectArrayItem, isItemSelected } = useSelection();
   
   const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
@@ -67,7 +67,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
       title: 'New Item',
       link: ''
     };
-    const newId = addItemToBlock(block.id, defaultItem);
+    const newId = addBlockItem(block.id, defaultItem);
     selectArrayItem(block.id, newId);
   };
 
