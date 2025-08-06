@@ -6,8 +6,9 @@ import type { Block } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
 import { Search } from 'lucide-react';
 
-// Debug flag for development - shows hidden blocks due to visibility rules
-const showDebug = true; // Enables debug placeholder for hidden blocks
+interface CanvasProps {
+  showDebug: boolean;
+}
 
 const initialVisibilityContext: VisibilityContext = {
   isLoggedIn: true,
@@ -17,7 +18,7 @@ const initialVisibilityContext: VisibilityContext = {
   platform: 'mobile',
 };
 
-const Canvas: React.FC = () => {
+const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
   const { 
     selectedBlockId, 
     setSelectedBlockId,

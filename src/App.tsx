@@ -8,6 +8,7 @@ import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
+import { useState } from 'react';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {
@@ -127,6 +128,8 @@ const sampleSchema: PageSchema = {
 };
 
 function App() {
+  const [showDebug, setShowDebug] = useState(false);
+
   return (
     <HistoryProvider initialSchema={sampleSchema}>
       <SelectionProvider>
@@ -135,8 +138,11 @@ function App() {
             <TopBar />
             <div className="flex-1 flex pt-16">
               <LibraryPanel />
-              <Canvas />
-              <SettingsPanel />
+              <Canvas showDebug={showDebug} />
+              <SettingsPanel 
+                showDebug={showDebug}
+                onToggleShowDebug={() => setShowDebug(current => !current)}
+              />
             </div>
           </div>
         </BlockInsertProvider>
