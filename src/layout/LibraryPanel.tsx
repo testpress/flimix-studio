@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Type, Layout, Square } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
@@ -12,7 +12,8 @@ import { useHistory } from '@context/HistoryContext';
 const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
   Layout,
   Type,
-  Square
+  Square,
+  Grid2x2
 };
 
 const LibraryPanel: React.FC = () => {

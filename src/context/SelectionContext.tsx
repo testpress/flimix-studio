@@ -5,6 +5,7 @@ import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, findBlockPositionById } from '@context/domain';
 import { swap } from '@utils/array';
+import { generateUniqueId } from '@utils/id';
 import { useHistory } from './HistoryContext';
 
 interface SelectionContextType {
@@ -14,6 +15,9 @@ interface SelectionContextType {
   setSelectedBlockId: (id: string | null) => void;
   selectedBlockParentId: string | null;
   setSelectedBlockParentId: (id: string | null) => void;
+  selectedItemId: string | null;
+  setSelectedItemId: (id: string | null) => void;
+  selectedItemBlockId: string | null;
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
@@ -22,6 +26,21 @@ interface SelectionContextType {
   moveBlockDown: () => void;
   deleteSelectedBlock: () => void;
   duplicateSelectedBlock: () => void;
+  addItemToBlock: <T extends object>(
+    blockId: string,
+    defaultEntry: T
+  ) => string;
+  updateBlockItem: <T extends { id: string }>(
+    blockId: string,
+    itemId: string,
+    updatedItem: T
+  ) => void;
+  removeBlockItem: (
+    blockId: string,
+    itemId: string
+  ) => void;
+  selectArrayItem: (blockId: string, itemId: string) => void;
+  isItemSelected: (blockId: string, itemId: string) => boolean;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -36,6 +55,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
 
   // Helper function to recursively check if a block exists in the schema
   const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {
@@ -454,6 +475,135 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
+  const addItemToBlock = <T extends object>(
+    blockId: string,
+    defaultEntry: T
+  ): string => {
+    const block = findBlockAndParent(blockId, pageSchema.blocks);
+    if (!block || !block.block) return '';
+
+    const newEntryId = generateUniqueId();
+
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
+      return blocks.map(b => {
+        if (b.id === block.block!.id) {
+          const currentArray = (b.props as any).items || [];
+          const updatedBlock = {
+            ...b,
+            props: {
+              ...b.props,
+              items: [...currentArray, { ...defaultEntry, id: newEntryId }]
+            }
+          };
+          return updatedBlock as BlockType;
+        }
+        if (b.children) {
+          return {
+            ...b,
+            children: updateBlockInSchema(b.children)
+          };
+        }
+        return b;
+      });
+    };
+
+    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+    updatePageWithHistory(updatedSchema);
+    return newEntryId;
+  };
+
+  const updateBlockItem = <T extends { id: string }>(
+    blockId: string,
+    itemId: string,
+    updatedItem: T
+  ): void => {
+    const block = findBlockAndParent(blockId, pageSchema.blocks);
+    if (!block || !block.block) return;
+
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
+      return blocks.map(b => {
+        if (b.id === block.block!.id) {
+          const currentArray = (b.props as any).items || [];
+          const updatedBlock = {
+            ...b,
+            props: {
+              ...b.props,
+              items: currentArray.map((item: any) =>
+                item.id === itemId ? { ...item, ...updatedItem } : item
+              )
+            }
+          };
+          return updatedBlock as BlockType;
+        }
+        if (b.children) {
+          return {
+            ...b,
+            children: updateBlockInSchema(b.children)
+          };
+        }
+        return b;
+      });
+    };
+
+    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+    updatePageWithHistory(updatedSchema);
+  };
+
+  const removeBlockItem = (
+    blockId: string,
+    itemId: string
+  ): void => {
+    const block = findBlockAndParent(blockId, pageSchema.blocks);
+    if (!block || !block.block) return;
+
+    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
+      return blocks.map(b => {
+        if (b.id === block.block!.id) {
+          const currentArray = (b.props as any).items || [];
+          const updatedBlock = {
+            ...b,
+            props: {
+              ...b.props,
+              items: currentArray.filter((item: any) => item.id !== itemId)
+            }
+          };
+          return updatedBlock as BlockType;
+        }
+        if (b.children) {
+          return {
+            ...b,
+            children: updateBlockInSchema(b.children)
+          };
+        }
+        return b;
+      });
+    };
+
+    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+    updatePageWithHistory(updatedSchema);
+  };
+
+  const selectArrayItem = (blockId: string, itemId: string): void => {
+    setSelectedItemId(itemId);
+    setSelectedItemBlockId(blockId);
+  };
+
+  const isItemSelected = (blockId: string, itemId: string): boolean => {
+    return selectedItemBlockId === blockId && selectedItemId === itemId;
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -462,6 +612,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       setSelectedBlockId,
       selectedBlockParentId,
       setSelectedBlockParentId,
+      selectedItemId,
+      setSelectedItemId,
+      selectedItemBlockId,
       pageSchema,
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
@@ -469,7 +622,12 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       moveBlockUp,
       moveBlockDown,
       deleteSelectedBlock,
-      duplicateSelectedBlock
+      duplicateSelectedBlock,
+      addItemToBlock,
+      updateBlockItem,
+      removeBlockItem,
+      selectArrayItem,
+      isItemSelected
     }}>
       {children}
     </SelectionContext.Provider>

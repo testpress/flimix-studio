@@ -1,10 +1,10 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
- * @param type - The type of block to create ('text', 'hero', 'section')
+ * @param type - The type of block to create ('text', 'hero', 'section', 'poster-grid')
  * @returns A new block with minimal valid properties
  */
 export function createBlock(type: BlockType['type']): BlockType {
@@ -43,6 +43,17 @@ export function createBlock(type: BlockType['type']): BlockType {
           backgroundColor: '#f8f9fa'
         },
         children: []
+      };
+
+    case 'posterGrid':
+      return {
+        type: 'posterGrid',
+        id,
+        props: PosterGridLibraryItem.defaultProps,
+        style: {
+          padding: 'md',
+          textAlign: 'left'
+        }
       };
 
     default:

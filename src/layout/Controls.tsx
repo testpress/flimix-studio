@@ -1,5 +1,5 @@
 import React from 'react';
-import { Copy, Trash2, MoveUp, MoveDown } from 'lucide-react';
+import { Copy, Trash2, MoveUp, MoveDown, Plus } from 'lucide-react';
 
 interface ControlsProps {
   canMoveUp: boolean;
@@ -8,6 +8,7 @@ interface ControlsProps {
   onMoveDown?: () => void;
   onDuplicate?: () => void;
   onRemove?: () => void;
+  onAddItem?: () => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -16,10 +17,24 @@ const Controls: React.FC<ControlsProps> = ({
   onMoveUp,
   onMoveDown,
   onDuplicate,
-  onRemove
+  onRemove,
+  onAddItem
 }) => {
   return (
     <div className="absolute top-2 right-2 z-50 flex flex-row gap-1 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 p-1">
+      {onAddItem && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddItem();
+          }}
+          className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-green-600 hover:bg-green-50 rounded transition-colors"
+          title="Add Item"
+        >
+          <Plus className="w-3.5 h-3.5" />
+        </button>
+      )}
+      
       {canMoveUp && onMoveUp && (
         <button
           onClick={(e) => {
