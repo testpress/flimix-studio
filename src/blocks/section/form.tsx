@@ -1,6 +1,6 @@
 import React from 'react';
+import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
 import type { Field } from '@blocks/shared/Field';
 
 // Section block editor schema
@@ -21,7 +21,7 @@ const sectionEditorFields: Field[] = [
 
 const SectionForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
-    <DynamicPropsForm
+    <PropertiesForm
       block={block}
       fieldDefinitions={sectionEditorFields}
       updateProps={updateProps}

@@ -1,6 +1,6 @@
 import React from 'react';
+import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import DynamicPropsForm from '@blocks/settings/DynamicPropsForm';
 import type { Field } from '@blocks/shared/Field';
 
 // Text block editor schema
@@ -16,7 +16,7 @@ const textEditorFields: Field[] = [
 
 const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
-    <DynamicPropsForm
+    <PropertiesForm
       block={block}
       fieldDefinitions={textEditorFields}
       updateProps={updateProps}
