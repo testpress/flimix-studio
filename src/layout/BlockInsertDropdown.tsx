@@ -4,6 +4,8 @@ import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
+import { useHistory } from '@context/HistoryContext';
+import { toast } from 'react-toastify';
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -12,8 +14,23 @@ interface BlockInsertDropdownProps {
 
 const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId }) => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
+  const { insertBlockAfter, insertBlockBefore, insertBlockInsideSection } = useBlockInsert();
+  const { pageSchema } = useHistory();
   const [isHovered, setIsHovered] = useState(false);
+
+  // Helper function to check if a block is a child of a Section
+  const isChildBlock = (blockId: string) => {
+    return pageSchema.blocks.some(block => 
+      block.children && block.children.some(child => child.id === blockId)
+    );
+  };
+
+  // Helper function to find the parent Section of a child block
+  const findParentSection = (blockId: string) => {
+    return pageSchema.blocks.find(block => 
+      block.children && block.children.some(child => child.id === blockId)
+    );
+  };
 
   // Only show if this block is selected
   if (selectedBlockId !== blockId) {
@@ -21,10 +38,34 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }
 
   const handleInsert = (blockType: BlockType['type']) => {
-    if (position === 'above') {
-      insertBlockBefore(blockType);
+    // Check if the selected block is a Section (only at top level)
+    const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
+    
+    if (selectedBlock?.type === 'section') {
+      // Insert inside the section's children (or after it if it's a Section)
+      insertBlockInsideSection(blockType, selectedBlockId);
     } else {
-      insertBlockAfter(blockType);
+      // Check if the selected block is a child of a Section
+      if (isChildBlock(selectedBlockId)) {
+        // Child block is selected - allow other blocks but restrict Section blocks
+        if (blockType === 'section') {
+          toast.error("Sections can't be nested! Try inserting it at the page level instead.");
+          return;
+        } else {
+          // Find the parent Section and insert the block inside it
+          const parentSection = findParentSection(selectedBlockId);
+          if (parentSection) {
+            insertBlockInsideSection(blockType, parentSection.id);
+          }
+        }
+      } else {
+        // Default: insert either before or after the selected block
+        if (position === 'above') {
+          insertBlockBefore(blockType);
+        } else {
+          insertBlockAfter(blockType);
+        }
+      }
     }
   };
 

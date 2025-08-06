@@ -8,6 +8,8 @@ import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {
@@ -138,6 +140,7 @@ function App() {
               <Canvas />
               <SettingsPanel />
             </div>
+            <ToastContainer />
           </div>
         </BlockInsertProvider>
       </SelectionProvider>

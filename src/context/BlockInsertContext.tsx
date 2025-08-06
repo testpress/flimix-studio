@@ -15,6 +15,7 @@ interface BlockInsertContextType {
   insertBlockAfter: (blockType: BlockType['type']) => void;
   insertBlockBefore: (blockType: BlockType['type']) => void;
   insertBlockAtEnd: (blockType: BlockType['type']) => void;
+  insertBlockInsideSection: (blockType: BlockType['type'], sectionId: string) => void;
 }
 
 const BlockInsertContext = createContext<BlockInsertContextType | undefined>(undefined);
@@ -62,6 +63,11 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     } catch (error) {
       console.error('Failed to create block:', error);
       return;
+    }
+    
+    // Ensure Section blocks have children initialized
+    if (newBlock.type === 'section' && !newBlock.children) {
+      newBlock.children = []; // Initialize children array for Section blocks
     }
     
     // Find the position of the selected block
@@ -131,6 +137,11 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
     
+    // Ensure Section blocks have children initialized
+    if (newBlock.type === 'section' && !newBlock.children) {
+      newBlock.children = []; // Initialize children array for Section blocks
+    }
+    
     // Add the new block to the end of the page
     const updatedSchema = {
       ...pageSchema,
@@ -145,11 +156,65 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     setSelectedBlockParentId(null);
   };
 
+  /**
+   * Inserts a new block as a child of a Section block
+   * @param blockType - Type of block to create and insert
+   * @param sectionId - ID of the section block to insert into
+   */
+  const insertBlockInsideSection = (blockType: BlockType['type'], sectionId: string) => {
+    // If trying to insert a Section inside a Section, insert it after the Section instead
+    if (blockType === 'section') {
+      // Section is selected - use insertBlockRelative to insert after the selected Section
+      insertBlockRelative(blockType, InsertPosition.AFTER);
+      return;
+    }
+
+    // Validate block type
+    if (!isBlockTypeValid(blockType)) {
+      return;
+    }
+    
+    // Create new block using the factory function
+    let newBlock;
+    try {
+      newBlock = createBlock(blockType);
+    } catch (error) {
+      console.error('Failed to create block:', error);
+      return;
+    }
+    
+    // Simple find and update (no recursion needed since Section blocks are only at top level)
+    const updatedBlocks = pageSchema.blocks.map(block => {
+      if (block.id === sectionId) {
+        return {
+          ...block,
+          children: [...(block.children || []), newBlock]
+        };
+      }
+      return block;
+    });
+    
+    // Update the schema with the new blocks array
+    const updatedSchema = {
+      ...pageSchema,
+      blocks: updatedBlocks
+    };
+    
+    // Record state for undo
+    updatePageWithHistory(updatedSchema);
+    
+    // Select the newly inserted block
+    setSelectedBlockId(newBlock.id);
+    setSelectedBlock(newBlock);
+    setSelectedBlockParentId(sectionId);
+  };
+
   return (
     <BlockInsertContext.Provider value={{
       insertBlockAfter,
       insertBlockBefore,
-      insertBlockAtEnd
+      insertBlockAtEnd,
+      insertBlockInsideSection
     }}>
       {children}
     </BlockInsertContext.Provider>
