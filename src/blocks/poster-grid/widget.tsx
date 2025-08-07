@@ -173,20 +173,20 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         )}
         <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
           {items.map((item, index) => (
-            <div key={item.id} className="relative">
+            <div key={item.id} className="relative group">
               <a
                 href={item.link || '#'}
                 onClick={(e) => {
                   e.preventDefault();
                   handleItemClick(item.id);
                 }}
-                className="block transition-transform hover:scale-105 cursor-pointer"
+                className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
+                  isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                }`}
               >
-                <div className={`${getAspectRatioClass()} ${
-                  itemShape === 'circle' ? 'rounded-full' : ''
-                } overflow-hidden ${
-                  isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2' : ''
-                }`}>
+                <div className={`${getAspectRatioClass()} overflow-hidden ${
+                  itemShape === 'circle' ? 'rounded-full' : 'rounded-lg'
+                } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
                   <img
                     src={item.image}
                     alt={item.title}
@@ -194,9 +194,11 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                   />
                 </div>
                 {item.title && (
-                  <p className={`mt-2 text-sm ${textColorClass}`} style={textColorStyle}>
-                    {item.title}
-                  </p>
+                  <div className="mt-3 space-y-1">
+                    <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
+                      {item.title}
+                    </p>
+                  </div>
                 )}
               </a>
               <ItemsControl 
@@ -205,6 +207,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                 onMoveLeft={() => moveBlockItemLeft(block.id, index)}
                 onMoveRight={() => moveBlockItemRight(block.id, index)}
                 onRemove={() => removeBlockItem(block.id, item.id)}
+                className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               />
             </div>
           ))}

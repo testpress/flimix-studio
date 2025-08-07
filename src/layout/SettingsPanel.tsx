@@ -2,13 +2,14 @@ import React from 'react';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
-import { VisibilityForm, StyleForm, ItemForm, type BlockFormProps } from '@blocks/settings';
+import { VisibilityForm, StyleForm, type BlockFormProps } from '@blocks/settings';
 import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
 import PosterGridForm from '@blocks/poster-grid/form';
 import type { PosterGridItem } from '@blocks/poster-grid/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
+import PosterGridItemForm from '@/blocks/poster-grid/ItemForm';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -46,45 +47,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockStyle(newStyle);
   };
 
-  const getArrayItemFields = (blockType: string) => {
-    switch (blockType) {
-      case 'posterGrid':
-        return [
-          {
-            key: 'image' as keyof PosterGridItem,
-            label: 'Image URL',
-            type: 'url' as const,
-            placeholder: 'Enter image URL...',
-            required: true
-          },
-          {
-            key: 'title' as keyof PosterGridItem,
-            label: 'Title',
-            type: 'text' as const,
-            placeholder: 'Enter item title...',
-            required: true
-          },
-          {
-            key: 'link' as keyof PosterGridItem,
-            label: 'Link (optional)',
-            type: 'url' as const,
-            placeholder: 'Enter link URL...',
-            required: false
-          }
-        ];
-      default:
-        return [];
-    }
-  };
-
   const renderItemEditor = () => {
     if (!selectedBlock || !selectedItemId || !selectedItemBlockId) return null;
 
     // Only show item editor if the selected item belongs to the currently selected block
     if (selectedItemBlockId !== selectedBlock.id) return null;
-
-    const fields = getArrayItemFields(selectedBlock.type);
-    if (fields.length === 0) return null;
 
     switch (selectedBlock.type) {
       case 'posterGrid': {
@@ -97,13 +64,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
           updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
         };
 
-
         return (
-          <ItemForm<PosterGridItem>
+          <PosterGridItemForm
             item={item}
             onChange={handleItemChange}
             title="Poster Grid Item"
-            fields={fields}
           />
         );
       }

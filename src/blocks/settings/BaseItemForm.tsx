@@ -1,7 +1,9 @@
-interface ItemFormProps<T extends { id: string }> {
+import React from 'react';
+
+interface BaseItemFormProps<T extends { id: string }> {
   item: T;
   onChange: (updatedItem: T) => void;
-  title: string; // Add title prop
+  title: string;
   fields: Array<{
     key: keyof T;
     label: string;
@@ -9,14 +11,16 @@ interface ItemFormProps<T extends { id: string }> {
     placeholder?: string;
     required?: boolean;
   }>;
+  children?: React.ReactNode; // Allow additional content to be passed in
 }
 
-const ItemForm = <T extends { id: string }>({ 
+const BaseItemForm = <T extends { id: string }>({ 
   item, 
   onChange, 
-  title, // Add title parameter
-  fields 
-}: ItemFormProps<T>) => {
+  title, 
+  fields,
+  children 
+}: BaseItemFormProps<T>) => {
   const handleChange = (field: keyof T, value: string) => {
     onChange({ ...item, [field]: value });
   };
@@ -63,24 +67,30 @@ const ItemForm = <T extends { id: string }>({
   };
 
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-medium text-gray-700">{title}</h3>
+    <div className="space-y-4">
+      {/* Basic Fields */}
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-medium text-gray-700">{title}</h3>
+        </div>
+        
+        <div className="space-y-3">
+          {fields.map((field) => (
+            <div key={String(field.key)}>
+              <label className="block text-sm text-gray-700 mb-1">
+                {field.label}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
+              </label>
+              {renderField(field)}
+            </div>
+          ))}
+        </div>
       </div>
       
-      <div className="space-y-3">
-        {fields.map((field) => (
-          <div key={String(field.key)}>
-            <label className="block text-sm text-gray-700 mb-1">
-              {field.label}
-              {field.required && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            {renderField(field)}
-          </div>
-        ))}
-      </div>
+      {/* Additional content (meta fields, etc.) */}
+      {children}
     </div>
   );
 };
 
-export default ItemForm; 
+export default BaseItemForm; 
