@@ -16,6 +16,7 @@ export interface BaseWidgetProps<T extends Block = Block> {
   onMoveDown?: () => void;
   onDuplicate?: () => void;
   onRemove?: () => void;
+  onAddItem?: () => void;
 }
 
 /**
@@ -39,7 +40,8 @@ const BaseWidget = <T extends Block = Block>({
   onMoveUp,
   onMoveDown,
   onDuplicate,
-  onRemove
+  onRemove,
+  onAddItem
 }: BaseWidgetProps<T>) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling to parent blocks
@@ -77,6 +79,7 @@ const BaseWidget = <T extends Block = Block>({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
+          onAddItem={onAddItem}
         />
       )}
     </div>
