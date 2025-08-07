@@ -105,11 +105,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }
 
   const handleInsert = (blockType: BlockType['type']) => {
-    if (isChildBlock(selectedBlockId)) {
-      if (blockType === 'section') {
-        return;
-      }
-    }
     if (position === 'above') {
       insertBlockBefore(blockType);
     } else {
@@ -145,9 +140,11 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('hero')}>
           Hero Block
         </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('section')}>
-          Section Block
-        </DropdownItem>
+        {!isChildBlock(selectedBlockId) && (
+          <DropdownItem onClick={() => handleInsert('section')}>
+            Section Block
+          </DropdownItem>
+        )}
       </Dropdown>
     </div>
   );
