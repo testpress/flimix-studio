@@ -40,19 +40,21 @@ function evaluateVisibility(
 
   if (
     visibility.subscriptionTier &&
+    context.subscriptionTier && // Only check if context has a specific tier
     visibility.subscriptionTier !== context.subscriptionTier
   )
     return false;
 
   if (
     visibility.region &&
-    !visibility.region.includes(context.region ?? '')
+    context.region && // Only check if context has a specific region
+    !visibility.region.includes(context.region)
   )
     return false;
 
   if (
     visibility.platform &&
-    context.platform &&
+    context.platform && // Only check if context has a specific platform
     !visibility.platform.includes(context.platform as Platform)
   )
     return false;
@@ -62,7 +64,7 @@ function evaluateVisibility(
 
 const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId, visibilityContext }) => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockBefore, insertBlockInsideSection } = useBlockInsert();
+  const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
   const { pageSchema } = useHistory();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -73,12 +75,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     );
   };
 
-  // Helper function to find the parent Section of a child block
-  const findParentSection = (blockId: string) => {
-    return pageSchema.blocks.find(block => 
-      block.children && block.children.some(child => child.id === blockId)
-    );
-  };
 
   // Helper function to find a block by ID (including nested blocks)
   const findBlockById = (blockId: string): BlockType | null => {
@@ -109,34 +105,15 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }
 
   const handleInsert = (blockType: BlockType['type']) => {
-    // Check if the selected block is a Section (only at top level)
-    const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
-    
-    if (selectedBlock?.type === 'section') {
-      // Insert inside the section's children (or after it if it's a Section)
-      insertBlockInsideSection(blockType, selectedBlockId);
-    } else {
-      // Check if the selected block is a child of a Section
-      if (isChildBlock(selectedBlockId)) {
-        // Child block is selected - allow other blocks but restrict Section blocks
-        if (blockType === 'section') {
-          // Sections can't be nested - silently ignore or you could add console.warn here
-          return;
-        } else {
-          // Find the parent Section and insert the block inside it
-          const parentSection = findParentSection(selectedBlockId);
-          if (parentSection) {
-            insertBlockInsideSection(blockType, parentSection.id);
-          }
-        }
-      } else {
-        // Default: insert either before or after the selected block
-        if (position === 'above') {
-          insertBlockBefore(blockType);
-        } else {
-          insertBlockAfter(blockType);
-        }
+    if (isChildBlock(selectedBlockId)) {
+      if (blockType === 'section') {
+        return;
       }
+    }
+    if (position === 'above') {
+      insertBlockBefore(blockType);
+    } else {
+      insertBlockAfter(blockType);
     }
   };
 
