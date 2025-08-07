@@ -67,6 +67,38 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
     }
   };
 
+  const getGridColsClass = () => {
+    switch (columns) {
+      case 2:
+        return 'grid-cols-2';
+      case 3:
+        return 'grid-cols-3';
+      case 4:
+        return 'grid-cols-4';
+      default:
+        return 'grid-cols-3';
+    }
+  };
+
+  const getGridRowsClass = () => {
+    // Calculate how many rows we actually need based on items count
+    const actualRows = Math.ceil((items?.length || 0) / (columns || 3));
+    
+    switch (actualRows) {
+      case 0:
+      case 1:
+        return 'grid-rows-1';
+      case 2:
+        return 'grid-rows-2';
+      case 3:
+        return 'grid-rows-3';
+      case 4:
+        return 'grid-rows-4';
+      default:
+        return 'grid-rows-4'; // Cap at 4 rows max
+    }
+  };
+
   const handleAddItem = () => {
     // Calculate max items based on grid size
     const maxItems = (columns || 3) * (rows || 3);
@@ -139,7 +171,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
             {title}
           </h2>
         )}
-        <div className={`grid grid-cols-${columns} grid-rows-${rows} ${getGapClass()}`}>
+        <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
           {items.map((item, index) => (
             <div key={item.id} className="relative">
               <a

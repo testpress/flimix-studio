@@ -126,27 +126,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     const EditorComponent = BlockPropEditors[selectedBlock.type];
     
     if (EditorComponent) {
-      // Special handling for posterGrid to pass updateStyle
-      if (selectedBlock.type === 'posterGrid') {
-        // Define a simpler type for PosterGridForm
-        type PosterGridFormType = React.FC<BlockFormProps & { 
-          updateStyle?: (newStyle: Partial<StyleProps>) => void 
-        }>;
-        
-        const PosterGridForm = EditorComponent as PosterGridFormType;
-        return (
-          <PosterGridForm 
-            block={selectedBlock} 
-            updateProps={updateSelectedBlockProps}
-            updateStyle={updateSelectedBlockStyle}
-          />
-        );
-      }
-      
       return (
         <EditorComponent 
           block={selectedBlock} 
-          updateProps={updateSelectedBlockProps} 
+          updateProps={updateSelectedBlockProps}
+          updateStyle={updateSelectedBlockStyle}
         />
       );
     }

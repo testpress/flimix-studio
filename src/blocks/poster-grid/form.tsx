@@ -15,11 +15,7 @@ const posterGridEditorFields: Field[] = [
   }
 ];
 
-interface PosterGridFormProps extends BlockFormProps {
-  updateStyle?: (newStyle: Partial<StyleProps>) => void;
-}
-
-const PosterGridForm: React.FC<PosterGridFormProps> = ({ block, updateProps, updateStyle }) => {
+const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyle }) => {
   const { props, style } = block;
   const posterGridProps = props as PosterGridBlockProps;
 
