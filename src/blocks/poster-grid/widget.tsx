@@ -3,6 +3,7 @@ import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { PosterGridBlock } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import ItemsControl from '@blocks/shared/ItemsControl';
 
 interface PosterGridWidgetProps extends Omit<BaseWidgetProps<PosterGridBlock>, 'block'> {
   block: PosterGridBlock;
@@ -21,7 +22,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, layout, itemShape, items } = props;
-  const { addBlockItem, selectArrayItem, isItemSelected } = useSelection();
+  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
@@ -125,7 +126,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           </h2>
         )}
         <div className={getLayoutClass()}>
-          {items.map(item => (
+          {items.map((item, index) => (
             <div key={item.id} className="relative">
               <a
                 href={item.link || '#'}
@@ -152,6 +153,13 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                   </p>
                 )}
               </a>
+              <ItemsControl 
+                index={index}
+                count={items.length}
+                onMoveLeft={() => moveBlockItemLeft(block.id, index)}
+                onMoveRight={() => moveBlockItemRight(block.id, index)}
+                onRemove={() => removeBlockItem(block.id, item.id)}
+              />
             </div>
           ))}
         </div>
