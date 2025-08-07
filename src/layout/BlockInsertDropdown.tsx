@@ -148,6 +148,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('posterGrid')}>
           Poster Grid Block
         </DropdownItem>
+        <DropdownItem onClick={() => handleInsert('carousel')}>
+          Carousel Block
+        </DropdownItem>
       </Dropdown>
     </div>
   );

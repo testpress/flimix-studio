@@ -7,9 +7,13 @@ import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
 import PosterGridForm from '@blocks/poster-grid/form';
+import PosterGridItemForm from '@blocks/poster-grid/ItemForm';
 import type { PosterGridItem } from '@blocks/poster-grid/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
-import PosterGridItemForm from '@/blocks/poster-grid/ItemForm';
+import type { CarouselBlockProps } from '@/blocks/carousel/schema';
+import CarouselItemForm from '@/blocks/carousel/ItemForm';
+import type { CarouselItem } from '@/blocks/carousel/schema';
+import CarouselForm from '@/blocks/carousel/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -33,6 +37,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     text: TextForm,
     section: SectionForm,
     posterGrid: PosterGridForm,
+    carousel: CarouselForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -69,6 +74,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Poster Grid Item"
+          />
+        );
+      }
+      
+      case 'carousel': {
+        const items = (selectedBlock.props as CarouselBlockProps).items || [];
+        const item = items.find((i: CarouselItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: CarouselItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <CarouselItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Carousel Item"
           />
         );
       }

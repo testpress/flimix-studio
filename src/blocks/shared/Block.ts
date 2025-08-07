@@ -5,19 +5,21 @@ import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import type { PosterGridBlock } from '@blocks/poster-grid/schema';
+import type { CarouselBlock } from '@blocks/carousel/schema';
 import type { HeroBlockProps } from '@blocks/hero/schema';
 import type { TextBlockProps } from '@blocks/text/schema';
 import type { SectionBlockProps } from '@blocks/section/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
+import type { CarouselBlockProps } from '@blocks/carousel/schema';
 
 // Union type for all block types (imported from individual block schemas)
-export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock;
+export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock | CarouselBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

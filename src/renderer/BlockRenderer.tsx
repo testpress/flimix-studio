@@ -3,11 +3,13 @@ import HeroWidget from '@blocks/hero/widget';
 import TextWidget from '@blocks/text/widget';
 import SectionWidget from '@blocks/section/widget';
 import PosterGridWidget from '@blocks/poster-grid/widget';
+import CarouselWidget from '@blocks/carousel/widget';
 import type { Block } from '@blocks/shared/Block';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import type { PosterGridBlock } from '@blocks/poster-grid/schema';
+import type { CarouselBlock } from '@blocks/carousel/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
@@ -171,6 +173,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         return <SectionWidget block={block as SectionBlock} visibilityContext={visibilityContext} showDebug={showDebug} onSelect={(sectionBlock) => onSelect?.(sectionBlock as Block)} isSelected={isSelected} selectedBlockId={selectedBlockId} {...widgetControlProps} />;
       case 'posterGrid':
         return <PosterGridWidget block={block as PosterGridBlock} onSelect={(posterGridBlock) => onSelect?.(posterGridBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'carousel':
+        return <CarouselWidget block={block as CarouselBlock} onSelect={(carouselBlock) => onSelect?.(carouselBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

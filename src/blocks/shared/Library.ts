@@ -3,6 +3,7 @@ import { HeroLibraryItem } from '@blocks/hero/libraryItem';
 import { TextLibraryItem } from '@blocks/text/libraryItem';
 import { SectionLibraryItem } from '@blocks/section/libraryItem';
 import { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
+import { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -11,13 +12,14 @@ export { HeroLibraryItem } from '@blocks/hero/libraryItem';
 export { TextLibraryItem } from '@blocks/text/libraryItem';
 export { SectionLibraryItem } from '@blocks/section/libraryItem';
 export { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
+export { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd';
   defaultProps: BlockProps;
 };
 
@@ -27,6 +29,7 @@ export const allLibraryItems = [
   TextLibraryItem,
   SectionLibraryItem,
   PosterGridLibraryItem,
+  CarouselLibraryItem,
 ] as const;
 
 // Helper function to get all available block types
