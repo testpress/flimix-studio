@@ -24,8 +24,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockStyle, 
     updateSelectedBlockVisibility,
     updateBlockItem,
-    removeBlockItem,
-    setSelectedItemId
   } = useSelection();
 
   // Block editor registry for dynamic lookup
@@ -99,16 +97,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
           updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
         };
 
-        const handleItemRemove = () => {
-          removeBlockItem(selectedBlock.id, selectedItemId);
-          setSelectedItemId(null);
-        };
 
         return (
           <ItemForm<PosterGridItem>
             item={item}
             onChange={handleItemChange}
-            onRemove={handleItemRemove}
             title="Poster Grid Item"
             fields={fields}
           />
@@ -136,7 +129,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
       return (
         <EditorComponent 
           block={selectedBlock} 
-          updateProps={updateSelectedBlockProps} 
+          updateProps={updateSelectedBlockProps}
+          updateStyle={updateSelectedBlockStyle}
         />
       );
     }

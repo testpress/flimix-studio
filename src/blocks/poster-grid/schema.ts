@@ -1,5 +1,11 @@
 import type { Block } from '@blocks/shared/Block';
 
+// Define item shape type
+export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';
+
+// Define grid dimension type
+export type GridDimension = 2 | 3 | 4;
+
 // Poster grid block interface
 export interface PosterGridBlock extends Omit<Block, 'props'> {
   type: 'posterGrid';
@@ -9,7 +15,9 @@ export interface PosterGridBlock extends Omit<Block, 'props'> {
 // Poster grid block props interface
 export interface PosterGridBlockProps {
   title?: string;
-  itemShape?: 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';
+  columns?: GridDimension;
+  rows?: GridDimension;
+  itemShape?: ItemShape;
   items?: PosterGridItem[];
 }
 

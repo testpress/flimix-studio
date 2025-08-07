@@ -21,7 +21,8 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, items } = props;
+  const { title, columns = 3, rows = 3, itemShape, items } = props;
+  const { gridGap = 'md' } = style || {};
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const isDark = style?.theme === 'dark';
@@ -55,7 +56,59 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
     }
   };
 
+  const getGapClass = () => {
+    switch (gridGap) {
+      case 'sm':
+        return 'gap-2';
+      case 'lg':
+        return 'gap-6';
+      default: // md
+        return 'gap-4';
+    }
+  };
+
+  const getGridColsClass = () => {
+    switch (columns) {
+      case 2:
+        return 'grid-cols-2';
+      case 3:
+        return 'grid-cols-3';
+      case 4:
+        return 'grid-cols-4';
+      default:
+        return 'grid-cols-3';
+    }
+  };
+
+  const getGridRowsClass = () => {
+    // Calculate how many rows we actually need based on items count
+    const actualRows = Math.ceil((items?.length || 0) / (columns || 3));
+    
+    switch (actualRows) {
+      case 0:
+      case 1:
+        return 'grid-rows-1';
+      case 2:
+        return 'grid-rows-2';
+      case 3:
+        return 'grid-rows-3';
+      case 4:
+        return 'grid-rows-4';
+      default:
+        return 'grid-rows-4'; // Cap at 4 rows max
+    }
+  };
+
   const handleAddItem = () => {
+    // Calculate max items based on grid size
+    const maxItems = (columns || 3) * (rows || 3);
+    
+    // Don't add more items if we're at the limit
+    if (items && items.length >= maxItems) {
+      console.log(`Maximum ${maxItems} items allowed. Cannot add more.`);
+      return;
+    }
+    
     const defaultItem = {
       image: 'https://plus.unsplash.com/premium_photo-1754392582865-6902ee69cdb9',
       title: 'New Item',
@@ -118,7 +171,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
             {title}
           </h2>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
           {items.map((item, index) => (
             <div key={item.id} className="relative">
               <a
