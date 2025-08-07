@@ -12,15 +12,6 @@ const posterGridEditorFields: Field[] = [
     placeholder: 'Enter grid title...'
   },
   { 
-    key: 'layout', 
-    label: 'Layout', 
-    type: 'select',
-    options: [
-      { value: 'grid', label: 'Grid' },
-      { value: 'carousel', label: 'Carousel' }
-    ]
-  },
-  { 
     key: 'itemShape', 
     label: 'Item Shape', 
     type: 'select',

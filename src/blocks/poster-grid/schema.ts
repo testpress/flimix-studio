@@ -9,7 +9,6 @@ export interface PosterGridBlock extends Omit<Block, 'props'> {
 // Poster grid block props interface
 export interface PosterGridBlockProps {
   title?: string;
-  layout?: 'grid' | 'carousel';
   itemShape?: 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';
   items?: PosterGridItem[];
 }

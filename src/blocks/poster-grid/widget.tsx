@@ -21,7 +21,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, layout, itemShape, items } = props;
+  const { title, itemShape, items } = props;
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const isDark = style?.theme === 'dark';
@@ -53,13 +53,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
       default: // rectangle-landscape
         return 'aspect-[16/9]';
     }
-  };
-
-  const getLayoutClass = () => {
-    if (layout === 'carousel') {
-      return 'flex overflow-x-auto space-x-4 pb-4';
-    }
-    return 'grid grid-cols-2 md:grid-cols-4 gap-4';
   };
 
   const handleAddItem = () => {
@@ -125,7 +118,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
             {title}
           </h2>
         )}
-        <div className={getLayoutClass()}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {items.map((item, index) => (
             <div key={item.id} className="relative">
               <a

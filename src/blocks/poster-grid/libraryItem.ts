@@ -4,11 +4,10 @@ import type { PosterGridBlockProps } from './schema';
 export const PosterGridLibraryItem = {
   type: 'posterGrid' as const,
   name: 'Poster Grid',
-  description: 'Display a grid or carousel of poster images with titles',
+  description: 'Display a grid of poster images with titles',
   icon: 'Grid2x2' as const,
   defaultProps: {
     title: 'Top Picks',
-    layout: 'grid',
     itemShape: 'rectangle-landscape',
     items: [
       { id: '1', image: 'https://images.unsplash.com/photo-1754147388611-c0f0179a05b5', title: 'Sample 1', link: '' },
