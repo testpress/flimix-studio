@@ -128,6 +128,49 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               Display left/right arrow buttons for carousel navigation
             </p>
           </div>
+
+          {/* Autoplay Settings */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Autoplay</label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="autoplay"
+                checked={carouselProps.autoplay || false}
+                onChange={e => updateProps({ ...carouselProps, autoplay: e.target.checked })}
+                className="rounded"
+              />
+              <label htmlFor="autoplay" className="text-sm text-gray-700">
+                Enable Autoplay
+              </label>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Automatically scroll through carousel items
+            </p>
+          </div>
+
+          {/* Scroll Speed */}
+          {carouselProps.autoplay && (
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">Scroll Speed (ms)</label>
+              <input
+                type="number"
+                min={1000}
+                max={10000}
+                step={500}
+                value={carouselProps.scrollSpeed || 3000}
+                onChange={e => updateProps({ 
+                  ...carouselProps, 
+                  scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 3000))
+                })}
+                className="w-full p-2 border border-gray-300 rounded text-sm"
+                placeholder="3000"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Time between scroll actions in milliseconds (1000-10000ms)
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

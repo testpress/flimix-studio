@@ -11,7 +11,7 @@ export const CarouselLibraryItem = {
     itemShape: 'rectangle-landscape' as const,
     alignment: 'left' as const,
     autoplay: false,
-    scrollSpeed: 3000,
+    scrollSpeed: 1000,
     showArrows: true,
     itemSize: 'large',
     items: [
