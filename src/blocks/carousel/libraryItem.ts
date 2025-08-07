@@ -13,7 +13,7 @@ export const CarouselLibraryItem = {
     autoplay: false,
     scrollSpeed: 3000,
     showArrows: true,
-    itemSize: 'w-72',
+    itemSize: 'large',
     items: [
       {
         id: '1',

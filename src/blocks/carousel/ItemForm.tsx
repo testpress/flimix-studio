@@ -8,6 +8,33 @@ interface CarouselItemFormProps {
   title: string;
 }
 
+// Rating options for the select dropdown
+const RATING_OPTIONS = [
+  { value: "G", label: "G - General Audience" },
+  { value: "PG", label: "PG - Parental Guidance" },
+  { value: "PG-13", label: "PG-13 - Parental Guidance (13+)" },
+  { value: "R", label: "R - Restricted" },
+  { value: "NC-17", label: "NC-17 - Adults Only" },
+  { value: "TV-Y", label: "TV-Y - All Children" },
+  { value: "TV-Y7", label: "TV-Y7 - Children 7+" },
+  { value: "TV-G", label: "TV-G - General Audience" },
+  { value: "TV-PG", label: "TV-PG - Parental Guidance" },
+  { value: "TV-14", label: "TV-14 - Parents Strongly Cautioned" },
+  { value: "TV-MA", label: "TV-MA - Mature Audience" },
+];
+
+// Badge options for the select dropdown
+const BADGE_OPTIONS = [
+  { value: "New", label: "New" },
+  { value: "Popular", label: "Popular" },
+  { value: "Featured", label: "Featured" },
+  { value: "Trending", label: "Trending" },
+  { value: "Hot", label: "Hot" },
+  { value: "Exclusive", label: "Exclusive" },
+  { value: "Limited", label: "Limited" },
+  { value: "Coming Soon", label: "Coming Soon" },
+];
+
 // Move fields array outside the component to prevent recreation on every render
 const carouselItemFields = [
   {
@@ -97,17 +124,11 @@ const CarouselItemForm: React.FC<CarouselItemFormProps> = ({
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="">Select rating...</option>
-              <option value="G">G - General Audience</option>
-              <option value="PG">PG - Parental Guidance</option>
-              <option value="PG-13">PG-13 - Parental Guidance (13+)</option>
-              <option value="R">R - Restricted</option>
-              <option value="NC-17">NC-17 - Adults Only</option>
-              <option value="TV-Y">TV-Y - All Children</option>
-              <option value="TV-Y7">TV-Y7 - Children 7+</option>
-              <option value="TV-G">TV-G - General Audience</option>
-              <option value="TV-PG">TV-PG - Parental Guidance</option>
-              <option value="TV-14">TV-14 - Parents Strongly Cautioned</option>
-              <option value="TV-MA">TV-MA - Mature Audience</option>
+              {RATING_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -118,14 +139,11 @@ const CarouselItemForm: React.FC<CarouselItemFormProps> = ({
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="">Select badge...</option>
-              <option value="New">New</option>
-              <option value="Popular">Popular</option>
-              <option value="Featured">Featured</option>
-              <option value="Trending">Trending</option>
-              <option value="Hot">Hot</option>
-              <option value="Exclusive">Exclusive</option>
-              <option value="Limited">Limited</option>
-              <option value="Coming Soon">Coming Soon</option>
+              {BADGE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
           <div>

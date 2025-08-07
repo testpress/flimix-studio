@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { CarouselBlock } from './schema';
+import type { CarouselBlock, ItemSize } from './schema';
+import { CAROUSEL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { generateUniqueId } from '@utils/id';
 
 interface CarouselWidgetProps extends Omit<BaseWidgetProps<CarouselBlock>, 'block'> {
   block: CarouselBlock;
@@ -22,13 +24,29 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, showArrows, items, itemSize = 'w-72' } = props;
+  const { title, itemShape, showArrows, items, itemSize = 'large' } = props;
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  const [previousItemsLength, setPreviousItemsLength] = useState(items?.length || 0);
+  const previousItemsLengthRef = useRef<number>(0);
+  
+  // Map abstract item size values to Tailwind classes
+  const getItemSizeClass = (size: ItemSize): string => {
+    switch (size) {
+      case 'small':
+        return 'w-48';
+      case 'medium':
+        return 'w-64';
+      case 'large':
+        return 'w-72';
+      case 'extra-large':
+        return 'w-80';
+      default:
+        return 'w-72'; // fallback to large
+    }
+  };
   
   const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
@@ -48,52 +66,43 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
-  // Get gap class based on style
+  // Gap class mapping for better maintainability
+  const GAP_CLASSES: Record<string, string> = {
+    'sm': 'space-x-4',
+    'md': 'space-x-6',
+    'lg': 'space-x-8',
+  };
+
   const getGapClass = () => {
-    switch (style?.gridGap) {
-      case 'sm':
-        return 'space-x-4';
-      case 'lg':
-        return 'space-x-8';
-      default: // md
-        return 'space-x-6';
-    }
+    return GAP_CLASSES[style?.gridGap || 'md'] || GAP_CLASSES['md'];
+  };
+
+  // Item shape class mapping for better maintainability
+  const ITEM_SHAPE_CLASSES: Record<string, string> = {
+    'rectangle-landscape': 'aspect-[16/9]',
+    'rectangle-portrait': 'aspect-[2/3]',
+    'square': 'aspect-square',
+    'circle': 'aspect-square rounded-full',
   };
 
   const getItemShapeClass = () => {
-    switch (itemShape) {
-      case 'rectangle-portrait':
-        return 'aspect-[2/3]';
-      case 'square':
-        return 'aspect-square';
-      case 'circle':
-        return 'aspect-square rounded-full';
-      default:
-        return 'aspect-[16/9]';
-    }
+    return ITEM_SHAPE_CLASSES[itemShape] || ITEM_SHAPE_CLASSES['rectangle-landscape'];
+  };
+
+  // Badge color mapping for better maintainability
+  const BADGE_COLORS: Record<string, string> = {
+    'new': 'bg-green-100 text-green-800',
+    'popular': 'bg-red-100 text-red-800',
+    'featured': 'bg-blue-100 text-blue-800',
+    'trending': 'bg-orange-100 text-orange-800',
+    'hot': 'bg-pink-100 text-pink-800',
+    'exclusive': 'bg-purple-100 text-purple-800',
+    'limited': 'bg-yellow-100 text-yellow-800',
+    'coming soon': 'bg-indigo-100 text-indigo-800',
   };
 
   const getBadgeColor = (badge: string) => {
-    switch (badge.toLowerCase()) {
-      case 'new':
-        return 'bg-green-100 text-green-800';
-      case 'popular':
-        return 'bg-red-100 text-red-800';
-      case 'featured':
-        return 'bg-blue-100 text-blue-800';
-      case 'trending':
-        return 'bg-orange-100 text-orange-800';
-      case 'hot':
-        return 'bg-pink-100 text-pink-800';
-      case 'exclusive':
-        return 'bg-purple-100 text-purple-800';
-      case 'limited':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'coming soon':
-        return 'bg-indigo-100 text-indigo-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+    return BADGE_COLORS[badge.toLowerCase()] || 'bg-gray-100 text-gray-800';
   };
 
   // Check scroll position and update arrow visibility
@@ -115,8 +124,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
       const currentScrollLeft = scrollContainer.scrollLeft;
       
       // Only reset scroll position if this is the initial load or items were added/removed
-      const isInitialLoad = previousItemsLength === 0;
-      const itemsChanged = previousItemsLength !== (items?.length || 0);
+      const isInitialLoad = previousItemsLengthRef.current === 0;
+      const itemsChanged = previousItemsLengthRef.current !== (items?.length || 0);
       
       if (isInitialLoad) {
         scrollContainer.scrollLeft = 0;
@@ -130,14 +139,14 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
       window.addEventListener('resize', checkScrollPosition);
       
       // Update previous items length
-      setPreviousItemsLength(items?.length || 0);
+      previousItemsLengthRef.current = items?.length || 0;
       
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
         window.removeEventListener('resize', checkScrollPosition);
       };
     }
-  }, [items, previousItemsLength]);
+  }, [items]);
 
   // Handle arrow clicks
   const handleScrollLeft = () => {
@@ -155,12 +164,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   const handleAddItem = () => {
     const currentItemCount = items?.length || 0;
     
-    if (currentItemCount >= 12) {
+    if (currentItemCount >= CAROUSEL_ITEM_LIMIT) {
       return; // Don't add more items if at limit
     }
     
     const defaultItem = {
-      id: `item-${Date.now()}`,
+      id: generateUniqueId(),
       title: 'New Carousel Item',
       subtitle: 'Subtitle',
       image: 'https://images.unsplash.com/photo-1534840641466-b1cdb8fb155e',
@@ -176,7 +185,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
   // Check if we're at the item limit
-  const isAtItemLimit = (items?.length || 0) >= 12;
+  const isAtItemLimit = (items?.length || 0) >= CAROUSEL_ITEM_LIMIT;
 
   if (!items || items.length === 0) {
     return (
@@ -245,13 +254,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
               <div 
                 ref={scrollContainerRef}
                 className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {/* Left padding to ensure first item is fully visible */}
                 <div className="flex-shrink-0 w-4"></div>
                 
                 {items.map((item, index) => (
-                  <div key={item.id} className={`relative flex-shrink-0 ${itemSize} group`} data-item-id={item.id}>
+                  <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} group`} data-item-id={item.id}>
                     <a 
                       href={item.link || '#'} 
                       onClick={(e) => {

@@ -1,10 +1,16 @@
 import type { Block } from '@blocks/shared/Block';
 
+// Carousel item limit constant
+export const CAROUSEL_ITEM_LIMIT = 12;
+
 // Define item shape type
 export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';
 
 // Define alignment type
 export type Alignment = 'left' | 'center' | 'right';
+
+// Define item size type using abstract values
+export type ItemSize = 'small' | 'medium' | 'large' | 'extra-large';
 
 // Carousel item interface
 export interface CarouselItem {
@@ -34,6 +40,6 @@ export interface CarouselBlockProps {
   autoplay: boolean;
   scrollSpeed: number;
   showArrows: boolean;
-  itemSize?: string;
+  itemSize?: ItemSize;
   items: CarouselItem[];
 } 

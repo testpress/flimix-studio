@@ -60,7 +60,13 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'carousel',
         id,
-        props: CarouselLibraryItem.defaultProps,
+        props: {
+          ...CarouselLibraryItem.defaultProps,
+          items: CarouselLibraryItem.defaultProps.items?.map(item => ({
+            ...item,
+            id: generateUniqueId(),
+          })) || [],
+        },
         style: {
           padding: 'md',
           textAlign: 'left'

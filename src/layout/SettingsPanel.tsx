@@ -10,10 +10,10 @@ import PosterGridForm from '@blocks/poster-grid/form';
 import PosterGridItemForm from '@blocks/poster-grid/ItemForm';
 import type { PosterGridItem } from '@blocks/poster-grid/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
-import type { CarouselBlockProps } from '@/blocks/carousel/schema';
-import CarouselItemForm from '@/blocks/carousel/ItemForm';
-import type { CarouselItem } from '@/blocks/carousel/schema';
-import CarouselForm from '@/blocks/carousel/form';
+import type { CarouselBlockProps } from '@blocks/carousel/schema';
+import CarouselItemForm from '@blocks/carousel/ItemForm';
+import type { CarouselItem } from '@blocks/carousel/schema';
+import CarouselForm from '@blocks/carousel/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
