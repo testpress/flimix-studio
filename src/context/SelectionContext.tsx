@@ -549,15 +549,11 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   };
 
   const moveBlockItemLeft = (blockId: string, index: number) => {
-    if (index <= 0) return;
     modifyBlockItems(blockId, (items) => swap(items, index, index - 1));
   };
 
   const moveBlockItemRight = (blockId: string, index: number) => {
-    modifyBlockItems(blockId, (items) => {
-      if (index >= items.length - 1) return items;
-      return swap(items, index, index + 1);
-    });
+    modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
   };
 
   const selectArrayItem = (blockId: string, itemId: string): void => {

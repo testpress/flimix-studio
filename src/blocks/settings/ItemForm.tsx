@@ -1,7 +1,6 @@
 interface ItemFormProps<T extends { id: string }> {
   item: T;
   onChange: (updatedItem: T) => void;
-  onRemove: () => void;
   title: string; // Add title prop
   fields: Array<{
     key: keyof T;
@@ -15,7 +14,6 @@ interface ItemFormProps<T extends { id: string }> {
 const ItemForm = <T extends { id: string }>({ 
   item, 
   onChange, 
-  onRemove, 
   title, // Add title parameter
   fields 
 }: ItemFormProps<T>) => {
@@ -68,12 +66,6 @@ const ItemForm = <T extends { id: string }>({
     <div className="p-4 bg-gray-50 rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-medium text-gray-700">{title}</h3>
-        <button
-          onClick={onRemove}
-          className="text-red-600 hover:text-red-800 text-sm"
-        >
-          Remove
-        </button>
       </div>
       
       <div className="space-y-3">

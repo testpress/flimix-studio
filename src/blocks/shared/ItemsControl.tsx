@@ -23,28 +23,29 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
   showRemoveControl = true,
 }) => (
   <div className={className}>
-    {/* Move Left */}
+    {/* Move Controls */}
     {showMoveControls && (
-      <button
-        onClick={e => { e.stopPropagation(); onMoveLeft(); }}
-        disabled={index === 0}
-        className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
-        title="Move Left"
-      >
-        <MoveLeft size={12} />
-      </button>
-    )}
+      <>
+        {/* Move Left */}
+        <button
+          onClick={e => { e.stopPropagation(); onMoveLeft(); }}
+          disabled={index === 0}
+          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
+          title="Move Left"
+        >
+          <MoveLeft size={12} />
+        </button>
 
-    {/* Move Right */}
-    {showMoveControls && (
-      <button
-        onClick={e => { e.stopPropagation(); onMoveRight(); }}
-        disabled={index === count - 1}
-        className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
-        title="Move Right"
-      >
-        <MoveRight size={12} />
-      </button>
+        {/* Move Right */}
+        <button
+          onClick={e => { e.stopPropagation(); onMoveRight(); }}
+          disabled={index === count - 1}
+          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
+          title="Move Right"
+        >
+          <MoveRight size={12} />
+        </button>
+      </>
     )}
 
     {/* Remove */}
