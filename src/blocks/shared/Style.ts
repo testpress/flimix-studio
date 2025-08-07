@@ -11,6 +11,8 @@ export type BorderRadius = 'none' | 'sm' | 'md' | 'lg';
 // Box shadow options
 export type BoxShadow = 'none' | 'sm' | 'md' | 'lg';
 
+export type GridGap = 'sm' | 'md' | 'lg';
+
 // Keep literal information *and* allow arbitrary strings
 export type StyleValue =
   | Theme
@@ -18,6 +20,7 @@ export type StyleValue =
   | TextAlign
   | BorderRadius
   | BoxShadow
+  | GridGap
   | (string & {});
 
 // Enhanced style properties
@@ -31,4 +34,5 @@ export interface StyleProps {
   borderRadius?: BorderRadius;
   boxShadow?: BoxShadow;
   maxWidth?: string;
+  gridGap?: GridGap;
 } 

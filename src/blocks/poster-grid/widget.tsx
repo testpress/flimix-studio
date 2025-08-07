@@ -21,7 +21,8 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, items } = props;
+  const { title, columns = 3, rows = 3, itemShape, items } = props;
+  const { gridGap = 'md' } = style || {};
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const isDark = style?.theme === 'dark';
@@ -55,7 +56,27 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
     }
   };
 
+  const getGapClass = () => {
+    switch (gridGap) {
+      case 'sm':
+        return 'gap-2';
+      case 'lg':
+        return 'gap-6';
+      default: // md
+        return 'gap-4';
+    }
+  };
+
   const handleAddItem = () => {
+    // Calculate max items based on grid size
+    const maxItems = (columns || 3) * (rows || 3);
+    
+    // Don't add more items if we're at the limit
+    if (items && items.length >= maxItems) {
+      console.log(`Maximum ${maxItems} items allowed. Cannot add more.`);
+      return;
+    }
+    
     const defaultItem = {
       image: 'https://plus.unsplash.com/premium_photo-1754392582865-6902ee69cdb9',
       title: 'New Item',
@@ -118,7 +139,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
             {title}
           </h2>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className={`grid grid-cols-${columns} grid-rows-${rows} ${getGapClass()}`}>
           {items.map((item, index) => (
             <div key={item.id} className="relative">
               <a
