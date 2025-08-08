@@ -158,10 +158,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                 min={1000}
                 max={10000}
                 step={500}
-                value={carouselProps.scrollSpeed || 3000}
+                value={carouselProps.scrollSpeed || 1000}
                 onChange={e => updateProps({ 
                   ...carouselProps, 
-                  scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 3000))
+                  scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 1000))
                 })}
                 className="w-full p-2 border border-gray-300 rounded text-sm"
                 placeholder="3000"
