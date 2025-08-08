@@ -1,7 +1,7 @@
 import React from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { SpacerBlock } from './schema';
+import type { SpacerBlock, SpacerHeight } from './schema';
 
 interface SpacerWidgetProps extends Omit<BaseWidgetProps<SpacerBlock>, 'block'> {
   block: SpacerBlock;
@@ -21,7 +21,7 @@ const SpacerWidget: React.FC<SpacerWidgetProps> = ({
   const { props } = block;
   const { height } = props;
 
-  const heightClasses: Record<string, string> = {
+  const heightClasses: Record<SpacerHeight, string> = {
     none: 'h-0',
     xs: 'h-2',
     sm: 'h-4',

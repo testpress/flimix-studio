@@ -78,10 +78,6 @@ export function createBlock(type: BlockType['type']): BlockType {
         type: 'spacer',
         id,
         props: SpacerLibraryItem.defaultProps,
-        style: {
-          padding: 'none',
-          margin: 'none'
-        }
       };
 
     default:
