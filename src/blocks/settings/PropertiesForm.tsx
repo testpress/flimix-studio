@@ -102,6 +102,32 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
           />
         );
         
+      case 'number':
+        return (
+          <input
+            type="number"
+            value={String(value)}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              // Allow empty values (user clearing the field)
+              if (inputValue === '') {
+                handleFieldChange(field.key, '');
+                return;
+              }
+              
+              const numValue = Number(inputValue);
+              if (!isNaN(numValue) && (!field.min || numValue >= field.min) && (!field.max || numValue <= field.max)) {
+                handleFieldChange(field.key, numValue);
+              }
+            }}
+            placeholder={field.placeholder}
+            min={field.min}
+            max={field.max}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+            required={field.required}
+          />
+        );
+        
       case 'textarea':
         return (
           <textarea
@@ -152,7 +178,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             className="w-full p-2 border border-gray-300 rounded text-sm"
             required={field.required}
           >
-            <option value="">Select an option...</option>
+            {!value && <option value="">Select an option...</option>}
             {field.options?.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}

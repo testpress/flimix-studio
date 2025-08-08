@@ -6,9 +6,10 @@ import type { SectionBlockProps } from '@blocks/section/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
 import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import type { SpacerBlockProps } from '@blocks/spacer/schema';
+import type { DividerBlockProps } from '@blocks/divider/schema';
 
 // Define a type for all possible block props
-export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | SpacerBlockProps;
+export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | SpacerBlockProps | DividerBlockProps;
 
 export interface BlockFormProps {
   block: Block;
