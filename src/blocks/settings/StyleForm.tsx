@@ -144,4 +144,4 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange }) => {
   );
 };
 
-export default StyleForm; 
+export default StyleForm;
