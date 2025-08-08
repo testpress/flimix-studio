@@ -14,6 +14,7 @@ import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import CarouselItemForm from '@blocks/carousel/ItemForm';
 import type { CarouselItem } from '@blocks/carousel/schema';
 import CarouselForm from '@blocks/carousel/form';
+import SpacerForm from '@blocks/spacer/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -38,6 +39,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     section: SectionForm,
     posterGrid: PosterGridForm,
     carousel: CarouselForm,
+    spacer: SpacerForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -179,7 +181,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
           
           {selectedItemId && renderItemEditor()}
           
-          {selectedBlock && (
+          {selectedBlock && selectedBlock.type !== 'spacer' && (
             <StyleForm
               style={selectedBlock.style || {}}
               onChange={handleStyleChange}

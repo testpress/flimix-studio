@@ -4,6 +4,7 @@ import { TextLibraryItem } from '@blocks/text/libraryItem';
 import { SectionLibraryItem } from '@blocks/section/libraryItem';
 import { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
 import { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
+import { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -13,13 +14,14 @@ export { TextLibraryItem } from '@blocks/text/libraryItem';
 export { SectionLibraryItem } from '@blocks/section/libraryItem';
 export { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
 export { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
+export { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween';
   defaultProps: BlockProps;
 };
 
@@ -30,6 +32,7 @@ export const allLibraryItems = [
   SectionLibraryItem,
   PosterGridLibraryItem,
   CarouselLibraryItem,
+  SpacerLibraryItem,
 ] as const;
 
 // Helper function to get all available block types
