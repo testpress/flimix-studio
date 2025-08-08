@@ -24,13 +24,16 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, showArrows, items, itemSize = 'large' } = props;
+  const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000 } = props;
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
   const previousItemsLengthRef = useRef<number>(0);
+  const autoplayIntervalRef = useRef<number | null>(null);
+  const manualScrollPauseTimeoutRef = useRef<number | null>(null);
   
   // Map abstract item size values to Tailwind classes
   const getItemSizeClass = (size: ItemSize): string => {
@@ -105,6 +108,25 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     return BADGE_COLORS[badge.toLowerCase()] || 'bg-gray-100 text-gray-800';
   };
 
+  // Calculate dynamic scroll amount based on item width and gap
+  const getScrollAmount = (): number => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer || !items || items.length === 0) return 300; // fallback
+    
+    // Get the first actual item (skip the padding div)
+    const firstItem = scrollContainer.children[1] as HTMLElement;
+    if (!firstItem) return 300; // fallback
+    
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    
+    // Get gap size from CSS classes
+    const gapSize = style?.gridGap === 'sm' ? 16 : // space-x-4 = 1rem = 16px
+                   style?.gridGap === 'lg' ? 32 : // space-x-8 = 2rem = 32px
+                   24; // space-x-6 = 1.5rem = 24px (default md)
+    
+    return itemWidth + gapSize;
+  };
+
   // Check scroll position and update arrow visibility
   const checkScrollPosition = () => {
     if (!scrollContainerRef.current) return;
@@ -148,16 +170,81 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   }, [items]);
 
+  // Autoplay functionality
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    
+    // Clear any existing interval
+    if (autoplayIntervalRef.current) {
+      clearInterval(autoplayIntervalRef.current);
+      autoplayIntervalRef.current = null;
+    }
+    
+    // Start autoplay if enabled and we have items and not paused
+    if (autoplay && !isAutoplayPaused && scrollContainer && items && items.length > 1) {
+      autoplayIntervalRef.current = setInterval(() => {
+        if (scrollContainer) {
+          // Check if we're at the end of the carousel
+          const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+          const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10; // 10px tolerance
+          
+          if (isAtEnd) {
+            // Reset to beginning for infinite loop
+            scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            // Scroll to next item using dynamic scroll amount
+            const scrollAmount = getScrollAmount();
+            scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+          }
+        }
+      }, scrollSpeed);
+    }
+    
+    // Cleanup on unmount or when autoplay/scrollSpeed/pause state changes
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+        autoplayIntervalRef.current = null;
+      }
+      if (manualScrollPauseTimeoutRef.current) {
+        clearTimeout(manualScrollPauseTimeoutRef.current);
+        manualScrollPauseTimeoutRef.current = null;
+      }
+    };
+  }, [autoplay, scrollSpeed, items, isAutoplayPaused]);
+
   // Handle arrow clicks
   const handleScrollLeft = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+      // Pause autoplay temporarily when user manually navigates
+      if (autoplay) {
+        setIsAutoplayPaused(true);
+        if (manualScrollPauseTimeoutRef.current) {
+          clearTimeout(manualScrollPauseTimeoutRef.current);
+        }
+        manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1000); // Resume after 1 second
+      }
+      const scrollAmount = getScrollAmount();
+      scrollContainerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     }
   };
 
   const handleScrollRight = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+      // Pause autoplay temporarily when user manually navigates
+      if (autoplay) {
+        setIsAutoplayPaused(true);
+        if (manualScrollPauseTimeoutRef.current) {
+          clearTimeout(manualScrollPauseTimeoutRef.current);
+        }
+        manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1000); // Resume after 1 second
+      }
+      const scrollAmount = getScrollAmount();
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -182,6 +269,19 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 
   const handleItemClick = (itemId: string) => {
     selectArrayItem(block.id, itemId);
+  };
+
+  // Handle manual scroll to pause autoplay
+  const handleManualScroll = () => {
+    if (autoplay) {
+      setIsAutoplayPaused(true);
+      if (manualScrollPauseTimeoutRef.current) {
+        clearTimeout(manualScrollPauseTimeoutRef.current);
+      }
+      manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+        setIsAutoplayPaused(false);
+      }, 1000); // Resume after 1 second of inactivity
+    }
   };
 
   // Check if we're at the item limit
@@ -254,6 +354,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
               <div 
                 ref={scrollContainerRef}
                 className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
+                onMouseEnter={() => autoplay && setIsAutoplayPaused(true)}
+                onMouseLeave={() => autoplay && setIsAutoplayPaused(false)}
+                onScroll={handleManualScroll}
               >
                 {/* Left padding to ensure first item is fully visible */}
                 <div className="flex-shrink-0 w-4"></div>
