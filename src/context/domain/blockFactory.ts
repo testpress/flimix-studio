@@ -1,10 +1,10 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, SpacerLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, SpacerLibraryItem, DividerLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
- * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'spacer')
+ * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'spacer', 'divider')
  * @returns A new block with minimal valid properties
  */
 export function createBlock(type: BlockType['type']): BlockType {
@@ -78,6 +78,20 @@ export function createBlock(type: BlockType['type']): BlockType {
         type: 'spacer',
         id,
         props: SpacerLibraryItem.defaultProps,
+      };
+
+    case 'divider':
+      return {
+        type: 'divider',
+        id,
+        props: {
+          ...DividerLibraryItem.defaultProps,
+          percentageValue: 75,
+        },
+        style: {
+          backgroundColor: '#000000',
+          margin: 'sm'
+        }
       };
 
     default:
