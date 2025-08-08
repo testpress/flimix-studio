@@ -108,7 +108,14 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             type="number"
             value={String(value)}
             onChange={(e) => {
-              const numValue = Number(e.target.value);
+              const inputValue = e.target.value;
+              // Allow empty values (user clearing the field)
+              if (inputValue === '') {
+                handleFieldChange(field.key, '');
+                return;
+              }
+              
+              const numValue = Number(inputValue);
               if (!isNaN(numValue) && (!field.min || numValue >= field.min) && (!field.max || numValue <= field.max)) {
                 handleFieldChange(field.key, numValue);
               }

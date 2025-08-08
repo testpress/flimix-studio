@@ -84,10 +84,7 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'divider',
         id,
-        props: {
-          ...DividerLibraryItem.defaultProps,
-          percentageValue: 75,
-        },
+        props: DividerLibraryItem.defaultProps,
         style: {
           backgroundColor: '#000000',
           margin: 'sm'

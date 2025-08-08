@@ -64,21 +64,8 @@ const DividerForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     },
   ];
 
-  // Custom form component to handle percentage validation
-  const handleUpdateProps = (newProps: Partial<BlockProps>) => {
-    // Validate percentage value if it's being updated
-    if ('percentageValue' in newProps && newProps.percentageValue !== undefined) {
-      const percentage = Number(newProps.percentageValue);
-      if (isNaN(percentage) || percentage < 1 || percentage > 100) {
-        // Don't update if invalid - keep the current value
-        return;
-      }
-    }
-    updateProps(newProps);
-  };
-
   return (
-    <PropertiesForm block={block} fieldDefinitions={dividerFields} updateProps={handleUpdateProps} />
+    <PropertiesForm block={block} fieldDefinitions={dividerFields} updateProps={updateProps} />
   );
 };
 

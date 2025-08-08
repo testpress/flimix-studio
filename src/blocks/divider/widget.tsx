@@ -43,9 +43,7 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
 
   // Handle length styling
   const getLengthStyle = () => {
-    if (length === 'full') {
-      return 'w-full';
-    } else if (length === 'percentage') {
+    if (length === 'percentage') {
       return ''; // We'll use inline style for percentage
     }
     return 'w-full';
