@@ -1,10 +1,10 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
- * @param type - The type of block to create ('text', 'hero', 'section', 'poster-grid')
+ * @param type - The type of block to create ('text', 'hero', 'section', 'poster-grid', 'carousel')
  * @returns A new block with minimal valid properties
  */
 export function createBlock(type: BlockType['type']): BlockType {
@@ -50,6 +50,23 @@ export function createBlock(type: BlockType['type']): BlockType {
         type: 'posterGrid',
         id,
         props: PosterGridLibraryItem.defaultProps,
+        style: {
+          padding: 'md',
+          textAlign: 'left'
+        }
+      };
+
+    case 'carousel':
+      return {
+        type: 'carousel',
+        id,
+        props: {
+          ...CarouselLibraryItem.defaultProps,
+          items: CarouselLibraryItem.defaultProps.items?.map(item => ({
+            ...item,
+            id: generateUniqueId(),
+          })) || [],
+        },
         style: {
           padding: 'md',
           textAlign: 'left'
