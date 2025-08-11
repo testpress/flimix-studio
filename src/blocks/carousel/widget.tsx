@@ -391,7 +391,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           {item.title}
                         </p>
                         {item.subtitle && (
-                          <p className="text-xs text-gray-500 line-clamp-1">{item.subtitle}</p>
+                          <p className={`text-xs ${textColorClass} opacity-80`} style={textColorStyle}>
+                            {item.subtitle}
+                          </p>
                         )}
                         <div className="flex items-center gap-2 flex-wrap">
                           {item.meta?.badge && (
