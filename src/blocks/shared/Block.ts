@@ -6,24 +6,26 @@ import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import type { PosterGridBlock } from '@blocks/poster-grid/schema';
 import type { CarouselBlock } from '@blocks/carousel/schema';
+import type { TestimonialBlock } from '@blocks/testimonial/schema';
 import type { HeroBlockProps } from '@blocks/hero/schema';
 import type { TextBlockProps } from '@blocks/text/schema';
 import type { SectionBlockProps } from '@blocks/section/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
 import type { CarouselBlockProps } from '@blocks/carousel/schema';
+import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { SpacerBlock } from '@blocks/spacer/schema';
 import type { SpacerBlockProps } from '@blocks/spacer/schema';
 import type { DividerBlock } from '@blocks/divider/schema';
 import type { DividerBlockProps } from '@blocks/divider/schema';
 
 // Union type for all block types (imported from individual block schemas)
-export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock | CarouselBlock | SpacerBlock | DividerBlock;
+export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock | CarouselBlock | TestimonialBlock | SpacerBlock | DividerBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'spacer' | 'divider';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | SpacerBlockProps | DividerBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

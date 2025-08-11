@@ -1,6 +1,6 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, SpacerLibraryItem, DividerLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -70,6 +70,23 @@ export function createBlock(type: BlockType['type']): BlockType {
         style: {
           padding: 'md',
           textAlign: 'left'
+        }
+      };
+
+    case 'testimonial':
+      return {
+        type: 'testimonial',
+        id,
+        props: {
+          ...TestimonialLibraryItem.defaultProps,
+          items: TestimonialLibraryItem.defaultProps.items?.map(item => ({
+            ...item,
+            id: generateUniqueId(),
+          })) || [],
+        },
+        style: {
+          padding: 'md',
+          textAlign: 'center'
         }
       };
 
