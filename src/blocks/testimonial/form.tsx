@@ -226,7 +226,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
                     value={testimonialProps.scrollSpeed || 1000}
                     onChange={e => updateProps({ 
                       ...testimonialProps, 
-                      scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 1000))
+                      scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value, 10) || 1000))
                     })}
                     className="w-full p-2 border border-gray-300 rounded text-sm"
                     placeholder="1000"

@@ -64,7 +64,7 @@ const TestimonialItemForm: React.FC<TestimonialItemFormProps> = ({
   const handleFieldChange = (field: keyof TestimonialItem, value: string) => {
     if (field === 'rating') {
       // Handle rating conversion - if rating is 0, convert to undefined
-      const ratingValue = parseInt(value);
+      const ratingValue = parseInt(value, 10);
       onChange({
         ...item,
         [field]: ratingValue === 0 ? undefined : ratingValue

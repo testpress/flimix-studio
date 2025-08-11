@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { TestimonialBlock, ItemSize } from './schema';
+import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
 import { TESTIMONIAL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
@@ -107,20 +107,15 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   // Calculate dynamic scroll amount based on item width and gap
   const getScrollAmount = (): number => {
     const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer || !items || items.length === 0) return 400; // fallback
-    
-    // Get the first actual item (skip the padding div)
+    if (!scrollContainer || !items || items.length < 2) return 400; // Fallback, requires at least 2 items to measure gap.
+
+    // children[0] is a padding div, so we start from index 1.
     const firstItem = scrollContainer.children[1] as HTMLElement;
-    if (!firstItem) return 400; // fallback
-    
-    const itemWidth = firstItem.getBoundingClientRect().width;
-    
-    // Get gap size from CSS classes
-    const gapSize = style?.gridGap === 'sm' ? 16 : // space-x-4 = 1rem = 16px
-                   style?.gridGap === 'lg' ? 32 : // space-x-8 = 2rem = 32px
-                   24; // space-x-6 = 1.5rem = 24px (default md)
-    
-    return itemWidth + gapSize;
+    const secondItem = scrollContainer.children[2] as HTMLElement;
+    if (!firstItem || !secondItem) return 400; // Fallback
+
+    // This dynamically calculates the scroll distance including item width and responsive gap.
+    return secondItem.offsetLeft - firstItem.offsetLeft;
   };
 
   // Check scroll position and update arrow visibility
@@ -324,7 +319,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   };
 
   // Render testimonial item
-  const renderTestimonialItem = (item: any, index: number) => (
+  const renderTestimonialItem = (item: TestimonialItem, index: number) => (
     <div key={item.id} className="relative group">
       <div 
         className={`bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
