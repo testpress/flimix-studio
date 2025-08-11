@@ -156,126 +156,52 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
 
   // Function to get which fields to render based on block type
   const getFieldsToRender = (blockType?: string) => {
+    // Define field groups for different styling needs
+    const allFields = [
+      renderThemeField(),
+      renderPaddingField(),
+      renderMarginField(),
+      renderTextAlignField(),
+      renderBackgroundColorField(),
+      renderTextColorField(),
+      renderBorderRadiusField(),
+      renderBoxShadowField(),
+      renderMaxWidthField(),
+    ];
+
+    const layoutOnlyFields = [
+      renderPaddingField(),
+      renderMarginField(),
+      renderBackgroundColorField(),
+      renderBorderRadiusField(),
+      renderBoxShadowField(),
+    ];
+
     switch (blockType) {
       case 'image':
         // Image blocks: only show layout and visual styling, no text-related options
+        return layoutOnlyFields;
+      
+      case 'section':
+        // Section blocks: show layout options and text color, but no theme or text alignment
         return [
-          renderPaddingField(),
-          renderMarginField(),
-          renderBackgroundColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
+          ...layoutOnlyFields,
+          renderTextColorField(),
         ];
       
       case 'faq-accordion':
-        // FAQ blocks: show most options but maybe customize as needed
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
-      
       case 'testimonial':
-        // Testimonial blocks: show all options
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
-      
       case 'featureCallout':
-        // Feature Callout blocks: show all options
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
-      
       case 'hero':
-        // Hero blocks: show all options
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
-      
       case 'text':
-        // Text blocks: show all options
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
-      
-      case 'section':
-        // Section blocks: show layout options but no text styling
-        return [
-          renderPaddingField(),
-          renderMarginField(),
-          renderBackgroundColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderTextColorField(),
-        ];
-      
       case 'posterGrid':
       case 'carousel':
-        // Grid/Carousel blocks: show all options
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
+        // Standard blocks: show all options
+        return allFields;
       
       default:
         // Default: show all options for unknown block types
-        return [
-          renderThemeField(),
-          renderPaddingField(),
-          renderMarginField(),
-          renderTextAlignField(),
-          renderBackgroundColorField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-          renderBoxShadowField(),
-          renderMaxWidthField(),
-        ];
+        return allFields;
     }
   };
 

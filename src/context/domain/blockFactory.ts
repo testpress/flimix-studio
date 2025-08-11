@@ -149,7 +149,6 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: ImageLibraryItem.defaultProps,
         style: {
           padding: 'md',
-          textAlign: 'center'
         }
       };
 
