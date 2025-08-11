@@ -24,6 +24,10 @@ import FeatureCalloutForm from '@blocks/feature-callout/form';
 import FeatureCalloutItemForm from '@blocks/feature-callout/ItemForm';
 import type { FeatureCalloutItem } from '@blocks/feature-callout/schema';
 import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
+import FAQAccordionForm from '@blocks/faq-accordion/form';
+import FAQAccordionItemForm from '@blocks/faq-accordion/ItemForm';
+import type { FAQAccordionItem } from '@blocks/faq-accordion/schema';
+import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -52,6 +56,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     spacer: SpacerForm,
     divider: DividerForm,
     featureCallout: FeatureCalloutForm,
+    'faq-accordion': FAQAccordionForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -145,6 +150,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Feature Callout Item"
+          />
+        );
+      }
+      
+      case 'faq-accordion': {
+        const items = (selectedBlock.props as FAQAccordionBlockProps).items || [];
+        const item = items.find((i: FAQAccordionItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: FAQAccordionItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <FAQAccordionItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="FAQ Item"
           />
         );
       }

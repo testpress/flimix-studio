@@ -41,6 +41,8 @@ interface SelectionContextType {
   ) => void;
   moveBlockItemLeft: (blockId: string, index: number) => void;
   moveBlockItemRight: (blockId: string, index: number) => void;
+  moveBlockItemUp: (blockId: string, index: number) => void;
+  moveBlockItemDown: (blockId: string, index: number) => void;
   selectArrayItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
 }
@@ -556,6 +558,14 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
   };
 
+  const moveBlockItemUp = (blockId: string, index: number) => {
+    modifyBlockItems(blockId, (items) => swap(items, index, index - 1));
+  };
+
+  const moveBlockItemDown = (blockId: string, index: number) => {
+    modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
+  };
+
   const selectArrayItem = (blockId: string, itemId: string): void => {
     setSelectedItemId(itemId);
     setSelectedItemBlockId(blockId);
@@ -589,6 +599,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       removeBlockItem,
       moveBlockItemLeft,
       moveBlockItemRight,
+      moveBlockItemUp,
+      moveBlockItemDown,
       selectArrayItem,
       isItemSelected
     }}>
