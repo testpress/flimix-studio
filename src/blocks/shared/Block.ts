@@ -17,15 +17,17 @@ import type { SpacerBlock } from '@blocks/spacer/schema';
 import type { SpacerBlockProps } from '@blocks/spacer/schema';
 import type { DividerBlock } from '@blocks/divider/schema';
 import type { DividerBlockProps } from '@blocks/divider/schema';
+import type { FeatureCalloutBlock } from '@blocks/feature-callout/schema';
+import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
 
 // Union type for all block types (imported from individual block schemas)
-export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock | CarouselBlock | TestimonialBlock | SpacerBlock | DividerBlock;
+export type BlockType = HeroBlock | TextBlock | SectionBlock | PosterGridBlock | CarouselBlock | TestimonialBlock | SpacerBlock | DividerBlock | FeatureCalloutBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

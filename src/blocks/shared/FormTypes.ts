@@ -8,9 +8,10 @@ import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { SpacerBlockProps } from '@blocks/spacer/schema';
 import type { DividerBlockProps } from '@blocks/divider/schema';
+import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
 
 // Define a type for all possible block props
-export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps;
+export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps;
 
 export interface BlockFormProps {
   block: Block;

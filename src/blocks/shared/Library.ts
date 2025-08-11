@@ -7,6 +7,7 @@ import { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
 import { TestimonialLibraryItem } from '@blocks/testimonial/libraryItem';
 import { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 import { DividerLibraryItem } from '@blocks/divider/libraryItem';
+import { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -19,13 +20,14 @@ export { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
 export { TestimonialLibraryItem } from '@blocks/testimonial/libraryItem';
 export { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 export { DividerLibraryItem } from '@blocks/divider/libraryItem';
+export { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles';
   defaultProps: BlockProps;
 };
 
@@ -39,6 +41,7 @@ export const allLibraryItems = [
   TestimonialLibraryItem,
   SpacerLibraryItem,
   DividerLibraryItem,
+  FeatureCalloutLibraryItem,
 ] as const;
 
 // Helper function to get all available block types
