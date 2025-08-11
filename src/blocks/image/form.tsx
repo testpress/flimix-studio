@@ -31,9 +31,9 @@ const imageEditorFields: Field[] = [
     label: 'Image Size',
     type: 'select',
     options: [
-      { value: 'small', label: 'Small (300px)' },
-      { value: 'medium', label: 'Medium (500px)' },
-      { value: 'large', label: 'Large (800px)' },
+      { value: 'small', label: 'Small' },
+      { value: 'medium', label: 'Medium' },
+      { value: 'large', label: 'Large' },
       { value: 'full', label: 'Full Width' },
     ],
   },
@@ -42,11 +42,11 @@ const imageEditorFields: Field[] = [
     label: 'Aspect Ratio',
     type: 'select',
     options: [
-      { value: '16:9', label: '16:9 (Widescreen)' },
-      { value: '4:3', label: '4:3 (Standard)' },
-      { value: '1:1', label: '1:1 (Square)' },
-      { value: '3:4', label: '3:4 (Portrait)' },
-      { value: 'auto', label: 'Auto (Natural)' },
+      { value: '16:9', label: '16:9' },
+      { value: '4:3', label: '4:3' },
+      { value: '1:1', label: '1:1' },
+      { value: '3:4', label: '3:4' },
+      { value: 'auto', label: 'Auto' },
     ],
   },
   {
@@ -54,9 +54,9 @@ const imageEditorFields: Field[] = [
     label: 'Image Fit',
     type: 'select',
     options: [
-      { value: 'cover', label: 'Cover (Fill container, may crop)' },
-      { value: 'contain', label: 'Contain (Show full image, may have padding)' },
-      { value: 'fill', label: 'Fill (Stretch to fit, may distort)' },
+      { value: 'cover', label: 'Cover' },
+      { value: 'contain', label: 'Contain' },
+      { value: 'fill', label: 'Fill' },
     ],
   },
   {

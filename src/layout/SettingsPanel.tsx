@@ -58,7 +58,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     divider: DividerForm,
     featureCallout: FeatureCalloutForm,
     'faq-accordion': FAQAccordionForm,
-    'image': ImageForm,
+    image: ImageForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
