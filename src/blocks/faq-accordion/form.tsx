@@ -3,6 +3,7 @@ import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
 import { FAQ_ACCORDION_ITEM_LIMIT } from './schema';
+import type { FAQAccordionBlockProps } from './schema';
 import { AlertCircle } from 'lucide-react';
 
 // FAQ Accordion block editor schema - only basic properties
@@ -16,8 +17,8 @@ const faqAccordionEditorFields: Field[] = [
 ];
 
 const FAQAccordionForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
-  // Get current item count
-  const itemCount = (block.props as any)?.items?.length || 0;
+  // Get current item count with proper typing
+  const itemCount = (block.props as FAQAccordionBlockProps)?.items?.length || 0;
   const isAtLimit = itemCount >= FAQ_ACCORDION_ITEM_LIMIT;
 
   return (

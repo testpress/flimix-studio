@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { FAQAccordionBlock } from './schema';
@@ -25,8 +25,12 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   const { title, items, defaultOpenIndex } = block.props;
   const { style } = block;
 
-  const [openIndex, setOpenIndex] = useState(defaultOpenIndex || -1);
+  const [openIndex, setOpenIndex] = useState(defaultOpenIndex ?? -1);
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useSelection();
+
+  useEffect(() => {
+    setOpenIndex(defaultOpenIndex ?? -1);
+  }, [defaultOpenIndex]);
 
   const handleAddItem = () => {
     const currentItemCount = items?.length || 0;

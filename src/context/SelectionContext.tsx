@@ -558,13 +558,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
   };
 
-  const moveBlockItemUp = (blockId: string, index: number) => {
-    modifyBlockItems(blockId, (items) => swap(items, index, index - 1));
-  };
-
-  const moveBlockItemDown = (blockId: string, index: number) => {
-    modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
-  };
+  // Alias functions to reduce code duplication - same logic, different semantic meaning
+  const moveBlockItemUp = moveBlockItemLeft;
+  const moveBlockItemDown = moveBlockItemRight;
 
   const selectArrayItem = (blockId: string, itemId: string): void => {
     setSelectedItemId(itemId);
