@@ -69,7 +69,7 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
             <label className="block text-sm text-gray-700 mb-1">Item Size</label>
             <select
               value={featureCalloutProps.itemSize || 'medium'}
-              onChange={(e) => updateProps({ ...featureCalloutProps, itemSize: e.target.value as ItemSize })}
+                   onChange={(e) => updateProps({ itemSize: e.target.value as ItemSize })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="small">Small</option>
@@ -83,8 +83,8 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
-                checked={featureCalloutProps.showIcons !== false}
-                onChange={(e) => updateProps({ ...featureCalloutProps, showIcons: e.target.checked })}
+                checked={featureCalloutProps.showIcons}
+                onChange={(e) => updateProps({ showIcons: e.target.checked })}
                 className="rounded"
               />
               <span>Show Icons</span>
@@ -92,8 +92,8 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
-                checked={featureCalloutProps.showDescriptions !== false}
-                onChange={(e) => updateProps({ ...featureCalloutProps, showDescriptions: e.target.checked })}
+                checked={featureCalloutProps.showDescriptions}
+                onChange={(e) => updateProps({ showDescriptions: e.target.checked })}
                 className="rounded"
               />
               <span>Show Descriptions</span>

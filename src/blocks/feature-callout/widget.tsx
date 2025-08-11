@@ -6,14 +6,7 @@ import { FEATURE_CALLOUT_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { generateUniqueId } from '@utils/id';
-import { 
-  Clapperboard, Film, Video, Play, Star, Heart, Zap, Rocket,
-  Shield, CheckCircle, Award, Gift, Lightbulb, Target, TrendingUp,
-  Users, Globe, Smartphone, Monitor, Tv, Headphones, Music,
-  Camera, Image, FileText, BookOpen, GraduationCap, Briefcase,
-  Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import Icon from '@components/Icon';
 
 interface FeatureCalloutWidgetProps extends Omit<BaseWidgetProps, 'block'> {
   block: FeatureCalloutBlock;
@@ -31,30 +24,13 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, subtitle, items, alignment, itemSize, showIcons, showDescriptions } = props;
+  const { title, subtitle, items, itemSize, showIcons, showDescriptions } = props;
   
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
-  // Icon mapping for Feature Callout
-  const iconMap: Record<string, LucideIcon> = {
-    Clapperboard, Film, Video, Play, Star, Heart, Zap, Rocket,
-    Shield, CheckCircle, Award, Gift, Lightbulb, Target, TrendingUp,
-    Users, Globe, Smartphone, Monitor, Tv, Headphones, Music,
-    Camera, Image, FileText, BookOpen, GraduationCap, Briefcase,
-    Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile
-  };
-  
   // Function to render icon
   const renderIcon = (iconName: string) => {
-    // Try to get the icon from our icon map
-    const IconComponent = iconMap[iconName];
-    
-    if (IconComponent) {
-      return <IconComponent size={40}/>;
-    }
-    
-    // Fallback to text if icon not found
-    return <span className="text-2xl text-gray-400">{iconName}</span>;
+    return <Icon name={iconName} size={40} />;
   };
   
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
@@ -67,27 +43,45 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   const defaultBackgroundClass = 'bg-gray-50';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
+  // Style value mappings for cleaner code
+  const borderRadiusMap = {
+    none: '0',
+    sm: '0.25rem',
+    md: '0.5rem',
+    lg: '1rem',
+  };
+
+  const marginMap = {
+    none: '0',
+    sm: '0.5rem',
+    md: '1rem',
+    lg: '1.5rem',
+  };
+
+  const boxShadowMap = {
+    none: 'none',
+    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  };
+
+  const paddingMap = {
+    sm: '0.75rem',
+    md: '1rem',
+    lg: '1.5rem',
+  };
+
   // Build complete style object for BaseWidget
   const widgetStyle: React.CSSProperties = {
     backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
     color: isHexColor ? style.textColor : undefined,
-    borderRadius: style?.borderRadius === 'none' ? '0' : 
-                 style?.borderRadius === 'sm' ? '0.25rem' : 
-                 style?.borderRadius === 'md' ? '0.5rem' : 
-                 style?.borderRadius === 'lg' ? '1rem' : undefined,
-    margin: style?.margin === 'none' ? '0' : 
-            style?.margin === 'sm' ? '0.5rem' : 
-            style?.margin === 'md' ? '1rem' : 
-            style?.margin === 'lg' ? '1.5rem' : undefined,
-    boxShadow: style?.boxShadow === 'none' ? 'none' : 
-               style?.boxShadow === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 
-               style?.boxShadow === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 
-               style?.boxShadow === 'lg' ? '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' : undefined,
+    borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
+    margin: style?.margin ? marginMap[style.margin] : undefined,
+    boxShadow: style?.boxShadow ? boxShadowMap[style.boxShadow] : undefined,
     maxWidth: style?.maxWidth || undefined,
   };
 
-  // Alignment classes - use style.textAlign if available, otherwise fall back to block alignment
-  const textAlignment = style?.textAlign || alignment;
+  // Alignment classes - use style.textAlign from shared StyleForm
   const alignmentClasses = {
     left: 'text-left',
     center: 'text-center',
@@ -155,7 +149,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
       className={`relative ${backgroundClass}`}
       style={widgetStyle}
     >
-      <div className={`${alignmentClasses[textAlignment]} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
+      <div className={`${alignmentClasses[style?.textAlign || 'center']} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
         {/* Title */}
         {title && (
           <h2 className={`text-3xl md:text-4xl font-bold mb-2 ${textColorClass}`} style={textColorStyle}>
@@ -174,21 +168,14 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
         {items && items.length > 0 ? (
           <div className={`grid ${getGridCols(items.length)} gap-6`}>
             {items.map((item, index) => {
-              // Build item-specific styles
+              // Build item-specific styles using mappings
               const itemStyle: React.CSSProperties = {
                 backgroundColor: item.style?.backgroundColor || undefined,
                 color: item.style?.textColor || undefined,
-                padding: item.style?.padding === 'sm' ? '0.75rem' : 
-                         item.style?.padding === 'lg' ? '1.5rem' : '1rem',
-                margin: item.style?.margin === 'sm' ? '0.25rem' : 
-                        item.style?.margin === 'lg' ? '0.75rem' : '0.5rem',
-                borderRadius: item.style?.borderRadius === 'none' ? '0' : 
-                             item.style?.borderRadius === 'sm' ? '0.25rem' : 
-                             item.style?.borderRadius === 'lg' ? '1rem' : '0.5rem',
-                boxShadow: item.style?.boxShadow === 'none' ? 'none' : 
-                           item.style?.boxShadow === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 
-                           item.style?.boxShadow === 'lg' ? '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' : 
-                           '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                padding: item.style?.padding ? paddingMap[item.style.padding] : undefined,
+                margin: item.style?.margin ? marginMap[item.style.margin] : undefined,
+                borderRadius: item.style?.borderRadius ? borderRadiusMap[item.style.borderRadius] : undefined,
+                boxShadow: item.style?.boxShadow ? boxShadowMap[item.style.boxShadow] : undefined,
               };
 
               // Handle item text color
@@ -196,7 +183,6 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
               const itemTextColorClass = !isItemHexColor ? '' : '';
               const itemTextColorStyle = isItemHexColor && item.style?.textColor ? { color: item.style.textColor } : {};
 
-              // Debug: Check if item is selected
               const isSelected = isItemSelected(block.id, item.id);
               return (
                 <div 

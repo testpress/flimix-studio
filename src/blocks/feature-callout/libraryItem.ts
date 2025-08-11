@@ -14,7 +14,6 @@ export const FeatureCalloutLibraryItem = {
       { id: '2', icon: 'Smartphone', label: 'Watch Anywhere', description: 'Mobile, desktop, and TV' },
       { id: '3', icon: 'Zap', label: 'Lightning Fast', description: 'No buffering, instant play' }
     ],
-    alignment: 'center' as const,
     itemSize: 'medium' as const,
     showIcons: true,
     showDescriptions: true

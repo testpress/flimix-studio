@@ -3,9 +3,6 @@ import type { Block } from '@blocks/shared/Block';
 // Feature callout item limit constant
 export const FEATURE_CALLOUT_ITEM_LIMIT = 8;
 
-// Define alignment type
-export type Alignment = 'left' | 'center' | 'right';
-
 // Define item size type
 export type ItemSize = 'small' | 'medium' | 'large';
 
@@ -48,7 +45,6 @@ export interface FeatureCalloutBlockProps {
   title?: string;
   subtitle?: string;
   items: FeatureCalloutItem[];
-  alignment: Alignment;
   itemSize?: ItemSize;
   showIcons: boolean;
   showDescriptions: boolean;

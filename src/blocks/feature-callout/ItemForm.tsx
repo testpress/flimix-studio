@@ -44,10 +44,82 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
   ];
 
   // Handle style changes
-  const handleStyleChange = (key: string, value: string) => {
+  const handleStyleChange = (key: keyof NonNullable<FeatureCalloutItem['style']>, value: string) => {
     const currentStyle = item.style || {};
     const newStyle = { ...currentStyle, [key]: value };
     onChange({ ...item, style: newStyle });
+  };
+
+  // Style control configurations to reduce repetitive code
+  const styleControls = [
+    {
+      key: 'padding' as const,
+      label: 'Padding',
+      type: 'select' as const,
+      options: [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ],
+      defaultValue: 'md'
+    },
+    {
+      key: 'margin' as const,
+      label: 'Margin',
+      type: 'select' as const,
+      options: [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ],
+      defaultValue: 'sm'
+    },
+    {
+      key: 'borderRadius' as const,
+      label: 'Border Radius',
+      type: 'select' as const,
+      options: [
+        { value: 'none', label: 'None' },
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ],
+      defaultValue: 'md'
+    },
+    {
+      key: 'boxShadow' as const,
+      label: 'Box Shadow',
+      type: 'select' as const,
+      options: [
+        { value: 'none', label: 'None' },
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ],
+      defaultValue: 'md'
+    }
+  ];
+
+  // Render style control based on type
+  const renderStyleControl = (control: typeof styleControls[0]) => {
+    const currentValue = item.style?.[control.key] || control.defaultValue;
+    
+    return (
+      <div key={control.key}>
+        <label className="block text-sm text-gray-700 mb-1">{control.label}</label>
+        <select
+          value={currentValue}
+          onChange={(e) => handleStyleChange(control.key, e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded text-sm"
+        >
+          {control.options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   };
 
   return (
@@ -63,8 +135,9 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
       <div className="p-4 bg-gray-50 rounded-lg">
         <h4 className="text-sm font-medium text-gray-700 mb-4">Item Styling</h4>
         
+        {/* Style Controls */}
         <div className="space-y-4">
-          {/* Background Color */}
+          {/* Color Controls */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Background Color</label>
             <input
@@ -75,7 +148,6 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
             />
           </div>
 
-          {/* Text Color */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Text Color</label>
             <input
@@ -86,63 +158,8 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
             />
           </div>
 
-          {/* Padding */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Padding</label>
-            <select
-              value={item.style?.padding || 'md'}
-              onChange={(e) => handleStyleChange('padding', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
-            >
-              <option value="sm">Small</option>
-              <option value="md">Medium</option>
-              <option value="lg">Large</option>
-            </select>
-          </div>
-
-          {/* Margin */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Margin</label>
-            <select
-              value={item.style?.margin || 'sm'}
-              onChange={(e) => handleStyleChange('margin', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
-            >
-              <option value="sm">Small</option>
-              <option value="md">Medium</option>
-              <option value="lg">Large</option>
-            </select>
-          </div>
-
-          {/* Border Radius */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Border Radius</label>
-            <select
-              value={item.style?.borderRadius || 'md'}
-              onChange={(e) => handleStyleChange('borderRadius', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
-            >
-              <option value="none">None</option>
-              <option value="sm">Small</option>
-              <option value="md">Medium</option>
-              <option value="lg">Large</option>
-            </select>
-          </div>
-
-          {/* Box Shadow */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Box Shadow</label>
-            <select
-              value={item.style?.boxShadow || 'md'}
-              onChange={(e) => handleStyleChange('boxShadow', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
-            >
-              <option value="none">None</option>
-              <option value="sm">Small</option>
-              <option value="md">Medium</option>
-              <option value="lg">Large</option>
-            </select>
-          </div>
+          {/* Data-driven Style Controls */}
+          {styleControls.map(renderStyleControl)}
         </div>
       </div>
     </div>
