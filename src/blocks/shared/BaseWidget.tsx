@@ -61,11 +61,7 @@ const BaseWidget = <T extends Block = Block>({
   return (
     <div 
       className={baseClasses}
-      style={{
-        ...style,
-        // Add padding when selected to prevent content overlap with controls
-        paddingRight: isSelected ? '3rem' : undefined
-      }}
+      style={style}
       onClick={handleClick}
     >
       {children}
