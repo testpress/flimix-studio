@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropertiesForm, type BlockFormProps, type Field } from '@blocks/settings';
-import type { BlockProps } from '@blocks/shared/FormTypes';
 import type { DividerBlockProps } from './schema';
 
 const DividerForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
