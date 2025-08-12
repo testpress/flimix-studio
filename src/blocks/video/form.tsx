@@ -27,13 +27,13 @@ const videoEditorFields: Field[] = [
   },
   {
     key: 'autoplay',
-    label: 'Autoplay',
+    label: 'Autoplay (auto-mutes for browser compliance)',
     type: 'boolean',
     required: false,
   },
   {
     key: 'muted',
-    label: 'Muted',
+    label: 'Muted (always enabled when autoplay is on)',
     type: 'boolean',
     required: false,
   },
@@ -54,10 +54,10 @@ const videoEditorFields: Field[] = [
     label: 'Aspect Ratio',
     type: 'select',
     options: [
-      { value: '16:9', label: '16:9 (Widescreen)' },
-      { value: '4:3', label: '4:3 (Standard)' },
-      { value: '1:1', label: '1:1 (Square)' },
-      { value: 'auto', label: 'Auto (Natural)' },
+      { value: '16:9', label: '16:9' },
+      { value: '4:3', label: '4:3' },
+      { value: '1:1', label: '1:1' },
+      { value: 'auto', label: 'Auto' },
     ],
   },
   {

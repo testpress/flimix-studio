@@ -134,6 +134,21 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
     return {}; // No inline style needed for Tailwind classes
   };
 
+  // Get video container classes (reusable for both empty state and main video)
+  const getVideoContainerClasses = () => {
+    const minWidthMap = {
+      small: 'min-w-[320px]',
+      medium: 'min-w-[480px]',
+      large: 'min-w-[640px]',
+      full: 'min-w-0'
+    } as const;
+
+    return [
+      'min-h-[200px]', // Ensure minimum height even without content
+      minWidthMap[size] || 'min-w-0'
+    ].join(' ');
+  };
+
   // Build widget classes - remove margin since it will be handled by wrapper
   const widgetClasses = [
     getBackgroundColor(),
@@ -161,11 +176,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
           <div className={`w-full ${getPaddingClass()}`}>
             <div className={`w-full ${getContainerAlignmentClasses()}`}>
               <div 
-                className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black`}
-                style={{
-                  minHeight: '200px', // Ensure minimum height even without content
-                  minWidth: size === 'small' ? '320px' : size === 'medium' ? '480px' : size === 'large' ? '640px' : 'auto'
-                }}
+                className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
               >
                 <div className="text-center py-12 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
                   <p className="mb-2 text-lg">No video selected</p>
@@ -201,17 +212,13 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
           <div className={`w-full ${getContainerAlignmentClasses()}`}>
             {/* Video wrapper with fixed dimensions and size constraints */}
             <div 
-              className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black`}
-              style={{
-                minHeight: '200px', // Ensure minimum height even without content
-                minWidth: size === 'small' ? '320px' : size === 'medium' ? '480px' : size === 'large' ? '640px' : 'auto'
-              }}
+              className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
             >
               {/* Video element that fills the container completely */}
               <video
                 src={src}
                 autoPlay={autoplay}
-                muted={muted}
+                muted={autoplay || muted}
                 controls={controls}
                 loop={loop}
                 className="w-full h-full object-cover"
