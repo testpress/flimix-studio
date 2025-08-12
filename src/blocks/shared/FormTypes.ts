@@ -9,9 +9,10 @@ import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { SpacerBlockProps } from '@blocks/spacer/schema';
 import type { DividerBlockProps } from '@blocks/divider/schema';
 import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
+import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 
 // Define a type for all possible block props
-export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps;
+export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps;
 
 export interface BlockFormProps {
   block: Block;

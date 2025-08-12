@@ -8,6 +8,7 @@ import TestimonialWidget from '@blocks/testimonial/widget';
 import SpacerWidget from '@blocks/spacer/widget';
 import DividerWidget from '@blocks/divider/widget';
 import FeatureCalloutWidget from '@blocks/feature-callout/widget';
+import FAQAccordionWidget from '@blocks/faq-accordion/widget';
 import type { Block } from '@blocks/shared/Block';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
@@ -18,6 +19,7 @@ import type { TestimonialBlock } from '@blocks/testimonial/schema';
 import type { SpacerBlock } from '@blocks/spacer/schema';
 import type { DividerBlock } from '@blocks/divider/schema';
 import type { FeatureCalloutBlock } from '@blocks/feature-callout/schema';
+import type { FAQAccordionBlock } from '@blocks/faq-accordion/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
@@ -191,6 +193,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         return <DividerWidget block={block as DividerBlock} onSelect={(dividerBlock) => onSelect?.(dividerBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'featureCallout':
         return <FeatureCalloutWidget block={block as FeatureCalloutBlock} onSelect={(featureCalloutBlock) => onSelect?.(featureCalloutBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'faq-accordion':
+        return <FAQAccordionWidget block={block as FAQAccordionBlock} onSelect={(faqAccordionBlock) => onSelect?.(faqAccordionBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

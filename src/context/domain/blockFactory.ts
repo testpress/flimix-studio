@@ -1,10 +1,10 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
- * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'spacer', 'divider', 'featureCallout')
+ * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'spacer', 'divider', 'featureCallout', 'faq-accordion')
  * @returns A new block with minimal valid properties
  */
 export function createBlock(type: BlockType['type']): BlockType {
@@ -122,6 +122,23 @@ export function createBlock(type: BlockType['type']): BlockType {
         style: {
           padding: 'md',
           textAlign: 'center'
+        }
+      };
+
+    case 'faq-accordion':
+      return {
+        type: 'faq-accordion',
+        id,
+        props: {
+          ...FAQAccordionLibraryItem.defaultProps,
+          items: FAQAccordionLibraryItem.defaultProps.items?.map(item => ({
+            ...item,
+            id: generateUniqueId(),
+          })) || [],
+        },
+        style: {
+          padding: 'md',
+          textAlign: 'left'
         }
       };
 
