@@ -10,6 +10,7 @@ import DividerWidget from '@blocks/divider/widget';
 import FeatureCalloutWidget from '@blocks/feature-callout/widget';
 import FAQAccordionWidget from '@blocks/faq-accordion/widget';
 import ImageWidget from '@blocks/image/widget';
+import VideoWidget from '@blocks/video/widget';
 import type { Block } from '@blocks/shared/Block';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
@@ -22,6 +23,7 @@ import type { DividerBlock } from '@blocks/divider/schema';
 import type { FeatureCalloutBlock } from '@blocks/feature-callout/schema';
 import type { FAQAccordionBlock } from '@blocks/faq-accordion/schema';
 import type { ImageBlock } from '@blocks/image/schema';
+import type { VideoBlock } from '@blocks/video/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
@@ -199,6 +201,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         return <FAQAccordionWidget block={block as FAQAccordionBlock} onSelect={(faqAccordionBlock) => onSelect?.(faqAccordionBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'image':
         return <ImageWidget block={block as ImageBlock} onSelect={(imageBlock) => onSelect?.(imageBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'video':
+        return <VideoWidget block={block as VideoBlock} onSelect={(videoBlock) => onSelect?.(videoBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
