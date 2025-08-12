@@ -169,6 +169,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('image')}>
           Image Block
         </DropdownItem>
+        <DropdownItem onClick={() => handleInsert('video')}>
+          Video Block
+        </DropdownItem>
       </Dropdown>
     </div>
   );

@@ -188,7 +188,13 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           ...layoutOnlyFields,
           renderTextColorField(),
         ];
-      
+      case 'video':
+        return [
+          ...layoutOnlyFields,
+          renderTextAlignField(),
+          renderTextColorField(),
+        ];
+
       case 'faq-accordion':
       case 'testimonial':
       case 'featureCallout':

@@ -1,10 +1,10 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem } from '@blocks/shared/Library';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
- * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'testimonial', 'spacer', 'divider', 'featureCallout', 'faq-accordion', 'image')
+ * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'testimonial', 'spacer', 'divider', 'featureCallout', 'faq-accordion', 'image', 'video')
  * @returns A new block with minimal valid properties
  */
 export function createBlock(type: BlockType['type']): BlockType {
@@ -147,6 +147,16 @@ export function createBlock(type: BlockType['type']): BlockType {
         type: 'image',
         id,
         props: ImageLibraryItem.defaultProps,
+        style: {
+          padding: 'md',
+        }
+      };
+
+    case 'video':
+      return {
+        type: 'video',
+        id,
+        props: VideoLibraryItem.defaultProps,
         style: {
           padding: 'md',
         }

@@ -29,6 +29,7 @@ import FAQAccordionItemForm from '@blocks/faq-accordion/ItemForm';
 import type { FAQAccordionItem } from '@blocks/faq-accordion/schema';
 import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import ImageForm from '@blocks/image/form';
+import VideoForm from '@blocks/video/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -59,6 +60,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     featureCallout: FeatureCalloutForm,
     'faq-accordion': FAQAccordionForm,
     image: ImageForm,
+    video: VideoForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
