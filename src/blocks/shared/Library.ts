@@ -4,6 +4,7 @@ import { TextLibraryItem } from '@blocks/text/libraryItem';
 import { SectionLibraryItem } from '@blocks/section/libraryItem';
 import { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
 import { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
+import { TestimonialLibraryItem } from '@blocks/testimonial/libraryItem';
 import { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 import { DividerLibraryItem } from '@blocks/divider/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
@@ -15,6 +16,7 @@ export { TextLibraryItem } from '@blocks/text/libraryItem';
 export { SectionLibraryItem } from '@blocks/section/libraryItem';
 export { PosterGridLibraryItem } from '@blocks/poster-grid/libraryItem';
 export { CarouselLibraryItem } from '@blocks/carousel/libraryItem';
+export { TestimonialLibraryItem } from '@blocks/testimonial/libraryItem';
 export { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 export { DividerLibraryItem } from '@blocks/divider/libraryItem';
 
@@ -23,7 +25,7 @@ export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare';
   defaultProps: BlockProps;
 };
 
@@ -34,6 +36,7 @@ export const allLibraryItems = [
   SectionLibraryItem,
   PosterGridLibraryItem,
   CarouselLibraryItem,
+  TestimonialLibraryItem,
   SpacerLibraryItem,
   DividerLibraryItem,
 ] as const;

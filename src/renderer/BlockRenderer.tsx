@@ -4,6 +4,7 @@ import TextWidget from '@blocks/text/widget';
 import SectionWidget from '@blocks/section/widget';
 import PosterGridWidget from '@blocks/poster-grid/widget';
 import CarouselWidget from '@blocks/carousel/widget';
+import TestimonialWidget from '@blocks/testimonial/widget';
 import SpacerWidget from '@blocks/spacer/widget';
 import DividerWidget from '@blocks/divider/widget';
 import type { Block } from '@blocks/shared/Block';
@@ -12,6 +13,7 @@ import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import type { PosterGridBlock } from '@blocks/poster-grid/schema';
 import type { CarouselBlock } from '@blocks/carousel/schema';
+import type { TestimonialBlock } from '@blocks/testimonial/schema';
 import type { SpacerBlock } from '@blocks/spacer/schema';
 import type { DividerBlock } from '@blocks/divider/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
@@ -179,6 +181,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         return <PosterGridWidget block={block as PosterGridBlock} onSelect={(posterGridBlock) => onSelect?.(posterGridBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'carousel':
         return <CarouselWidget block={block as CarouselBlock} onSelect={(carouselBlock) => onSelect?.(carouselBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'testimonial':
+        return <TestimonialWidget block={block as TestimonialBlock} onSelect={(testimonialBlock) => onSelect?.(testimonialBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'spacer':
         return <SpacerWidget block={block as SpacerBlock} onSelect={(spacerBlock) => onSelect?.(spacerBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'divider':

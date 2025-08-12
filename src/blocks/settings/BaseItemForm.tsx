@@ -7,11 +7,15 @@ interface BaseItemFormProps<T extends { id: string }> {
   fields: Array<{
     key: keyof T;
     label: string;
-    type: 'text' | 'textarea' | 'url';
+    type: 'text' | 'textarea' | 'url' | 'select';
     placeholder?: string;
     required?: boolean;
+    options?: Array<{ value: string | number; label: string }>;
+    description?: string;
+    maxLength?: number;
   }>;
   children?: React.ReactNode; // Allow additional content to be passed in
+  onFieldChange?: (field: keyof T, value: string) => void; // Custom field change handler
 }
 
 const BaseItemForm = <T extends { id: string }>({ 
@@ -19,9 +23,17 @@ const BaseItemForm = <T extends { id: string }>({
   onChange, 
   title, 
   fields,
-  children 
+  children,
+  onFieldChange
 }: BaseItemFormProps<T>) => {
   const handleChange = (field: keyof T, value: string) => {
+    // Use custom field change handler if provided
+    if (onFieldChange) {
+      onFieldChange(field, value);
+      return;
+    }
+
+    // Default behavior - just update with the string value
     onChange({ ...item, [field]: value });
   };
 
@@ -30,14 +42,29 @@ const BaseItemForm = <T extends { id: string }>({
     
     switch (field.type) {
       case 'textarea':
+        const charCount = value.length;
+        const isAtCharLimit = field.maxLength && charCount >= field.maxLength;
         return (
-          <textarea
-            value={value}
-            onChange={(e) => handleChange(field.key, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm h-20 resize-none"
-            placeholder={field.placeholder}
-            required={field.required}
-          />
+          <div>
+            <textarea
+              value={value}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+              className={`w-full p-2 border rounded text-sm h-20 resize-none ${
+                isAtCharLimit ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'
+              }`}
+              placeholder={field.placeholder}
+              required={field.required}
+              maxLength={field.maxLength}
+            />
+            {field.maxLength && (
+              <div className={`text-xs mt-1 text-right ${
+                isAtCharLimit ? 'text-yellow-600 font-medium' : 'text-gray-500'
+              }`}>
+                {charCount}/{field.maxLength} characters
+                {isAtCharLimit && ' (limit reached)'}
+              </div>
+            )}
+          </div>
         );
       
       case 'url':
@@ -50,6 +77,22 @@ const BaseItemForm = <T extends { id: string }>({
             placeholder={field.placeholder}
             required={field.required}
           />
+        );
+      
+      case 'select':
+        return (
+          <select
+            value={value}
+            onChange={(e) => handleChange(field.key, e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+            required={field.required}
+          >
+            {field.options?.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         );
       
       default: // text

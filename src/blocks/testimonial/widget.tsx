@@ -1,0 +1,550 @@
+import React, { useRef, useState, useEffect } from 'react';
+import BaseWidget from '@blocks/shared/BaseWidget';
+import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
+import { TESTIMONIAL_ITEM_LIMIT } from './schema';
+import { useSelection } from '@context/SelectionContext';
+import ItemsControl from '@blocks/shared/ItemsControl';
+import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
+import { generateUniqueId } from '@utils/id';
+
+interface TestimonialWidgetProps extends Omit<BaseWidgetProps<TestimonialBlock>, 'block'> {
+  block: TestimonialBlock;
+}
+
+const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({ 
+  block, 
+  onSelect, 
+  isSelected = false,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onRemove
+}) => {
+  const { props, style } = block;
+  const { 
+    title, 
+    layout = 'carousel', 
+    items = [], 
+    autoplay = false, 
+    scrollSpeed = 1000,
+    showArrows = true,
+    itemSize = 'large',
+    columns = 3,
+    rows = 3,
+    itemShape = 'circle'
+  } = props;
+  
+  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
+  const previousItemsLengthRef = useRef<number>(0);
+  const autoplayIntervalRef = useRef<number | null>(null);
+  const manualScrollPauseTimeoutRef = useRef<number | null>(null);
+  
+  // Map abstract item size values to Tailwind classes for carousel - now responsive
+  const getItemSizeClass = (size: ItemSize): string => {
+    switch (size) {
+      case 'small':
+        return 'w-full sm:w-64 md:w-72 lg:w-80';
+      case 'medium':
+        return 'w-full sm:w-72 md:w-80 lg:w-96';
+      case 'large':
+        return 'w-full sm:w-80 md:w-96 lg:w-[28rem]';
+      case 'extra-large':
+        return 'w-full sm:w-96 md:w-[28rem] lg:w-[32rem]';
+      default:
+        return 'w-full sm:w-80 md:w-96 lg:w-[28rem]'; // fallback to large
+    }
+  };
+  
+  const isDark = style?.theme === 'dark';
+  const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' : 
+                      style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
+                      style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
+  
+  const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
+                        style?.textAlign === 'right' ? 'text-right' : 'text-left';
+
+  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  const isHexColor = style?.textColor && style.textColor.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-800')) : '';
+  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+
+  // Determine background styling
+  const hasCustomBackground = !!style?.backgroundColor;
+  const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
+  const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
+
+  // Gap class mapping for better maintainability
+  const GAP_CLASSES: Record<string, string> = {
+    'sm': 'space-x-3 sm:space-x-4',
+    'md': 'space-x-4 sm:space-x-6',
+    'lg': 'space-x-6 sm:space-x-8',
+  };
+
+  const getGapClass = () => {
+    return GAP_CLASSES[style?.gridGap || 'md'] || GAP_CLASSES['md'];
+  };
+
+  // Item shape class mapping for better maintainability
+  const ITEM_SHAPE_CLASSES: Record<string, string> = {
+    'rectangle-landscape': 'aspect-[16/9]',
+    'rectangle-portrait': 'aspect-[2/3]',
+    'square': 'aspect-square',
+    'circle': 'aspect-square rounded-full',
+  };
+
+  const getItemShapeClass = () => {
+    return ITEM_SHAPE_CLASSES[itemShape] || ITEM_SHAPE_CLASSES['circle'];
+  };
+
+  // Calculate dynamic scroll amount based on item width and gap
+  const getScrollAmount = (): number => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer || !items || items.length < 2) return 400; // Fallback, requires at least 2 items to measure gap.
+
+    // children[0] is a padding div, so we start from index 1.
+    const firstItem = scrollContainer.children[1] as HTMLElement;
+    const secondItem = scrollContainer.children[2] as HTMLElement;
+    if (!firstItem || !secondItem) return 400; // Fallback
+
+    // This dynamically calculates the scroll distance including item width and responsive gap.
+    return secondItem.offsetLeft - firstItem.offsetLeft;
+  };
+
+  // Check scroll position and update arrow visibility
+  const checkScrollPosition = () => {
+    if (!scrollContainerRef.current) return;
+    
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    // Account for the 4px padding on each side
+    const paddingOffset = 8;
+    setCanScrollLeft(scrollLeft > paddingOffset);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - paddingOffset);
+  };
+
+  // Handle scroll events
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      // Store current scroll position before items change
+      const currentScrollLeft = scrollContainer.scrollLeft;
+      
+      // Only reset scroll position if this is the initial load or items were added/removed
+      const isInitialLoad = previousItemsLengthRef.current === 0;
+      const itemsChanged = previousItemsLengthRef.current !== (items?.length || 0);
+      
+      if (isInitialLoad) {
+        scrollContainer.scrollLeft = 0;
+      } else if (!itemsChanged) {
+        // If items were just reordered (same count), preserve scroll position
+        scrollContainer.scrollLeft = currentScrollLeft;
+      }
+      
+      checkScrollPosition();
+      scrollContainer.addEventListener('scroll', checkScrollPosition);
+      window.addEventListener('resize', checkScrollPosition);
+      
+      // Update previous items length
+      previousItemsLengthRef.current = items?.length || 0;
+      
+      return () => {
+        scrollContainer.removeEventListener('scroll', checkScrollPosition);
+        window.removeEventListener('resize', checkScrollPosition);
+      };
+    }
+  }, [items]);
+
+  // Autoplay functionality for carousel layout
+  useEffect(() => {
+    if (layout !== 'carousel') return;
+    
+    const scrollContainer = scrollContainerRef.current;
+    
+    // Clear any existing interval
+    if (autoplayIntervalRef.current) {
+      clearInterval(autoplayIntervalRef.current);
+      autoplayIntervalRef.current = null;
+    }
+    
+    // Start autoplay if enabled and we have items and not paused
+    if (autoplay && !isAutoplayPaused && scrollContainer && items && items.length > 1) {
+      autoplayIntervalRef.current = setInterval(() => {
+        if (scrollContainer) {
+          // Check if we're at the end of the carousel
+          const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+          const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10; // 10px tolerance
+          
+          if (isAtEnd) {
+            // Reset to beginning for infinite loop
+            scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            // Scroll to next item using dynamic scroll amount
+            const scrollAmount = getScrollAmount();
+            scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+          }
+        }
+      }, scrollSpeed);
+    }
+    
+    // Cleanup on unmount or when autoplay/scrollSpeed/pause state changes
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+        autoplayIntervalRef.current = null;
+      }
+      if (manualScrollPauseTimeoutRef.current) {
+        clearTimeout(manualScrollPauseTimeoutRef.current);
+        manualScrollPauseTimeoutRef.current = null;
+      }
+    };
+  }, [autoplay, scrollSpeed, items, isAutoplayPaused, layout]);
+
+  // Handle arrow clicks for carousel
+  const handleScrollLeft = () => {
+    if (scrollContainerRef.current) {
+      // Pause autoplay temporarily when user manually navigates
+      if (autoplay) {
+        setIsAutoplayPaused(true);
+        if (manualScrollPauseTimeoutRef.current) {
+          clearTimeout(manualScrollPauseTimeoutRef.current);
+        }
+        manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1000); // Resume after 1 second
+      }
+      const scrollAmount = getScrollAmount();
+      scrollContainerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollRight = () => {
+    if (scrollContainerRef.current) {
+      // Pause autoplay temporarily when user manually navigates
+      if (autoplay) {
+        setIsAutoplayPaused(true);
+        if (manualScrollPauseTimeoutRef.current) {
+          clearTimeout(manualScrollPauseTimeoutRef.current);
+        }
+        manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1000); // Resume after 1 second
+      }
+      const scrollAmount = getScrollAmount();
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleAddItem = () => {
+    let currentItemCount = items?.length || 0;
+    let maxItems: number;
+    
+    if (layout === 'carousel') {
+      maxItems = TESTIMONIAL_ITEM_LIMIT;
+    } else if (layout === 'grid') {
+      maxItems = (columns || 3) * (rows || 3);
+    } else {
+      // single layout - only allow 1 item
+      maxItems = 1;
+    }
+    
+    if (currentItemCount >= maxItems) {
+      return; // Don't add more items if at limit
+    }
+    
+    // Create a default item that matches the library item structure
+    const defaultItem = {
+      id: generateUniqueId(),
+      quote: 'Amazing platform! Highly recommended.',
+      name: 'John Doe',
+      designation: 'Customer',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      rating: 5
+    };
+    const newId = addBlockItem(block.id, defaultItem);
+    selectArrayItem(block.id, newId);
+  };
+
+  const handleItemClick = (itemId: string) => {
+    selectArrayItem(block.id, itemId);
+  };
+
+  // Handle manual scroll to pause autoplay
+  const handleManualScroll = () => {
+    if (autoplay) {
+      setIsAutoplayPaused(true);
+      if (manualScrollPauseTimeoutRef.current) {
+        clearTimeout(manualScrollPauseTimeoutRef.current);
+      }
+      manualScrollPauseTimeoutRef.current = window.setTimeout(() => {
+        setIsAutoplayPaused(false);
+      }, 1000); // Resume after 1 second of inactivity
+    }
+  };
+
+  // Check if we're at the item limit
+  const getMaxItems = () => {
+    if (layout === 'carousel') {
+      return TESTIMONIAL_ITEM_LIMIT;
+    } else if (layout === 'grid') {
+      return (columns || 3) * (rows || 3);
+    } else {
+      return 1; // single layout
+    }
+  };
+
+  const maxItems = getMaxItems();
+  const isAtItemLimit = (items?.length || 0) >= maxItems;
+
+  // Render star rating
+  const renderStars = (rating?: number) => {
+    if (!rating) return null;
+    return (
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            size={14}
+            className={`sm:w-4 sm:h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // Render testimonial item
+  const renderTestimonialItem = (item: TestimonialItem, index: number) => (
+    <div key={item.id} className="relative group">
+      <div 
+        className={`bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
+          isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+        }`}
+        onClick={() => handleItemClick(item.id)}
+      >
+        {/* Quote - flex-grow to take available space */}
+        <blockquote className="text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-3 sm:mb-4 italic flex-grow leading-relaxed break-words overflow-visible hyphens-auto whitespace-normal">
+          "{item.quote}"
+        </blockquote>
+        
+        {/* Rating */}
+        {item.rating && (
+          <div className="mb-3">
+            {renderStars(item.rating)}
+          </div>
+        )}
+        
+        {/* Author info - fixed at bottom */}
+        <div className="flex items-center mt-auto">
+          {item.image && (
+            <img 
+              src={item.image} 
+              alt={item.name || 'Customer'} 
+              className={`${getItemShapeClass()} w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4`}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
+              }}
+            />
+          )}
+          <div className="min-w-0 flex-1">
+            {item.name && (
+              <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{item.name}</p>
+            )}
+            {item.designation && (
+              <p className="text-xs sm:text-sm text-gray-500 truncate">{item.designation}</p>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <ItemsControl 
+        index={index}
+        count={items.length}
+        onMoveLeft={() => moveBlockItemLeft(block.id, index)}
+        onMoveRight={() => moveBlockItemRight(block.id, index)}
+        onRemove={() => removeBlockItem(block.id, item.id)}
+        className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
+    </div>
+  );
+
+  // Render carousel layout
+  const renderCarousel = () => (
+    <div className="relative">
+      <div className="flex items-center">
+        {/* Left Arrow */}
+        {showArrows && canScrollLeft && (
+          <button 
+            onClick={handleScrollLeft}
+            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-2 sm:mr-4 z-10"
+          >
+            <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
+          </button>
+        )}
+        
+        {/* Carousel Container */}
+        <div className="flex-1 overflow-hidden">
+          <div 
+            ref={scrollContainerRef}
+            className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
+            onMouseEnter={() => autoplay && setIsAutoplayPaused(true)}
+            onMouseLeave={() => autoplay && setIsAutoplayPaused(false)}
+            onScroll={handleManualScroll}
+          >
+            {/* Left padding to ensure first item is fully visible */}
+            <div className="flex-shrink-0 w-2 sm:w-4"></div>
+            
+            {items.map((item, index) => (
+              <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} px-2`}>
+                {renderTestimonialItem(item, index)}
+              </div>
+            ))}
+            
+            {/* Right padding to ensure last item is fully visible */}
+            <div className="flex-shrink-0 w-2 sm:w-4"></div>
+          </div>
+        </div>
+        
+        {/* Right Arrow */}
+        {showArrows && canScrollRight && (
+          <button 
+            onClick={handleScrollRight}
+            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-2 sm:ml-4 z-10"
+          >
+            <ArrowRight size={16} className="sm:w-5 sm:h-5" />
+          </button>
+        )}
+      </div>
+      
+      {/* Mobile scroll indicators */}
+      {showArrows && (canScrollLeft || canScrollRight) && (
+        <div className="sm:hidden flex justify-center mt-4 space-x-2">
+          {canScrollLeft && (
+            <button 
+              onClick={handleScrollLeft}
+              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
+            >
+              <ArrowLeft size={14} />
+            </button>
+          )}
+          {canScrollRight && (
+            <button 
+              onClick={handleScrollRight}
+              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
+            >
+              <ArrowRight size={14} />
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  // Render grid layout
+  const renderGrid = () => {
+    const getGridColsClass = () => {
+      switch (columns) {
+        case 2:
+          return 'grid-cols-1 sm:grid-cols-2';
+        case 3:
+          return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+        case 4:
+          return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
+        default:
+          return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+      }
+    };
+
+    const getGapClass = () => {
+      switch (style?.gridGap) {
+        case 'sm':
+          return 'gap-3 sm:gap-4';
+        case 'lg':
+          return 'gap-6 sm:gap-8';
+        default: // md
+          return 'gap-4 sm:gap-6';
+      }
+    };
+
+    return (
+      <div className={`grid ${getGridColsClass()} ${getGapClass()}`}>
+        {items.map((item, index) => renderTestimonialItem(item, index))}
+      </div>
+    );
+  };
+
+  // Render single layout
+  const renderSingle = () => {
+    if (items.length === 0) return null;
+    return (
+      <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
+        {renderTestimonialItem(items[0], 0)}
+      </div>
+    );
+  };
+
+  if (!items || items.length === 0) {
+    return (
+      <BaseWidget 
+        block={block} 
+        onSelect={onSelect} 
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+        className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
+        style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
+      >
+        <div className={`${textAlignClass}`}>
+          {title && (
+            <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
+              {title}
+            </h2>
+          )}
+          <p className="text-gray-500 text-center text-sm sm:text-base">No testimonials added</p>
+        </div>
+      </BaseWidget>
+    );
+  }
+
+  return (
+    <BaseWidget
+      block={block}
+      onSelect={onSelect}
+      isSelected={isSelected}
+      canMoveUp={canMoveUp}
+      canMoveDown={canMoveDown}
+      onMoveUp={onMoveUp}
+      onMoveDown={onMoveDown}
+      onDuplicate={onDuplicate}
+      onRemove={onRemove}
+      onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+      className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
+      style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
+    >
+      <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
+        {title && (
+          <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 ${textColorClass}`} style={textColorStyle}>
+            {title}
+          </h2>
+        )}
+        
+        {layout === 'carousel' && renderCarousel()}
+        {layout === 'grid' && renderGrid()}
+        {layout === 'single' && renderSingle()}
+      </div>
+    </BaseWidget>
+  );
+};
+
+export default TestimonialWidget; 

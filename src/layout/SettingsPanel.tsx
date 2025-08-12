@@ -14,6 +14,10 @@ import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import CarouselItemForm from '@blocks/carousel/ItemForm';
 import type { CarouselItem } from '@blocks/carousel/schema';
 import CarouselForm from '@blocks/carousel/form';
+import TestimonialForm from '@blocks/testimonial/form';
+import TestimonialItemForm from '@blocks/testimonial/ItemForm';
+import type { TestimonialItem } from '@blocks/testimonial/schema';
+import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import SpacerForm from '@blocks/spacer/form';
 import DividerForm from '@blocks/divider/form';
 
@@ -40,6 +44,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     section: SectionForm,
     posterGrid: PosterGridForm,
     carousel: CarouselForm,
+    testimonial: TestimonialForm,
     spacer: SpacerForm,
     divider: DividerForm,
   };
@@ -97,6 +102,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Carousel Item"
+          />
+        );
+      }
+      
+      case 'testimonial': {
+        const items = (selectedBlock.props as TestimonialBlockProps).items || [];
+        const item = items.find((i: TestimonialItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: TestimonialItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <TestimonialItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Testimonial Item"
           />
         );
       }
