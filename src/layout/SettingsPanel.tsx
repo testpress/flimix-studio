@@ -20,6 +20,10 @@ import type { TestimonialItem } from '@blocks/testimonial/schema';
 import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import SpacerForm from '@blocks/spacer/form';
 import DividerForm from '@blocks/divider/form';
+import FeatureCalloutForm from '@blocks/feature-callout/form';
+import FeatureCalloutItemForm from '@blocks/feature-callout/ItemForm';
+import type { FeatureCalloutItem } from '@blocks/feature-callout/schema';
+import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -47,6 +51,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     testimonial: TestimonialForm,
     spacer: SpacerForm,
     divider: DividerForm,
+    featureCallout: FeatureCalloutForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -121,6 +126,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Testimonial Item"
+          />
+        );
+      }
+      
+      case 'featureCallout': {
+        const items = (selectedBlock.props as FeatureCalloutBlockProps).items || [];
+        const item = items.find((i: FeatureCalloutItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: FeatureCalloutItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <FeatureCalloutItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Feature Callout Item"
           />
         );
       }

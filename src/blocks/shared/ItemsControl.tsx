@@ -30,20 +30,20 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
         <button
           onClick={e => { e.stopPropagation(); onMoveLeft(); }}
           disabled={index === 0}
-          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
+          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
           title="Move Left"
         >
-          <MoveLeft size={12} />
+          <MoveLeft size={12} className="text-gray-600" />
         </button>
 
         {/* Move Right */}
         <button
           onClick={e => { e.stopPropagation(); onMoveRight(); }}
           disabled={index === count - 1}
-          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded"
+          className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
           title="Move Right"
         >
-          <MoveRight size={12} />
+          <MoveRight size={12} className="text-gray-600" />
         </button>
       </>
     )}
@@ -55,7 +55,7 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
         className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
         title="Remove Item"
       >
-        <Trash2 size={12} />
+        <Trash2 size={12} className="text-red-600" />
       </button>
     )}
   </div>

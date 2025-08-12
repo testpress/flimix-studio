@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
@@ -17,7 +17,8 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
   GalleryHorizontalEnd,
   AlignVerticalSpaceBetween,
   Minus,
-  MessageSquare
+  MessageSquare,
+  Sparkles
 };
 
 const LibraryPanel: React.FC = () => {
