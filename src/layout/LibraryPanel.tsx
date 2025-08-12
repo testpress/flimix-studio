@@ -1,15 +1,14 @@
 import React from 'react';
-import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
-import type { BlockLibraryItem } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 
 // Icon mapping for the templates
-const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
+const iconMap: Record<string, LucideIcon> = {
   Layout,
   Type,
   Square,
@@ -19,7 +18,8 @@ const iconMap: Record<BlockLibraryItem['icon'], LucideIcon> = {
   Minus,
   MessageSquare,
   Sparkles,
-  HelpCircle
+  HelpCircle,
+  Image,
 };
 
 const LibraryPanel: React.FC = () => {

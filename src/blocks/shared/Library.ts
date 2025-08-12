@@ -9,6 +9,7 @@ import { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 import { DividerLibraryItem } from '@blocks/divider/libraryItem';
 import { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 import { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
+import { ImageLibraryItem } from '@blocks/image/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -23,18 +24,19 @@ export { SpacerLibraryItem } from '@blocks/spacer/libraryItem';
 export { DividerLibraryItem } from '@blocks/divider/libraryItem';
 export { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 export { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
+export { ImageLibraryItem } from '@blocks/image/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image';
   defaultProps: BlockProps;
 };
 
 // Re-export all library items as an array for easy iteration
-export const allLibraryItems = [
+export const allLibraryItems: BlockLibraryItem[] = [
   HeroLibraryItem,
   TextLibraryItem,
   SectionLibraryItem,
@@ -45,7 +47,8 @@ export const allLibraryItems = [
   DividerLibraryItem,
   FeatureCalloutLibraryItem,
   FAQAccordionLibraryItem,
-] as const;
+  ImageLibraryItem,
+];
 
 // Helper function to get all available block types
 export function getAvailableBlockTypes(): string[] {

@@ -28,6 +28,7 @@ import FAQAccordionForm from '@blocks/faq-accordion/form';
 import FAQAccordionItemForm from '@blocks/faq-accordion/ItemForm';
 import type { FAQAccordionItem } from '@blocks/faq-accordion/schema';
 import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
+import ImageForm from '@blocks/image/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -57,6 +58,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     divider: DividerForm,
     featureCallout: FeatureCalloutForm,
     'faq-accordion': FAQAccordionForm,
+    image: ImageForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -259,6 +261,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             <StyleForm
               style={selectedBlock.style || {}}
               onChange={handleStyleChange}
+              blockType={selectedBlock.type}
             />
           )}
         </div>

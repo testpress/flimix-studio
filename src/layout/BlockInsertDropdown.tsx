@@ -166,6 +166,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('faq-accordion')}>
           FAQ Accordion Block
         </DropdownItem>
+        <DropdownItem onClick={() => handleInsert('image')}>
+          Image Block
+        </DropdownItem>
       </Dropdown>
     </div>
   );
