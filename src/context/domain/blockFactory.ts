@@ -3,6 +3,7 @@ import { generateUniqueId } from '@utils/id';
 import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem, FooterLibraryItem } from '@blocks/shared/Library';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
+import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -218,6 +219,20 @@ export function createBlock(type: BlockType['type']): BlockType {
           id,
           props: {
             ...CTAButtonLibraryItem.defaultProps,
+          },
+          style: {
+            padding: 'md',
+            textAlign: 'center'
+          }
+        };
+      }
+
+      case 'badge-strip': {
+        return {
+          type: 'badge-strip',
+          id,
+          props: {
+            ...BadgeStripLibraryItem.defaultProps,
           },
           style: {
             padding: 'md',

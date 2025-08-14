@@ -34,6 +34,8 @@ import { findBlockPositionForUI } from '@context/domain';
 import { AlertTriangle } from 'lucide-react';
 import CTAButtonWidget from '@blocks/cta-button/widget';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
+import BadgeStripWidget from '@blocks/badge-strip/widget';
+import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
 
 /**
  * Evaluate if a block should be visible based on visibility rules and context
@@ -223,6 +225,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         return <FooterWidget block={block as FooterBlock} onSelect={(footerBlock) => onSelect?.(footerBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'cta-button':
         return <CTAButtonWidget block={block as CTAButtonBlock} onSelect={(ctaButtonBlock) => onSelect?.(ctaButtonBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'badge-strip':
+        return <BadgeStripWidget block={block as BadgeStripBlock} onSelect={(badgeStripBlock) => onSelect?.(badgeStripBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

@@ -40,6 +40,92 @@ const sampleSchema: PageSchema = {
       }
     },
     {
+      type: 'badge-strip',
+      id: 'badge-1',
+      props: {
+        items: [
+          { 
+            id: 'badge-item-1', 
+            label: '4K UHD', 
+            icon: 'Monitor',
+            tooltip: 'Ultra High Definition 4K resolution support',
+            style: {
+              backgroundColor: '#3b82f6',
+              textColor: '#ffffff',
+              padding: 'md',
+              margin: 'sm',
+              borderRadius: 'lg',
+              boxShadow: 'md'
+            }
+          },
+          { 
+            id: 'badge-item-2', 
+            label: 'Dolby Atmos', 
+            icon: 'Volume2',
+            tooltip: 'Immersive 3D audio experience',
+            style: {
+              backgroundColor: '#10b981',
+              textColor: '#ffffff',
+              padding: 'md',
+              borderRadius: 'lg',
+              boxShadow: 'md'
+            }
+          },
+          { 
+            id: 'badge-item-3', 
+            label: 'iOS/Android', 
+            icon: 'Smartphone', 
+            link: 'https://play.google.com/',
+            tooltip: 'Available on both iOS and Android platforms',
+            style: {
+              backgroundColor: '#f59e0b',
+              textColor: '#ffffff',
+              padding: 'md',
+              margin: 'sm',
+              borderRadius: 'lg',
+              boxShadow: 'md'
+            }
+          },
+          { 
+            id: 'badge-item-4', 
+            label: 'HDR10+', 
+            icon: 'Sun',
+            tooltip: 'High Dynamic Range 10+ for enhanced contrast',
+            style: {
+              backgroundColor: '#ef4444',
+              textColor: '#ffffff',
+              padding: 'md',
+              margin: 'sm',
+              borderRadius: 'lg',
+              boxShadow: 'md'
+            }
+          },
+          { 
+            id: 'badge-item-5', 
+            label: 'Multi-Language', 
+            icon: 'Globe',
+            tooltip: 'Support for multiple languages worldwide',
+            style: {
+              backgroundColor: '#8b5cf6',
+              textColor: '#ffffff',
+              padding: 'md',
+              margin: 'sm',
+              borderRadius: 'lg',
+              boxShadow: 'md'
+            }
+          }
+        ],
+        wrap: true
+      },
+      style: {
+        backgroundColor: '#f8fafc',
+        padding: 'lg',
+        borderRadius: 'lg',
+        boxShadow: 'sm',
+        textAlign: 'center'
+      }
+    },
+    {
       type: "section",
       id: "section-001",
       props: {

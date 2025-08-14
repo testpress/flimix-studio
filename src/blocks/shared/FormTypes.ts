@@ -15,6 +15,7 @@ import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
 import type { FooterBlockProps } from '@blocks/footer/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
+import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
 
 // Define a type for all possible block props
 export type BlockProps = 
@@ -32,7 +33,8 @@ export type BlockProps =
   | VideoBlockProps
   | TabsBlockProps
   | FooterBlockProps
-  | CTAButtonBlockProps;
+  | CTAButtonBlockProps
+  | BadgeStripBlockProps;
 
 export interface BlockFormProps {
   block: Block;

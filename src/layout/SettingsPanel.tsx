@@ -38,6 +38,8 @@ import FooterForm from '@blocks/footer/form';
 import FooterItemForm from '@blocks/footer/ItemForm';
 import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
 import CTAButtonForm from '@blocks/cta-button/form';
+import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
+import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -72,6 +74,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     tabs: TabsForm,
     'footer': FooterForm,
     'cta-button': CTAButtonForm,
+    'badge-strip': BadgeStripForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -203,6 +206,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Footer Item"
+          />
+        );
+      }
+      
+      case 'badge-strip': {
+        const items = (selectedBlock.props as BadgeStripBlockProps).items || [];
+        const item = items.find((i: BadgeStripItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: BadgeStripItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <BadgeStripItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Badge Editor"
           />
         );
       }
