@@ -125,6 +125,56 @@ const sampleSchema: PageSchema = {
       }
     },
     {
+      type: 'cta-button',
+      id: 'cta-1',
+      props: {
+        label: 'Get Started Today',
+        link: '/signup',
+        variant: 'solid',
+        size: 'lg'
+      },
+      style: {
+        backgroundColor: '#3b82f6',
+        textColor: '#ffffff',
+        padding: 'lg',
+        textAlign: 'center',
+        borderRadius: 'lg',
+        boxShadow: 'md'
+      }
+    },
+    {
+      type: 'cta-button',
+      id: 'cta-2',
+      props: {
+        label: 'Learn More',
+        link: '/features',
+        variant: 'outline',
+        size: 'md'
+      },
+      style: {
+        textColor: '#3b82f6',
+        padding: 'md',
+        textAlign: 'left',
+        borderRadius: 'md'
+      }
+    },
+    {
+      type: 'cta-button',
+      id: 'cta-3',
+      props: {
+        label: 'Contact Sales',
+        link: '/contact',
+        variant: 'ghost',
+        size: 'sm'
+      },
+      style: {
+        textColor: '#6b7280',
+        padding: 'sm',
+        textAlign: 'right',
+        borderRadius: 'sm'
+      }
+    },
+    {
       id: 'footer-1',
       type: 'footer',
       props: {

@@ -14,6 +14,7 @@ import type { ImageBlockProps } from '@blocks/image/schema';
 import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
 import type { FooterBlockProps } from '@blocks/footer/schema';
+import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 
 // Define a type for all possible block props
 export type BlockProps = 
@@ -30,7 +31,8 @@ export type BlockProps =
   | ImageBlockProps
   | VideoBlockProps
   | TabsBlockProps
-  | FooterBlockProps;
+  | FooterBlockProps
+  | CTAButtonBlockProps;
 
 export interface BlockFormProps {
   block: Block;
