@@ -167,7 +167,6 @@ const sampleSchema: PageSchema = {
         backgroundColor: '#1e293b',
         textColor: '#f8fafc',
         padding: 'lg',
-        margin: 'md'
       }
     }
   ]

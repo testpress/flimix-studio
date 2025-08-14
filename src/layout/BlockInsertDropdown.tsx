@@ -237,6 +237,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('video')}>
           Video Block
         </DropdownItem>
+        <DropdownItem onClick={() => handleInsert('footer')}>
+          Footer Block
+        </DropdownItem>
       </Dropdown>
     </div>
   );
