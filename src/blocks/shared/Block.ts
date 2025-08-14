@@ -31,6 +31,8 @@ import type { FooterBlock } from '@blocks/footer/schema';
 import type { FooterBlockProps } from '@blocks/footer/schema';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
+import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
+import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
 
 // Union type for all block types (imported from individual block schemas)
 export type BlockType = 
@@ -48,13 +50,14 @@ export type BlockType =
   | VideoBlock
   | TabsBlock
   | FooterBlock
-  | CTAButtonBlock;
+  | CTAButtonBlock
+  | BadgeStripBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'footer' | 'cta-button';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | FooterBlockProps | CTAButtonBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'footer' | 'cta-button' | 'badge-strip';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | FooterBlockProps | CTAButtonBlockProps | BadgeStripBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;
