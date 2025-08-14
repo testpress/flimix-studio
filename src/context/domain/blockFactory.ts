@@ -2,6 +2,7 @@ import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
 import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem, FooterLibraryItem } from '@blocks/shared/Library';
 import type { TabsBlock } from '@blocks/tabs/schema';
+import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -207,6 +208,20 @@ export function createBlock(type: BlockType['type']): BlockType {
           style: {
             padding: 'md',
             textAlign: 'left'
+          }
+        };
+      }
+
+      case 'cta-button': {
+        return {
+          type: 'cta-button',
+          id,
+          props: {
+            ...CTAButtonLibraryItem.defaultProps,
+          },
+          style: {
+            padding: 'md',
+            textAlign: 'center'
           }
         };
       }

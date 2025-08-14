@@ -67,7 +67,9 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Text Alignment field
   const renderTextAlignField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Text Alignment</label>
+      <label className="block text-sm text-gray-700 mb-1">
+        {blockType === 'cta-button' ? 'Alignment' : 'Text Alignment'}
+      </label>
       <select
         value={style.textAlign || 'left'}
         onChange={(e) => handleStyleChange('textAlign', e.target.value as TextAlign)}
@@ -250,6 +252,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       case 'posterGrid':
       case 'carousel':
       case 'footer':
+      case 'cta-button':
         // Standard blocks: show all options
         return allFields;
       

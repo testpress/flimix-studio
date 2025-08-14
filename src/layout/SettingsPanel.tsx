@@ -37,6 +37,7 @@ import TabsForm from '@blocks/tabs/form';
 import FooterForm from '@blocks/footer/form';
 import FooterItemForm from '@blocks/footer/ItemForm';
 import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
+import CTAButtonForm from '@blocks/cta-button/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -70,6 +71,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     video: VideoForm,
     tabs: TabsForm,
     'footer': FooterForm,
+    'cta-button': CTAButtonForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {

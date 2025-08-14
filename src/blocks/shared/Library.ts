@@ -13,6 +13,7 @@ import { ImageLibraryItem } from '@blocks/image/libraryItem';
 import { VideoLibraryItem } from '@blocks/video/libraryItem';
 import { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 import { FooterLibraryItem } from '@blocks/footer/libraryItem';
+import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -31,13 +32,14 @@ export { ImageLibraryItem } from '@blocks/image/libraryItem';
 export { VideoLibraryItem } from '@blocks/video/libraryItem';
 export { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 export { FooterLibraryItem } from '@blocks/footer/libraryItem';
+export { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video'| 'Columns3Cog' | 'Columns' | 'CreditCard';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video'| 'Columns3Cog' | 'Columns' | 'CreditCard' | 'Zap' | 'RectangleEllipsis';
   defaultProps: BlockProps;
 };
 
@@ -57,6 +59,7 @@ export const allLibraryItems: BlockLibraryItem[] = [
   VideoLibraryItem,
   TabsLibraryItem,
   FooterLibraryItem,
+  CTAButtonLibraryItem,
 ];
 
 // Helper function to get all available block types

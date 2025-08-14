@@ -197,6 +197,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         <DropdownItem onClick={() => handleInsert('text')}>
           Text Block
         </DropdownItem>
+        <DropdownItem onClick={() => handleInsert('cta-button')}>
+          CTA Button Block
+        </DropdownItem>
         <DropdownItem onClick={() => handleInsert('hero')}>
           Hero Block
         </DropdownItem>

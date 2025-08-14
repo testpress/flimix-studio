@@ -32,6 +32,8 @@ import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/share
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
 import { AlertTriangle } from 'lucide-react';
+import CTAButtonWidget from '@blocks/cta-button/widget';
+import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 
 /**
  * Evaluate if a block should be visible based on visibility rules and context
@@ -219,6 +221,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
         />;
       case 'footer':
         return <FooterWidget block={block as FooterBlock} onSelect={(footerBlock) => onSelect?.(footerBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'cta-button':
+        return <CTAButtonWidget block={block as CTAButtonBlock} onSelect={(ctaButtonBlock) => onSelect?.(ctaButtonBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
