@@ -1,5 +1,6 @@
 import type { Block } from '@blocks/shared/Block';
 import type { BlockType } from '@blocks/shared/Block';
+import type { TabsBlock } from '@blocks/tabs/schema';
 
 export interface BlockPosition {
   parent: Block | null;
@@ -35,6 +36,20 @@ export function findBlockAndParent(
         }
       }
     }
+    
+    // Check tabs blocks for nested children
+    if (block.type === 'tabs') {
+      const tabsBlock = block as TabsBlock;
+      for (const tab of tabsBlock.props.tabs) {
+        if (tab.children) {
+          for (let j = 0; j < tab.children.length; j++) {
+            if (tab.children[j].id === blockId) {
+              return { block: tab.children[j], parent: block, parentIndex: j };
+            }
+          }
+        }
+      }
+    }
   }
   return { block: null, parent: null, parentIndex: -1 };
 }
@@ -59,6 +74,21 @@ export function findBlockPositionById(
         const child = block.children[j];
         if (child.id === targetId) {
           return { parent: block, container: block.children, index: j };
+        }
+      }
+    }
+    
+    // Check tabs blocks for nested children
+    if (block.type === 'tabs') {
+      const tabsBlock = block as TabsBlock;
+      for (const tab of tabsBlock.props.tabs) {
+        if (tab.children) {
+          for (let j = 0; j < tab.children.length; j++) {
+            const child = tab.children[j];
+            if (child.id === targetId) {
+              return { parent: block, container: tab.children, index: j };
+            }
+          }
         }
       }
     }
@@ -98,6 +128,24 @@ export function findBlockPositionForUI(
           index: childIndex,
           totalSiblings: block.children.length
         };
+      }
+    }
+    
+    // Check tabs blocks for nested children
+    if (block.type === 'tabs') {
+      const tabsBlock = block as TabsBlock;
+      for (const tab of tabsBlock.props.tabs) {
+        if (tab.children) {
+          const childIndex = tab.children.findIndex((child: Block) => child.id === blockId);
+          if (childIndex !== -1) {
+            return {
+              isTopLevel: false,
+              parentId: block.id,
+              index: childIndex,
+              totalSiblings: tab.children.length
+            };
+          }
+        }
       }
     }
   }

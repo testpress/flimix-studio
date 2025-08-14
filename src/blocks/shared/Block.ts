@@ -25,6 +25,8 @@ import type { ImageBlock } from '@blocks/image/schema';
 import type { ImageBlockProps } from '@blocks/image/schema';
 import type { VideoBlock } from '@blocks/video/schema';
 import type { VideoBlockProps } from '@blocks/video/schema';
+import type { TabsBlock } from '@blocks/tabs/schema';
+import type { TabsBlockProps } from '@blocks/tabs/schema';
 
 // Union type for all block types (imported from individual block schemas)
 export type BlockType = 
@@ -39,13 +41,14 @@ export type BlockType =
   | FeatureCalloutBlock
   | FAQAccordionBlock
   | ImageBlock
-  | VideoBlock;
+  | VideoBlock
+  | TabsBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

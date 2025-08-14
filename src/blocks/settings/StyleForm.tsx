@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps, Theme, Padding, TextAlign, BorderRadius, BoxShadow, StyleValue } from '@blocks/shared/Style';
+import type { StyleProps, Theme, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@blocks/shared/Style';
 
 interface StyleFormProps {
   style: StyleProps;
@@ -154,6 +154,38 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     </div>
   );
 
+  // Helper function to render Tab Alignment field
+  const renderTabAlignmentField = () => (
+    <div>
+      <label className="block text-sm text-gray-700 mb-1">Tab Alignment</label>
+      <select
+        value={style.tabAlignment || 'center'}
+        onChange={(e) => handleStyleChange('tabAlignment', e.target.value as TabAlignment)}
+        className="w-full p-2 border border-gray-300 rounded text-sm"
+      >
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+        <option value="right">Right</option>
+      </select>
+    </div>
+  );
+
+  // Helper function to render Tab Style field
+  const renderTabStyleField = () => (
+    <div>
+      <label className="block text-sm text-gray-700 mb-1">Tab Style</label>
+      <select
+        value={style.tabStyle || 'pill'}
+        onChange={(e) => handleStyleChange('tabStyle', e.target.value as TabStyle)}
+        className="w-full p-2 border border-gray-300 rounded text-sm"
+      >
+        <option value="underline">Underline</option>
+        <option value="pill">Pill</option>
+        <option value="boxed">Boxed</option>
+      </select>
+    </div>
+  );
+
   // Function to get which fields to render based on block type
   const getFieldsToRender = (blockType?: string) => {
     // Define field groups for different styling needs
@@ -177,6 +209,16 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       renderBoxShadowField(),
     ];
 
+    const tabsFields = [
+      renderPaddingField(),
+      renderMarginField(),
+      renderBackgroundColorField(),
+      renderBorderRadiusField(),
+      renderBoxShadowField(),
+      renderTabAlignmentField(),
+      renderTabStyleField(),
+    ];
+
     switch (blockType) {
       case 'image':
         // Image blocks: only show layout and visual styling, no text-related options
@@ -188,6 +230,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           ...layoutOnlyFields,
           renderTextColorField(),
         ];
+
+      case 'tabs':
+        // Tabs blocks: show layout options and tab-specific styling
+        return tabsFields;
+
       case 'video':
         return [
           ...layoutOnlyFields,

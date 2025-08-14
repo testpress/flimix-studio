@@ -13,6 +13,12 @@ export type BoxShadow = 'none' | 'sm' | 'md' | 'lg';
 
 export type GridGap = 'sm' | 'md' | 'lg';
 
+// Tab alignment options
+export type TabAlignment = 'left' | 'center' | 'right';
+
+// Tab style options
+export type TabStyle = 'underline' | 'pill' | 'boxed';
+
 // Keep literal information *and* allow arbitrary strings
 export type StyleValue =
   | Theme
@@ -21,6 +27,8 @@ export type StyleValue =
   | BorderRadius
   | BoxShadow
   | GridGap
+  | TabAlignment
+  | TabStyle
   | (string & {});
 
 // Enhanced style properties
@@ -35,4 +43,6 @@ export interface StyleProps {
   boxShadow?: BoxShadow;
   maxWidth?: string;
   gridGap?: GridGap;
+  tabAlignment?: TabAlignment;
+  tabStyle?: TabStyle;
 } 

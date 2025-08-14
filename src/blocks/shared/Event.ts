@@ -11,4 +11,5 @@ export interface EventProps {
   onCollapse?: string;
   onSwitch?: string;
   onSelect?: string;
+  onTabChange?: string;
 } 

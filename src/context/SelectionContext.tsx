@@ -6,6 +6,7 @@ import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, findBlockPositionById } from '@context/domain';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
+import type { TabsBlock, Tab } from '@blocks/tabs/schema';
 import { useHistory } from './HistoryContext';
 
 interface SelectionContextType {
@@ -18,6 +19,8 @@ interface SelectionContextType {
   selectedItemId: string | null;
   setSelectedItemId: (id: string | null) => void;
   selectedItemBlockId: string | null;
+  activeTabId: string | null;
+  setActiveTabId: (id: string | null) => void;
   pageSchema: PageSchema;
   updateSelectedBlockProps: (newProps: Partial<Block['props']>) => void;
   updateSelectedBlockStyle: (newStyle: Partial<StyleProps>) => void;
@@ -61,6 +64,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
+  const [activeTabId, setActiveTabId] = useState<string | null>(null);
 
   // Helper function to recursively check if a block exists in the schema
   const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {
@@ -70,6 +74,22 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       }
       if (block.children && blockExistsInSchema(blockId, block.children)) {
         return true;
+      }
+      // Check tabs blocks for nested children using inline logic
+      if (block.type === 'tabs') {
+        const tabsBlock = block as TabsBlock;
+        for (const tab of tabsBlock.props.tabs) {
+          if (tab.children) {
+            for (const child of tab.children) {
+              if (child.id === blockId) {
+                return true;
+              }
+              if (child.children && blockExistsInSchema(blockId, child.children)) {
+                return true;
+              }
+            }
+          }
+        }
       }
     }
     return false;
@@ -96,6 +116,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
           if (block.children) {
             const found = findBlockInSchema(block.children);
             if (found) return found;
+          }
+          // Check tabs blocks for nested children
+          if (block.type === 'tabs') {
+            const tabsBlock = block as TabsBlock;
+            for (const tab of tabsBlock.props.tabs) {
+              if (tab.children) {
+                const found = findBlockInSchema(tab.children);
+                if (found) return found;
+              }
+            }
           }
         }
         return null;
@@ -164,6 +194,20 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
           } as BlockType;
         }
         
+        // Check tabs blocks for nested children
+        if (block.type === 'tabs') {
+          return {
+            ...block,
+            props: {
+              ...block.props,
+              tabs: (block.props.tabs as Tab[]).map(tab => ({
+                ...tab,
+                children: tab.children ? updateBlockInSchema(tab.children) : tab.children
+              }))
+            }
+          } as BlockType;
+        }
+        
         return block;
       });
     };
@@ -191,6 +235,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
         if (block.children) {
           const found = findUpdatedBlock(block.children);
           if (found) return found;
+        }
+        // Check tabs blocks for nested children
+        if (block.type === 'tabs' && selectedBlockId) {
+          const tabsBlock = block as TabsBlock;
+          for (const tab of tabsBlock.props.tabs) {
+            if (tab.children) {
+              const found = findUpdatedBlock(tab.children);
+              if (found) return found;
+            }
+          }
         }
       }
       return null;
@@ -225,6 +279,20 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
           } as BlockType;
         }
         
+        // Check tabs blocks for nested children
+        if (block.type === 'tabs') {
+          return {
+            ...block,
+            props: {
+              ...block.props,
+              tabs: (block.props.tabs as Tab[]).map(tab => ({
+                ...tab,
+                children: tab.children ? updateBlockInSchema(tab.children) : tab.children
+              }))
+            }
+          } as BlockType;
+        }
+        
         return block;
       });
     };
@@ -252,6 +320,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
         if (block.children) {
           const found = findUpdatedBlock(block.children);
           if (found) return found;
+        }
+        // Check tabs blocks for nested children
+        if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          for (const tab of tabsBlock.props.tabs) {
+            if (tab.children) {
+              const found = findUpdatedBlock(tab.children);
+              if (found) return found;
+            }
+          }
         }
       }
       return null;
@@ -311,109 +389,60 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   };
 
   const moveBlockUp = () => {
-    if (!selectedBlockId) {
-      return;
-    }
+    if (!selectedBlockId) return;
 
     const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
-    
-    if (!block) {
-      return;
-    }
+    if (!block) return;
 
     // Handle top-level blocks
     if (!parent) {
-      // Check if it's actually a top-level block
-      const topLevelIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (topLevelIndex === -1) {
-        return;
-      }
-
       const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (currentIndex <= 0) {
-        return; // Already at the top
-      }
+      if (currentIndex <= 0) return; // Already at the top
 
       const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex - 1);
-      const updatedSchema = {
-        ...pageSchema,
-        blocks: newBlocks
-      };
-
-      updatePageWithHistory(updatedSchema);
+      updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
       return;
     }
 
-    // Handle nested blocks
-    if (!parent.children) {
-      return;
-    }
+    // Handle nested blocks (both regular and tabs)
+    if (parentIndex <= 0) return; // Already at the top of children
 
-    if (parentIndex <= 0) {
-      return; // Already at the top of children
-    }
+    const newBlocks = updateBlockInContainer(
+      parent.type === 'tabs' ? findTabContainingBlock(parent as TabsBlock, selectedBlockId)?.tab.children || [] : parent.children || [],
+      (container) => swap(container, parentIndex, parentIndex - 1),
+      parent
+    );
 
-    const newChildren = swap(parent.children, parentIndex, parentIndex - 1);
-    const newBlocks = updateBlockChildren(pageSchema.blocks, parent.id, newChildren);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: newBlocks
-    };
-
-    updatePageWithHistory(updatedSchema);
+    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
 
   const moveBlockDown = () => {
-    if (!selectedBlockId) {
-      return;
-    }
+    if (!selectedBlockId) return;
 
     const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
-    
-    if (!block) {
-      return;
-    }
+    if (!block) return;
 
     // Handle top-level blocks
     if (!parent) {
-      // Check if it's actually a top-level block
-      const topLevelIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (topLevelIndex === -1) {
-        return;
-      }
-
       const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (currentIndex === -1 || currentIndex >= pageSchema.blocks.length - 1) {
-        return; // Already at the bottom
-      }
+      if (currentIndex === -1 || currentIndex >= pageSchema.blocks.length - 1) return; // Already at the bottom
 
       const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex + 1);
-      const updatedSchema = {
-        ...pageSchema,
-        blocks: newBlocks
-      };
-
-      updatePageWithHistory(updatedSchema);
+      updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
       return;
     }
 
-    // Handle nested blocks
-    if (!parent.children) {
-      return;
-    }
+    // Handle nested blocks (both regular and tabs)
+    const container = parent.type === 'tabs' ? findTabContainingBlock(parent as TabsBlock, selectedBlockId)?.tab.children || [] : parent.children || [];
+    if (parentIndex >= container.length - 1) return; // Already at the bottom of children
 
-    if (parentIndex >= parent.children.length - 1) {
-      return; // Already at the bottom of children
-    }
+    const newBlocks = updateBlockInContainer(
+      container,
+      (container) => swap(container, parentIndex, parentIndex + 1),
+      parent
+    );
 
-    const newChildren = swap(parent.children, parentIndex, parentIndex + 1);
-    const newBlocks = updateBlockChildren(pageSchema.blocks, parent.id, newChildren);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: newBlocks
-    };
-
-    updatePageWithHistory(updatedSchema);
+    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
 
   const deleteSelectedBlock = () => {
@@ -424,21 +453,17 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
     const { container, index } = result;
     
-    // Create a new array without the deleted block
-    const newContainer = [...container] as BlockType[];
-    newContainer.splice(index, 1);
+    const newBlocks = updateBlockInContainer(
+      container as BlockType[],
+      (container) => {
+        const newContainer = [...container];
+        newContainer.splice(index, 1);
+        return newContainer;
+      },
+      result.parent ? result.parent as BlockType : undefined
+    );
     
-    // Update the schema
-    const newBlocks = result.parent 
-      ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-      : newContainer;
-    
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: newBlocks
-    };
-    
-    updatePageWithHistory(updatedSchema);
+    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     setSelectedBlockId(null);
     setSelectedBlock(null);
     setSelectedBlockParentId(null);
@@ -459,23 +484,21 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     // Clone the block with new IDs
     const duplicatedBlock = duplicateBlockWithNewIds(originalBlock as BlockType);
     
-    // Insert the duplicated block immediately after the original
-    const newContainer = [...container] as BlockType[];
-    newContainer.splice(index + 1, 0, duplicatedBlock);
+    const newBlocks = updateBlockInContainer(
+      container as BlockType[],
+      (container) => {
+        const newContainer = [...container];
+        newContainer.splice(index + 1, 0, duplicatedBlock);
+        return newContainer;
+      },
+      result.parent ? result.parent as BlockType : undefined
+    );
     
-    // Update the schema
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: result.parent 
-        ? updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer)
-        : newContainer
-    };
+    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     
-    updatePageWithHistory(updatedSchema);
-    
-    // Optionally select the newly duplicated block
+    // Select the newly duplicated block
     setSelectedBlockId(duplicatedBlock.id);
-    setSelectedBlock(duplicatedBlock as Block);
+    setSelectedBlock(duplicatedBlock);
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
@@ -505,6 +528,21 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             children: updateBlockInSchema(b.children),
           };
         }
+        
+        // Check tabs blocks for nested children
+        if (b.type === 'tabs') {
+          const tabsBlock = b as TabsBlock;
+          const updatedTabs = tabsBlock.props.tabs.map(tab => ({
+            ...tab,
+            children: tab.children ? updateBlockInSchema(tab.children) : tab.children
+          }));
+          
+          return {
+            ...b,
+            props: { ...b.props, tabs: updatedTabs }
+          } as BlockType;
+        }
+        
         return b;
       });
     };
@@ -571,6 +609,51 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     return selectedItemBlockId === blockId && selectedItemId === itemId;
   };
 
+  // Generic helper functions to eliminate duplication between tabs and regular blocks
+  const updateTabsBlockChildren = (tabsBlock: TabsBlock, targetTabId: string, newChildren: BlockType[]): BlockType[] => {
+    const updatedTabs = tabsBlock.props.tabs.map(tab => 
+      tab.id === targetTabId ? { ...tab, children: newChildren } : tab
+    );
+    
+    return pageSchema.blocks.map(b => 
+      b.id === tabsBlock.id 
+        ? { ...b, props: { ...b.props, tabs: updatedTabs } } as BlockType
+        : b
+    );
+  };
+
+  const findTabContainingBlock = (tabsBlock: TabsBlock, blockId: string): { tab: Tab; childIndex: number } | null => {
+    for (const tab of tabsBlock.props.tabs) {
+      if (tab.children) {
+        const childIndex = tab.children.findIndex(child => child.id === blockId);
+        if (childIndex !== -1) {
+          return { tab, childIndex };
+        }
+      }
+    }
+    return null;
+  };
+
+  const updateBlockInContainer = (container: BlockType[], operation: (container: BlockType[]) => BlockType[], parent?: BlockType): BlockType[] => {
+    const newContainer = operation([...container]);
+    
+    if (!parent) {
+      return newContainer;
+    }
+    
+    if (parent.type === 'tabs') {
+      const tabsBlock = parent as TabsBlock;
+      const tabInfo = findTabContainingBlock(tabsBlock, selectedBlockId!);
+      if (tabInfo) {
+        return updateTabsBlockChildren(tabsBlock, tabInfo.tab.id, newContainer);
+      }
+    } else {
+      return updateBlockChildren(pageSchema.blocks, parent.id, newContainer);
+    }
+    
+    return pageSchema.blocks;
+  };
+
   return (
     <SelectionContext.Provider value={{
       selectedBlock,
@@ -582,6 +665,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       selectedItemId,
       setSelectedItemId,
       selectedItemBlockId,
+      activeTabId,
+      setActiveTabId,
       pageSchema,
       updateSelectedBlockProps,
       updateSelectedBlockStyle,
