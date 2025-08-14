@@ -1,6 +1,7 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem } from '@blocks/shared/Library';
+import type { TabsBlock } from '@blocks/tabs/schema';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -162,6 +163,28 @@ export function createBlock(type: BlockType['type']): BlockType {
         }
       };
 
+    case 'tabs':
+      return {
+        type: 'tabs',
+        id,
+        props: {
+          ...TabsLibraryItem.defaultProps,
+          tabs: (TabsLibraryItem.defaultProps as any).tabs.map((tab: any) => ({
+            ...tab,
+            children: tab.children?.map((child: any) => ({
+              ...child,
+              id: generateUniqueId(),
+            })) || [],
+          })),
+        },
+        style: {
+          tabAlignment: 'left',
+          tabStyle: 'pill',
+          padding: 'md',
+          backgroundColor: '#ffffff'
+        }
+      };
+
     default:
       // This will cause a compile-time error if a case is missed.
       const exhaustiveCheck: never = type;
@@ -177,6 +200,24 @@ export function createBlock(type: BlockType['type']): BlockType {
  */
 export function duplicateBlockWithNewIds(block: BlockType): BlockType {
   const newId = generateUniqueId();
+  
+  // Handle tabs blocks specially
+  if (block.type === 'tabs') {
+    const tabsBlock = block as TabsBlock;
+    return {
+      ...block,
+      id: newId,
+      props: {
+        ...block.props,
+        tabs: tabsBlock.props.tabs.map((tab: any) => ({
+          ...tab,
+          children: tab.children?.map((child: any) => duplicateBlockWithNewIds(child)) || []
+        }))
+      }
+    } as BlockType;
+  }
+  
+  // Handle regular blocks
   const duplicated: BlockType = {
     ...block,
     id: newId,

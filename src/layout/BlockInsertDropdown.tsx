@@ -6,6 +6,7 @@ import { useBlockInsert } from '@context/BlockInsertContext';
 import Dropdown, { DropdownItem } from '@components/Dropdown';
 import { Plus } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
+import type { TabsBlock } from '@blocks/tabs/schema';
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -64,17 +65,41 @@ function evaluateVisibility(
 
 const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blockId, visibilityContext }) => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockBefore } = useBlockInsert();
+  const { insertBlockAfter, insertBlockBefore, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
   const [isHovered, setIsHovered] = useState(false);
 
-  // Helper function to check if a block is a child of a Section
+  // Helper function to check if a block is a child of a Section or Tab
   const isChildBlock = (blockId: string) => {
-    return pageSchema.blocks.some(block => 
+    // Check if it's a child of a section
+    const isSectionChild = pageSchema.blocks.some(block => 
       block.children && block.children.some(child => child.id === blockId)
     );
+    
+    // Check if it's a child of a tab using inline logic
+    const isTabChild = pageSchema.blocks.some(block => 
+      block.type === 'tabs' && (block as TabsBlock).props.tabs.some(tab => 
+        tab.children?.some(child => child.id === blockId)
+      )
+    );
+    
+    return isSectionChild || isTabChild;
   };
 
+  // Helper function to check if a block is a child of a Tab
+  const isChildOfTab = (blockId: string) => {
+    for (const block of pageSchema.blocks) {
+      if (block.type === 'tabs') {
+        const tabsBlock = block as TabsBlock;
+        for (const tab of tabsBlock.props.tabs) {
+          if (tab.children?.some(child => child.id === blockId)) {
+            return { tabsBlock, tab };
+          }
+        }
+      }
+    }
+    return null;
+  };
 
   // Helper function to find a block by ID (including nested blocks)
   const findBlockById = (blockId: string): BlockType | null => {
@@ -86,6 +111,27 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         for (const child of block.children) {
           if (child.id === blockId) {
             return child;
+          }
+        }
+      }
+      // Check tabs blocks
+      if (block.type === 'tabs') {
+        const tabsBlock = block as TabsBlock;
+        for (const tab of tabsBlock.props.tabs) {
+          if (tab.children) {
+            for (const child of tab.children) {
+              if (child.id === blockId) {
+                return child;
+              }
+              // Check nested children if they exist
+              if (child.children) {
+                for (const nestedChild of child.children) {
+                  if (nestedChild.id === blockId) {
+                    return nestedChild;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -105,7 +151,21 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }
 
   const handleInsert = (blockType: BlockType['type']) => {
-    if (position === 'above') {
+    // Check if this block is inside a tab
+    const tabInfo = isChildOfTab(blockId);
+    
+    if (tabInfo) {
+      // Insert into the tab
+      insertBlockIntoTabs(
+        blockType, 
+        tabInfo.tabsBlock.id, 
+        {
+          tabId: tabInfo.tab.id,
+          position: position === 'above' ? 'above' : 'below',
+          referenceBlockId: blockId
+        }
+      );
+    } else if (position === 'above') {
       insertBlockBefore(blockType);
     } else {
       insertBlockAfter(blockType);
@@ -143,6 +203,11 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         {!isChildBlock(selectedBlockId) && (
           <DropdownItem onClick={() => handleInsert('section')}>
             Section Block
+          </DropdownItem>
+        )}
+        {!isChildBlock(selectedBlockId) && (
+          <DropdownItem onClick={() => handleInsert('tabs')}>
+            Tabs Block
           </DropdownItem>
         )}
         <DropdownItem onClick={() => handleInsert('posterGrid')}>

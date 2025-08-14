@@ -11,6 +11,7 @@ import { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 import { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
 import { ImageLibraryItem } from '@blocks/image/libraryItem';
 import { VideoLibraryItem } from '@blocks/video/libraryItem';
+import { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -27,13 +28,14 @@ export { FeatureCalloutLibraryItem } from '@blocks/feature-callout/libraryItem';
 export { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
 export { ImageLibraryItem } from '@blocks/image/libraryItem';
 export { VideoLibraryItem } from '@blocks/video/libraryItem';
+export { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video'| 'Columns3Cog';
   defaultProps: BlockProps;
 };
 
@@ -51,6 +53,7 @@ export const allLibraryItems: BlockLibraryItem[] = [
   FAQAccordionLibraryItem,
   ImageLibraryItem,
   VideoLibraryItem,
+  TabsLibraryItem,
 ];
 
 // Helper function to get all available block types

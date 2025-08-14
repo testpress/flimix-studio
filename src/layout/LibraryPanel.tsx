@@ -1,11 +1,12 @@
 import React from 'react';
-import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
+import type { TabsBlock } from '@blocks/tabs/schema';
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -15,6 +16,7 @@ const iconMap: Record<string, LucideIcon> = {
   Grid2x2,
   GalleryHorizontalEnd,
   AlignVerticalSpaceBetween,
+  Columns3Cog,
   Minus,
   MessageSquare,
   Sparkles,
@@ -25,14 +27,24 @@ const iconMap: Record<string, LucideIcon> = {
 
 const LibraryPanel: React.FC = () => {
   const { selectedBlockId } = useSelection();
-  const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection } = useBlockInsert();
+  const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
 
-  // Helper function to check if a block is a child of a Section
+  // Helper function to check if a block is a child of a Section or Tab
   const isChildBlock = (blockId: string) => {
-    return pageSchema.blocks.some(block => 
+    // Check if it's a child of a section
+    const isSectionChild = pageSchema.blocks.some(block => 
       block.children && block.children.some(child => child.id === blockId)
     );
+    
+    // Check if it's a child of a tab using inline logic
+    const isTabChild = pageSchema.blocks.some(block => 
+      block.type === 'tabs' && (block as TabsBlock).props.tabs.some(tab => 
+        tab.children?.some(child => child.id === blockId)
+      )
+    );
+    
+    return isSectionChild || isTabChild;
   };
 
   // Helper function to find the parent Section of a child block
@@ -40,6 +52,21 @@ const LibraryPanel: React.FC = () => {
     return pageSchema.blocks.find(block => 
       block.children && block.children.some(child => child.id === blockId)
     );
+  };
+
+  // Helper function to find the parent Tab of a child block
+  const findParentTab = (blockId: string) => {
+    for (const block of pageSchema.blocks) {
+      if (block.type === 'tabs') {
+        const tabsBlock = block as TabsBlock;
+        for (const tab of tabsBlock.props.tabs) {
+          if (tab.children?.some(child => child.id === blockId)) {
+            return { tabsBlock, tab };
+          }
+        }
+      }
+    }
+    return null;
   };
 
   // Get all block templates using the helper function
@@ -53,18 +80,38 @@ const LibraryPanel: React.FC = () => {
       if (selectedBlock?.type === 'section') {
         // Insert into the children of the Section block (or after it if it's a Section)
         insertBlockInsideSection(blockType, selectedBlockId);
+      } else if (selectedBlock?.type === 'tabs') {
+        // When tabs block is selected, use smart insertion
+        insertBlockIntoTabs(blockType, selectedBlockId);
       } else {
-        // Check if the selected block is a child of a Section
+        // Check if the selected block is a child of a Section or Tab
         if (isChildBlock(selectedBlockId)) {
-          // Child block is selected - allow other blocks but restrict Section blocks
-          if (blockType === 'section') {
-            // Sections can't be nested - silently ignore or you could add console.warn here
-            return;
+          // Check if it's a child of a tab
+          const parentTab = findParentTab(selectedBlockId);
+          if (parentTab) {
+            // Child block is inside a tab - allow other blocks but restrict Section and Tabs blocks
+            if (blockType === 'section' || blockType === 'tabs') {
+              // Sections and Tabs can't be nested - silently ignore
+              return;
+            } else {
+              // Insert the block inside the parent tab, AFTER the currently selected block
+              insertBlockIntoTabs(blockType, parentTab.tabsBlock.id, {
+                tabId: parentTab.tab.id,
+                position: 'below',
+                referenceBlockId: selectedBlockId
+              });
+            }
           } else {
-            // Find the parent Section and insert the block inside it
-            const parentSection = findParentSection(selectedBlockId);
-            if (parentSection) {
-              insertBlockInsideSection(blockType, parentSection.id);
+            // Child block is inside a section
+            if (blockType === 'section') {
+              // Sections can't be nested - silently ignore
+              return;
+            } else {
+              // Find the parent Section and insert the block inside it
+              const parentSection = findParentSection(selectedBlockId);
+              if (parentSection) {
+                insertBlockInsideSection(blockType, parentSection.id);
+              }
             }
           }
         } else {
@@ -135,10 +182,19 @@ const LibraryPanel: React.FC = () => {
               
               if (selectedBlock?.type === 'section') {
                 return <span>Adding inside section (Text/Hero go inside, Section goes after)</span>;
+              } else if (selectedBlock?.type === 'tabs') {
+                return <span>Adding to active tab</span>;
               } else {
-                // Check if the selected block is a child of a Section
+                // Check if the selected block is a child of a Section or Tab
                 if (isChildBlock(selectedBlockId)) {
-                  return <span>Adding to parent section (no nested sections)</span>;
+                  // Check if it's a child of a tab
+                  const parentTab = findParentTab(selectedBlockId);
+                  if (parentTab) {
+                    return <span>Adding to parent tab (no nested sections or tabs)</span>;
+                  } else {
+                    // Child block is inside a section
+                    return <span>Adding to parent section (no nested sections)</span>;
+                  }
                 } else {
                   return <span>Adding after selected block</span>;
                 }
