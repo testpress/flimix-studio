@@ -9,41 +9,92 @@ interface BadgeStripItemFormProps {
   title: string;
 }
 
+// Constants moved outside component to prevent recreation on every render
+const fields = [
+  {
+    key: 'label' as keyof BadgeStripItem,
+    label: 'Badge Label',
+    type: 'text' as const,
+    placeholder: 'Enter badge label...',
+    required: false
+  }
+];
+
+// Popular Lucide icons for badges
+const popularIcons = [
+  { name: 'Award', icon: Award },
+  { name: 'Star', icon: Star },
+  { name: 'CheckCircle', icon: CheckCircle },
+  { name: 'Monitor', icon: Monitor },
+  { name: 'Volume2', icon: Volume2 },
+  { name: 'Smartphone', icon: Smartphone },
+  { name: 'Sun', icon: Sun },
+  { name: 'Globe', icon: Globe },
+  { name: 'Zap', icon: Zap },
+  { name: 'Shield', icon: Shield },
+  { name: 'Heart', icon: Heart },
+  { name: 'Camera', icon: Camera },
+  { name: 'Music', icon: Music },
+  { name: 'Video', icon: Video },
+  { name: 'Gamepad2', icon: Gamepad2 },
+  { name: 'Palette', icon: Palette }
+];
+
+// Style control configurations to reduce repetitive code
+const styleControls = [
+  {
+    key: 'padding' as const,
+    label: 'Padding',
+    type: 'select' as const,
+    options: [
+      { value: 'sm', label: 'Small' },
+      { value: 'md', label: 'Medium' },
+      { value: 'lg', label: 'Large' }
+    ],
+    defaultValue: 'md'
+  },
+  {
+    key: 'margin' as const,
+    label: 'Margin',
+    type: 'select' as const,
+    options: [
+      { value: 'sm', label: 'Small' },
+      { value: 'md', label: 'Medium' },
+      { value: 'lg', label: 'Large' }
+    ],
+    defaultValue: 'sm'
+  },
+  {
+    key: 'borderRadius' as const,
+    label: 'Border Radius',
+    type: 'select' as const,
+    options: [
+      { value: 'none', label: 'None' },
+      { value: 'sm', label: 'Small' },
+      { value: 'md', label: 'Medium' },
+      { value: 'lg', label: 'Large' }
+    ],
+    defaultValue: 'md'
+  },
+  {
+    key: 'boxShadow' as const,
+    label: 'Box Shadow',
+    type: 'select' as const,
+    options: [
+      { value: 'none', label: 'None' },
+      { value: 'sm', label: 'Small' },
+      { value: 'md', label: 'Medium' },
+      { value: 'lg', label: 'Large' }
+    ],
+    defaultValue: 'md'
+  }
+];
+
 const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({ 
   item, 
   onChange, 
   title
 }) => {
-  const fields = [
-    {
-      key: 'label' as keyof BadgeStripItem,
-      label: 'Badge Label',
-      type: 'text' as const,
-      placeholder: 'Enter badge label...',
-      required: false
-    }
-  ];
-
-  // Popular Lucide icons for badges
-  const popularIcons = [
-    { name: 'Award', icon: Award },
-    { name: 'Star', icon: Star },
-    { name: 'CheckCircle', icon: CheckCircle },
-    { name: 'Monitor', icon: Monitor },
-    { name: 'Volume2', icon: Volume2 },
-    { name: 'Smartphone', icon: Smartphone },
-    { name: 'Sun', icon: Sun },
-    { name: 'Globe', icon: Globe },
-    { name: 'Zap', icon: Zap },
-    { name: 'Shield', icon: Shield },
-    { name: 'Heart', icon: Heart },
-    { name: 'Camera', icon: Camera },
-    { name: 'Music', icon: Music },
-    { name: 'Video', icon: Video },
-    { name: 'Gamepad2', icon: Gamepad2 },
-    { name: 'Palette', icon: Palette }
-  ];
-
   const handleAddLink = () => {
     if (!item.link) {
       onChange({ ...item, link: 'https://example.com' });
@@ -70,56 +121,6 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
     const newStyle = { ...currentStyle, [key]: value };
     onChange({ ...item, style: newStyle });
   };
-
-  // Style control configurations to reduce repetitive code
-  const styleControls = [
-    {
-      key: 'padding' as const,
-      label: 'Padding',
-      type: 'select' as const,
-      options: [
-        { value: 'sm', label: 'Small' },
-        { value: 'md', label: 'Medium' },
-        { value: 'lg', label: 'Large' }
-      ],
-      defaultValue: 'md'
-    },
-    {
-      key: 'margin' as const,
-      label: 'Margin',
-      type: 'select' as const,
-      options: [
-        { value: 'sm', label: 'Small' },
-        { value: 'md', label: 'Medium' },
-        { value: 'lg', label: 'Large' }
-      ],
-      defaultValue: 'sm'
-    },
-    {
-      key: 'borderRadius' as const,
-      label: 'Border Radius',
-      type: 'select' as const,
-      options: [
-        { value: 'none', label: 'None' },
-        { value: 'sm', label: 'Small' },
-        { value: 'md', label: 'Medium' },
-        { value: 'lg', label: 'Large' }
-      ],
-      defaultValue: 'md'
-    },
-    {
-      key: 'boxShadow' as const,
-      label: 'Box Shadow',
-      type: 'select' as const,
-      options: [
-        { value: 'none', label: 'None' },
-        { value: 'sm', label: 'Small' },
-        { value: 'md', label: 'Medium' },
-        { value: 'lg', label: 'Large' }
-      ],
-      defaultValue: 'md'
-    }
-  ];
 
   // Render style control based on type
   const renderStyleControl = (control: typeof styleControls[0]) => {

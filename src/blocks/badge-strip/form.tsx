@@ -1,11 +1,17 @@
 import React from 'react';
 import { BADGE_STRIP_ITEM_LIMIT } from './schema';
+import type { BadgeStripBlockProps } from './schema';
+import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import { AlertCircle } from 'lucide-react';
 
-const BadgeStripForm: React.FC<any> = ({ block }) => {
-  const { props } = block;
-  const badgeStripProps = props as any; // Type assertion for now
-  const itemCount = badgeStripProps.items?.length || 0;
+const BadgeStripForm: React.FC<BlockFormProps> = ({ block }) => {
+  // Type guard to ensure this is a badge-strip block
+  if (block.type !== 'badge-strip') {
+    return null;
+  }
+
+  const props = block.props as BadgeStripBlockProps;
+  const itemCount = props.items?.length || 0;
   const isAtLimit = itemCount >= BADGE_STRIP_ITEM_LIMIT;
 
   return (

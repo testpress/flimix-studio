@@ -12,6 +12,32 @@ interface BadgeStripWidgetProps extends Omit<BaseWidgetProps<BadgeStripBlock>, '
   block: BadgeStripBlock;
 }
 
+// Extracted BadgeDisplay component to eliminate duplication
+interface BadgeDisplayProps {
+  item: BadgeStripItem;
+  children: React.ReactNode;
+}
+
+const BadgeDisplay: React.FC<BadgeDisplayProps> = ({ 
+  item, 
+  children 
+}) => {
+  return (
+    <div className="relative">
+      {children}
+      
+      {/* Tailwind CSS Tooltip - positioned below the item */}
+      {item.tooltip && (
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+          {item.tooltip}
+          {/* Tooltip arrow pointing up */}
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({ 
   block, onSelect, isSelected, canMoveUp, canMoveDown, onMoveUp, onMoveDown, onDuplicate, onRemove 
 }) => {
@@ -99,9 +125,9 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
           const isItemSelected = isItemSelectedFromContext(block.id, item.id);
           
           return (
-            <div key={item.id} className="relative group">
-              {/* ItemsControl - only visible on hover */}
-              <div className="mb-2 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div key={item.id} className="relative group mt-4">
+              {/* ItemsControl - positioned at the top, visible on hover */}
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <ItemsControl
                   index={index}
                   count={items.length}
@@ -110,13 +136,16 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                   onRemove={() => removeBlockItem(block.id, item.id)}
                   showMoveControls={items.length > 1}
                   showRemoveControl={true}
+                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
                 />
               </div>
               
               {/* Badge Item */}
               {item.link && item.link !== '#' ? (
                 // Badge with real link - use anchor tag
-                <div className="relative group">
+                <BadgeDisplay
+                  item={item}
+                >
                   <a
                     href={item.link}
                     target="_blank"
@@ -139,19 +168,12 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                     {item.icon && renderIcon(item.icon)}
                     {item.label && <span className="font-medium">{item.label}</span>}
                   </a>
-                  
-                  {/* Tailwind CSS Tooltip */}
-                  {item.tooltip && (
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                      {item.tooltip}
-                      {/* Tooltip arrow */}
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-                    </div>
-                  )}
-                </div>
+                </BadgeDisplay>
               ) : (
                 // Badge without link - use div tag
-                <div className="relative group">
+                <BadgeDisplay
+                  item={item}
+                >
                   <div
                     className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${
                       isItemSelected 
@@ -170,16 +192,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                     {item.icon && renderIcon(item.icon)}
                     {item.label && <span className="font-medium">{item.label}</span>}
                   </div>
-                  
-                  {/* Tailwind CSS Tooltip */}
-                  {item.tooltip && (
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                      {item.tooltip}
-                      {/* Tooltip arrow */}
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-                    </div>
-                  )}
-                </div>
+                </BadgeDisplay>
               )}
             </div>
           );
