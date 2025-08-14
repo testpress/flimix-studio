@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
@@ -23,6 +23,7 @@ const iconMap: Record<string, LucideIcon> = {
   HelpCircle,
   Image,
   Video,
+  CreditCard,
 };
 
 const LibraryPanel: React.FC = () => {
@@ -144,7 +145,10 @@ const LibraryPanel: React.FC = () => {
               <div className="flex items-center space-x-3">
                 {/* Icon */}
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700">
-                  <IconComponent size={20} />
+                  <IconComponent 
+                    size={20} 
+                    className={template.type === 'footer' ? 'rotate-180' : ''} 
+                  />
                 </div>
                 
                 {/* Content */}

@@ -1,8 +1,11 @@
 import React from 'react';
-import type { StyleProps } from '@blocks/shared/Style';
-import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
-import { VisibilityForm, StyleForm, type BlockFormProps } from '@blocks/settings';
+import type { 
+  BlockFormProps
+} from '@blocks/shared/FormTypes';
+import type { VisibilityProps } from '@blocks/shared/Visibility';
+import type { StyleProps } from '@blocks/shared/Style';
+import { VisibilityForm, StyleForm } from '@blocks/settings';
 import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
@@ -31,6 +34,9 @@ import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import ImageForm from '@blocks/image/form';
 import VideoForm from '@blocks/video/form';
 import TabsForm from '@blocks/tabs/form';
+import FooterForm from '@blocks/footer/form';
+import FooterItemForm from '@blocks/footer/ItemForm';
+import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -63,6 +69,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     image: ImageForm,
     video: VideoForm,
     tabs: TabsForm,
+    'footer': FooterForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -179,6 +186,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
         );
       }
       
+      case 'footer': {
+        const items = (selectedBlock.props as FooterBlockProps).items || [];
+        const item = items.find((i: FooterColumn) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: FooterColumn) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <FooterItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Footer Item"
+          />
+        );
+      }
+      
       default:
         return null;
     }
@@ -257,9 +283,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             />
           )}
           
-          {renderBlockPropsEditor()}
-          
           {selectedItemId && renderItemEditor()}
+          
+          {renderBlockPropsEditor()}
           
           {selectedBlock && selectedBlock.type !== 'spacer' && selectedBlock.type !== 'divider' && (
             <StyleForm

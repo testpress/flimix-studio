@@ -249,6 +249,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       case 'text':
       case 'posterGrid':
       case 'carousel':
+      case 'footer':
         // Standard blocks: show all options
         return allFields;
       
@@ -265,7 +266,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       <h3 className="font-medium text-gray-700 mb-4">Style Settings</h3>
       
       <div className="space-y-4">
-        {fieldsToRender}
+        {fieldsToRender.map((field, index) => (
+          <div key={`style-field-${index}`}>
+            {field}
+          </div>
+        ))}
       </div>
     </div>
   );

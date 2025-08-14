@@ -1,6 +1,6 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem, FooterLibraryItem } from '@blocks/shared/Library';
 import type { TabsBlock } from '@blocks/tabs/schema';
 
 /**
@@ -185,6 +185,31 @@ export function createBlock(type: BlockType['type']): BlockType {
         }
       };
 
+      case 'footer': {
+        return {
+          type: 'footer',
+          id,
+          props: {
+            ...FooterLibraryItem.defaultProps,
+            items: FooterLibraryItem.defaultProps.items?.map(column => ({
+              ...column,
+              id: generateUniqueId(),
+              links: column.links?.map(link => ({
+                ...link,
+                id: generateUniqueId(),
+              })) || [],
+            })) || [],
+            socialLinks: FooterLibraryItem.defaultProps.socialLinks?.map(social => ({
+              ...social,
+              id: generateUniqueId(),
+            })) || [],
+          },
+          style: {
+            padding: 'md',
+            textAlign: 'left'
+          }
+        };
+      }
     default:
       // This will cause a compile-time error if a case is missed.
       const exhaustiveCheck: never = type;

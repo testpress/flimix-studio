@@ -123,6 +123,52 @@ const sampleSchema: PageSchema = {
       visibility: {
         platform: ["desktop", "tv"]
       }
+    },
+    {
+      id: 'footer-1',
+      type: 'footer',
+      props: {
+        items: [
+          {
+            id: 'company-col',
+            title: 'Company',
+            links: [
+              { id: 'about', label: 'About Us', url: '/about' },
+              { id: 'careers', label: 'Careers', url: '/careers' },
+              { id: 'press', label: 'Press', url: '/press' }
+            ]
+          },
+          {
+            id: 'support-col',
+            title: 'Support',
+            links: [
+              { id: 'help', label: 'Help Center', url: '/help' },
+              { id: 'contact', label: 'Contact Us', url: '/contact' },
+              { id: 'faq', label: 'FAQ', url: '/faq' }
+            ]
+          },
+          {
+            id: 'legal-col',
+            title: 'Legal',
+            links: [
+              { id: 'privacy', label: 'Privacy Policy', url: '/privacy' },
+              { id: 'terms', label: 'Terms of Service', url: '/terms' },
+              { id: 'cookies', label: 'Cookie Policy', url: '/cookies' }
+            ]
+          }
+        ],
+        socialLinks: [
+          { id: 'facebook', platform: 'linkedin', url: "https://www.linkedin.com/company/testpress/posts/?feedView=all" },
+          { id: 'instagram', platform: 'instagram', url: 'https://www.instagram.com/testpress_official?igsh=Nmw1Mmg0Y2R0Mm5h' }
+        ],
+        branding: '© 2025 Flimix Inc. All rights reserved.'
+      },
+      style: {
+        backgroundColor: '#1e293b',
+        textColor: '#f8fafc',
+        padding: 'lg',
+        margin: 'md'
+      }
     }
   ]
 };
