@@ -66,6 +66,22 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
     }
   }, [activeTabId, tabs, setActiveTabId]);
   
+  // Handle case when selected tab is deleted - fallback to first available tab
+  useEffect(() => {
+    // If the selected tab no longer exists in the tabs list (e.g., it was deleted),
+    // reset the selection to the first available tab.
+    if (selectedTab && !tabs.some(tab => tab.id === selectedTab)) {
+      const newSelectedTab = tabs[0]?.id;
+      if (newSelectedTab) {
+        setSelectedTab(newSelectedTab);
+        // Also update the global context if it was pointing to the deleted tab
+        if (activeTabId === selectedTab) {
+          setActiveTabId(newSelectedTab);
+        }
+      }
+    }
+  }, [tabs, selectedTab, activeTabId, setActiveTabId]);
+  
   // Memoize the current tab to prevent unnecessary recalculations
   const currentTab = useMemo(() => tabs.find(tab => tab.id === selectedTab), [tabs, selectedTab]);
   

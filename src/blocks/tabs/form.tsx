@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { TabsBlock, Tab } from './schema';
 import { TABS_ITEM_LIMIT } from './schema';
+import { generateUniqueId } from '@utils/id';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
 
 const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
@@ -25,7 +26,7 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     }
 
     const newTab: Tab = {
-      id: `tab-${Date.now()}`,
+      id: generateUniqueId(),
       label: 'New Tab',
       children: []
     };

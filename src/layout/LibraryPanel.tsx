@@ -74,53 +74,48 @@ const LibraryPanel: React.FC = () => {
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
-      // Check if the selected block is a Section (only at top level)
       const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
       
       if (selectedBlock?.type === 'section') {
-        // Insert into the children of the Section block (or after it if it's a Section)
-        insertBlockInsideSection(blockType, selectedBlockId);
+        if (blockType === 'section' || blockType === 'tabs') {
+          insertBlockAfter(blockType);
+        } else {
+          insertBlockInsideSection(blockType, selectedBlockId);
+        }
       } else if (selectedBlock?.type === 'tabs') {
-        // When tabs block is selected, use smart insertion
-        insertBlockIntoTabs(blockType, selectedBlockId);
+        if (blockType === 'section' || blockType === 'tabs') {
+          insertBlockAfter(blockType);
+        } else {
+          insertBlockIntoTabs(blockType, selectedBlockId);
+        }
       } else {
-        // Check if the selected block is a child of a Section or Tab
         if (isChildBlock(selectedBlockId)) {
-          // Check if it's a child of a tab
           const parentTab = findParentTab(selectedBlockId);
           if (parentTab) {
-            // Child block is inside a tab - allow other blocks but restrict Section and Tabs blocks
             if (blockType === 'section' || blockType === 'tabs') {
-              // Sections and Tabs can't be nested - silently ignore
               return;
             } else {
-              // Insert the block inside the parent tab, AFTER the currently selected block
-              insertBlockIntoTabs(blockType, parentTab.tabsBlock.id, {
+              insertBlockIntoTabs(blockType, parentTab.tabsBlock.id, {  
                 tabId: parentTab.tab.id,
                 position: 'below',
                 referenceBlockId: selectedBlockId
               });
             }
           } else {
-            // Child block is inside a section
-            if (blockType === 'section') {
-              // Sections can't be nested - silently ignore
+            if (blockType === 'section' || blockType === 'tabs') {
               return;
             } else {
-              // Find the parent Section and insert the block inside it
               const parentSection = findParentSection(selectedBlockId);
               if (parentSection) {
-                insertBlockInsideSection(blockType, parentSection.id);
+                insertBlockAfter(blockType);
               }
             }
           }
         } else {
-          // Default behavior: insert after the currently selected block
           insertBlockAfter(blockType);
         }
       }
     } else {
-      // If no block is selected, insert at the end of the page
       insertBlockAtEnd(blockType);
     }
   };
@@ -185,14 +180,11 @@ const LibraryPanel: React.FC = () => {
               } else if (selectedBlock?.type === 'tabs') {
                 return <span>Adding to active tab</span>;
               } else {
-                // Check if the selected block is a child of a Section or Tab
                 if (isChildBlock(selectedBlockId)) {
-                  // Check if it's a child of a tab
                   const parentTab = findParentTab(selectedBlockId);
                   if (parentTab) {
                     return <span>Adding to parent tab (no nested sections or tabs)</span>;
                   } else {
-                    // Child block is inside a section
                     return <span>Adding to parent section (no nested sections)</span>;
                   }
                 } else {
