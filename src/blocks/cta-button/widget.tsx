@@ -35,15 +35,16 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
         return 'border-2 border-current bg-transparent';
       case 'ghost': 
         return 'bg-transparent';
-      default: 
-        return 'bg-blue-600 text-white shadow-sm';
+      default: // solid
+        return 'shadow-sm';
     }
   };
 
-  const paddingClass = style?.padding === 'lg' ? 'p-6' : style?.padding === 'md' ? 'p-4' : style?.padding === 'sm' ? 'p-2' : 'p-4';
-  const marginClass = style?.margin === 'lg' ? 'm-8' : style?.margin === 'md' ? 'm-6' : style?.margin === 'sm' ? 'm-4' : 'm-0';
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : style?.borderRadius === 'md' ? 'rounded-md' : style?.borderRadius === 'sm' ? 'rounded-sm' : 'rounded';
-  const boxShadowClass = style?.boxShadow === 'lg' ? 'shadow-lg' : style?.boxShadow === 'md' ? 'shadow-md' : style?.boxShadow === 'sm' ? 'shadow-sm' : '';
+  // Clean object maps for CSS classes
+  const paddingClass = { lg: 'p-6', md: 'p-4', sm: 'p-2', none: 'p-0' }[style?.padding ?? 'md'];
+  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
+  const boxShadowClass = { lg: 'shadow-lg', md: 'shadow-md', sm: 'shadow-sm', none: 'shadow-none' }[style?.boxShadow ?? 'none'];
 
   return (
     <BaseWidget
@@ -63,8 +64,8 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
           href={link}
           className={`inline-block ${getSizeClasses()} ${getVariantClasses()} font-medium ${borderRadiusClass} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
           style={{
-            backgroundColor: style?.backgroundColor,
-            color: style?.textColor,
+            backgroundColor: (variant === 'solid' && !style?.backgroundColor) ? '#2563eb' : style?.backgroundColor,
+            color: (variant === 'solid' && !style?.textColor) ? '#ffffff' : style?.textColor,
           }}
         >
           {label}
