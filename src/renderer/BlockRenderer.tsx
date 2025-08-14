@@ -12,6 +12,7 @@ import FAQAccordionWidget from '@blocks/faq-accordion/widget';
 import ImageWidget from '@blocks/image/widget';
 import VideoWidget from '@blocks/video/widget';
 import TabsWidget from '@blocks/tabs/widget';
+import FooterWidget from '@blocks/footer/widget';
 import type { Block } from '@blocks/shared/Block';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
@@ -26,6 +27,7 @@ import type { FAQAccordionBlock } from '@blocks/faq-accordion/schema';
 import type { ImageBlock } from '@blocks/image/schema';
 import type { VideoBlock } from '@blocks/video/schema';
 import type { TabsBlock } from '@blocks/tabs/schema';
+import type { FooterBlock } from '@blocks/footer/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionForUI } from '@context/domain';
@@ -215,6 +217,8 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
           selectedBlockId={selectedBlockId}
           {...widgetControlProps} 
         />;
+      case 'footer':
+        return <FooterWidget block={block as FooterBlock} onSelect={(footerBlock) => onSelect?.(footerBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

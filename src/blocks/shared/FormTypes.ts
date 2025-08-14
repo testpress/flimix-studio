@@ -11,10 +11,26 @@ import type { DividerBlockProps } from '@blocks/divider/schema';
 import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
 import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import type { ImageBlockProps } from '@blocks/image/schema';
+import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
+import type { FooterBlockProps } from '@blocks/footer/schema';
 
 // Define a type for all possible block props
-export type BlockProps = HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | TabsBlockProps;
+export type BlockProps = 
+  | HeroBlockProps
+  | TextBlockProps
+  | SectionBlockProps
+  | PosterGridBlockProps
+  | CarouselBlockProps
+  | TestimonialBlockProps
+  | SpacerBlockProps
+  | DividerBlockProps
+  | FeatureCalloutBlockProps
+  | FAQAccordionBlockProps
+  | ImageBlockProps
+  | VideoBlockProps
+  | TabsBlockProps
+  | FooterBlockProps;
 
 export interface BlockFormProps {
   block: Block;
