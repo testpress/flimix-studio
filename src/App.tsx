@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 // Move the sample schema here so it can be shared
 const sampleSchema: PageSchema = {
-  title: "Flimix Landing",
+  title: "Flimix Studio",
   theme: "dark" as Theme,
   visibility: {
     platform: ["mobile", "desktop"] as Platform[]
@@ -23,17 +23,18 @@ const sampleSchema: PageSchema = {
       type: "hero",
       id: "hero-001",
       props: {
-        title: "Watch Anywhere",
-        subtitle: "Stream your favorites",
-        backgroundImage: "https://cdn.example.com/bg.jpg",
+        title: "Buried in the Backyard",
+        subtitle: "Examines true-crime stories of victims found buried in the least suspicious places.",
+        backgroundImage: "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/4186/1754287614186-v",
         ctaButton: {
-          label: "Start Watching",
+          label: "Subscribe to Watch",
           link: "/subscribe"
         }
       },
       style: {
         theme: "dark" as Theme,
-        padding: "lg"
+        backgroundColor: "#0f1923",
+        textColor: "#ffffff"
       },
       visibility: {
         platform: ["mobile", "desktop"],
@@ -41,256 +42,341 @@ const sampleSchema: PageSchema = {
       }
     },
     {
-      type: 'badge-strip',
-      id: 'badge-1',
+      type: "carousel",
+      id: "carousel-latest",
       props: {
+        title: "Latest Releases",
+        itemShape: "rectangle-portrait",
+        alignment: "left",
+        autoplay: false,
+        scrollSpeed: 3000,
+        showArrows: true,
+        itemSize: "medium",
         items: [
-          { 
-            id: 'badge-item-1', 
-            label: '4K UHD', 
-            icon: 'Monitor',
-            tooltip: 'Ultra High Definition 4K resolution support',
-            style: {
-              backgroundColor: '#3b82f6',
-              textColor: '#ffffff',
-              padding: 'md',
-              margin: 'sm',
-              borderRadius: 'lg',
-              boxShadow: 'md'
-            }
+          {
+            id: "item-1",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3084/1755330873084-v",
+            link: "/movie/the-rage",
           },
-          { 
-            id: 'badge-item-2', 
-            label: 'Dolby Atmos', 
-            icon: 'Volume2',
-            tooltip: 'Immersive 3D audio experience',
-            style: {
-              backgroundColor: '#10b981',
-              textColor: '#ffffff',
-              padding: 'md',
-              borderRadius: 'lg',
-              boxShadow: 'md'
-            }
+          {
+            id: "item-2",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/6738/1755229966738-v"
           },
-          { 
-            id: 'badge-item-3', 
-            label: 'iOS/Android', 
-            icon: 'Smartphone', 
-            link: 'https://play.google.com/',
-            tooltip: 'Available on both iOS and Android platforms',
-            style: {
-              backgroundColor: '#f59e0b',
-              textColor: '#ffffff',
-              padding: 'md',
-              margin: 'sm',
-              borderRadius: 'lg',
-              boxShadow: 'md'
-            }
+          {
+            id: "item-3",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4186/1754287614186-v"
           },
-          { 
-            id: 'badge-item-4', 
-            label: 'HDR10+', 
-            icon: 'Sun',
-            tooltip: 'High Dynamic Range 10+ for enhanced contrast',
-            style: {
-              backgroundColor: '#ef4444',
-              textColor: '#ffffff',
-              padding: 'md',
-              margin: 'sm',
-              borderRadius: 'lg',
-              boxShadow: 'md'
-            }
+          {
+            id: "item-4",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1300/1755500481300-v"
           },
-          { 
-            id: 'badge-item-5', 
-            label: 'Multi-Language', 
-            icon: 'Globe',
-            tooltip: 'Support for multiple languages worldwide',
-            style: {
-              backgroundColor: '#8b5cf6',
-              textColor: '#ffffff',
-              padding: 'md',
-              margin: 'sm',
-              borderRadius: 'lg',
-              boxShadow: 'md'
-            }
+          {
+            id: "item-5",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/5166/1754460935166-v"
+          },
+          {
+            id: "item-6",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/1300/1755500481300-v"
           }
-        ],
-        wrap: true
+        ]
       },
       style: {
-        backgroundColor: '#f8fafc',
-        padding: 'lg',
-        borderRadius: 'lg',
-        boxShadow: 'sm',
-        textAlign: 'center'
+        backgroundColor: "black",
+        textColor: "#ffffff",
+      }
+    },
+    {
+      type: "carousel",
+      id: "carousel-sports",
+      props: {
+        title: "Non-Stop Sports",
+        itemShape: "rectangle-landscape",
+        alignment: "left",
+        autoplay: false,
+        scrollSpeed: 3000,
+        showArrows: true,
+        itemSize: "medium",
+        items: [
+          {
+            id: "sports-1",
+            title: "East Delhi Riders (W) vs Central Delhi Queens (W)",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/419/1755426930419-h",
+            meta: {
+              badge: "LIVE"
+            }
+          },
+          {
+            id: "sports-2",
+            title: "Manchester United 0-1 Arsenal",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4567/1755452254567-h",
+            meta: {
+              duration: "6m"
+            }
+          },
+          {
+            id: "sports-3",
+            title: "American Stars to Watch ft. Fritz, Gauff",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5504/1755443005504-h",
+            meta: {
+              duration: "5m"
+            }
+          },
+          {
+            id: "sports-4",
+            title: "Chelsea 0-0 Crystal Palace",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2717/1755443282717-h",
+            meta: {
+              duration: "5m"
+            }
+          },
+          {
+            id: "sports-5",
+            title: "South Delhi Superstarz vs Purani Dilli-6: Highlights",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
+            meta: {
+              duration: "12m"
+            }
+          }
+        ]
+      },
+      style: {
+        backgroundColor: "black",
+        textColor: "#ffffff",
+        padding: "none"
       }
     },
     {
       type: "section",
-      id: "section-001",
+      id: "section-independence-day",
       props: {
-        title: "Featured Content",
-        description: "Discover our latest releases and popular shows"
+        title: ""
       },
       style: {
-        theme: "light" as Theme,
-        padding: "lg",
-        backgroundColor: "#f8f9fa",
-        borderRadius: "lg"
-      },
-      visibility: {
-        isLoggedIn: true,
-        platform: ["mobile", "desktop"]
+        backgroundColor: "black",
+        textColor: "#ffffff",
       },
       children: [
         {
           type: "text",
-          id: "text-001",
+          id: "text-independence-title",
           props: {
-            content: "Enjoy Flimix across all your devices."
+            content: "One Tiranga. Infinite Stories."
           },
           style: {
             textAlign: "center",
-            padding: "md",
-            backgroundColor: "#f8f9fa"
-          },
-          visibility: {
-            isSubscribed: false
+            backgroundColor: "transparent",
+            textColor: "#ffffff",
+            padding: "none"
           }
         },
         {
           type: "text",
-          id: "text-002",
+          id: "text-independence-subtitle",
           props: {
-            content: "From blockbuster movies to binge-worthy series, we have something for everyone."
+            content: "Tales of the Tricolour"
           },
           style: {
             textAlign: "center",
-            padding: "sm",
-            backgroundColor: "#f8f9fa"
-          },
-          visibility: {
-            subscriptionTier: "premium"
+            backgroundColor: "transparent",
+            textColor: "#999999",
+            padding: "none"
           }
         },
         {
-          type: "text",
-          id: "text-004",
+          type: "carousel",
+          id: "carousel-independence",
           props: {
-            content: "This message is shown only to VIP users in the US."
+            title: "",
+            itemShape: "square",
+            alignment: "left",
+            autoplay: true,
+            scrollSpeed: 2000,
+            showArrows: false,
+            itemSize: "medium",
+            items: [
+              {
+                id: "independence-1",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5218/1755108255218-v",
+                link: "/movie/salaar"
+              },
+              {
+                id: "independence-2",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7004/1753382647004-v"
+              },
+              {
+                id: "independence-3",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7472/1754202297472-v"
+              },
+              {
+                id: "independence-4",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3876/1751871283876-v"
+              },
+              {
+                id: "independence-5",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9974/1738830599974-v"
+              },
+              {
+                id: "independence-6",
+                title: "",
+                image: "	https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v"
+              }
+            ]
           },
           style: {
-            textAlign: "center",
-            padding: "md",
-            backgroundColor: "#fff",
-            borderRadius: "md",
-            boxShadow: "sm"
-          },
-          visibility: {
-            platform: ["mobile", "desktop"],
-            region: ["US"],
-            subscriptionTier: "vip",
-            isLoggedIn: true
+            backgroundColor: "transparent",
+            textColor: "#ffffff",
+            padding: "none"
           }
         }
       ]
     },
     {
-      type: "text",
-      id: "text-003",
+     type: "carousel",
+     id: "carousel-studios",
+     props: {
+       title: "Studio",
+       itemShape: "rectangle-landscape",
+       alignment: "left",
+       autoplay: true,
+       scrollSpeed: 2000,
+       showArrows: false,
+       itemSize: "medium",
+       items: [
+         {
+           id: "studio-1",
+           title: "",
+           image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5598/1739441155598-a",
+           link: "/studio/hotstar",
+         },
+         {
+           id: "studio-2",
+           title: "",
+           image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/3703/1747996723703-a",
+           link: "/studio/disney"
+         },
+         {
+           id: "studio-3",
+           title: "",
+           image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5731/1739780835731-a",
+           link: "/studio/hbo"
+         },
+         {
+           id: "studio-4",
+           title: "",
+           image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7816/1739359307816-a",
+           link: "/studio/peacock"
+         },
+         {
+          id: "studio-5",
+          title: "",
+          image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/583/1739358280583-a",
+          link: "/studio/peacock"
+        },
+       ]
+     },
+     style: {
+       backgroundColor: "transparent",
+       textColor: "#ffffff",
+       padding: "none",
+       gridGap: "sm"
+     }
+    },
+    {
+      type: "carousel",
+      id: "carousel-latest1",
       props: {
-        content: "This block should be hidden for mobile users."
+        title: "Action Extravaganza",
+        itemShape: "rectangle-portrait",
+        alignment: "left",
+        autoplay: false,
+        scrollSpeed: 3000,
+        showArrows: true,
+        itemSize: "medium",
+        items: [
+          {
+            id: "item1-1",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3212/1754203333212-v",
+            link: "/movie/the-rage",
+          },
+          {
+            id: "item1-2",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7083/1754907187083-v"
+          },
+          {
+            id: "item1-3",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4706/1743158284706-v"
+          },
+          {
+            id: "item1-4",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4354/1734949344354-v"
+          },
+          {
+            id: "item1-5",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5375/1739947275375-v"
+          },
+          {
+            id: "item1-6",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v"
+          }
+        ]
       },
       style: {
-        textAlign: "center",
-        padding: "md",
-        backgroundColor: "#e9ecef"
-      },
-      visibility: {
-        platform: ["desktop", "tv"]
+        backgroundColor: "black",
+        textColor: "#ffffff",
       }
     },
     {
-      type: 'cta-button',
-      id: 'cta-1',
-      props: {
-        label: 'Get Started Today',
-        link: '/signup',
-        variant: 'solid',
-        size: 'lg'
-      },
-      style: {
-        backgroundColor: '#3b82f6',
-        textColor: '#ffffff',
-        padding: 'lg',
-        textAlign: 'center',
-        borderRadius: 'lg',
-        boxShadow: 'md'
-      }
-    },
-    {
-      type: 'cta-button',
-      id: 'cta-2',
-      props: {
-        label: 'Learn More',
-        link: '/features',
-        variant: 'outline',
-        size: 'md'
-      },
-      style: {
-        textColor: '#3b82f6',
-        padding: 'md',
-        textAlign: 'left',
-        borderRadius: 'md'
-      }
-    },
-    {
-      type: 'cta-button',
-      id: 'cta-3',
-      props: {
-        label: 'Contact Sales',
-        link: '/contact',
-        variant: 'ghost',
-        size: 'sm'
-      },
-      style: {
-        textColor: '#6b7280',
-        padding: 'sm',
-        textAlign: 'right',
-        borderRadius: 'sm'
-      }
-    },
-    {
-      id: 'footer-1',
-      type: 'footer',
+      type: "footer",
+      id: "footer-main",
       props: {
         items: [
           {
-            id: 'company-col',
-            title: 'Company',
+            id: "col-company",
+            title: "Company",
             links: [
-              { id: 'about', label: 'About Us', url: '/about' },
-              { id: 'careers', label: 'Careers', url: '/careers' },
-              { id: 'press', label: 'Press', url: '/press' }
+              { id: "about", label: "About Us", url: "/about" },
+              { id: "careers", label: "Careers", url: "/careers" }
             ]
           },
           {
-            id: 'support-col',
-            title: 'Support',
+            id: "col-language",
+            title: "View Website in",
             links: [
-              { id: 'help', label: 'Help Center', url: '/help' },
-              { id: 'contact', label: 'Contact Us', url: '/contact' },
-              { id: 'faq', label: 'FAQ', url: '/faq' }
+              { id: "lang-en", label: "English", url: "#" }
             ]
           },
           {
-            id: 'legal-col',
-            title: 'Legal',
+            id: "col-help",
+            title: "Need Help?",
             links: [
-              { id: 'privacy', label: 'Privacy Policy', url: '/privacy' },
-              { id: 'terms', label: 'Terms of Service', url: '/terms' },
-              { id: 'cookies', label: 'Cookie Policy', url: '/cookies' }
+              { id: "help-center", label: "Visit Help Center", url: "/help" },
+              { id: "feedback", label: "Share Feedback", url: "/feedback" }
+            ]
+          },
+          {
+            id: "col-legal",
+            title: "Legal",
+            links: [
+              { id: "terms", label: "Terms of Use", url: "/terms" },
+              { id: "privacy", label: "Privacy Policy", url: "/privacy" },
+              { id: "faq", label: "FAQ", url: "/faq" }
             ]
           }
         ],
@@ -298,12 +384,15 @@ const sampleSchema: PageSchema = {
           { id: 'facebook', platform: 'linkedin', url: "https://www.linkedin.com/company/testpress/posts/?feedView=all" },
           { id: 'instagram', platform: 'instagram', url: 'https://www.instagram.com/testpress_official?igsh=Nmw1Mmg0Y2R0Mm5h' }
         ],
-        branding: '© 2025 Flimix Inc. All rights reserved.'
+        branding: "© 2025 STAR. All Rights Reserved."
       },
       style: {
-        backgroundColor: '#1e293b',
-        textColor: '#f8fafc',
-        padding: 'lg',
+        backgroundColor: "black",
+        textColor: "#e5e7eb",
+        padding: "lg",
+        textAlign: "left",
+        borderRadius: "none",
+        boxShadow: "none"
       }
     }
   ]
@@ -317,7 +406,7 @@ function App() {
       <SelectionProvider>
         <BlockInsertProvider>
           <LibraryPanelProvider>
-            <div className="h-screen flex flex-col bg-gray-50">
+            <div className="h-screen flex flex-col bg-black">
               <TopBar />
               <div className="flex-1 flex pt-16">
                 <LibraryPanel />

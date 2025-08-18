@@ -57,7 +57,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     >
       {/* Overlay for better text readability */}
       {backgroundImage && (
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-opacity-40"></div>
       )}
       
       <div className="relative z-10 max-w-4xl mx-auto text-center">

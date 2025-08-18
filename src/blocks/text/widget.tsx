@@ -24,7 +24,8 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
-                      style?.padding === 'sm' ? 'p-4' : 'p-6';
+                      style?.padding === 'sm' ? 'p-4' : 
+                      style?.padding === 'none' ? 'p-0' : 'p-6';
   
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
@@ -73,8 +74,8 @@ const TextWidget: React.FC<TextWidgetProps> = ({
       className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
       style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
     >
-      <div className={`max-w-4xl mx-auto ${textAlignClass}`}>
-        <p className={`text-lg leading-relaxed ${textColorClass}`} style={textColorStyle}>
+      <div className={`${textAlignClass}`}>
+        <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
           {content}
         </p>
       </div>

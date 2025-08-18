@@ -132,10 +132,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     if (!scrollContainerRef.current) return;
     
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    // Account for the 4px padding on each side
-    const paddingOffset = 8;
-    setCanScrollLeft(scrollLeft > paddingOffset);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - paddingOffset);
+    // No need to account for padding since we removed it
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
   };
 
   // Handle scroll events
@@ -358,9 +357,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                 onMouseLeave={() => autoplay && setIsAutoplayPaused(false)}
                 onScroll={handleManualScroll}
               >
-                {/* Left padding to ensure first item is fully visible */}
-                <div className="flex-shrink-0 w-4"></div>
-                
                 {items.map((item, index) => (
                   <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} group`} data-item-id={item.id}>
                     <a 
@@ -424,9 +420,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                     />
                   </div>
                 ))}
-                
-                {/* Right padding to ensure last item is fully visible */}
-                <div className="flex-shrink-0 w-4"></div>
               </div>
             </div>
             
