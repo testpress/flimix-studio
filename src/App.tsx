@@ -8,6 +8,7 @@ import LibraryPanel from '@layout/LibraryPanel';
 import { SelectionProvider } from '@context/SelectionContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
+import { LibraryPanelProvider } from '@context/LibraryPanelContext';
 import { useState } from 'react';
 
 // Move the sample schema here so it can be shared
@@ -315,17 +316,19 @@ function App() {
     <HistoryProvider initialSchema={sampleSchema}>
       <SelectionProvider>
         <BlockInsertProvider>
-          <div className="h-screen flex flex-col bg-gray-50">
-            <TopBar />
-            <div className="flex-1 flex pt-16">
-              <LibraryPanel />
-              <Canvas showDebug={showDebug} />
-              <SettingsPanel 
-                showDebug={showDebug}
-                onToggleShowDebug={() => setShowDebug(current => !current)}
-              />
+          <LibraryPanelProvider>
+            <div className="h-screen flex flex-col bg-gray-50">
+              <TopBar />
+              <div className="flex-1 flex pt-16">
+                <LibraryPanel />
+                <Canvas showDebug={showDebug} />
+                <SettingsPanel 
+                  showDebug={showDebug}
+                  onToggleShowDebug={() => setShowDebug(current => !current)}
+                />
+              </div>
             </div>
-          </div>
+          </LibraryPanelProvider>
         </BlockInsertProvider>
       </SelectionProvider>
     </HistoryProvider>

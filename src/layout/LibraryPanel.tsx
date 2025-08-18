@@ -7,6 +7,7 @@ import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
+import { useLibraryPanel } from '@context/LibraryPanelContext';
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -28,6 +29,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const LibraryPanel: React.FC = () => {
+  const { isLibraryOpen } = useLibraryPanel();
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
@@ -123,13 +125,10 @@ const LibraryPanel: React.FC = () => {
   };
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div className={`${isLibraryOpen ? 'w-64' : 'w-0'} bg-white border-r border-gray-200 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800">Block Library</h2>
-        <p className="text-sm text-gray-600 mt-1">
-          Click to insert blocks into your page
-        </p>
       </div>
 
       {/* Block Templates */}
