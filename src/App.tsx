@@ -9,6 +9,7 @@ import { SelectionProvider } from '@context/SelectionContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
 import { LibraryPanelProvider } from '@context/LibraryPanelContext';
+import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { useState } from 'react';
 
 // Move the sample schema here so it can be shared
@@ -406,17 +407,19 @@ function App() {
       <SelectionProvider>
         <BlockInsertProvider>
           <LibraryPanelProvider>
-            <div className="h-screen flex flex-col bg-black">
-              <TopBar />
-              <div className="flex-1 flex pt-16">
-                <LibraryPanel />
-                <Canvas showDebug={showDebug} />
-                <SettingsPanel 
-                  showDebug={showDebug}
-                  onToggleShowDebug={() => setShowDebug(current => !current)}
-                />
+            <SettingsPanelProvider>
+              <div className="h-screen flex flex-col bg-black">
+                <TopBar />
+                <div className="flex-1 flex pt-16">
+                  <LibraryPanel />
+                  <Canvas showDebug={showDebug} />
+                  <SettingsPanel 
+                    showDebug={showDebug}
+                    onToggleShowDebug={() => setShowDebug(current => !current)}
+                  />
+                </div>
               </div>
-            </div>
+            </SettingsPanelProvider>
           </LibraryPanelProvider>
         </BlockInsertProvider>
       </SelectionProvider>

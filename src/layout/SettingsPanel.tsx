@@ -40,6 +40,7 @@ import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
 import CTAButtonForm from '@blocks/cta-button/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
+import { useSettingsPanel } from '@context/SettingsPanelContext';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -56,6 +57,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockVisibility,
     updateBlockItem,
   } = useSelection();
+  const { isSettingsOpen, openSettings } = useSettingsPanel();
+
+  // Auto-open settings when a block gets selected
+  React.useEffect(() => {
+    if (selectedBlock) {
+      openSettings();
+    }
+  }, [selectedBlock, openSettings]);
 
   // Block editor registry for dynamic lookup
   const BlockPropEditors: Record<string, React.FC<BlockFormProps>> = {
@@ -265,80 +274,82 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
   };
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 p-6">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Block Settings</h2>
-        <div className="p-4 bg-gray-50 rounded-lg flex items-center justify-between mb-4">
-            <label className="font-medium text-gray-700">Debug</label>
-            <input
-              type="checkbox"
-              checked={showDebug}
-              onChange={onToggleShowDebug}
-              className="h-4 w-4 rounded"
-            />
-          </div>
-        <div className="space-y-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Selected Block</h3>
-            {selectedBlock ? (
-              <div className="text-sm">
-                <p className="text-gray-700">
-                  <span className="font-medium">Type:</span> {selectedBlock.type}
-                </p>
-                <p className="text-gray-700">
-                  <span className="font-medium">ID:</span> {selectedBlock.id}
-                </p>
-                {selectedItemId && (
+    <div className={`${isSettingsOpen ? 'w-[22rem] bg-white border-l border-gray-200' : 'w-0 bg-transparent border-0'} transition-all duration-300 ease-in-out overflow-hidden`}>
+      <div className={`${isSettingsOpen ? 'p-6' : 'p-0'} min-w-0`}>
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Block Settings</h2>
+          <div className="p-4 bg-gray-50 rounded-lg flex items-center justify-between mb-4">
+              <label className="font-medium text-gray-700">Debug</label>
+              <input
+                type="checkbox"
+                checked={showDebug}
+                onChange={onToggleShowDebug}
+                className="h-4 w-4 rounded"
+              />
+            </div>
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-2">Selected Block</h3>
+              {selectedBlock ? (
+                <div className="text-sm">
                   <p className="text-gray-700">
-                    <span className="font-medium">Selected Item:</span> {selectedItemId}
+                    <span className="font-medium">Type:</span> {selectedBlock.type}
                   </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">No block selected</p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">ID:</span> {selectedBlock.id}
+                  </p>
+                  {selectedItemId && (
+                    <p className="text-gray-700">
+                      <span className="font-medium">Selected Item:</span> {selectedItemId}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">No block selected</p>
+              )}
+            </div>
+            
+            {selectedBlock && (
+              <VisibilityForm
+                block={selectedBlock}
+                visibility={selectedBlock.visibility || {}}
+                onUpdateVisibility={handleVisibilityChange}
+              />
+            )}
+            
+            {selectedItemId && renderItemEditor()}
+            
+            {renderBlockPropsEditor()}
+            
+            {selectedBlock && selectedBlock.type !== 'spacer' && selectedBlock.type !== 'divider' && (
+              <StyleForm
+                style={selectedBlock.style || {}}
+                onChange={handleStyleChange}
+                blockType={selectedBlock.type}
+              />
             )}
           </div>
-          
-          {selectedBlock && (
-            <VisibilityForm
-              block={selectedBlock}
-              visibility={selectedBlock.visibility || {}}
-              onUpdateVisibility={handleVisibilityChange}
-            />
-          )}
-          
-          {selectedItemId && renderItemEditor()}
-          
-          {renderBlockPropsEditor()}
-          
-          {selectedBlock && selectedBlock.type !== 'spacer' && selectedBlock.type !== 'divider' && (
-            <StyleForm
-              style={selectedBlock.style || {}}
-              onChange={handleStyleChange}
-              blockType={selectedBlock.type}
-            />
-          )}
         </div>
-      </div>
-      
-      <div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Page Settings</h2>
-        <div className="space-y-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Page Title</h3>
-            <input 
-              type="text" 
-              placeholder="Enter page title"
-              className="w-full p-2 border border-gray-300 rounded text-sm"
-            />
-          </div>
-          
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Meta Description</h3>
-            <textarea 
-              placeholder="Enter meta description"
-              className="w-full p-2 border border-gray-300 rounded text-sm h-20"
-            />
+        
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Page Settings</h2>
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-2">Page Title</h3>
+              <input 
+                type="text" 
+                placeholder="Enter page title"
+                className="w-full p-2 border border-gray-300 rounded text-sm"
+              />
+            </div>
+            
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-2">Meta Description</h3>
+              <textarea 
+                placeholder="Enter meta description"
+                className="w-full p-2 border border-gray-300 rounded text-sm h-20"
+              />
+            </div>
           </div>
         </div>
       </div>

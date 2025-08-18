@@ -19,6 +19,7 @@ interface SelectionContextType {
   selectedItemId: string | null;
   setSelectedItemId: (id: string | null) => void;
   selectedItemBlockId: string | null;
+  setSelectedItemBlockId: (id: string | null) => void;
   activeTabId: string | null;
   setActiveTabId: (id: string | null) => void;
   pageSchema: PageSchema;
@@ -665,6 +666,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       selectedItemId,
       setSelectedItemId,
       selectedItemBlockId,
+      setSelectedItemBlockId,
       activeTabId,
       setActiveTabId,
       pageSchema,

@@ -8,6 +8,7 @@ import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
+import { useSettingsPanel } from '@context/SettingsPanelContext';
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -30,6 +31,7 @@ const iconMap: Record<string, LucideIcon> = {
 
 const LibraryPanel: React.FC = () => {
   const { isLibraryOpen } = useLibraryPanel();
+  const { isSettingsOpen } = useSettingsPanel();
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
@@ -178,7 +180,7 @@ const LibraryPanel: React.FC = () => {
   }, [activeTooltip]);
 
   return (
-    <div className={`${isLibraryOpen ? 'w-80' : 'w-0'} bg-white border-r border-gray-200 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
+    <div className={`${isLibraryOpen ? 'w-[22rem] bg-white border-r border-gray-200' : 'w-0 bg-transparent border-0'} flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800 mb-3">Block Library</h2>
@@ -202,7 +204,7 @@ const LibraryPanel: React.FC = () => {
             <p>No blocks found matching "{searchQuery}"</p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-3">
+          <div className={`grid gap-3 ${isSettingsOpen ? 'grid-cols-2' : 'grid-cols-3'}`}>
             {filteredTemplates.map((template) => {
             const IconComponent = iconMap[template.icon] || Layout;
             
@@ -224,7 +226,7 @@ const LibraryPanel: React.FC = () => {
                   </div>
                   
                   {/* Name */}
-                  <span className="text-xs font-medium text-gray-900 text-center truncate w-full">
+                  <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
                     {template.name}
                   </span>
                 </button>
