@@ -1,5 +1,5 @@
-import React from 'react';
-import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard, RectangleEllipsis } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard, RectangleEllipsis, Search } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
@@ -33,6 +33,9 @@ const LibraryPanel: React.FC = () => {
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
   // Helper function to check if a block is a child of a Section or Tab
   const isChildBlock = (blockId: string) => {
@@ -75,6 +78,42 @@ const LibraryPanel: React.FC = () => {
 
   // Get all block templates using the helper function
   const allTemplates = getAllBlockLibraryItems();
+  
+  // Filter templates based on search query
+  const filteredTemplates = searchQuery 
+    ? allTemplates.filter(template => 
+        template.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        template.description.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allTemplates;
+
+  // Handle mouse enter to show tooltip and set its position
+  const handleMouseEnter = useCallback((e: React.MouseEvent, templateType: string) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+    const tooltipWidth = 250; // Same as the width we set for the tooltip
+    
+    // Check if tooltip would go off-screen to the right
+    const rightEdgePosition = rect.right + 10 + tooltipWidth;
+    const isOffScreenRight = rightEdgePosition > windowWidth;
+    
+    // Position the tooltip based on available space
+    if (isOffScreenRight) {
+      // Position to the left of the block if it would go off-screen
+      setTooltipPosition({
+        top: rect.top,
+        left: rect.left - tooltipWidth - 10 // 10px gap between block and tooltip
+      });
+    } else {
+      // Position to the right of the block (default)
+      setTooltipPosition({
+        top: rect.top,
+        left: rect.right + 10 // 10px gap between block and tooltip
+      });
+    }
+    
+    setActiveTooltip(templateType);
+  }, []);
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (selectedBlockId) {
@@ -124,52 +163,105 @@ const LibraryPanel: React.FC = () => {
     }
   };
 
+  // Add a click handler to close tooltips when clicking elsewhere
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      if (activeTooltip) {
+        setActiveTooltip(null);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeTooltip]);
+
   return (
-    <div className={`${isLibraryOpen ? 'w-64' : 'w-0'} bg-white border-r border-gray-200 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
+    <div className={`${isLibraryOpen ? 'w-80' : 'w-0'} bg-white border-r border-gray-200 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-800">Block Library</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">Block Library</h2>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search blocks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+        </div>
       </div>
 
       {/* Block Templates */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {allTemplates.map((template) => {
-          const IconComponent = iconMap[template.icon] || Layout;
-          
-          return (
-            <button
-              key={template.type}
-              onClick={() => handleBlockInsert(template.type)}
-              className="w-full p-4 text-left bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200 group"
-            >
-              <div className="flex items-center space-x-3">
-                {/* Icon */}
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700">
-                  <IconComponent 
-                    size={20} 
-                    className={template.type === 'footer' ? 'rotate-180' : ''} 
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {template.name}
-                    </h3>
-                    <Plus 
-                      size={16} 
-                      className="text-gray-400 group-hover:text-blue-500 transition-colors" 
+      <div className="flex-1 overflow-y-auto p-4">
+        {filteredTemplates.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-gray-500">
+            <Search size={24} className="mb-2" />
+            <p>No blocks found matching "{searchQuery}"</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-3">
+            {filteredTemplates.map((template) => {
+            const IconComponent = iconMap[template.icon] || Layout;
+            
+            return (
+              <div key={template.type} className="relative">
+                {/* Block Item */}
+                <button
+                  onClick={() => handleBlockInsert(template.type)}
+                  onMouseEnter={(e) => handleMouseEnter(e, template.type)}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                  className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
+                >
+                  {/* Icon */}
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-2">
+                    <IconComponent 
+                      size={18} 
+                      className={template.type === 'footer' ? 'rotate-180' : ''} 
                     />
                   </div>
-                  <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                    {template.description}
-                  </p>
-                </div>
+                  
+                  {/* Name */}
+                  <span className="text-xs font-medium text-gray-900 text-center truncate w-full">
+                    {template.name}
+                  </span>
+                </button>
+                
+                {/* Active tooltip */}
+                {activeTooltip === template.type && (
+                  <div 
+                    className="fixed z-50 bg-white border border-gray-200 rounded-lg p-4 shadow-lg"
+                    style={{
+                      width: '250px',
+                      top: tooltipPosition.top,
+                      left: tooltipPosition.left,
+                      maxWidth: '300px'
+                    }}
+                  >
+                    <div className="flex items-center space-x-2 mb-2">
+                      <IconComponent size={18} />
+                      <h3 className="font-medium text-gray-900">{template.name}</h3>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {template.description}
+                    </p>
+                    {/* Arrow pointing to the block - position depends on which side the tooltip is on */}
+                    {tooltipPosition.left > window.innerWidth / 2 ? (
+                      /* Arrow pointing right when tooltip is on the left side */
+                      <div className="absolute top-4 right-0 transform translate-x-1/2 rotate-45 w-3 h-3 bg-white border-t border-r border-gray-200"></div>
+                    ) : (
+                      /* Arrow pointing left when tooltip is on the right side */
+                      <div className="absolute top-4 left-0 transform -translate-x-1/2 rotate-45 w-3 h-3 bg-white border-l border-b border-gray-200"></div>
+                    )}
+                  </div>
+                )}
               </div>
-            </button>
-          );
-        })}
+            );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Footer */}
