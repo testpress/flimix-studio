@@ -115,8 +115,8 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
       label: 'New Feature',
       description: 'Feature description',
       style: {
-        backgroundColor: '#ffffff',
-        textColor: '#000000',
+        backgroundColor: '#1f2937',
+        textColor: '#ffffff',
         padding: 'md' as const,
         margin: 'sm' as const,
         borderRadius: 'md' as const,
@@ -187,13 +187,15 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
               return (
                 <div 
                   key={item.id} 
-                  className={`relative bg-white rounded-lg shadow-md ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 hover:shadow-lg cursor-pointer group ${
+                  className={`relative rounded-lg shadow-md ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 hover:shadow-lg cursor-pointer group ${
                     isSelected 
                       ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white' 
                       : ''
                   }`}
                   style={{
                     ...itemStyle,
+                    backgroundColor: item.style?.backgroundColor || '#1f2937',
+                    color: item.style?.textColor || '#ffffff',
                     // Remove conflicting styles when selected to let Tailwind ring work
                     boxShadow: isSelected ? undefined : itemStyle.boxShadow,
                     position: 'relative',

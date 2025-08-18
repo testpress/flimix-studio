@@ -44,8 +44,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
       question: 'New Question',
       answer: 'New Answer',
       style: {
-        backgroundColor: '#ffffff',
-        textColor: '#000000',
+        backgroundColor: '#1f2937',
+        textColor: '#ffffff',
         fontWeight: 'normal' as const,
         padding: 'sm' as const,
         margin: 'md' as const,
@@ -205,8 +205,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
               <div 
                 key={item.id} 
                 className={`
-                  border border-gray-200 overflow-hidden relative group
-                  ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''}
+                  border border-gray-700 overflow-hidden relative group
+                  ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''}
                   cursor-pointer
                 `}
                 style={itemStyle}
@@ -224,15 +224,15 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <HelpCircle size={18} className="text-gray-500 flex-shrink-0" />
+                    <HelpCircle size={18} className="text-gray-300 flex-shrink-0" />
                     <span className="text-lg">{item.question}</span>
                   </div>
                   
                   <div className="flex-shrink-0">
                     {openIndex === index ? (
-                      <ChevronDown size={20} className="text-gray-500 flex-shrink-0" />
+                      <ChevronDown size={20} className="text-gray-300 flex-shrink-0" />
                     ) : (
-                      <ChevronRight size={20} className="text-gray-500 flex-shrink-0" />
+                      <ChevronRight size={20} className="text-gray-300 flex-shrink-0" />
                     )}
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
                     id={`faq-answer-${item.id}`}
                     className="px-4 pb-4"
                     style={{ 
-                      backgroundColor: item.style?.backgroundColor || 'rgba(255,255,255,0.05)',
+                      backgroundColor: item.style?.backgroundColor || '#111827',
                       color: item.style?.textColor || undefined,
                     }}
                   >

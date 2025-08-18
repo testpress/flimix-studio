@@ -15,8 +15,8 @@ export const FAQAccordionLibraryItem = {
         question: 'Can I cancel anytime?',
         answer: 'Yes, you can cancel your subscription at any time from the account settings. Simply go to your account preferences and select the cancellation option. No questions asked and no hidden fees.',
         style: {
-          backgroundColor: '#ffffff',
-          textColor: '#000000',
+          backgroundColor: '#1f2937',
+          textColor: '#ffffff',
           fontWeight: 'normal',
           padding: 'sm',
           margin: 'md',
@@ -28,8 +28,8 @@ export const FAQAccordionLibraryItem = {
         question: 'Do you offer 4K content?',
         answer: 'Yes, many titles are available in 4K Ultra HD quality. We continuously update our library with the latest high-resolution content. Check the content details page to see available quality options for each title.',
         style: {
-          backgroundColor: '#ffffff',
-          textColor: '#000000',
+          backgroundColor: '#1f2937',
+          textColor: '#ffffff',
           fontWeight: 'normal',
           padding: 'sm',
           margin: 'md',

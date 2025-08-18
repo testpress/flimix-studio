@@ -321,13 +321,13 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const renderTestimonialItem = (item: TestimonialItem, index: number) => (
     <div key={item.id} className="relative group">
       <div 
-        className={`bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
-          isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+        className={`bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
+          isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''
         }`}
         onClick={() => handleItemClick(item.id)}
       >
         {/* Quote - flex-grow to take available space */}
-        <blockquote className="text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-3 sm:mb-4 italic flex-grow leading-relaxed break-words overflow-visible hyphens-auto whitespace-normal">
+        <blockquote className="text-sm sm:text-base md:text-lg font-medium text-white mb-3 sm:mb-4 italic flex-grow leading-relaxed break-words overflow-visible hyphens-auto whitespace-normal">
           "{item.quote}"
         </blockquote>
         
@@ -353,10 +353,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           )}
           <div className="min-w-0 flex-1">
             {item.name && (
-              <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{item.name}</p>
+              <p className="font-semibold text-white text-sm sm:text-base truncate">{item.name}</p>
             )}
             {item.designation && (
-              <p className="text-xs sm:text-sm text-gray-500 truncate">{item.designation}</p>
+              <p className="text-xs sm:text-sm text-gray-300 truncate">{item.designation}</p>
             )}
           </div>
         </div>
