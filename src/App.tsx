@@ -408,9 +408,9 @@ function App() {
         <BlockInsertProvider>
           <LibraryPanelProvider>
             <SettingsPanelProvider>
-              <div className="h-screen flex flex-col bg-black">
+              <div className="min-h-screen flex flex-col bg-black">
                 <TopBar />
-                <div className="flex-1 flex pt-16">
+                <div className="flex-1 flex pt-16 min-h-0">
                   <LibraryPanel />
                   <Canvas showDebug={showDebug} />
                   <SettingsPanel 
