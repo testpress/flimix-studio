@@ -32,7 +32,6 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const { props, style, children } = block;
   const { title, description } = props;
   
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
@@ -48,9 +47,9 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
                         style?.boxShadow === 'md' ? 'shadow-md' : 
                         style?.boxShadow === 'sm' ? 'shadow-sm' : '';
 
-  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-gray-900' : 'text-gray-900')) : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   const handleSelect = (sectionBlock: SectionBlock) => {
@@ -68,13 +67,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
       onMoveDown={onMoveDown}
       onDuplicate={onDuplicate}
       onRemove={onRemove}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} ${
-        isDark ? 'bg-gray-800' : 'bg-white'
-      }`}
-      style={{
-        backgroundColor: style?.backgroundColor,
-        maxWidth: style?.maxWidth,
-      }}
+      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} bg-black`}
     >
       {/* Section header */}
       {(title || description) && (
@@ -111,8 +104,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           ))}
         </div>
       ) : (
-        <div className="p-4 border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg">
-          <p className="text-gray-500 text-center">No content blocks in this section</p>
+        <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
+          <p className="text-gray-300 text-center">No content blocks in this section</p>
         </div>
       )}
     </BaseWidget>

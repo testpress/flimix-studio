@@ -63,7 +63,6 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     }
   };
   
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' : 
                       style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
                       style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
@@ -73,12 +72,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-800')) : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Determine background styling
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Gap class mapping for better maintainability

@@ -117,7 +117,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
       onAddItem={!isAtItemLimit ? handleAddItem : undefined}
       className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass}`}
       style={{
-        backgroundColor: style?.backgroundColor || undefined
+        backgroundColor: style?.backgroundColor || '#000000'
       }}
     >
       <div className={`flex ${alignmentClass} flex-wrap gap-4`}>
@@ -156,8 +156,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                         : 'hover:ring-1 hover:ring-blue-300'
                     }`}
                     style={{
-                      backgroundColor: item.style?.backgroundColor || '#f3f4f6',
-                      color: item.style?.textColor || '#374151',
+                      backgroundColor: item.style?.backgroundColor || '#000000',
+                      color: item.style?.textColor || '#ffffff',
                     }}
                     onClick={(e) => {
                       e.preventDefault(); // Prevent page reload
@@ -181,8 +181,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                         : 'hover:ring-1 hover:ring-blue-300'
                     }`}
                     style={{
-                      backgroundColor: item.style?.backgroundColor || '#f3f4f6',
-                      color: item.style?.textColor || '#374151',
+                      backgroundColor: item.style?.backgroundColor || '#000000',
+                      color: item.style?.textColor || '#ffffff',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();

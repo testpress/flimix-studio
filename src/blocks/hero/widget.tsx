@@ -21,19 +21,18 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const { props, style } = block;
   const { title, subtitle, backgroundImage, ctaButton } = props;
   
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-12' : 
                       style?.padding === 'md' ? 'p-8' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
   
-  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-900')) : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
-  // Determine background styling
+  // Determine background styling - default to black
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = isDark ? 'bg-gray-900' : 'bg-gray-100';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   return (

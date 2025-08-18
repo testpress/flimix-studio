@@ -39,7 +39,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
     if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.backgroundColor || 'bg-gray-50';
+    return style?.backgroundColor || 'bg-black text-white';
   };
 
   // Get background color as inline style for hex colors

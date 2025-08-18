@@ -35,12 +35,12 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-gray-900') : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Determine background styling
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = 'bg-gray-50';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Style value mappings for cleaner code

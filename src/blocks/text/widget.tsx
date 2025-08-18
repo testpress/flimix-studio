@@ -21,7 +21,6 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   const { props, style } = block;
   const { content } = props;
   
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 
@@ -30,14 +29,14 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
 
-  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-800')) : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
-  // Determine background styling
+  // Determine background styling - default to black
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   if (!content) {

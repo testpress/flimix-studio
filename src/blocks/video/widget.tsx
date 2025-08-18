@@ -54,7 +54,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
     if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.backgroundColor || 'bg-gray-50';
+    return style?.backgroundColor || 'bg-black text-white';
   };
 
   // Get background color as inline style for hex colors
@@ -123,7 +123,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
     if (style?.textColor && style.textColor.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.textColor || 'text-gray-700'; // Use Tailwind class or default
+    return style?.textColor || 'text-white'; // Use Tailwind class or default
   };
 
   // Get text color style (inline style approach)

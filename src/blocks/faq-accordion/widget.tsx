@@ -71,7 +71,6 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   const isAtItemLimit = (items?.length || 0) >= FAQ_ACCORDION_ITEM_LIMIT;
 
   // Get styling classes based on block style
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' : 
                       style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
                       style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
@@ -84,7 +83,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
 
   // Determine background styling
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = 'bg-gray-50';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Style value mappings for cleaner code - reduced padding values
@@ -243,7 +242,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
                     id={`faq-answer-${item.id}`}
                     className="px-4 pb-4"
                     style={{ 
-                      backgroundColor: item.style?.backgroundColor || (isDark ? 'rgba(0,0,0,0.1)' : '#f9f9f9'),
+                      backgroundColor: item.style?.backgroundColor || 'rgba(255,255,255,0.05)',
                       color: item.style?.textColor || undefined,
                     }}
                   >

@@ -125,7 +125,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 
   // Memoize the tab navigation section to prevent re-rendering
   const tabNavigation = useMemo(() => (
-    <div className={`flex ${tabAlignmentClass} border-b border-gray-200`}>
+    <div className={`flex ${tabAlignmentClass} gap-2`}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -142,8 +142,8 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   const tabContent = useMemo(() => {
     if (!currentTab) {
       return (
-        <div className="p-4 border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg">
-          <p className="text-gray-500 text-center">No tab selected</p>
+        <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
+          <p className="text-gray-300 text-center">No tab selected</p>
         </div>
       );
     }
@@ -175,8 +175,8 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
             </div>
           ))
         ) : (
-          <div className="p-4 border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg">
-            <p className="text-gray-500 text-center">No content in this tab</p>
+          <div className="p-4 border-2 border-dashed border-gray-600 bg-black rounded-lg">
+            <p className="text-gray-300 text-center">No content in this tab</p>
             <p className="text-xs text-gray-400 text-center mt-1">Add blocks to populate this tab</p>
           </div>
         )}
@@ -196,7 +196,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} border-2 border-dashed border-gray-300 bg-gray-50`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} border-2 border-dashed border-gray-300 bg-black`}
         style={{
           backgroundColor: style?.backgroundColor,
           maxWidth: style?.maxWidth,
@@ -218,11 +218,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
       onMoveDown={onMoveDown}
       onDuplicate={onDuplicate}
       onRemove={onRemove}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} bg-white border border-gray-200`}
-      style={{
-        backgroundColor: style?.backgroundColor,
-        maxWidth: style?.maxWidth,
-      }}
+              className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} bg-black border border-gray-200`}
     >
       <div className="flex flex-col">
         {/* Tab Navigation */}

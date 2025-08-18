@@ -51,7 +51,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
   
-  const isDark = style?.theme === 'dark';
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
@@ -61,12 +60,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || (isDark ? 'text-white' : 'text-gray-800')) : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Determine background styling
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = isDark ? 'bg-gray-800' : 'bg-white';
+  const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Gap class mapping for better maintainability

@@ -10,7 +10,7 @@ export const BadgeStripLibraryItem = {
     items: [
       { id: generateUniqueId(), label: '4K UHD', icon: 'Monitor' },
       { id: generateUniqueId(), label: 'Dolby Atmos', icon: 'Volume2' },
-      { id: generateUniqueId(), label: 'iOS/Android', icon: 'Smartphone', link: 'https://play.google.com/' },
+      { id: generateUniqueId(), label: 'iOS/Android', icon: 'Smartphone'},
       { id: generateUniqueId(), label: 'HDR10+', icon: 'Sun' },
       { id: generateUniqueId(), label: 'Multi-Language', icon: 'Globe' }
     ],

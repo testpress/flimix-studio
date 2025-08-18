@@ -30,9 +30,9 @@ const FooterWidget: React.FC<FooterWidgetProps> = ({
   // Handle background color
   const backgroundColorStyle = style?.backgroundColor ? { backgroundColor: style.backgroundColor } : {};
 
-  // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
+  // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-gray-700') : '';
+  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
   const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Handle text alignment
