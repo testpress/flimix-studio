@@ -41,9 +41,9 @@ const sampleSchema: PageSchema = {
               language: "Tamil"
             },
             badges: [
-              { label: "Action" },
-              { label: "Drama" },
-              { label: "Thriller" }
+              { id: "badge-1", label: "Action" },
+              { id: "badge-2", label: "Drama" },
+              { id: "badge-3", label: "Thriller" }
             ],
             primaryCTA: {
               label: "Watch Now",
@@ -52,15 +52,13 @@ const sampleSchema: PageSchema = {
               backgroundColor: "#dc2626",
               textColor: "#ffffff"
             },
-            secondaryCTAs: [
-              {
-                label: "+ Add to Watchlist",
-                link: "/watchlist/coolie",
-                variant: "outline",
-                backgroundColor: "#ffffff",
-                textColor: "#000000"
-              }
-            ]
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/coolie",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
           },
           {
             id: "hero-item-2",
@@ -74,9 +72,9 @@ const sampleSchema: PageSchema = {
               language: "Tamil"
             },
             badges: [
-              { label: "Reality" },
-              { label: "Comedy" },
-              { label: "Culinary" }
+              { id: "badge-4", label: "Reality" },
+              { id: "badge-5", label: "Comedy" },
+              { id: "badge-6", label: "Culinary" }
             ],
             primaryCTA: {
               label: "Watch Now",
@@ -85,15 +83,13 @@ const sampleSchema: PageSchema = {
               backgroundColor: "#dc2626",
               textColor: "#ffffff"
             },
-            secondaryCTAs: [
-              {
-                label: "+ Add to Watchlist",
-                link: "/watchlist",
-                variant: "outline",
-                backgroundColor: "#ffffff",
-                textColor: "#000000"
-              }
-            ]
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
           },
           {
             id: "hero-item-3",
@@ -106,9 +102,9 @@ const sampleSchema: PageSchema = {
               language: "Tamil"
             },
             badges: [
-              { label: "Action" },
-              { label: "Thriller" },
-              { label: "Drama" }
+              { id: "badge-7", label: "Action" },
+              { id: "badge-8", label: "Thriller" },
+              { id: "badge-9", label: "Drama" }
             ],
             primaryCTA: {
               label: "Watch Now",
@@ -117,15 +113,13 @@ const sampleSchema: PageSchema = {
               backgroundColor: "#dc2626",
               textColor: "#ffffff"
             },
-            secondaryCTAs: [
-              {
-                label: "+ Add to Watchlist",
-                link: "/watchlist/leo",
-                variant: "outline",
-                backgroundColor: "#ffffff",
-                textColor: "#000000"
-              }
-            ]
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/leo",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
           },
           {
             id: "hero-item-4",
@@ -138,9 +132,9 @@ const sampleSchema: PageSchema = {
               language: "Tamil"
             },
             badges: [
-              { label: "Action" },
-              { label: "Thriller" },
-              { label: "Crime" }
+              { id: "badge-10", label: "Action" },
+              { id: "badge-11", label: "Thriller" },
+              { id: "badge-12", label: "Crime" }
             ],
             primaryCTA: {
               label: "Watch Now",
@@ -149,15 +143,13 @@ const sampleSchema: PageSchema = {
               backgroundColor: "#dc2626",
               textColor: "#ffffff"
             },
-            secondaryCTAs: [
-              {
-                label: "+ Add to Watchlist",
-                link: "/watchlist/vikram",
-                variant: "outline",
-                backgroundColor: "#ffffff",
-                textColor: "#000000"
-              }
-            ]
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/vikram",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
           }
         ]
       },

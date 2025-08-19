@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { HeroBlock, HeroItem } from './schema';
+import type { HeroBlock } from './schema';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import VideoPlayer from './VideoPlayer';
+import ItemWidget from './ItemWidget';
 
 interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
   block: HeroBlock;
@@ -107,132 +107,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     }
   };
 
-  // Render a single hero item
-  const renderHeroItem = (item: HeroItem) => {
-    // Get alignment class based on block style
-    const alignmentClass = style?.textAlign === 'left' ? 'items-start text-left' : 
-                          style?.textAlign === 'right' ? 'items-end text-right' : 'items-center text-center';
-    
-    const aspectRatioClass = getAspectRatioClass(props.aspectRatio);
 
-    return (
-      <div 
-        key={item.id} 
-        className={`relative w-full ${aspectRatioClass}`}
-        style={props.aspectRatio === 'custom' ? getCustomHeightStyle() : {}}
-      >
-        {/* Video Background (if available) */}
-        {item.videoBackground && (
-          <div className="absolute inset-0 w-full h-full bg-black">
-            <VideoPlayer 
-              src={item.videoBackground}
-              poster={item.backgroundImage}
-              autoplay={!isAutoplayPaused}
-              muted={true}
-              loop={true}
-              className="w-full h-full object-contain"
-            />
-          </div>
-        )}
-        
-        {/* Image Background (if no video) */}
-        {!item.videoBackground && item.backgroundImage && (
-          <img 
-            src={item.backgroundImage} 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        )}
-        
-        {/* Dark Gradient Overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
-        
-        {/* Content Container - Positioned at bottom with padding */}
-        <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
-
-          
-          {/* Category Badges */}
-          {item.badges && item.badges.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-3">
-              {item.badges.map((badge, idx) => (
-                <span 
-                  key={idx} 
-                  className="px-2 py-1 bg-white/20 text-white text-xs font-medium rounded"
-                >
-                  {badge.label}
-                </span>
-              ))}
-            </div>
-          )}
-          
-          {/* Title */}
-          {item.title && (
-            <h1 className={`text-4xl md:text-5xl font-bold mb-1 ${textColorClass}`} style={textColorStyle}>
-              {item.title}
-            </h1>
-          )}
-          
-          {/* Metadata Row */}
-          {item.metadata && Object.values(item.metadata).some(value => !!value) && (
-            <div className="flex flex-wrap items-center gap-x-3 text-sm text-white/80 mb-2">
-              {item.metadata.year && <span>{item.metadata.year}</span>}
-              {item.metadata.seasons && (
-                <>
-                  <span className="w-1 h-1 bg-white/50 rounded-full"></span>
-                  <span>{item.metadata.seasons} Seasons</span>
-                </>
-              )}
-              {item.metadata.language && (
-                <>
-                  <span className="w-1 h-1 bg-white/50 rounded-full"></span>
-                  <span>{item.metadata.language}</span>
-                </>
-              )}
-            </div>
-          )}
-          
-          {/* Subtitle */}
-          {item.subtitle && (
-            <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90`} style={textColorStyle}>
-              {item.subtitle}
-            </p>
-          )}
-          
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-3 mt-2">
-            {/* Primary CTA */}
-            {item.primaryCTA && (
-              <button 
-                className="font-semibold py-2.5 px-6 rounded-lg text-base transition-colors duration-200 border"
-                style={{
-                  backgroundColor: item.primaryCTA.backgroundColor || '#dc2626',
-                  color: item.primaryCTA.textColor || '#ffffff',
-                  borderColor: item.primaryCTA.variant === 'outline' ? item.primaryCTA.textColor || '#ffffff' : 'transparent'
-                }}
-              >
-                {item.primaryCTA.label}
-              </button>
-            )}
-            
-            {/* Secondary CTAs */}
-            {item.secondaryCTAs && item.secondaryCTAs.map((btn, idx) => (
-              <button 
-                key={idx}
-                className="font-semibold py-2.5 px-5 rounded-lg text-base transition-colors duration-200 border"
-                style={{
-                  backgroundColor: btn.backgroundColor || '#ffffff',
-                  color: btn.textColor || '#000000',
-                  borderColor: btn.variant === 'outline' ? btn.textColor || '#000000' : 'transparent'
-                }}
-              >
-                {btn.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div>
@@ -254,7 +129,17 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         {/* Hero Content */}
         <div className="relative">
           {/* Render current hero item */}
-          {props.items && props.items.length > 0 && renderHeroItem(props.items[currentIndex])}
+          {props.items && props.items.length > 0 && (
+            <ItemWidget
+              item={props.items[currentIndex]}
+              aspectRatio={props.aspectRatio}
+              customHeight={props.customHeight}
+              textAlign={style?.textAlign}
+              textColor={style?.textColor}
+              backgroundColor={style?.backgroundColor}
+              autoplay={!isAutoplayPaused}
+            />
+          )}
           
           {/* Carousel Navigation (only if multiple items) */}
           {props.variant === 'carousel' && props.items && props.items.length > 1 && (
@@ -299,9 +184,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                 onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
                 onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
               >
-                {props.items.map((_, idx) => (
+                {props.items.map((item, idx) => (
                   <button
-                    key={idx}
+                    key={`${item.id}-${idx}`}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
                       setCurrentIndex(idx);

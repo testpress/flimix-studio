@@ -21,11 +21,54 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(muted);
+  
+  // Error handling state and refs
+  const retryCountRef = useRef(0);
+  const maxRetries = 3;
+  const baseDelay = 2000; // 2 second base delay
+
+  // Robust error recovery with exponential backoff
+  const attemptRecovery = (hls: Hls, errorType: string, errorDetails: any) => {
+    if (retryCountRef.current >= maxRetries) {
+      console.error(`Max retries (${maxRetries}) reached for ${errorType}. Giving up.`, errorDetails);
+      hls.destroy();
+      return;
+    }
+
+    const delay = baseDelay * Math.pow(2, retryCountRef.current); // Exponential backoff
+    retryCountRef.current++;
+    
+    console.log(`Attempting recovery for ${errorType} in ${delay}ms (attempt ${retryCountRef.current}/${maxRetries})`);
+    
+    setTimeout(() => {
+      try {
+        switch (errorType) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            hls.startLoad();
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            hls.recoverMediaError();
+            break;
+          default:
+            console.error(`Unknown error type: ${errorType}`);
+            hls.destroy();
+        }
+      } catch (error) {
+        console.error(`Recovery attempt failed:`, error);
+        if (retryCountRef.current >= maxRetries) {
+          hls.destroy();
+        }
+      }
+    }, delay);
+  };
 
   // Video initialization effect (runs only when src, autoplay, or loop change)
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!src || !videoElement) return;
+    
+    // Reset retry count for new video source
+    retryCountRef.current = 0;
     
     videoElement.muted = isMuted;
     videoElement.autoplay = autoplay;
@@ -52,17 +95,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         
         hls.on(Hls.Events.ERROR, (_, data) => {
           if (data.fatal) {
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                hls?.startLoad();
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                hls?.recoverMediaError();
-                break;
-              default:
-                hls?.destroy();
-                break;
+            console.error(`HLS fatal error: ${data.type}`, data.details);
+            if (hls) {
+              attemptRecovery(hls, data.type, data.details);
             }
+          } else {
+            console.warn(`HLS non-fatal error: ${data.type}`, data.details);
           }
         });
       } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
@@ -99,10 +137,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, [isMuted]);
 
   const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
+    setIsMuted(prevIsMuted => !prevIsMuted);
   };
 
   return (
@@ -119,7 +154,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          objectFit: 'contain',
+          objectFit: 'cover',
           cursor: 'pointer'
         }}
       />

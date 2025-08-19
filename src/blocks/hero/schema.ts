@@ -15,7 +15,7 @@ export interface HeroItem {
   metadata?: HeroMetadata;
   badges?: HeroBadge[];
   primaryCTA?: HeroCTABtn;
-  secondaryCTAs?: HeroCTABtn[];
+  secondaryCTA?: HeroCTABtn;
 }
 
 
@@ -44,5 +44,6 @@ export interface HeroMetadata {
 }
 
 export interface HeroBadge {
+  id: string;
   label: string;
 }

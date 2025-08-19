@@ -26,13 +26,11 @@ export const HeroLibraryItem = {
           link: '/watch',
           variant: 'solid'
         },
-        secondaryCTAs: [
-          { 
-            label: 'Trailer', 
-            link: '/trailer',
-            variant: 'outline'
-          }
-        ],
+        secondaryCTA: { 
+          label: 'Trailer', 
+          link: '/trailer',
+          variant: 'outline'
+        },
         metadata: { 
           year: '2025', 
           seasons: '4', 
