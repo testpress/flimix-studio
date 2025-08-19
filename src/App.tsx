@@ -24,18 +24,142 @@ const sampleSchema: PageSchema = {
       type: "hero",
       id: "hero-001",
       props: {
-        title: "Buried in the Backyard",
-        subtitle: "Examines true-crime stories of victims found buried in the least suspicious places.",
-        backgroundImage: "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/4186/1754287614186-v",
-        ctaButton: {
-          label: "Subscribe to Watch",
-          link: "/subscribe"
-        }
+        variant: "carousel",
+        aspectRatio: "16:9",
+        autoplay: false,
+        showArrows: true,
+        scrollSpeed: 3000,
+        items: [
+          {
+            id: "hero-item-1",
+            title: "Coolie",
+            subtitle: "A porter at a railway station becomes involved in a dangerous conflict when he stands up against a powerful criminal who exploits the poor.",
+            backgroundImage: "",
+            videoBackground: "https://dlbdnoa93s0gw.cloudfront.net/transcoded/4P3nJXp2xFT/video.m3u8",
+            metadata: {
+              year: "2023",
+              language: "Tamil"
+            },
+            badges: [
+              { id: "badge-1", label: "Action" },
+              { id: "badge-2", label: "Drama" },
+              { id: "badge-3", label: "Thriller" }
+            ],
+            primaryCTA: {
+              label: "Watch Now",
+              link: "/watch/coolie",
+              variant: "solid",
+              backgroundColor: "#dc2626",
+              textColor: "#ffffff"
+            },
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/coolie",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
+          },
+          {
+            id: "hero-item-2",
+            title: "Cooku with Comali",
+            subtitle: "When cooking chaos meets comic charm! Comalis pair up with stars for a rib-tickling contest, judged by chefs Damu, Koushik Shankar and Madhampatty Rangaraj.",
+            backgroundImage: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5887/1754983435887-i",
+            videoBackground: "",
+            metadata: {
+              year: "2025",
+              seasons: "4",
+              language: "Tamil"
+            },
+            badges: [
+              { id: "badge-4", label: "Reality" },
+              { id: "badge-5", label: "Comedy" },
+              { id: "badge-6", label: "Culinary" }
+            ],
+            primaryCTA: {
+              label: "Watch Now",
+              link: "/watch",
+              variant: "solid",
+              backgroundColor: "#dc2626",
+              textColor: "#ffffff"
+            },
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
+          },
+          {
+            id: "hero-item-3",
+            title: "Leo",
+            subtitle: "A café owner and animal rescuer becomes the target of a drug cartel who believes he is the infamous vigilante they've been hunting for years.",
+            backgroundImage: "",
+            videoBackground: "https://dlbdnoa93s0gw.cloudfront.net/transcoded/As5D9fDscz2/video.m3u8",
+            metadata: {
+              year: "2023",
+              language: "Tamil"
+            },
+            badges: [
+              { id: "badge-7", label: "Action" },
+              { id: "badge-8", label: "Thriller" },
+              { id: "badge-9", label: "Drama" }
+            ],
+            primaryCTA: {
+              label: "Watch Now",
+              link: "/watch/leo",
+              variant: "solid",
+              backgroundColor: "#dc2626",
+              textColor: "#ffffff"
+            },
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/leo",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
+          },
+          {
+            id: "hero-item-4",
+            title: "Vikram",
+            subtitle: "A special agent investigates a murder committed by a masked group of serial killers. However, a tangled maze of clues soon leads him to the drug kingpin of Chennai.",
+            backgroundImage: "",
+            videoBackground: "https://dlbdnoa93s0gw.cloudfront.net/transcoded/57gHcHDBxKX/video.m3u8",
+            metadata: {
+              year: "2022",
+              language: "Tamil"
+            },
+            badges: [
+              { id: "badge-10", label: "Action" },
+              { id: "badge-11", label: "Thriller" },
+              { id: "badge-12", label: "Crime" }
+            ],
+            primaryCTA: {
+              label: "Watch Now",
+              link: "/watch/vikram",
+              variant: "solid",
+              backgroundColor: "#dc2626",
+              textColor: "#ffffff"
+            },
+            secondaryCTA: {
+              label: "+ Add to Watchlist",
+              link: "/watchlist/vikram",
+              variant: "outline",
+              backgroundColor: "#ffffff",
+              textColor: "#000000"
+            }
+          }
+        ]
       },
       style: {
-        theme: "dark" as Theme,
-        backgroundColor: "#0f1923",
-        textColor: "#ffffff"
+        backgroundColor: "#000000",
+        textColor: "#ffffff",
+        padding: "lg",
+        margin: "none",
+        borderRadius: "none",
+        textAlign: "left"
       },
       visibility: {
         platform: ["mobile", "desktop"],

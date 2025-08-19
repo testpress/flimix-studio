@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { HeroBlock } from './schema';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import ItemWidget from './ItemWidget';
 
-interface HeroWidgetProps extends Omit<BaseWidgetProps, 'block'> {
+interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
   block: HeroBlock;
 }
 
@@ -19,35 +21,11 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, subtitle, backgroundImage, ctaButton } = props;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
+  const autoplayIntervalRef = useRef<number | null>(null);
   
-  // Clean object maps for CSS classes (similar to badge-strip approach)
-  const paddingClass = { lg: 'p-12', md: 'p-8', sm: 'p-4', none: 'p-0' }[style?.padding ?? 'md'];
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
-  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
-  
-  // Custom box shadow styles for better visibility on dark backgrounds
-  const getBoxShadowStyle = (shadowType: string | undefined) => {
-    switch (shadowType) {
-      case 'lg':
-        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
-      case 'md':
-        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
-      case 'sm':
-        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
-      case 'none':
-      default:
-        return 'none';
-    }
-  };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
-  
-  // Get text alignment from block style, default to center
-  const textAlign = style?.textAlign || 'center';
-  const textAlignClass = textAlign === 'left' ? 'text-left' : 
-                         textAlign === 'right' ? 'text-right' : 'text-center';
-  
   // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
   const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
@@ -58,8 +36,81 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
+  // Handle aspect ratio
+  const getAspectRatioClass = (aspectRatio?: string) => {
+    switch (aspectRatio) {
+      case '16:9': return 'aspect-video';
+      case 'auto': return 'min-h-[600px]';
+      case 'custom': return ''; // Custom height will be handled with inline style
+      default: return 'aspect-video';
+    }
+  };
+  
+  // Get custom height style if specified
+  const getCustomHeightStyle = () => {
+    if (props.aspectRatio === 'custom') {
+      const height = props.customHeight || '600px';
+      return { height };
+    }
+    return {};
+  };
+
+  
+  // Autoplay functionality for carousel
+  useEffect(() => {
+    // Clear any existing interval
+    if (autoplayIntervalRef.current) {
+      clearInterval(autoplayIntervalRef.current);
+      autoplayIntervalRef.current = null;
+    }
+    
+    // Start autoplay if enabled and not paused
+    if (props.variant === 'carousel' && props.autoplay && !isAutoplayPaused && props.items && props.items.length > 1) {
+      autoplayIntervalRef.current = window.setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % props.items!.length);
+      }, props.scrollSpeed || 5000);
+    }
+    
+    // Cleanup on unmount or when props change
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+        autoplayIntervalRef.current = null;
+      }
+    };
+  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused]);
+
+  // Handle carousel navigation
+  const nextSlide = () => {
+    if (props.items && props.items.length > 1) {
+      // Pause autoplay temporarily when manually navigating
+      if (props.autoplay) {
+        setIsAutoplayPaused(true);
+        setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1500); // Resume after 1.5 seconds
+      }
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % props.items.length);
+    }
+  };
+
+  const prevSlide = () => {
+    if (props.items && props.items.length > 1) {
+      // Pause autoplay temporarily when manually navigating
+      if (props.autoplay) {
+        setIsAutoplayPaused(true);
+        setTimeout(() => {
+          setIsAutoplayPaused(false);
+        }, 1500); // Resume after 1.5 seconds
+      }
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + props.items.length) % props.items.length);
+    }
+  };
+
+
+
   return (
-    <div style={{ boxShadow: boxShadowStyle }}>
+    <div>
       <BaseWidget 
         block={block} 
         onSelect={onSelect} 
@@ -70,38 +121,92 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`relative ${borderRadiusClass} overflow-hidden ${paddingClass} ${marginClass} ${backgroundClass}`}
+        className={`relative overflow-hidden ${marginClass} ${backgroundClass}`}
         style={{
-          backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
         }}
       >
-      {/* Overlay for better text readability */}
-      {backgroundImage && (
-        <div className="absolute inset-0 bg-opacity-40"></div>
-      )}
-      
-      <div className={`relative z-10 max-w-4xl mx-auto ${textAlignClass}`}>
-        {title && (
-          <h1 className={`text-4xl md:text-6xl font-bold mb-4 ${textColorClass}`} style={textColorStyle}>
-            {title}
-          </h1>
-        )}
-        
-        {subtitle && (
-          <p className={`text-xl md:text-2xl mb-8 ${textColorClass} opacity-90`} style={textColorStyle}>
-            {subtitle}
-          </p>
-        )}
-        
-        {ctaButton && (
-          <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200">
-            {ctaButton.label}
-          </button>
-        )}
-      </div>
+        {/* Hero Content */}
+        <div className="relative">
+          {/* Render current hero item */}
+          {props.items && props.items.length > 0 && (
+            <ItemWidget
+              item={props.items[currentIndex]}
+              aspectRatio={props.aspectRatio}
+              customHeight={props.customHeight}
+              textAlign={style?.textAlign}
+              textColor={style?.textColor}
+              backgroundColor={style?.backgroundColor}
+              autoplay={!isAutoplayPaused}
+            />
+          )}
+          
+          {/* Carousel Navigation (only if multiple items) */}
+          {props.variant === 'carousel' && props.items && props.items.length > 1 && (
+            <>
+              {/* Navigation Arrows - only show if enabled */}
+              {props.showArrows && (
+                <>
+                  {/* Previous Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent block selection
+                      prevSlide();
+                    }} 
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
+                    aria-label="Previous slide"
+                    onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
+                    onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
+                  >
+                    <ArrowLeft size={20} />
+                  </button>
+                  
+                  {/* Next Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent block selection
+                      nextSlide();
+                    }} 
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
+                    aria-label="Next slide"
+                    onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
+                    onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
+                  >
+                    <ArrowRight size={20} />
+                  </button>
+                </>
+              )}
+              
+              {/* Dots Indicator */}
+              <div 
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
+                onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
+              >
+                {props.items.map((item, idx) => (
+                  <button
+                    key={`${item.id}-${idx}`}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent block selection
+                      setCurrentIndex(idx);
+                      if (props.autoplay) {
+                        setIsAutoplayPaused(true);
+                        setTimeout(() => {
+                          setIsAutoplayPaused(false);
+                        }, 1500);
+                      }
+                    }}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      idx === currentIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </BaseWidget>
     </div>
   );

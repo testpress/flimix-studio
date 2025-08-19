@@ -29,10 +29,17 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'hero',
         id,
-        props: HeroLibraryItem.defaultProps,
+        props: {
+          ...HeroLibraryItem.defaultProps,
+          items: HeroLibraryItem.defaultProps.items?.map(item => ({
+            ...item,
+            id: generateUniqueId(),
+          })) || []
+        },
         style: {
           padding: 'lg',
-          textAlign: 'center'
+          textAlign: 'left',
+          backgroundColor: '#000000'
         }
       };
 
