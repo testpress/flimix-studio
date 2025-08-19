@@ -20,11 +20,20 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
     selectedBlockId, 
     setSelectedBlockId,
     setSelectedBlock,
+    setSelectedItemId,
+    setSelectedItemBlockId,
     pageSchema 
   } = useSelection();
   const [visibilityContext, setVisibilityContext] = React.useState<VisibilityContext>(initialVisibilityContext);
 
   const handleBlockSelect = (block: Block) => {
+    // Only clear item selection if selecting a different block
+    // This allows users to select items within the same block
+    if (selectedBlockId !== block.id) {
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
+    }
+    
     setSelectedBlockId(block.id);
     setSelectedBlock(block);
   };

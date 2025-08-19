@@ -497,6 +497,10 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     
+    // Clear any previously selected item when selecting a newly duplicated block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
+    
     // Select the newly duplicated block
     setSelectedBlockId(duplicatedBlock.id);
     setSelectedBlock(duplicatedBlock);
@@ -602,6 +606,17 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const moveBlockItemDown = moveBlockItemRight;
 
   const selectArrayItem = (blockId: string, itemId: string): void => {
+    // First, ensure the parent block is selected
+    const { block } = findBlockAndParent(blockId, pageSchema.blocks);
+    if (block) {
+      setSelectedBlockId(blockId);
+      setSelectedBlock(block);
+      // Find and set the parent block ID if this block has a parent
+      const { parent } = findBlockAndParent(blockId, pageSchema.blocks);
+      setSelectedBlockParentId(parent?.id || null);
+    }
+    
+    // Then select the item
     setSelectedItemId(itemId);
     setSelectedItemBlockId(blockId);
   };

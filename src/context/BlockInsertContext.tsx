@@ -35,6 +35,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     setSelectedBlockId, 
     setSelectedBlock, 
     setSelectedBlockParentId,
+    setSelectedItemId,
+    setSelectedItemBlockId,
     activeTabId
   } = useSelection();
 
@@ -124,6 +126,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     updatePageWithHistory(updatedSchema);
     
+    // Clear any previously selected item when selecting a newly inserted block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
+    
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock);
@@ -180,6 +186,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     updatePageWithHistory(updatedSchema);
     
+    // Clear any previously selected item when selecting a newly inserted block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
+    
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock as BlockType);
@@ -232,6 +242,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     // Record state for undo
     updatePageWithHistory(updatedSchema);
+    
+    // Clear any previously selected item when selecting a newly inserted block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
@@ -332,6 +346,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     };
     
     updatePageWithHistory(updatedSchema);
+    
+    // Clear any previously selected item when selecting a newly inserted block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
     
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
