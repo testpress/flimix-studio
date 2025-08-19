@@ -393,7 +393,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         {/* Left Arrow */}
         {showArrows && canScrollLeft && (
           <button 
-            onClick={handleScrollLeft}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleScrollLeft();
+            }}
             className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-2 sm:mr-4 z-10"
           >
             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
@@ -426,7 +429,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         {/* Right Arrow */}
         {showArrows && canScrollRight && (
           <button 
-            onClick={handleScrollRight}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleScrollRight();
+            }}
             className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-2 sm:ml-4 z-10"
           >
             <ArrowRight size={16} className="sm:w-5 sm:h-5" />

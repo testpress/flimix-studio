@@ -366,7 +366,10 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             {/* Left Arrow */}
             {showArrows && canScrollLeft && (
               <button 
-                onClick={handleScrollLeft}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleScrollLeft();
+                }}
                 className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-4 z-10"
               >
                 <ArrowLeft size={20} />
@@ -451,7 +454,10 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             {/* Right Arrow */}
             {showArrows && canScrollRight && (
               <button 
-                onClick={handleScrollRight}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleScrollRight();
+                }}
                 className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-4 z-10"
               >
                 <ArrowRight size={20} />
