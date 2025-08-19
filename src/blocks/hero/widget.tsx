@@ -21,9 +21,32 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const { props, style } = block;
   const { title, subtitle, backgroundImage, ctaButton } = props;
   
-  const paddingClass = style?.padding === 'lg' ? 'p-12' : 
-                      style?.padding === 'md' ? 'p-8' : 
-                      style?.padding === 'sm' ? 'p-4' : 'p-6';
+  // Clean object maps for CSS classes (similar to badge-strip approach)
+  const paddingClass = { lg: 'p-12', md: 'p-8', sm: 'p-4', none: 'p-0' }[style?.padding ?? 'md'];
+  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
+  
+  // Custom box shadow styles for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg':
+        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
+      case 'md':
+        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
+      case 'sm':
+        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
+      case 'none':
+      default:
+        return 'none';
+    }
+  };
+  
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+  
+  // Get text alignment from block style, default to center
+  const textAlign = style?.textAlign || 'center';
+  const textAlignClass = textAlign === 'left' ? 'text-left' : 
+                         textAlign === 'right' ? 'text-right' : 'text-center';
   
   // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
@@ -36,30 +59,31 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   return (
-    <BaseWidget 
-      block={block} 
-      onSelect={onSelect} 
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      className={`relative rounded-lg overflow-hidden ${paddingClass} ${backgroundClass}`}
-      style={{
-        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-      }}
-    >
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget 
+        block={block} 
+        onSelect={onSelect} 
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        className={`relative ${borderRadiusClass} overflow-hidden ${paddingClass} ${marginClass} ${backgroundClass}`}
+        style={{
+          backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+        }}
+      >
       {/* Overlay for better text readability */}
       {backgroundImage && (
         <div className="absolute inset-0 bg-opacity-40"></div>
       )}
       
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
+      <div className={`relative z-10 max-w-4xl mx-auto ${textAlignClass}`}>
         {title && (
           <h1 className={`text-4xl md:text-6xl font-bold mb-4 ${textColorClass}`} style={textColorStyle}>
             {title}
@@ -78,7 +102,8 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
           </button>
         )}
       </div>
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

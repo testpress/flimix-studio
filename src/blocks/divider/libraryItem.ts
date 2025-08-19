@@ -12,4 +12,7 @@ export const DividerLibraryItem = {
     alignment: 'center',
     style: 'solid',
   } as DividerBlockProps,
+  defaultStyle: {
+    backgroundColor: '#ffffff',
+  },
 }; 

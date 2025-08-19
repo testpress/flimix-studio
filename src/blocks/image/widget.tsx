@@ -61,16 +61,22 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
     }
   };
 
-  // Get box shadow class
-  const getBoxShadowClass = () => {
-    switch (style?.boxShadow) {
-      case 'lg': return 'shadow-xl';
-      case 'md': return 'shadow-lg';
-      case 'sm': return 'shadow-md';
-      case 'none': return 'shadow-none';
-      default: return 'shadow-none';
+  // Custom box shadow styles for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg':
+        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
+      case 'md':
+        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
+      case 'sm':
+        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
+      case 'none':
+      default:
+        return 'none';
     }
   };
+  
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
 
   // Get image size classes
   const getSizeClasses = () => {
@@ -124,7 +130,6 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   const widgetClasses = [
     getBackgroundColor(),
     getBorderRadiusClass(),
-    getBoxShadowClass(),
     'w-full'
   ].filter(Boolean).join(' ');
 
@@ -186,7 +191,10 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
           <div className={`flex ${getAlignmentClasses()} w-full`}>
             {link ? (
               <a href={link} target="_blank" rel="noopener noreferrer" className="block">
-                <div className={`${imageContainerClasses} transition-transform duration-200 hover:scale-105`}>
+                <div 
+                  className={`${imageContainerClasses} transition-transform duration-200 hover:scale-105`}
+                  style={{ boxShadow: boxShadowStyle }}
+                >
                   <img
                     src={src}
                     alt={alt || ''}
@@ -196,7 +204,10 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
                 </div>
               </a>
             ) : (
-              <div className={imageContainerClasses}>
+              <div 
+                className={imageContainerClasses}
+                style={{ boxShadow: boxShadowStyle }}
+              >
                 <img 
                   src={src} 
                   alt={alt || ''} 

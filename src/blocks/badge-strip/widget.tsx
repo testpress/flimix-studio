@@ -54,7 +54,17 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
   const paddingClass = { lg: 'p-6', md: 'p-4', sm: 'p-2', none: 'p-0' }[style?.padding ?? 'md'];
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
-  const boxShadowClass = { lg: 'shadow-lg', md: 'shadow-md', sm: 'shadow-sm', none: 'shadow-none' }[style?.boxShadow ?? 'none'];
+  
+  // Handle box shadow - custom CSS values for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
+  };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
 
   // Icon mapping for rendering
   const iconMap: Record<string, React.ComponentType<any>> = {
@@ -95,31 +105,37 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
     const itemPaddingClass = { lg: 'p-4', md: 'p-3', sm: 'p-2', none: 'p-0' }[item.style?.padding ?? 'md'];
     const itemMarginClass = { lg: 'm-4', md: 'm-3', sm: 'm-2', none: 'm-0' }[item.style?.margin ?? 'sm'];
     const itemBorderRadiusClass = { lg: 'rounded-xl', md: 'rounded-lg', sm: 'rounded-md', none: 'rounded-none' }[item.style?.borderRadius ?? 'md'];
-    const itemBoxShadowClass = { lg: 'shadow-lg', md: 'shadow-md', sm: 'shadow-sm', none: 'shadow-none' }[item.style?.boxShadow ?? 'md'];
+    // Don't include shadow classes - will be handled by inline styles
     
-    return `${itemPaddingClass} ${itemMarginClass} ${itemBorderRadiusClass} ${itemBoxShadowClass}`;
+    return `${itemPaddingClass} ${itemMarginClass} ${itemBorderRadiusClass}`;
+  };
+  
+  // Helper function to get item box shadow styles
+  const getItemBoxShadowStyle = (item: BadgeStripItem) => {
+    return getBoxShadowStyle(item.style?.boxShadow ?? 'none');
   };
 
   // Check if we're at the item limit
   const isAtItemLimit = (items?.length || 0) >= BADGE_STRIP_ITEM_LIMIT;
 
   return (
-    <BaseWidget
-      block={block}
-      onSelect={onSelect}
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass}`}
-      style={{
-        backgroundColor: style?.backgroundColor || '#000000'
-      }}
-    >
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget
+        block={block}
+        onSelect={onSelect}
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass}`}
+        style={{
+          backgroundColor: style?.backgroundColor || '#000000'
+        }}
+      >
       <div className={`flex ${alignmentClass} flex-wrap gap-4`}>
         {items.map((item, index) => {
           const isItemSelected = isItemSelectedFromContext(block.id, item.id);
@@ -158,6 +174,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#000000',
                       color: item.style?.textColor || '#ffffff',
+                      boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
                     }}
                     onClick={(e) => {
                       e.preventDefault(); // Prevent page reload
@@ -183,6 +200,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#000000',
                       color: item.style?.textColor || '#ffffff',
+                      boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -208,7 +226,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
           <p className="text-xs text-gray-400">Click the + button above to add your first badge</p>
         </div>
       )}
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

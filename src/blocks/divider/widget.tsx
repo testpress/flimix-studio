@@ -39,7 +39,8 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
     dotted: 'border-dotted',
   };
 
-  const colorClass = style?.backgroundColor ? `border-[${style.backgroundColor}]` : 'border-gray-300';
+  // Use default gray border class, color will be applied via inline styles
+  const colorClass = 'border-gray-300';
 
   // Handle length styling
   const getLengthStyle = () => {
@@ -49,12 +50,19 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
     return 'w-full';
   };
 
-  // Get inline styles for percentage width
+  // Get inline styles for percentage width and color
   const getInlineStyles = () => {
+    const styles: React.CSSProperties = {};
+    
+    // Add percentage width if needed
     if (length === 'percentage' && percentageValue) {
-      return { width: `${percentageValue}%` };
+      styles.width = `${percentageValue}%`;
     }
-    return {};
+    
+    // Add border color - use custom color or default to white
+    styles.borderColor = style?.backgroundColor || '#ffffff';
+    
+    return styles;
   };
 
   return (

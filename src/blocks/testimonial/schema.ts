@@ -7,7 +7,7 @@ export const TESTIMONIAL_ITEM_LIMIT = 12;
 export type TestimonialLayout = 'carousel' | 'grid' | 'single';
 
 // Define item shape type
-export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';
+export type ItemShape = 'square' | 'circle';
 
 // Define item size type for carousel
 export type ItemSize = 'small' | 'medium' | 'large' | 'extra-large';

@@ -58,28 +58,20 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
     lg: '1.5rem',
   };
 
-  const boxShadowMap = {
-    none: 'none',
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  // Handle box shadow - custom CSS values for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
   };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
 
-  const paddingMap = {
-    sm: '0.75rem',
-    md: '1rem',
-    lg: '1.5rem',
-  };
+  // Box shadow is now applied to wrapper div for better selection ring visibility
 
-  // Build complete style object for BaseWidget
-  const widgetStyle: React.CSSProperties = {
-    backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-    color: isHexColor ? style.textColor : undefined,
-    borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
-    margin: style?.margin ? marginMap[style.margin] : undefined,
-    boxShadow: style?.boxShadow ? boxShadowMap[style.boxShadow] : undefined,
-    maxWidth: style?.maxWidth || undefined,
-  };
+  // Padding is now controlled by itemSize prop for consistent sizing
 
   // Alignment classes - use style.textAlign from shared StyleForm
   const alignmentClasses = {
@@ -117,10 +109,8 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
       style: {
         backgroundColor: '#1f2937',
         textColor: '#ffffff',
-        padding: 'md' as const,
         margin: 'sm' as const,
         borderRadius: 'md' as const,
-        boxShadow: 'md' as const,
       }
     };
     const newId = addBlockItem(block.id, defaultItem);
@@ -135,20 +125,27 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   const isAtItemLimit = (items?.length || 0) >= FEATURE_CALLOUT_ITEM_LIMIT;
 
   return (
-    <BaseWidget 
-      block={block} 
-      onSelect={onSelect} 
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-      className={`relative ${backgroundClass}`}
-      style={widgetStyle}
-    >
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget 
+        block={block} 
+        onSelect={onSelect} 
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+        className={`relative ${backgroundClass}`}
+        style={{
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          color: isHexColor ? style.textColor : undefined,
+          borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
+          margin: style?.margin ? marginMap[style.margin] : undefined,
+          maxWidth: style?.maxWidth || undefined,
+        }}
+      >
       <div className={`${alignmentClasses[style?.textAlign || 'center']} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
         {/* Title */}
         {title && (
@@ -172,10 +169,10 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
               const itemStyle: React.CSSProperties = {
                 backgroundColor: item.style?.backgroundColor || undefined,
                 color: item.style?.textColor || undefined,
-                padding: item.style?.padding ? paddingMap[item.style.padding] : undefined,
+                // Don't override padding with inline styles - let itemSize control it
                 margin: item.style?.margin ? marginMap[item.style.margin] : undefined,
                 borderRadius: item.style?.borderRadius ? borderRadiusMap[item.style.borderRadius] : undefined,
-                boxShadow: item.style?.boxShadow ? boxShadowMap[item.style.boxShadow] : undefined,
+                boxShadow: getBoxShadowStyle(item.style?.boxShadow ?? 'none'),
               };
 
               // Handle item text color
@@ -187,7 +184,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
               return (
                 <div 
                   key={item.id} 
-                  className={`relative rounded-lg shadow-md ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 hover:shadow-lg cursor-pointer group ${
+                  className={`relative rounded-lg ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 cursor-pointer group ${
                     isSelected 
                       ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white' 
                       : ''
@@ -241,7 +238,8 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
           </div>
         )}
       </div>
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

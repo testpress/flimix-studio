@@ -43,7 +43,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: SectionLibraryItem.defaultProps,
         style: {
           padding: 'md',
-          backgroundColor: '#f8f9fa'
+          backgroundColor: '#000000'
         },
         children: []
       };
@@ -106,7 +106,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         id,
         props: DividerLibraryItem.defaultProps,
         style: {
-          backgroundColor: '#000000',
+          backgroundColor: '#ffffff',
           margin: 'sm'
         }
       };
@@ -183,7 +183,7 @@ export function createBlock(type: BlockType['type']): BlockType {
           tabAlignment: 'left',
           tabStyle: 'pill',
           padding: 'md',
-          backgroundColor: '#ffffff'
+          backgroundColor: '#000000'
         }
       };
 

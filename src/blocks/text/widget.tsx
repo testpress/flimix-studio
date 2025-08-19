@@ -21,10 +21,27 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   const { props, style } = block;
   const { content } = props;
   
-  const paddingClass = style?.padding === 'lg' ? 'p-8' : 
-                      style?.padding === 'md' ? 'p-6' : 
-                      style?.padding === 'sm' ? 'p-4' : 
-                      style?.padding === 'none' ? 'p-0' : 'p-6';
+  // Clean object maps for CSS classes (similar to other blocks)
+  const paddingClass = { lg: 'p-8', md: 'p-6', sm: 'p-4', none: 'p-0' }[style?.padding ?? 'md'];
+  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
+  
+  // Custom box shadow styles for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg':
+        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
+      case 'md':
+        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
+      case 'sm':
+        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
+      case 'none':
+      default:
+        return 'none';
+    }
+  };
+  
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
   
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
@@ -41,6 +58,30 @@ const TextWidget: React.FC<TextWidgetProps> = ({
 
   if (!content) {
     return (
+      <div style={{ boxShadow: boxShadowStyle }}>
+        <BaseWidget 
+          block={block} 
+          onSelect={onSelect} 
+          isSelected={isSelected}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+          className={`${paddingClass} ${marginClass} ${borderRadiusClass} bg-gray-50 border-2 border-dashed border-gray-300`}
+          style={{
+            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          }}
+        >
+          <p className="text-gray-500 text-center">No content provided</p>
+        </BaseWidget>
+      </div>
+    );
+  }
+
+    return (
+    <div style={{ boxShadow: boxShadowStyle }}>
       <BaseWidget 
         block={block} 
         onSelect={onSelect} 
@@ -51,34 +92,18 @@ const TextWidget: React.FC<TextWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} bg-gray-50 rounded-lg border-2 border-dashed border-gray-300`}
-        style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        style={{
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+        }}
       >
-        <p className="text-gray-500 text-center">No content provided</p>
+        <div className={`${textAlignClass}`}>
+          <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
+            {content}
+          </p>
+        </div>
       </BaseWidget>
-    );
-  }
-
-  return (
-    <BaseWidget 
-      block={block} 
-      onSelect={onSelect} 
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
-      style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-    >
-      <div className={`${textAlignClass}`}>
-        <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
-          {content}
-        </p>
-      </div>
-    </BaseWidget>
+    </div>
   );
 };
 

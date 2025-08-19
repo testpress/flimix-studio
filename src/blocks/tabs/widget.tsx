@@ -44,9 +44,21 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
                            style?.borderRadius === 'md' ? 'rounded-md' : 
                            style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  const boxShadowClass = style?.boxShadow === 'lg' ? 'shadow-lg' : 
-                        style?.boxShadow === 'md' ? 'shadow-md' : 
-                        style?.boxShadow === 'sm' ? 'shadow-sm' : '';
+  // Handle background color - default to black
+  const hasCustomBackground = !!style?.backgroundColor;
+  const defaultBackgroundClass = 'bg-black';
+  const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
+  
+  // Handle box shadow - custom CSS values for better visibility
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
+  };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
   
   // State for currently selected tab - use activeTabId from context if available, otherwise use first tab
   const [selectedTab, setSelectedTab] = useState(() => activeTabId || tabs[0]?.id);
@@ -196,9 +208,9 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} border-2 border-dashed border-gray-300 bg-black`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} border-2 border-dashed border-gray-300 ${backgroundClass}`}
         style={{
-          backgroundColor: style?.backgroundColor,
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
           maxWidth: style?.maxWidth,
         }}
       >
@@ -208,28 +220,34 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   }
 
   return (
-    <BaseWidget 
-      block={block} 
-      onSelect={handleSelect}
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-              className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} bg-black border border-gray-200`}
-    >
-      <div className="flex flex-col">
-        {/* Tab Navigation */}
-        {tabNavigation}
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget 
+        block={block} 
+        onSelect={handleSelect}
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        style={{
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          maxWidth: style?.maxWidth,
+        }}
+      >
+        <div className="flex flex-col">
+          {/* Tab Navigation */}
+          {tabNavigation}
 
-        {/* Tab Content */}
-        <div className="flex-1 mt-4">
-          {tabContent}
+          {/* Tab Content */}
+          <div className="flex-1 mt-4">
+            {tabContent}
+          </div>
         </div>
-      </div>
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

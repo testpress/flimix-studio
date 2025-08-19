@@ -101,12 +101,16 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     lg: '1.5rem',
   };
 
-  const boxShadowMap = {
-    none: 'none',
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  // Handle box shadow - custom CSS values for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
   };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
 
   const itemPaddingMap = {
     sm: '0.75rem',
@@ -126,26 +130,26 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     color: isHexColor ? style.textColor : undefined,
     borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
     margin: style?.margin ? marginMap[style.margin] : undefined,
-    boxShadow: style?.boxShadow ? boxShadowMap[style.boxShadow] : undefined,
     maxWidth: style?.maxWidth || undefined,
   };
 
   if (!items || items.length === 0) {
     return (
-      <BaseWidget 
-        block={block} 
-        onSelect={onSelect} 
-        isSelected={isSelected}
-        canMoveUp={canMoveUp}
-        canMoveDown={canMoveDown}
-        onMoveUp={onMoveUp}
-        onMoveDown={onMoveDown}
-        onDuplicate={onDuplicate}
-        onRemove={onRemove}
-        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-        className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
-        style={widgetStyle}
-      >
+      <div style={{ boxShadow: boxShadowStyle }}>
+        <BaseWidget 
+          block={block} 
+          onSelect={onSelect} 
+          isSelected={isSelected}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+          onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+          className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
+          style={widgetStyle}
+        >
         <div className="faq-accordion">
           {title && (
             <h3 
@@ -161,25 +165,27 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
             <p className="text-sm">Click the + button to add your first FAQ (max {FAQ_ACCORDION_ITEM_LIMIT} items)</p>
           </div>
         </div>
-      </BaseWidget>
+        </BaseWidget>
+      </div>
     );
   }
 
   return (
-    <BaseWidget 
-      block={block} 
-      onSelect={onSelect} 
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-      className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
-      style={widgetStyle}
-    >
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget 
+        block={block} 
+        onSelect={onSelect} 
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+        className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
+        style={widgetStyle}
+      >
       <div className="faq-accordion">
         {title && (
           <h3 
@@ -199,17 +205,23 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
               padding: item.style?.padding ? itemPaddingMap[item.style.padding] : undefined,
               margin: item.style?.margin ? itemMarginMap[item.style.margin] : undefined,
               borderRadius: item.style?.borderRadius ? borderRadiusMap[item.style.borderRadius] : undefined,
+              boxShadow: getBoxShadowStyle(item.style?.boxShadow ?? 'none'),
             };
 
+            const isSelected = isItemSelected(block.id, item.id);
             return (
               <div 
                 key={item.id} 
                 className={`
                   border border-gray-700 overflow-hidden relative group
-                  ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''}
+                  ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''}
                   cursor-pointer
                 `}
-                style={itemStyle}
+                style={{
+                  ...itemStyle,
+                  // Remove box shadow when selected to let selection ring show
+                  boxShadow: isSelected ? undefined : itemStyle.boxShadow,
+                }}
                 onClick={(e) => handleQuestionClick(e, item.id, index)}
               >
                 <div 
@@ -266,7 +278,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
           })}
         </div>
       </div>
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

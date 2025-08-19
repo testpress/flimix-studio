@@ -67,6 +67,25 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
                       style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
                       style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
   
+  const marginClass = style?.margin === 'lg' ? 'm-8' : 
+                     style?.margin === 'md' ? 'm-6' : 
+                     style?.margin === 'sm' ? 'm-4' : 'm-0';
+  
+  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
+                           style?.borderRadius === 'md' ? 'rounded-md' : 
+                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+  
+  // Handle box shadow - custom CSS values for better visibility
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
+  };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+  
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
 
@@ -80,28 +99,17 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
-  // Gap class mapping for better maintainability
+  // Gap class mapping for better maintainability - reduced sizes
   const GAP_CLASSES: Record<string, string> = {
-    'sm': 'space-x-3 sm:space-x-4',
-    'md': 'space-x-4 sm:space-x-6',
-    'lg': 'space-x-6 sm:space-x-8',
+    'sm': 'space-x-2 sm:space-x-3',
+    'md': 'space-x-3 sm:space-x-4',
+    'lg': 'space-x-4 sm:space-x-6',
   };
 
   const getGapClass = () => {
     return GAP_CLASSES[style?.gridGap || 'md'] || GAP_CLASSES['md'];
   };
 
-  // Item shape class mapping for better maintainability
-  const ITEM_SHAPE_CLASSES: Record<string, string> = {
-    'rectangle-landscape': 'aspect-[16/9]',
-    'rectangle-portrait': 'aspect-[2/3]',
-    'square': 'aspect-square',
-    'circle': 'aspect-square rounded-full',
-  };
-
-  const getItemShapeClass = () => {
-    return ITEM_SHAPE_CLASSES[itemShape] || ITEM_SHAPE_CLASSES['circle'];
-  };
 
   // Calculate dynamic scroll amount based on item width and gap
   const getScrollAmount = (): number => {
@@ -344,7 +352,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             <img 
               src={item.image} 
               alt={item.name || 'Customer'} 
-              className={`${getItemShapeClass()} w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4`}
+              className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4 ${
+                itemShape === 'circle' ? 'rounded-full' : 
+                itemShape === 'square' ? 'rounded-md' : 
+                itemShape === 'rectangle-portrait' ? 'rounded-md' : 
+                'rounded-md'
+              }`}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
@@ -463,11 +476,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     const getGapClass = () => {
       switch (style?.gridGap) {
         case 'sm':
-          return 'gap-3 sm:gap-4';
+          return 'gap-2 sm:gap-3';
         case 'lg':
-          return 'gap-6 sm:gap-8';
-        default: // md
           return 'gap-4 sm:gap-6';
+        default: // md
+          return 'gap-3 sm:gap-4';
       }
     };
 
@@ -490,47 +503,57 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
   if (!items || items.length === 0) {
     return (
-      <BaseWidget 
-        block={block} 
-        onSelect={onSelect} 
-        isSelected={isSelected}
-        canMoveUp={canMoveUp}
-        canMoveDown={canMoveDown}
-        onMoveUp={onMoveUp}
-        onMoveDown={onMoveDown}
-        onDuplicate={onDuplicate}
-        onRemove={onRemove}
-        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-        className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
-        style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-      >
-        <div className={`${textAlignClass}`}>
-          {title && (
-            <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
-              {title}
-            </h2>
-          )}
-          <p className="text-gray-500 text-center text-sm sm:text-base">No testimonials added</p>
+      <div className={marginClass}>
+        <div style={{ boxShadow: boxShadowStyle }}>
+          <BaseWidget 
+            block={block} 
+            onSelect={onSelect} 
+            isSelected={isSelected}
+            canMoveUp={canMoveUp}
+            canMoveDown={canMoveDown}
+            onMoveUp={onMoveUp}
+            onMoveDown={onMoveDown}
+            onDuplicate={onDuplicate}
+            onRemove={onRemove}
+            onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+            className={`${paddingClass} ${borderRadiusClass} ${backgroundClass}`}
+            style={{
+              backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
+            }}
+          >
+            <div className={`${textAlignClass}`}>
+              {title && (
+                <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
+                  {title}
+                </h2>
+              )}
+              <p className="text-gray-500 text-center text-sm sm:text-base">No testimonials added</p>
+            </div>
+          </BaseWidget>
         </div>
-      </BaseWidget>
+      </div>
     );
   }
 
   return (
-    <BaseWidget
-      block={block}
-      onSelect={onSelect}
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-      className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
-      style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-    >
+    <div className={marginClass}>
+      <div style={{ boxShadow: boxShadowStyle }}>
+        <BaseWidget
+          block={block}
+          onSelect={onSelect}
+          isSelected={isSelected}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+          onAddItem={!isAtItemLimit ? handleAddItem : undefined}
+          className={`${paddingClass} ${borderRadiusClass} ${backgroundClass}`}
+          style={{
+            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
+          }}
+        >
       <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
         {title && (
           <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 ${textColorClass}`} style={textColorStyle}>
@@ -542,7 +565,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         {layout === 'grid' && renderGrid()}
         {layout === 'single' && renderSingle()}
       </div>
-    </BaseWidget>
+        </BaseWidget>
+      </div>
+    </div>
   );
 };
 

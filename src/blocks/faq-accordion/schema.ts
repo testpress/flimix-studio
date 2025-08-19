@@ -15,6 +15,7 @@ export interface FAQAccordionItem {
     padding?: 'sm' | 'md' | 'lg';
     margin?: 'sm' | 'md' | 'lg';
     borderRadius?: 'none' | 'sm' | 'md' | 'lg';
+    boxShadow?: 'none' | 'sm' | 'md' | 'lg';
   };
 }
 

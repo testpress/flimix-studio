@@ -29,6 +29,25 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
   
+  const marginClass = style?.margin === 'lg' ? 'm-8' : 
+                     style?.margin === 'md' ? 'm-6' : 
+                     style?.margin === 'sm' ? 'm-4' : 'm-0';
+  
+  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
+                           style?.borderRadius === 'md' ? 'rounded-md' : 
+                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+  
+  // Handle box shadow - custom CSS values for better visibility
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg': return '0 20px 25px -5px rgba(255, 255, 255, 0.3), 0 10px 10px -5px rgba(255, 255, 255, 0.2)';
+      case 'md': return '0 10px 15px -3px rgba(255, 255, 255, 0.3), 0 4px 6px -2px rgba(255, 255, 255, 0.2)';
+      case 'sm': return '0 4px 6px -1px rgba(255, 255, 255, 0.3), 0 2px 4px -1px rgba(255, 255, 255, 0.2)';
+      default: return undefined;
+    }
+  };
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+  
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
 
@@ -123,6 +142,36 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
 
   if (!items || items.length === 0) {
     return (
+      <div style={{ boxShadow: boxShadowStyle }}>
+        <BaseWidget 
+          block={block} 
+          onSelect={onSelect} 
+          isSelected={isSelected}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+          onAddItem={handleAddItem}
+          className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+          style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
+        >
+          <div className={`${textAlignClass}`}>
+            {title && (
+              <h2 className={`text-xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
+                {title}
+              </h2>
+            )}
+            <p className="text-gray-500 text-center">No posters added</p>
+          </div>
+        </BaseWidget>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ boxShadow: boxShadowStyle }}>
       <BaseWidget 
         block={block} 
         onSelect={onSelect} 
@@ -134,36 +183,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         onDuplicate={onDuplicate}
         onRemove={onRemove}
         onAddItem={handleAddItem}
-        className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
       >
-        <div className={`${textAlignClass}`}>
-          {title && (
-            <h2 className={`text-xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
-              {title}
-            </h2>
-          )}
-          <p className="text-gray-500 text-center">No posters added</p>
-        </div>
-      </BaseWidget>
-    );
-  }
-
-  return (
-    <BaseWidget 
-      block={block} 
-      onSelect={onSelect} 
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      onAddItem={handleAddItem}
-      className={`${paddingClass} ${backgroundClass} rounded-lg shadow-sm`}
-      style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
-    >
       <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
         {title && (
           <h2 className={`text-xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
@@ -212,7 +234,8 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           ))}
         </div>
       </div>
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

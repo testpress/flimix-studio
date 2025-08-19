@@ -3,7 +3,7 @@ import type { Block } from '@blocks/shared/Block';
 export interface CTAButtonBlockProps {
   label: string;
   link: string;
-  variant?: 'solid' | 'outline' | 'ghost';
+  variant?: 'solid' | 'outline';
   size?: 'sm' | 'md' | 'lg';
 }
 

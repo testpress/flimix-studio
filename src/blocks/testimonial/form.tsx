@@ -281,8 +281,6 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
               onChange={e => updateProps({ ...testimonialProps, itemShape: e.target.value as ItemShape })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
-              <option value="rectangle-landscape">Landscape</option>
-              <option value="rectangle-portrait">Portrait</option>
               <option value="square">Square</option>
               <option value="circle">Circle</option>
             </select>

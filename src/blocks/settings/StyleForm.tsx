@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps, Theme, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@blocks/shared/Style';
+import type { StyleProps, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@blocks/shared/Style';
 
 interface StyleFormProps {
   style: StyleProps;
@@ -15,20 +15,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     });
   };
 
-  // Helper function to render Theme field
-  const renderThemeField = () => (
-    <div>
-      <label className="block text-sm text-gray-700 mb-1">Theme</label>
-      <select
-        value={style.theme || 'light'}
-        onChange={(e) => handleStyleChange('theme', e.target.value as Theme)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
-      >
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
-  );
 
   // Helper function to render Padding field
   const renderPaddingField = () => (
@@ -108,6 +94,20 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     </div>
   );
 
+  // Helper function to render Color field (for divider blocks)
+  const renderColorField = () => (
+    <div>
+      <label className="block text-sm text-gray-700 mb-1">Color</label>
+      <input
+        type="color"
+        value={style.backgroundColor || '#000000'}
+        onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
+        className="w-full h-10 border border-gray-300 rounded text-sm"
+      />
+    </div>
+  );
+
+
   // Helper function to render Border Radius field
   const renderBorderRadiusField = () => (
     <div>
@@ -139,20 +139,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
         <option value="md">Medium</option>
         <option value="lg">Large</option>
       </select>
-    </div>
-  );
-
-  // Helper function to render Max Width field
-  const renderMaxWidthField = () => (
-    <div>
-      <label className="block text-sm text-gray-700 mb-1">Max Width</label>
-      <input
-        type="text"
-        value={style.maxWidth || ''}
-        onChange={(e) => handleStyleChange('maxWidth', e.target.value)}
-        placeholder="e.g., 1200px, 100%"
-        className="w-full p-2 border border-gray-300 rounded text-sm"
-      />
     </div>
   );
 
@@ -192,7 +178,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   const getFieldsToRender = (blockType?: string) => {
     // Define field groups for different styling needs
     const allFields = [
-      renderThemeField(),
       renderPaddingField(),
       renderMarginField(),
       renderTextAlignField(),
@@ -200,7 +185,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       renderTextColorField(),
       renderBorderRadiusField(),
       renderBoxShadowField(),
-      renderMaxWidthField(),
     ];
 
     const layoutOnlyFields = [
@@ -243,12 +227,28 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           renderTextAlignField(),
           renderTextColorField(),
         ];
-        case 'badge-strip':
-          // Badge strip blocks: show layout, visual styling, and alignment options
-          return [
-            ...layoutOnlyFields,
-            renderTextAlignField(),
-          ];
+      case 'badge-strip':
+        // Badge strip blocks: show layout, visual styling, and alignment options
+        return [
+          ...layoutOnlyFields,
+          renderTextAlignField(),
+        ];
+      
+      case 'divider':
+        // Divider blocks: only show color option
+        return [
+          renderColorField(),
+        ];
+      case 'footer':
+        return [
+          renderPaddingField(),
+          renderMarginField(),
+          renderBackgroundColorField(),
+          renderTextAlignField(),
+          renderTextColorField(),
+          renderBorderRadiusField(),
+        ];
+      
       case 'faq-accordion':
       case 'testimonial':
       case 'featureCallout':
@@ -256,7 +256,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       case 'text':
       case 'posterGrid':
       case 'carousel':
-      case 'footer':
       case 'cta-button':
         // Standard blocks: show all options
         return allFields;

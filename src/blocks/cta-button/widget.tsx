@@ -33,8 +33,6 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
     switch (variant) {
       case 'outline': 
         return 'border-2 border-current bg-transparent';
-      case 'ghost': 
-        return 'bg-transparent';
       default: // solid
         return 'shadow-sm';
     }
@@ -44,7 +42,22 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
   const paddingClass = { lg: 'p-6', md: 'p-4', sm: 'p-2', none: 'p-0' }[style?.padding ?? 'md'];
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
-  const boxShadowClass = { lg: 'shadow-lg', md: 'shadow-md', sm: 'shadow-sm', none: 'shadow-none' }[style?.boxShadow ?? 'none'];
+  // Custom box shadow styles for better visibility on dark backgrounds
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg':
+        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
+      case 'md':
+        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
+      case 'sm':
+        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
+      case 'none':
+      default:
+        return 'none';
+    }
+  };
+  
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
 
   return (
     <BaseWidget
@@ -57,15 +70,16 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
       onMoveDown={onMoveDown}
       onDuplicate={onDuplicate}
       onRemove={onRemove}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass}`}
+      className={`${paddingClass} ${marginClass} ${borderRadiusClass}`}
     >
       <div className={`flex ${getAlignmentClass()}`}>
         <a
           href={link}
           className={`inline-block ${getSizeClasses()} ${getVariantClasses()} font-medium ${borderRadiusClass} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
           style={{
-            backgroundColor: (variant === 'solid' && !style?.backgroundColor) ? '#000000' : style?.backgroundColor,
+            backgroundColor: (variant === 'solid' && !style?.backgroundColor) ? '#1f2937' : style?.backgroundColor,
             color: (variant === 'solid' && !style?.textColor) ? '#ffffff' : style?.textColor,
+            boxShadow: boxShadowStyle,
           }}
         >
           {label}

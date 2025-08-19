@@ -43,9 +43,27 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
                            style?.borderRadius === 'md' ? 'rounded-md' : 
                            style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  const boxShadowClass = style?.boxShadow === 'lg' ? 'shadow-lg' : 
-                        style?.boxShadow === 'md' ? 'shadow-md' : 
-                        style?.boxShadow === 'sm' ? 'shadow-sm' : '';
+  // Custom box shadow styles for better visibility on any background
+  const getBoxShadowStyle = (shadowType: string | undefined) => {
+    switch (shadowType) {
+      case 'lg':
+        return '0 35px 60px -12px rgba(255, 255, 255, 0.25), 0 20px 25px -5px rgba(255, 255, 255, 0.1)';
+      case 'md':
+        return '0 20px 25px -5px rgba(255, 255, 255, 0.15), 0 10px 10px -5px rgba(255, 255, 255, 0.08)';
+      case 'sm':
+        return '0 10px 15px -3px rgba(255, 255, 255, 0.12), 0 4px 6px -2px rgba(255, 255, 255, 0.06)';
+      case 'none':
+      default:
+        return 'none';
+    }
+  };
+  
+  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+
+  // Handle background color - default to black
+  const hasCustomBackground = !!style?.backgroundColor;
+  const defaultBackgroundClass = 'bg-white';
+  const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Handle text color - default to white text
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
@@ -57,18 +75,22 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   };
 
   return (
-    <BaseWidget 
-      block={block} 
-      onSelect={handleSelect}
-      isSelected={isSelected}
-      canMoveUp={canMoveUp}
-      canMoveDown={canMoveDown}
-      onMoveUp={onMoveUp}
-      onMoveDown={onMoveDown}
-      onDuplicate={onDuplicate}
-      onRemove={onRemove}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${boxShadowClass} bg-black`}
-    >
+    <div style={{ boxShadow: boxShadowStyle }}>
+      <BaseWidget 
+        block={block} 
+        onSelect={handleSelect}
+        isSelected={isSelected}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        onDuplicate={onDuplicate}
+        onRemove={onRemove}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        style={{
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+        }}
+      >
       {/* Section header */}
       {(title || description) && (
         <div className={`mb-6 ${textAlignClass}`}>
@@ -108,7 +130,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           <p className="text-gray-300 text-center">No content blocks in this section</p>
         </div>
       )}
-    </BaseWidget>
+      </BaseWidget>
+    </div>
   );
 };
 

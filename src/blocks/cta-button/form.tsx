@@ -13,7 +13,6 @@ const ctaButtonFields: Field[] = [
     options: [
       { value: 'solid', label: 'Solid' },
       { value: 'outline', label: 'Outline' },
-      { value: 'ghost', label: 'Ghost' },
     ],
   },
   {
