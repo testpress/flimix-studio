@@ -7,8 +7,8 @@ import { useSelection } from '@context/SelectionContext';
 
 const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo } = useHistory();
-  const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
-  const { isSettingsOpen, toggleSettings } = useSettingsPanel();
+  const { isLibraryOpen, toggleLibrary, closeLibrary } = useLibraryPanel();
+  const { isSettingsOpen, toggleSettings, closeSettings } = useSettingsPanel();
   const { setSelectedBlock, setSelectedBlockId, setSelectedItemId, setSelectedItemBlockId } = useSelection();
 
   const handleSettingsToggle = () => {
@@ -17,8 +17,21 @@ const TopBar: React.FC = () => {
       setSelectedBlockId(null);
       setSelectedItemId(null);
       setSelectedItemBlockId(null);
+    } else {
+      closeLibrary();
     }
     toggleSettings();
+  };
+
+  const handleLibraryToggle = () => {
+    if (!isLibraryOpen) {
+      closeSettings();
+      setSelectedBlock(null);
+      setSelectedBlockId(null);
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
+    }
+    toggleLibrary();
   };
 
   return (
@@ -27,7 +40,7 @@ const TopBar: React.FC = () => {
         <div className="flex items-center space-x-3">
           <h1 className="text-xl font-bold">Flimix Studio</h1>
           <button 
-            onClick={toggleLibrary}
+            onClick={handleLibraryToggle}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLibraryOpen ? "Close block library" : "Open block library"}
           >
