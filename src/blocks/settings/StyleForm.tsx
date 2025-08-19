@@ -54,7 +54,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   const renderTextAlignField = () => (
     <div>
       <label className="block text-sm text-gray-700 mb-1">
-        {blockType === 'cta-button' || blockType === 'badge-strip' ? 'Alignment' : 'Text Alignment'}
+        {blockType === 'cta-button' || blockType === 'badge-strip' || blockType === 'hero' ? 'Alignment' : 'Text Alignment'}
       </label>
       <select
         value={style.textAlign || 'left'}
@@ -249,10 +249,16 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           renderBorderRadiusField(),
         ];
       
+      case 'hero':
+        return [
+        renderMarginField(),
+        renderBackgroundColorField(),
+        renderTextAlignField(),
+        renderTextColorField(),
+      ];
       case 'faq-accordion':
       case 'testimonial':
       case 'featureCallout':
-      case 'hero':
       case 'text':
       case 'posterGrid':
       case 'carousel':

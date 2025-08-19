@@ -274,8 +274,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
   };
 
   return (
-    <div className={`${isSettingsOpen ? 'w-[22rem] bg-white border-l border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 transition-all duration-300 ease-in-out overflow-hidden`}>
-      <div className={`${isSettingsOpen ? 'p-6' : 'p-0'} min-w-0 h-full min-h-0 flex flex-col`}>
+    <div className={`${isSettingsOpen ? 'w-[28rem] bg-white border-l border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 transition-all duration-300 ease-in-out overflow-hidden`}>
+      <div className={`${isSettingsOpen ? 'p-8' : 'p-0'} min-w-0 h-full min-h-0 flex flex-col`}>
         <div className="mb-6 flex-shrink-0">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Block Settings</h2>
           <div className="flex items-center justify-between mb-4">

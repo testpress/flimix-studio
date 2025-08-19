@@ -6,13 +6,43 @@ export interface HeroBlock extends Omit<Block, 'props'> {
   props: HeroBlockProps;
 }
 
-// Hero block props interface
-export interface HeroBlockProps {
+export interface HeroItem {
+  id: string;
   title?: string;
   subtitle?: string;
   backgroundImage?: string;
-  ctaButton?: {
-    label: string;
-    link: string;
-  };
-} 
+  videoBackground?: string;
+  metadata?: HeroMetadata;
+  badges?: HeroBadge[];
+  primaryCTA?: HeroCTABtn;
+  secondaryCTAs?: HeroCTABtn[];
+}
+
+
+export interface HeroBlockProps {
+  variant?: 'single' | 'carousel';
+  aspectRatio?: '16:9' | 'auto' | 'custom';
+  customHeight?: string; // Height value in pixels for custom aspect ratio (e.g., '600px')
+  items: HeroItem[];
+  showArrows?: boolean;
+  autoplay?: boolean;
+  scrollSpeed?: number; // in milliseconds
+}
+export interface HeroCTABtn {
+  label: string;
+  link: string;
+  variant?: 'solid' | 'outline';
+  backgroundColor?: string;
+  textColor?: string;
+  icon?: string;
+}
+
+export interface HeroMetadata {
+  year?: string;
+  seasons?: string;
+  language?: string;
+}
+
+export interface HeroBadge {
+  label: string;
+}
