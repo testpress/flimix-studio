@@ -105,7 +105,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         )}
 
         {/* Content container with relative positioning for proper layering */}
-        <div className="relative z-10">
+        <div className="relative z-10 w-full">
           {/* Section header */}
           {(title || description) && (
             <div className={`mb-6 ${textAlignClass}`}>
@@ -124,9 +124,9 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           
           {/* Render nested children */}
           {children && children.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-0 w-full">
               {children.map((childBlock) => (
-                <div key={childBlock.id}>
+                <div key={childBlock.id} className="w-full">
                   <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
                   <BlockRenderer 
                     block={childBlock} 

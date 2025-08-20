@@ -146,7 +146,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
           maxWidth: style?.maxWidth || undefined,
         }}
       >
-      <div className={`${alignmentClasses[style?.textAlign || 'center']} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
+      <div className={`w-full ${alignmentClasses[style?.textAlign || 'center']} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
         {/* Title */}
         {title && (
           <h2 className={`text-3xl md:text-4xl font-bold mb-2 ${textColorClass}`} style={textColorStyle}>
@@ -214,7 +214,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
                   
                   {/* Description */}
                   {showDescriptions && item.description && (
-                    <p className={`text-sm leading-relaxed ${itemTextColorClass}`} style={itemTextColorStyle}>
+                    <p className={`text-sm leading-relaxed ${itemTextColorClass}`} style={textColorStyle}>
                       {item.description}
                     </p>
                   )}

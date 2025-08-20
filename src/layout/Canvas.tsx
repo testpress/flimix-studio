@@ -39,9 +39,9 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
   };
 
   return (
-    <div className="flex-1 bg-black p-6">
-      <div className="bg-black rounded-lg shadow-lg p-8 min-h-[600px]">
-        <div className="mb-6">
+    <div className="flex-1 bg-black">
+      <div className="bg-black min-h-[600px]">
+        <div className="mb-6 px-6 pt-6">
           <div className="flex flex-col gap-4 mb-4">
             <h2 className="text-2xl font-semibold text-white">
               {pageSchema.title}
@@ -127,8 +127,10 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
                     isSubscribed: e.target.value === 'true'
                   }))}
                 >
-                  <option value="true">Subscribed User</option>
-                  <option value="false">Unsubscribed User</option>
+                  <option value="all">All Tiers</option>
+                  <option value="basic">Basic</option>
+                  <option value="premium">Premium</option>
+                  <option value="vip">VIP</option>
                 </select>
               </div>
             </div>
@@ -146,23 +148,23 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               </>
             )}
           </div>
-          
-          <div className="space-y-6">
-            {pageSchema.blocks.map((block: Block) => (
-              <div key={block.id}>
-                <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
-                <BlockRenderer 
-                  block={block} 
-                  showDebug={showDebug} 
-                  visibilityContext={visibilityContext}
-                  onSelect={handleBlockSelect}
-                  isSelected={selectedBlockId === block.id}
-                  selectedBlockId={selectedBlockId}
-                />
-                <BlockInsertDropdown position="below" blockId={block.id} visibilityContext={visibilityContext} />
-              </div>
-            ))}
-          </div>
+        </div>
+        
+        <div className="space-y-0 px-6">
+          {pageSchema.blocks.map((block: Block) => (
+            <div key={block.id}>
+              <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
+              <BlockRenderer 
+                block={block} 
+                showDebug={showDebug} 
+                visibilityContext={visibilityContext}
+                onSelect={handleBlockSelect}
+                isSelected={selectedBlockId === block.id}
+                selectedBlockId={selectedBlockId}
+              />
+              <BlockInsertDropdown position="below" blockId={block.id} visibilityContext={visibilityContext} />
+            </div>
+          ))}
         </div>
       </div>
     </div>

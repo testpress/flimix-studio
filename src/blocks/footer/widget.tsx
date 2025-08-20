@@ -120,7 +120,7 @@ const FooterWidget: React.FC<FooterWidgetProps> = ({
       className={`${paddingClass} ${marginClass} ${textAlignClass} ${borderRadiusClass} ${boxShadowClass}`}
       style={{ ...backgroundColorStyle, ...textColorStyle, ...paddingStyle, ...marginStyle, ...borderRadiusStyle }}
     >
-      <div className="flex flex-row gap-8 mb-6">
+      <div className="flex flex-row gap-8 mb-6 w-full">
         {items && items.map((col, index) => (
           <div key={col.id} className="flex-1 relative group min-w-0">
             {/* ItemsControl positioned above content to avoid overlapping */}

@@ -142,7 +142,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                    style?.gridGap === 'lg' ? 32 : // space-x-8 = 2rem = 32px
                    24; // space-x-6 = 1.5rem = 24px (default md)
     
-    return itemWidth + gapSize;
+    // Ensure we scroll at least one full item width
+    return Math.max(itemWidth + gapSize, itemWidth);
   };
 
   // Check scroll position and update arrow visibility
@@ -150,9 +151,19 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     if (!scrollContainerRef.current) return;
     
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    // No need to account for padding since we removed it
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
+    // Add a small tolerance to prevent edge cases
+    const tolerance = 5;
+    
+    // Check if we can scroll left
+    setCanScrollLeft(scrollLeft > tolerance);
+    
+    // Check if we can scroll right - be more generous with the calculation
+    const canScrollRight = scrollLeft < scrollWidth - clientWidth - tolerance;
+    
+    // Also check if we have more items than can fit in the visible area
+    const hasOverflow = scrollWidth > clientWidth;
+    
+    setCanScrollRight(canScrollRight && hasOverflow);
   };
 
   // Handle scroll events
@@ -173,7 +184,14 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         scrollContainer.scrollLeft = currentScrollLeft;
       }
       
+      // Always check scroll position after items change
       checkScrollPosition();
+      
+      // Add a small delay to ensure layout is stable after items change
+      const delayedCheck = setTimeout(() => {
+        checkScrollPosition();
+      }, 150);
+      
       scrollContainer.addEventListener('scroll', checkScrollPosition);
       window.addEventListener('resize', checkScrollPosition);
       
@@ -183,9 +201,52 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
         window.removeEventListener('resize', checkScrollPosition);
+        clearTimeout(delayedCheck);
       };
     }
   }, [items]);
+
+  // Add effect to handle layout changes (like settings panel opening/closing)
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      // Use ResizeObserver to detect when the carousel container size changes
+      const resizeObserver = new ResizeObserver(() => {
+        // Small delay to ensure layout is stable
+        setTimeout(() => {
+          checkScrollPosition();
+        }, 100);
+      });
+      
+      resizeObserver.observe(scrollContainer);
+      
+      // Also listen for window resize events
+      const handleResize = () => {
+        setTimeout(() => {
+          checkScrollPosition();
+        }, 100);
+      };
+      
+      window.addEventListener('resize', handleResize);
+      
+      // Initial check after a short delay to ensure layout is stable
+      const initialCheck = setTimeout(() => {
+        checkScrollPosition();
+      }, 200);
+      
+      // Periodic check to ensure accuracy (especially after layout changes)
+      const periodicCheck = setInterval(() => {
+        checkScrollPosition();
+      }, 1000); // Check every second
+      
+      return () => {
+        resizeObserver.disconnect();
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(initialCheck);
+        clearInterval(periodicCheck);
+      };
+    }
+  }, []); // Empty dependency array - only run once on mount
 
   // Autoplay functionality
   useEffect(() => {
@@ -354,15 +415,15 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
         }}
       >
-      <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
+      <div className={`w-full ${textAlignClass}`}>
         {title && (
           <h2 className={`text-xl font-semibold mb-6 ${textColorClass}`} style={textColorStyle}>
             {title}
           </h2>
         )}
         
-        <div className="relative">
-          <div className="flex items-center">
+        <div className="relative w-full">
+          <div className="flex items-center w-full">
             {/* Left Arrow */}
             {showArrows && canScrollLeft && (
               <button 
@@ -370,7 +431,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                   e.stopPropagation();
                   handleScrollLeft();
                 }}
-                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-4 z-10"
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-2 mr-2 z-10"
               >
                 <ArrowLeft size={20} />
               </button>
@@ -458,7 +519,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                   e.stopPropagation();
                   handleScrollRight();
                 }}
-                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-4 z-10"
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-2 ml-2 z-10"
               >
                 <ArrowRight size={20} />
               </button>

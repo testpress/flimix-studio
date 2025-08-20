@@ -186,7 +186,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
       >
-      <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
+      <div className={`w-full ${textAlignClass}`}>
         {title && (
           <h2 className={`text-xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
             {title}

@@ -122,7 +122,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     if (!firstItem || !secondItem) return 400; // Fallback
 
     // This dynamically calculates the scroll distance including item width and responsive gap.
-    return secondItem.offsetLeft - firstItem.offsetLeft;
+    const scrollAmount = secondItem.offsetLeft - firstItem.offsetLeft;
+    
+    // Ensure we scroll at least one full item width
+    return Math.max(scrollAmount, firstItem.offsetWidth);
   };
 
   // Check scroll position and update arrow visibility
@@ -130,10 +133,19 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     if (!scrollContainerRef.current) return;
     
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    // Account for the 4px padding on each side
-    const paddingOffset = 8;
-    setCanScrollLeft(scrollLeft > paddingOffset);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - paddingOffset);
+    // Add a small tolerance to prevent edge cases
+    const tolerance = 5;
+    
+    // Check if we can scroll left
+    setCanScrollLeft(scrollLeft > tolerance);
+    
+    // Check if we can scroll right - be more generous with the calculation
+    const canScrollRight = scrollLeft < scrollWidth - clientWidth - tolerance;
+    
+    // Also check if we have more items than can fit in the visible area
+    const hasOverflow = scrollWidth > clientWidth;
+    
+    setCanScrollRight(canScrollRight && hasOverflow);
   };
 
   // Handle scroll events
@@ -154,7 +166,14 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         scrollContainer.scrollLeft = currentScrollLeft;
       }
       
+      // Always check scroll position after items change
       checkScrollPosition();
+      
+      // Add a small delay to ensure layout is stable after items change
+      const delayedCheck = setTimeout(() => {
+        checkScrollPosition();
+      }, 150);
+      
       scrollContainer.addEventListener('scroll', checkScrollPosition);
       window.addEventListener('resize', checkScrollPosition);
       
@@ -164,9 +183,52 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
         window.removeEventListener('resize', checkScrollPosition);
+        clearTimeout(delayedCheck);
       };
     }
   }, [items]);
+
+  // Add effect to handle layout changes (like settings panel opening/closing)
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      // Use ResizeObserver to detect when the carousel container size changes
+      const resizeObserver = new ResizeObserver(() => {
+        // Small delay to ensure layout is stable
+        setTimeout(() => {
+          checkScrollPosition();
+        }, 100);
+      });
+      
+      resizeObserver.observe(scrollContainer);
+      
+      // Also listen for window resize events
+      const handleResize = () => {
+        setTimeout(() => {
+          checkScrollPosition();
+        }, 100);
+      };
+      
+      window.addEventListener('resize', handleResize);
+      
+      // Initial check after a short delay to ensure layout is stable
+      const initialCheck = setTimeout(() => {
+        checkScrollPosition();
+      }, 200);
+      
+      // Periodic check to ensure accuracy (especially after layout changes)
+      const periodicCheck = setInterval(() => {
+        checkScrollPosition();
+      }, 1000); // Check every second
+      
+      return () => {
+        resizeObserver.disconnect();
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(initialCheck);
+        clearInterval(periodicCheck);
+      };
+    }
+  }, []); // Empty dependency array - only run once on mount
 
   // Autoplay functionality for carousel layout
   useEffect(() => {
@@ -501,7 +563,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const renderSingle = () => {
     if (items.length === 0) return null;
     return (
-      <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
+      <div className="w-full">
         {renderTestimonialItem(items[0], 0)}
       </div>
     );
@@ -560,7 +622,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
           }}
         >
-      <div className={`max-w-6xl mx-auto ${textAlignClass}`}>
+      <div className={`w-full ${textAlignClass}`}>
         {title && (
           <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 ${textColorClass}`} style={textColorStyle}>
             {title}
