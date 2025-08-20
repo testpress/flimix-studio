@@ -207,8 +207,23 @@ const sampleSchema: PageSchema = {
           {
             id: "item-6",
             title: "",
-            image: "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/1300/1755500481300-v"
-          }
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5203/1754202395203-v"
+          },
+          {
+            id: "item-7",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1803/1754654061803-v"
+          },
+          {
+            id: "item-8",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4180/1753176644180-v"
+          },
+          {
+            id: "item-9",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4408/1754462054408-v"
+          },
         ]
       },
       style: {
@@ -226,7 +241,7 @@ const sampleSchema: PageSchema = {
         autoplay: false,
         scrollSpeed: 3000,
         showArrows: true,
-        itemSize: "medium",
+        itemSize: "large",
         items: [
           {
             id: "sports-1",
@@ -266,6 +281,22 @@ const sampleSchema: PageSchema = {
             image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
             meta: {
               duration: "12m"
+            }
+          },
+          {
+            id: "sports-6",
+            title: "AUS vs SA: 1st ODI, Highlights",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/331/1755602620331-h",
+            meta: {
+              duration: "11m"
+            }
+          },
+          {
+            id: "sports-7",
+            title: "Yashasvi Jaiswal: The Run Machine",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2058/1755076682058-h",
+            meta: {
+              duration: "8m"
             }
           }
         ]
@@ -356,6 +387,16 @@ const sampleSchema: PageSchema = {
                 id: "independence-6",
                 title: "",
                 image: "	https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v"
+              },
+              {
+                id: "independence-7",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9439/529439-v"
+              },
+              {
+                id: "independence-8",
+                title: "",
+                image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2370/1652370-v-7df617a0adb2"
               }
             ]
           },
@@ -377,7 +418,7 @@ const sampleSchema: PageSchema = {
        autoplay: true,
        scrollSpeed: 2000,
        showArrows: false,
-       itemSize: "medium",
+       itemSize: "extra-large",
        items: [
          {
            id: "studio-1",
@@ -415,7 +456,7 @@ const sampleSchema: PageSchema = {
        backgroundColor: "transparent",
        textColor: "#ffffff",
        padding: "none",
-       gridGap: "sm"
+       gridGap: "lg"
      }
     },
     {
@@ -460,6 +501,16 @@ const sampleSchema: PageSchema = {
             id: "item1-6",
             title: "",
             image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v"
+          },
+          {
+            id: "item1-7",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5570/1739362395570-v"
+          },
+          {
+            id: "item1-8",
+            title: "",
+            image: "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7899/977899-v"
           }
         ]
       },
