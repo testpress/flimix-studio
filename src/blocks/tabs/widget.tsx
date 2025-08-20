@@ -141,7 +141,10 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
       {tabs.map((tab) => (
         <button
           key={tab.id}
-          onClick={() => handleTabChange(tab.id)}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent block selection when clicking tabs
+            handleTabChange(tab.id);
+          }}
           className={`${getTabStyleClass(selectedTab === tab.id)} text-center`}
         >
           {tab.label}
