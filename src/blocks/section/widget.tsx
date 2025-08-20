@@ -30,7 +30,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   onRemove
 }) => {
   const { props, style, children } = block;
-  const { title, description } = props;
+  const { title, description, backgroundImage } = props;
   
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
@@ -86,50 +86,66 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        className={`relative overflow-hidden ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
         }}
       >
-      {/* Section header */}
-      {(title || description) && (
-        <div className={`mb-6 ${textAlignClass}`}>
-          {title && (
-            <h2 className={`text-2xl font-semibold mb-2 ${textColorClass}`} style={textColorStyle}>
-              {title}
-            </h2>
-          )}
-          {description && (
-            <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
-              {description}
-            </p>
-          )}
-        </div>
-      )}
-      
-      {/* Render nested children */}
-      {children && children.length > 0 ? (
-        <div className="space-y-4">
-          {children.map((childBlock) => (
-            <div key={childBlock.id}>
-              <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
-              <BlockRenderer 
-                block={childBlock} 
-                visibilityContext={visibilityContext} 
-                showDebug={showDebug}
-                onSelect={onSelect}
-                selectedBlockId={selectedBlockId}
-                isSelected={selectedBlockId === childBlock.id}
-              />
-              <BlockInsertDropdown position="below" blockId={childBlock.id} visibilityContext={visibilityContext} />
+        {/* Background Image */}
+        {backgroundImage && (
+          <>
+            <img 
+              src={backgroundImage} 
+              alt={title || 'Section background'}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Dark overlay for better text readability when background image is present */}
+            <div className="absolute inset-0 bg-black/40"></div>
+          </>
+        )}
+
+        {/* Content container with relative positioning for proper layering */}
+        <div className="relative z-10">
+          {/* Section header */}
+          {(title || description) && (
+            <div className={`mb-6 ${textAlignClass}`}>
+              {title && (
+                <h2 className={`text-2xl font-semibold mb-2 ${textColorClass}`} style={textColorStyle}>
+                  {title}
+                </h2>
+              )}
+              {description && (
+                <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
+                  {description}
+                </p>
+              )}
             </div>
-          ))}
+          )}
+          
+          {/* Render nested children */}
+          {children && children.length > 0 ? (
+            <div className="space-y-4">
+              {children.map((childBlock) => (
+                <div key={childBlock.id}>
+                  <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
+                  <BlockRenderer 
+                    block={childBlock} 
+                    visibilityContext={visibilityContext} 
+                    showDebug={showDebug}
+                    onSelect={onSelect}
+                    selectedBlockId={selectedBlockId}
+                    isSelected={selectedBlockId === childBlock.id}
+                  />
+                  <BlockInsertDropdown position="below" blockId={childBlock.id} visibilityContext={visibilityContext} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
+              <p className="text-gray-300 text-center">No content blocks in this section</p>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
-          <p className="text-gray-300 text-center">No content blocks in this section</p>
-        </div>
-      )}
       </BaseWidget>
     </div>
   );

@@ -16,6 +16,12 @@ const sectionEditorFields: Field[] = [
     label: 'Description', 
     type: 'textarea',
     placeholder: 'Enter section description...'
+  },
+  { 
+    key: 'backgroundImage', 
+    label: 'Background Image URL', 
+    type: 'image',
+    placeholder: 'Enter background image URL...'
   }
 ];
 

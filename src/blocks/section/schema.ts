@@ -11,4 +11,5 @@ export interface SectionBlock extends Omit<Block, 'props'> {
 export interface SectionBlockProps {
   title?: string;
   description?: string;
+  backgroundImage?: string;
 } 

@@ -280,7 +280,8 @@ const sampleSchema: PageSchema = {
       type: "section",
       id: "section-independence-day",
       props: {
-        title: ""
+        title: "",
+        backgroundImage: "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/4574/1754455844574-uwb"
       },
       style: {
         backgroundColor: "black",

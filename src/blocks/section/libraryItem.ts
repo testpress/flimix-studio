@@ -8,6 +8,7 @@ export const SectionLibraryItem = {
   icon: 'Square' as const,
   defaultProps: {
     title: 'Section Title',
-    description: 'Section description goes here...'
+    description: 'Section description goes here...',
+    backgroundImage: ''
   } as SectionBlockProps
 }; 
