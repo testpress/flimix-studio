@@ -24,7 +24,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   // Helper function to create a default hero item
   const createDefaultHeroItem = () => ({
     id: generateUniqueId(),
+    titleType: 'text' as const,
     title: '',
+    titleImage: '',
     subtitle: '',
     backgroundImage: '',
     hashtag: undefined
@@ -121,6 +123,26 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     updateProps({ ...heroBlock.props, items: newItems });
   };
   
+  const updateHeroItemTitleType = (titleType: 'text' | 'image') => {
+    const newItems = [...(heroBlock.props.items || [])];
+    if (!newItems[currentItemIndex]) {
+      newItems[currentItemIndex] = createDefaultHeroItem();
+    }
+    
+    newItems[currentItemIndex].titleType = titleType;
+    updateProps({ ...heroBlock.props, items: newItems });
+  };
+  
+  const updateHeroItemTitleImage = (titleImage: string) => {
+    const newItems = [...(heroBlock.props.items || [])];
+    if (!newItems[currentItemIndex]) {
+      newItems[currentItemIndex] = createDefaultHeroItem();
+    }
+    
+    newItems[currentItemIndex].titleImage = titleImage;
+    updateProps({ ...heroBlock.props, items: newItems });
+  };
+  
   return (
     <div>
       {/* Tabs navigation */}
@@ -170,6 +192,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           updateHeroItemBackgroundImage={updateHeroItemBackgroundImage}
           updateHeroItemVideoBackground={updateHeroItemVideoBackground}
           updateHeroItemHashtag={updateHeroItemHashtag}
+          updateHeroItemTitleType={updateHeroItemTitleType}
+          updateHeroItemTitleImage={updateHeroItemTitleImage}
         />
       )}
       

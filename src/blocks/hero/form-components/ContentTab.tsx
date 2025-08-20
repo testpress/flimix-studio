@@ -10,6 +10,8 @@ interface ContentTabProps {
   updateHeroItemBackgroundImage: (backgroundImage: string) => void;
   updateHeroItemVideoBackground: (videoBackground: string) => void;
   updateHeroItemHashtag: (hashtag: HeroHashtag | undefined) => void;
+  updateHeroItemTitleType: (titleType: 'text' | 'image') => void;
+  updateHeroItemTitleImage: (titleImage: string) => void;
 }
 
 const ContentTab: React.FC<ContentTabProps> = ({
@@ -20,7 +22,9 @@ const ContentTab: React.FC<ContentTabProps> = ({
   updateHeroItemSubtitle,
   updateHeroItemBackgroundImage,
   updateHeroItemVideoBackground,
-  updateHeroItemHashtag
+  updateHeroItemHashtag,
+  updateHeroItemTitleType,
+  updateHeroItemTitleImage
 }) => {
   return (
     <div className="space-y-4">
@@ -85,17 +89,45 @@ const ContentTab: React.FC<ContentTabProps> = ({
         </div>
       )}
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-          <input
-            type="text"
-            value={currentItem.title || ''}
-            onChange={(e) => updateHeroItemTitle(e.target.value)}
+          <label className="block text-sm font-medium text-gray-700 mb-1">Title Type</label>
+          <select
+            value={currentItem.titleType || 'text'}
+            onChange={(e) => updateHeroItemTitleType(e.target.value as 'text' | 'image')}
             className="w-full p-2 border border-gray-300 rounded"
-            placeholder="Enter hero title..."
-          />
+          >
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+          </select>
         </div>
+
+        {currentItem.titleType === 'image' ? (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title Image URL</label>
+            <input
+              type="url"
+              value={currentItem.titleImage || ''}
+              onChange={(e) => updateHeroItemTitleImage(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter title image URL..."
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Use a transparent PNG for best results
+            </p>
+          </div>
+        ) : (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input
+              type="text"
+              value={currentItem.title || ''}
+              onChange={(e) => updateHeroItemTitle(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter hero title..."
+            />
+          </div>
+        )}
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>

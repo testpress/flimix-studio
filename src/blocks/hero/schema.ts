@@ -8,7 +8,9 @@ export interface HeroBlock extends Omit<Block, 'props'> {
 
 export interface HeroItem {
   id: string;
+  titleType?: 'text' | 'image';
   title?: string;
+  titleImage?: string;
   subtitle?: string;
   backgroundImage?: string;
   videoBackground?: string;

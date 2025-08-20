@@ -122,8 +122,16 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           </div>
         )}
         
-        {/* Title */}
-        {item.title && (
+        {/* Title - either text or image */}
+        {item.titleType === 'image' && item.titleImage ? (
+          <div className="mb-3">
+            <img 
+              src={item.titleImage} 
+              alt="Title" 
+              className="max-w-full h-auto max-h-24 md:max-h-32"
+            />
+          </div>
+        ) : item.title && (
           <h1 className={`text-4xl md:text-5xl font-bold mb-1 ${textColorClass}`} style={textColorStyle}>
             {item.title}
           </h1>
