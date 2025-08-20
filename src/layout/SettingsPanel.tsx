@@ -41,7 +41,6 @@ import CTAButtonForm from '@blocks/cta-button/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
 import { useSettingsPanel } from '@context/SettingsPanelContext';
-import { useLibraryPanel } from '@context/LibraryPanelContext';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -59,15 +58,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateBlockItem,
   } = useSelection();
   const { isSettingsOpen, openSettings } = useSettingsPanel();
-  const { closeLibrary } = useLibraryPanel();
 
   // Auto-open settings when a block gets selected
   React.useEffect(() => {
     if (selectedBlock) {
-      closeLibrary();
       openSettings();
     }
-  }, [selectedBlock, openSettings, closeLibrary]);
+  }, [selectedBlock, openSettings]);
 
   // Block editor registry for dynamic lookup
   const BlockPropEditors: Record<string, React.FC<BlockFormProps>> = {
