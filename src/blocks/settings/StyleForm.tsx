@@ -15,6 +15,39 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     });
   };
 
+  // Utility function to parse color and opacity from a color value
+  const parseColorAndOpacity = (colorValue: string | undefined, defaultColor: string = '#ffffff') => {
+    if (!colorValue) return { color: defaultColor, opacity: 100 };
+    
+    // Check if it's rgba format
+    const rgbaMatch = colorValue.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
+    if (rgbaMatch) {
+      const [_, r, g, b, a] = rgbaMatch;
+      const opacity = Math.round(parseFloat(a) * 100);
+      // Convert RGB to hex
+      const hexColor = `#${Number(r).toString(16).padStart(2, '0')}${Number(g).toString(16).padStart(2, '0')}${Number(b).toString(16).padStart(2, '0')}`;
+      return { color: hexColor, opacity };
+    }
+    
+    // If it's a hex color
+    return { color: colorValue, opacity: 100 };
+  };
+  
+  // Utility function to convert hex color and opacity to rgba
+  const convertToRgba = (hexColor: string, opacityValue: number) => {
+    if (opacityValue < 100) {
+      // Convert hex to rgba
+      const r = parseInt(hexColor.slice(1, 3), 16);
+      const g = parseInt(hexColor.slice(3, 5), 16);
+      const b = parseInt(hexColor.slice(5, 7), 16);
+      const a = opacityValue / 100;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    } else {
+      // Use hex color directly at 100% opacity
+      return hexColor;
+    }
+  };
+
 
   // Helper function to render Padding field
   const renderPaddingField = () => (
@@ -68,44 +101,140 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     </div>
   );
 
-  // Helper function to render Background Color field
-  const renderBackgroundColorField = () => (
-    <div>
-      <label className="block text-sm text-gray-700 mb-1">Background Color</label>
-      <input
-        type="color"
-        value={style.backgroundColor || '#ffffff'}
-        onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-        className="w-full h-10 border border-gray-300 rounded text-sm"
-      />
-    </div>
-  );
+  // Helper function to render Background Color field with transparency support
+  const renderBackgroundColorField = () => {
+    const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#ffffff');
+    
+    const handleColorChange = (hexColor: string, opacityValue: number) => {
+      handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
+    };
+    
+    return (
+      <div>
+        <label className="block text-sm text-gray-700 mb-1">Background Color</label>
+        <div className="flex space-x-2">
+          <div className="w-1/2 relative">
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => handleColorChange(e.target.value, opacity)}
+              className="w-full h-10 border border-gray-300 rounded text-sm"
+            />
+            <div 
+              className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
+              onClick={() => handleColorChange('#ffffff', 0)} // Set transparent on click
+              title="Set transparent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+          </div>
+          <div className="w-1/2">
+            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={opacity}
+              onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
+              className="w-full"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
-  // Helper function to render Text Color field
-  const renderTextColorField = () => (
-    <div>
-      <label className="block text-sm text-gray-700 mb-1">Text Color</label>
-      <input
-        type="color"
-        value={style.textColor || '#000000'}
-        onChange={(e) => handleStyleChange('textColor', e.target.value)}
-        className="w-full h-10 border border-gray-300 rounded text-sm"
-      />
-    </div>
-  );
+  // Helper function to render Text Color field with transparency support
+  const renderTextColorField = () => {
+    const { color, opacity } = parseColorAndOpacity(style.textColor, '#000000');
+    
+    const handleColorChange = (hexColor: string, opacityValue: number) => {
+      handleStyleChange('textColor', convertToRgba(hexColor, opacityValue));
+    };
+    
+    return (
+      <div>
+        <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+        <div className="flex space-x-2">
+          <div className="w-1/2 relative">
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => handleColorChange(e.target.value, opacity)}
+              className="w-full h-10 border border-gray-300 rounded text-sm"
+            />
+            <div 
+              className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
+              onClick={() => handleColorChange('#000000', 0)} // Set transparent on click
+              title="Set transparent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+          </div>
+          <div className="w-1/2">
+            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={opacity}
+              onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
+              className="w-full"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
-  // Helper function to render Color field (for divider blocks)
-  const renderColorField = () => (
-    <div>
-      <label className="block text-sm text-gray-700 mb-1">Color</label>
-      <input
-        type="color"
-        value={style.backgroundColor || '#000000'}
-        onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-        className="w-full h-10 border border-gray-300 rounded text-sm"
-      />
-    </div>
-  );
+  // Helper function to render Color field (for divider blocks) with transparency support
+  const renderColorField = () => {
+    const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#000000');
+    
+    const handleColorChange = (hexColor: string, opacityValue: number) => {
+      handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
+    };
+    
+    return (
+      <div>
+        <label className="block text-sm text-gray-700 mb-1">Color</label>
+        <div className="flex space-x-2">
+          <div className="w-1/2 relative">
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => handleColorChange(e.target.value, opacity)}
+              className="w-full h-10 border border-gray-300 rounded text-sm"
+            />
+            <div 
+              className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
+              onClick={() => handleColorChange('#000000', 0)} // Set transparent on click
+              title="Set transparent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+          </div>
+          <div className="w-1/2">
+            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={opacity}
+              onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
+              className="w-full"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
 
   // Helper function to render Border Radius field
