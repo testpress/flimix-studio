@@ -9,7 +9,6 @@ import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
-import { useSettingsPanel } from '@context/SettingsPanelContext';
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -32,7 +31,6 @@ const iconMap: Record<string, LucideIcon> = {
 
 const LibraryPanel: React.FC = () => {
   const { isLibraryOpen } = useLibraryPanel();
-  const { isSettingsOpen } = useSettingsPanel();
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
@@ -340,7 +338,7 @@ const LibraryPanel: React.FC = () => {
             <p>No blocks found matching "{searchQuery}"</p>
           </div>
         ) : (
-          <div className={`grid gap-3 ${isSettingsOpen ? 'grid-cols-2' : 'grid-cols-3'}`}>
+          <div className={`grid gap-3 grid-cols-3`}>
             {filteredTemplates.map((template) => {
             const IconComponent = iconMap[template.icon] || Layout;
             

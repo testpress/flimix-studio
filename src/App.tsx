@@ -537,7 +537,9 @@ function App() {
                 <TopBar />
                 <div className="flex-1 flex pt-16 min-h-0">
                   <LibraryPanel />
-                  <Canvas showDebug={showDebug} />
+                  <div className="flex-1 min-w-0">
+                    <Canvas showDebug={showDebug} />
+                  </div>
                   <SettingsPanel 
                     showDebug={showDebug}
                     onToggleShowDebug={() => setShowDebug(current => !current)}

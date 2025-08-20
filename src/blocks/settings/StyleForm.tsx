@@ -112,8 +112,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Background Color</label>
-        <div className="flex space-x-2">
-          <div className="w-1/2 relative">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
@@ -130,7 +130,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               </svg>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="col-span-2">
             <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
@@ -157,8 +157,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Text Color</label>
-        <div className="flex space-x-2">
-          <div className="w-1/2 relative">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
@@ -175,7 +175,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               </svg>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="col-span-2">
             <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
@@ -202,8 +202,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Color</label>
-        <div className="flex space-x-2">
-          <div className="w-1/2 relative">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
@@ -220,7 +220,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               </svg>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="col-span-2">
             <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
@@ -407,7 +407,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     <div className="p-4 bg-gray-50 rounded-lg">
       <h3 className="font-medium text-gray-700 mb-4">Style Settings</h3>
       
-      <div className="space-y-4">
+      <div className="space-y-6">
         {fieldsToRender.map((field, index) => (
           <div key={`style-field-${index}`}>
             {field}
