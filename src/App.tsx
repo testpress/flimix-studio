@@ -13,7 +13,7 @@ import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { useState } from 'react';
 
 // Move the sample schema here so it can be shared
-const sampleSchema: PageSchema = {
+const hotstarSchema: PageSchema = {
   title: "Flimix Studio",
   theme: "dark" as Theme,
   visibility: {
@@ -579,7 +579,7 @@ function App() {
   const [showDebug, setShowDebug] = useState(false);
 
   return (
-    <HistoryProvider initialSchema={sampleSchema}>
+    <HistoryProvider initialSchema={hotstarSchema}>
       <SelectionProvider>
         <BlockInsertProvider>
           <LibraryPanelProvider>
