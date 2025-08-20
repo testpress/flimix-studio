@@ -120,6 +120,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Poster Grid Item"
+            progressBarEnabled={(selectedBlock.props as PosterGridBlockProps).progressBar?.enabled || false}
           />
         );
       }

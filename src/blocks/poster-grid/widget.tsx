@@ -4,6 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { PosterGridBlock } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PosterGridWidgetProps extends Omit<BaseWidgetProps<PosterGridBlock>, 'block'> {
   block: PosterGridBlock;
@@ -21,7 +22,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, columns = 3, rows = 3, itemShape, items } = props;
+  const { title, columns = 3, rows = 3, itemShape, items, button, progressBar } = props;
   const { gridGap = 'md' } = style || {};
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
@@ -60,6 +61,22 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   const hasCustomBackground = !!style?.backgroundColor;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
+
+  // Render button icon based on selected icon type
+  const renderButtonIcon = (iconName: string | undefined) => {
+    switch (iconName) {
+      case 'ArrowRight':
+        return <ArrowRight size={16} />;
+      case 'ArrowLeft':
+        return <ArrowLeft size={16} />;
+      case 'ChevronRight':
+        return <ChevronRight size={16} />;
+      case 'ChevronLeft':
+        return <ChevronLeft size={16} />;
+      default:
+        return <ArrowRight size={16} />;
+    }
+  };
 
   const getAspectRatioClass = () => {
     switch (itemShape) {
@@ -187,11 +204,62 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
       >
       <div className={`w-full ${textAlignClass}`}>
-        {title && (
-          <h2 className={`text-xl font-semibold mb-4 ${textColorClass}`} style={textColorStyle}>
-            {title}
-          </h2>
-        )}
+        {/* Header with title and button */}
+        <div className="mb-6">
+          {button?.enabled ? (
+            button.alignment === 'left' ? (
+              /* Left alignment: title and button on same line */
+              <div className="flex items-center gap-4">
+                {title && title.trim() !== "" && (
+                  <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                    {title}
+                  </h2>
+                )}
+                <a 
+                  href={button.link || '#'} 
+                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    color: button.textColor || '#ffffff'
+                  }}
+                >
+                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                  {button.text || 'View All'}
+                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                </a>
+              </div>
+            ) : (
+              /* Right alignment: title on left, button on right */
+              <div className="flex items-center justify-between w-full">
+                <div className="flex-1">
+                  {title && title.trim() !== "" && (
+                    <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                      {title}
+                    </h2>
+                  )}
+                </div>
+                <a 
+                  href={button.link || '#'} 
+                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    color: button.textColor || '#ffffff'
+                  }}
+                >
+                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                  {button.text || 'View All'}
+                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                </a>
+              </div>
+            )
+          ) : (
+            /* No button: just title */
+            title && title.trim() !== "" && (
+              <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                {title}
+              </h2>
+            )
+          )}
+        </div>
+
         <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
           {items.map((item, index) => (
             <div key={item.id} className="relative group">
@@ -214,13 +282,34 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                     className="w-full h-full object-cover"
                   />
                 </div>
-                {item.title && (
+                
+                {/* Content section - only render if there's actual content */}
+                {(item.title && item.title.trim() !== "") || 
+                 progressBar?.enabled ? (
                   <div className="mt-3 space-y-1">
-                    <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
-                      {item.title}
-                    </p>
+                    {/* Title - only render if not empty */}
+                    {item.title && item.title.trim() !== "" && (
+                      <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
+                        {item.title}
+                      </p>
+                    )}
+                    
+                    {/* Progress Bar - only render if enabled */}
+                    {progressBar?.enabled && (
+                      <div className="mt-2 mb-2">
+                        <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full" 
+                            style={{ 
+                              width: `${item.progress !== undefined ? item.progress : 4}%`,
+                              backgroundColor: progressBar.color || '#ff0000'
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                ) : null}
               </a>
               <ItemsControl 
                 index={index}

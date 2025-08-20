@@ -6,6 +6,29 @@ export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' 
 // Define grid dimension type
 export type GridDimension = 2 | 3 | 4;
 
+// Define button alignment type
+export type ButtonAlignment = 'left' | 'right';
+
+// Define button icon position type
+export type ButtonIconPosition = 'left' | 'right' | 'none';
+
+// Button properties interface
+export interface ButtonProps {
+  text: string;
+  enabled: boolean;
+  alignment: ButtonAlignment;
+  icon: string;
+  iconPosition: ButtonIconPosition;
+  textColor?: string;
+  link?: string;
+}
+
+// Progress bar interface
+export interface ProgressBarProps {
+  enabled: boolean;
+  color?: string;
+}
+
 // Poster grid block interface
 export interface PosterGridBlock extends Omit<Block, 'props'> {
   type: 'posterGrid';
@@ -19,6 +42,8 @@ export interface PosterGridBlockProps {
   rows?: GridDimension;
   itemShape?: ItemShape;
   items?: PosterGridItem[];
+  button?: ButtonProps;
+  progressBar?: ProgressBarProps;
 }
 
 // Individual poster item interface
@@ -27,4 +52,5 @@ export interface PosterGridItem {
   image: string;
   title: string;
   link?: string;
+  progress?: number;
 } 
