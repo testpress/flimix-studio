@@ -1,5 +1,5 @@
 import React from 'react';
-import type { HeroBlock, HeroItem } from '../schema';
+import type { HeroBlock, HeroItem, HeroHashtag } from '../schema';
 
 interface ContentTabProps {
   heroBlock: HeroBlock;
@@ -9,6 +9,7 @@ interface ContentTabProps {
   updateHeroItemSubtitle: (subtitle: string) => void;
   updateHeroItemBackgroundImage: (backgroundImage: string) => void;
   updateHeroItemVideoBackground: (videoBackground: string) => void;
+  updateHeroItemHashtag: (hashtag: HeroHashtag | undefined) => void;
 }
 
 const ContentTab: React.FC<ContentTabProps> = ({
@@ -18,7 +19,8 @@ const ContentTab: React.FC<ContentTabProps> = ({
   updateHeroItemTitle,
   updateHeroItemSubtitle,
   updateHeroItemBackgroundImage,
-  updateHeroItemVideoBackground
+  updateHeroItemVideoBackground,
+  updateHeroItemHashtag
 }) => {
   return (
     <div className="space-y-4">
@@ -130,6 +132,51 @@ const ContentTab: React.FC<ContentTabProps> = ({
         <p className="text-xs text-gray-500 mt-1">
           Video will take priority over background image if both are provided
         </p>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Text</label>
+          <input
+            type="text"
+            value={currentItem.hashtag?.text || ''}
+            onChange={(e) => {
+              const text = e.target.value;
+              if (text) {
+                updateHeroItemHashtag({
+                  ...currentItem.hashtag,
+                  text: text.startsWith('#') ? text : `#${text}`
+                });
+              } else {
+                updateHeroItemHashtag(undefined);
+              }
+            }}
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter hashtag text (e.g. trending)"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
+          <input
+            type="color"
+            value={currentItem.hashtag?.color || '#dc2626'}
+            onChange={(e) => {
+              if (currentItem.hashtag) {
+                updateHeroItemHashtag({
+                  ...currentItem.hashtag,
+                  color: e.target.value
+                });
+              } else {
+                updateHeroItemHashtag({
+                  text: '#trending',
+                  color: e.target.value
+                });
+              }
+            }}
+            className="w-10 h-10 border-0 p-0"
+          />
+        </div>
       </div>
     </div>
   );

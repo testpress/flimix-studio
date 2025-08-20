@@ -96,6 +96,18 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       {/* Content Container - Positioned at bottom with padding */}
       <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
         
+        {/* Hashtag - Display above badges if present */}
+        {item.hashtag && item.hashtag.text && (
+          <div className="mb-3">
+            <span 
+              className="text-xl md:text-2xl font-bold"
+              style={{ color: item.hashtag.color || '#dc2626' }}
+            >
+              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
+            </span>
+          </div>
+        )}
+        
         {/* Category Badges */}
         {item.badges && item.badges.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">

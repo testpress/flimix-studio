@@ -26,34 +26,12 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const autoplayIntervalRef = useRef<number | null>(null);
   
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
-  // Handle text color - default to white text
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
 
   // Determine background styling - default to black
   const hasCustomBackground = !!style?.backgroundColor;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
-  // Handle aspect ratio
-  const getAspectRatioClass = (aspectRatio?: string) => {
-    switch (aspectRatio) {
-      case '16:9': return 'aspect-video';
-      case 'auto': return 'min-h-[600px]';
-      case 'custom': return ''; // Custom height will be handled with inline style
-      default: return 'aspect-video';
-    }
-  };
-  
-  // Get custom height style if specified
-  const getCustomHeightStyle = () => {
-    if (props.aspectRatio === 'custom') {
-      const height = props.customHeight || '600px';
-      return { height };
-    }
-    return {};
-  };
 
   
   // Autoplay functionality for carousel

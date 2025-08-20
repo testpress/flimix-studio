@@ -16,6 +16,7 @@ export interface HeroItem {
   badges?: HeroBadge[];
   primaryCTA?: HeroCTABtn;
   secondaryCTA?: HeroCTABtn;
+  hashtag?: HeroHashtag;
 }
 
 
@@ -49,4 +50,9 @@ export interface HeroMetadata {
 export interface HeroBadge {
   id: string;
   label: string;
+}
+
+export interface HeroHashtag {
+  text: string;
+  color?: string; // Hex color code for the hashtag
 }

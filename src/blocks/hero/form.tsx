@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { HeroBlock, HeroMetadata, HeroBadge, HeroCTABtn } from './schema';
+import type { HeroBlock, HeroMetadata, HeroBadge, HeroCTABtn, HeroHashtag } from './schema';
 import { generateUniqueId } from '@utils/id';
 import ContentTab from './form-components/ContentTab';
 import MetadataTab from './form-components/MetadataTab';
@@ -26,7 +26,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     id: generateUniqueId(),
     title: '',
     subtitle: '',
-    backgroundImage: ''
+    backgroundImage: '',
+    hashtag: undefined
   });
 
   // Specific update functions for better type safety and maintainability
@@ -110,6 +111,16 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     updateProps({ ...heroBlock.props, items: newItems });
   };
   
+  const updateHeroItemHashtag = (hashtag: HeroHashtag | undefined) => {
+    const newItems = [...(heroBlock.props.items || [])];
+    if (!newItems[currentItemIndex]) {
+      newItems[currentItemIndex] = createDefaultHeroItem();
+    }
+    
+    newItems[currentItemIndex].hashtag = hashtag;
+    updateProps({ ...heroBlock.props, items: newItems });
+  };
+  
   return (
     <div>
       {/* Tabs navigation */}
@@ -158,6 +169,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           updateHeroItemSubtitle={updateHeroItemSubtitle}
           updateHeroItemBackgroundImage={updateHeroItemBackgroundImage}
           updateHeroItemVideoBackground={updateHeroItemVideoBackground}
+          updateHeroItemHashtag={updateHeroItemHashtag}
         />
       )}
       
