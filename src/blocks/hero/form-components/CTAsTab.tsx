@@ -1,5 +1,7 @@
 import React from 'react';
 import type { HeroItem, HeroCTABtn } from '../schema';
+import { ButtonIcon, AVAILABLE_ICONS } from './ButtonIcons';
+import type { ButtonIconPosition } from './ButtonIcons';
 
 interface CTAsTabProps {
   currentItem: HeroItem;
@@ -18,11 +20,15 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
   const handlePrimaryCTAChange = (field: keyof HeroCTABtn, value: any) => {
     const newCTA = {
       ...(currentItem.primaryCTA || {}),
-      label: currentItem.primaryCTA?.label || 'CTA',
-      link: currentItem.primaryCTA?.link || '#',
-      variant: currentItem.primaryCTA?.variant || 'solid',
-      backgroundColor: currentItem.primaryCTA?.backgroundColor || '#dc2626',
-      textColor: currentItem.primaryCTA?.textColor || '#ffffff',
+      label: currentItem.primaryCTA?.label ?? 'CTA',
+      link: currentItem.primaryCTA?.link ?? '#',
+      variant: currentItem.primaryCTA?.variant ?? 'solid',
+      backgroundColor: currentItem.primaryCTA?.backgroundColor ?? '#dc2626',
+      textColor: currentItem.primaryCTA?.textColor ?? '#ffffff',
+      icon: currentItem.primaryCTA?.icon ?? 'None',
+      iconPosition: currentItem.primaryCTA?.iconPosition ?? 'left',
+      iconThickness: currentItem.primaryCTA?.iconThickness ?? 'normal',
+      borderRadius: currentItem.primaryCTA?.borderRadius ?? 'md',
       [field]: value
     };
     updateHeroItemPrimaryCTA(newCTA as HeroCTABtn);
@@ -34,6 +40,10 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
     
     const newCTA = {
       ...secondaryCTA,
+      icon: secondaryCTA.icon ?? 'None',
+      iconPosition: secondaryCTA.iconPosition ?? 'left',
+      iconThickness: secondaryCTA.iconThickness ?? 'normal',
+      borderRadius: secondaryCTA.borderRadius ?? 'md',
       [field]: value
     };
     updateHeroItemSecondaryCTA(newCTA);
@@ -45,7 +55,11 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
       link: '#', 
       variant: 'outline' as const, 
       backgroundColor: '#ffffff', 
-      textColor: '#000000' 
+      textColor: '#000000',
+      icon: 'None' as const,
+      iconPosition: 'right' as const,
+      iconThickness: 'normal' as const,
+      borderRadius: 'md' as const
     };
     updateHeroItemSecondaryCTA(newCTA);
   };
@@ -63,24 +77,24 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
         <div className="space-y-2">
           <div>
             <label className="block text-xs text-gray-600 mb-1">Label</label>
-            <input
-              type="text"
-              value={currentItem.primaryCTA?.label || ''}
-              onChange={(e) => handlePrimaryCTAChange('label', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter CTA text..."
-            />
+         <input
+                type="text"
+                value={currentItem.primaryCTA?.label ?? ''}
+                onChange={(e) => handlePrimaryCTAChange('label', e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Enter CTA text..."
+              />
           </div>
           
           <div>
             <label className="block text-xs text-gray-600 mb-1">Link</label>
-            <input
-              type="text"
-              value={currentItem.primaryCTA?.link || ''}
-              onChange={(e) => handlePrimaryCTAChange('link', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter CTA link..."
-            />
+              <input
+                type="text"
+                value={currentItem.primaryCTA?.link ?? ''}
+                onChange={(e) => handlePrimaryCTAChange('link', e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Enter CTA link..."
+              />
           </div>
           
           <div>
@@ -113,6 +127,75 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
               onChange={(e) => handlePrimaryCTAChange('textColor', e.target.value)}
               className="w-full h-10 border border-gray-300 rounded"
             />
+          </div>
+          
+          {/* Icon Selection */}
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">Button Icon</label>
+            <select
+              value={currentItem.primaryCTA?.icon ?? 'None'}
+              onChange={(e) => handlePrimaryCTAChange('icon', e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            >
+              {AVAILABLE_ICONS.map(icon => (
+                <option key={icon.type} value={icon.type}>{icon.label}</option>
+              ))}
+            </select>
+            
+                            {/* Icon Preview */}
+                {currentItem.primaryCTA?.icon && currentItem.primaryCTA.icon !== 'None' && (
+                  <div className="mt-2 p-2 bg-gray-100 rounded flex items-center gap-2">
+                    <ButtonIcon icon={currentItem.primaryCTA.icon} />
+                    <span className="text-xs">{currentItem.primaryCTA.icon}</span>
+                  </div>
+                )}
+          </div>
+          
+          {/* Icon Position - only show if an icon is selected */}
+          {currentItem.primaryCTA?.icon && currentItem.primaryCTA.icon !== 'None' && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Icon Position</label>
+              <select
+                value={currentItem.primaryCTA?.iconPosition ?? 'left'}
+                onChange={(e) => handlePrimaryCTAChange('iconPosition', e.target.value as ButtonIconPosition)}
+                className="w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+              </select>
+            </div>
+          )}
+          
+          {/* Icon Thickness - only show if an icon is selected */}
+          {currentItem.primaryCTA?.icon && currentItem.primaryCTA.icon !== 'None' && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Icon Thickness</label>
+              <select
+                value={currentItem.primaryCTA?.iconThickness ?? 'normal'}
+                onChange={(e) => handlePrimaryCTAChange('iconThickness', e.target.value as 'thin' | 'normal' | 'thick')}
+                className="w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="thin">Thin</option>
+                <option value="normal">Normal</option>
+                <option value="thick">Thick</option>
+              </select>
+            </div>
+          )}
+          
+          {/* Border Radius */}
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">Border Radius</label>
+            <select
+              value={currentItem.primaryCTA?.borderRadius ?? 'md'}
+              onChange={(e) => handlePrimaryCTAChange('borderRadius', e.target.value as 'none' | 'sm' | 'md' | 'lg' | 'full')}
+              className="w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="none">None</option>
+              <option value="sm">Small</option>
+              <option value="md">Medium</option>
+              <option value="lg">Large</option>
+              <option value="full">Full (Circle)</option>
+            </select>
           </div>
         </div>
       </div>
@@ -155,7 +238,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
                 <label className="block text-xs text-gray-600 mb-1">Label</label>
                 <input
                   type="text"
-                  value={secondaryCTA.label || ''}
+                  value={secondaryCTA.label ?? ''}
                   onChange={(e) => handleSecondaryCTAChange('label', e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded"
                   placeholder="Enter CTA text..."
@@ -166,7 +249,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
                 <label className="block text-xs text-gray-600 mb-1">Link</label>
                 <input
                   type="text"
-                  value={secondaryCTA.link || ''}
+                  value={secondaryCTA.link ?? ''}
                   onChange={(e) => handleSecondaryCTAChange('link', e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded"
                   placeholder="Enter CTA link..."
@@ -203,6 +286,75 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
                   onChange={(e) => handleSecondaryCTAChange('textColor', e.target.value)}
                   className="w-full h-10 border border-gray-300 rounded"
                 />
+              </div>
+              
+              {/* Icon Selection */}
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Button Icon</label>
+                <select
+                  value={secondaryCTA.icon ?? 'None'}
+                  onChange={(e) => handleSecondaryCTAChange('icon', e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  {AVAILABLE_ICONS.map(icon => (
+                    <option key={icon.type} value={icon.type}>{icon.label}</option>
+                  ))}
+                </select>
+                
+                {/* Icon Preview */}
+                {secondaryCTA.icon && secondaryCTA.icon !== 'None' && (
+                  <div className="mt-2 p-2 bg-gray-100 rounded flex items-center gap-2">
+                    <ButtonIcon icon={secondaryCTA.icon} />
+                    <span className="text-xs">{secondaryCTA.icon}</span>
+                  </div>
+                )}
+              </div>
+              
+                            {/* Icon Position - only show if an icon is selected */}
+              {secondaryCTA.icon && secondaryCTA.icon !== 'None' && (
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Icon Position</label>
+                  <select
+                    value={secondaryCTA.iconPosition ?? 'left'}
+                    onChange={(e) => handleSecondaryCTAChange('iconPosition', e.target.value as ButtonIconPosition)}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  >
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+              )}
+              
+              {/* Icon Thickness - only show if an icon is selected */}
+              {secondaryCTA.icon && secondaryCTA.icon !== 'None' && (
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Icon Thickness</label>
+                  <select
+                    value={secondaryCTA.iconThickness ?? 'normal'}
+                    onChange={(e) => handleSecondaryCTAChange('iconThickness', e.target.value as 'thin' | 'normal' | 'thick')}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  >
+                    <option value="thin">Thin</option>
+                    <option value="normal">Normal</option>
+                    <option value="thick">Thick</option>
+                  </select>
+                </div>
+              )}
+              
+              {/* Border Radius */}
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Border Radius</label>
+                <select
+                  value={secondaryCTA.borderRadius ?? 'md'}
+                  onChange={(e) => handleSecondaryCTAChange('borderRadius', e.target.value as 'none' | 'sm' | 'md' | 'lg' | 'full')}
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  <option value="none">None</option>
+                  <option value="sm">Small</option>
+                  <option value="md">Medium</option>
+                  <option value="lg">Large</option>
+                  <option value="full">Full (Circle)</option>
+                </select>
               </div>
             </div>
           </div>
