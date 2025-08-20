@@ -34,7 +34,10 @@ export interface HeroCTABtn {
   variant?: 'solid' | 'outline';
   backgroundColor?: string;
   textColor?: string;
-  icon?: string;
+  icon?: 'Play' | 'Plus' | 'Info' | 'ChevronRight' | 'ChevronLeft' | 'ArrowRight' | 'ArrowLeft' | 'Download' | 'None';
+  iconPosition?: 'left' | 'right';
+  borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  iconThickness?: 'thin' | 'normal' | 'thick';
 }
 
 export interface HeroMetadata {

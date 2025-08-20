@@ -1,6 +1,7 @@
 import React from 'react';
 import type { HeroItem } from './schema';
 import VideoPlayer from './VideoPlayer';
+import { ButtonIcon } from './form-components/ButtonIcons';
 
 interface ItemWidgetProps {
   item: HeroItem;
@@ -48,6 +49,18 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
   };
 
   const aspectRatioClass = getAspectRatioClass(aspectRatio);
+
+  // Helper function to get border radius classes
+  const getBorderRadiusClass = (borderRadius?: string) => {
+    switch (borderRadius) {
+      case 'none': return '';
+      case 'sm': return 'rounded-sm';
+      case 'md': return 'rounded-md';
+      case 'lg': return 'rounded-lg';
+      case 'full': return 'rounded-full';
+      default: return 'rounded-md';
+    }
+  };
 
   return (
     <div 
@@ -135,28 +148,112 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           {/* Primary CTA */}
           {item.primaryCTA && (
             <button 
-              className="font-semibold py-2.5 px-6 rounded-lg text-base transition-colors duration-200 border"
+              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.primaryCTA.borderRadius)} ${
+                item.primaryCTA.borderRadius === 'full' 
+                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
+                  : 'py-2.5 px-6'    // Regular: normal padding
+              }`}
               style={{
                 backgroundColor: item.primaryCTA.backgroundColor || '#dc2626',
                 color: item.primaryCTA.textColor || '#ffffff',
                 borderColor: item.primaryCTA.variant === 'outline' ? item.primaryCTA.textColor || '#ffffff' : 'transparent'
               }}
             >
-              {item.primaryCTA.label}
+              {item.primaryCTA.borderRadius === 'full' ? (
+                // Circle button: only show icon, no text
+                item.primaryCTA.icon && item.primaryCTA.icon !== 'None' ? (
+                  <ButtonIcon 
+                    icon={item.primaryCTA.icon} 
+                    size={20} 
+                    thickness={item.primaryCTA.iconThickness}
+                  />
+                ) : (
+                  // If no icon, show first letter of label
+                  <span className="text-lg font-bold">
+                    {item.primaryCTA.label.charAt(0).toUpperCase()}
+                  </span>
+                )
+              ) : (
+                // Regular button: show icon + text
+                <>
+                  {/* Left Icon */}
+                  {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'left' && (
+                    <ButtonIcon 
+                      icon={item.primaryCTA.icon} 
+                      size={20} 
+                      thickness={item.primaryCTA.iconThickness}
+                    />
+                  )}
+                  
+                  {/* Label */}
+                  <span>{item.primaryCTA.label}</span>
+                  
+                  {/* Right Icon */}
+                  {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'right' && (
+                    <ButtonIcon 
+                      icon={item.primaryCTA.icon} 
+                      size={20} 
+                      thickness={item.primaryCTA.iconThickness}
+                    />
+                  )}
+                </>
+              )}
             </button>
           )}
           
           {/* Secondary CTA */}
           {item.secondaryCTA && (
             <button 
-              className="font-semibold py-2.5 px-5 rounded-lg text-base transition-colors duration-200 border"
+              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.secondaryCTA.borderRadius)} ${
+                item.secondaryCTA.borderRadius === 'full' 
+                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
+                  : 'py-2.5 px-5'    // Regular: normal padding
+              }`}
               style={{
                 backgroundColor: item.secondaryCTA.backgroundColor || '#ffffff',
                 color: item.secondaryCTA.textColor || '#000000',
                 borderColor: item.secondaryCTA.variant === 'outline' ? item.secondaryCTA.textColor || '#000000' : 'transparent'
               }}
             >
-              {item.secondaryCTA.label}
+              {item.secondaryCTA.borderRadius === 'full' ? (
+                // Circle button: only show icon, no text
+                item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' ? (
+                  <ButtonIcon 
+                    icon={item.secondaryCTA.icon} 
+                    size={20} 
+                    thickness={item.secondaryCTA.iconThickness}
+                  />
+                ) : (
+                  // If no icon, show first letter of label
+                  <span className="text-lg font-bold">
+                    {item.secondaryCTA.label.charAt(0).toUpperCase()}
+                  </span>
+                )
+              ) : (
+                // Regular button: show icon + text
+                <>
+                  {/* Left Icon */}
+                  {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'left' && (
+                    <ButtonIcon 
+                      icon={item.secondaryCTA.icon} 
+                      size={20} 
+                      thickness={item.secondaryCTA.iconThickness}
+                    />
+                  )}
+                  
+                  {/* Label */}
+                  <span>{item.secondaryCTA.label}</span>
+                  
+                  {/* Right Icon */}
+                  {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'right' && (
+                    <ButtonIcon 
+                      icon={item.secondaryCTA.icon} 
+                      size={20} 
+                      thickness={item.secondaryCTA.iconThickness}
+                    />
+                  )}
+                </>
+              )}
             </button>
           )}
         </div>

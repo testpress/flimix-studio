@@ -24,12 +24,20 @@ export const HeroLibraryItem = {
         primaryCTA: { 
           label: 'Watch Now', 
           link: '/watch',
-          variant: 'solid'
+          variant: 'solid',
+          icon: 'Play',
+          iconPosition: 'left',
+          iconThickness: 'normal',
+          borderRadius: 'md'
         },
         secondaryCTA: { 
           label: 'Trailer', 
           link: '/trailer',
-          variant: 'outline'
+          variant: 'outline',
+          icon: 'Info',
+          iconPosition: 'right',
+          iconThickness: 'normal',
+          borderRadius: 'md'
         },
         metadata: { 
           year: '2025', 

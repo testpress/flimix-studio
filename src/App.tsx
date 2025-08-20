@@ -53,11 +53,15 @@ const hotstarSchema: PageSchema = {
               textColor: "#ffffff"
             },
             secondaryCTA: {
-              label: "+ Add to Watchlist",
+              label: "Add to Watchlist",
               link: "/watchlist/coolie",
               variant: "outline",
               backgroundColor: "#ffffff",
-              textColor: "#000000"
+              textColor: "#000000",
+              icon: "Plus",
+              iconPosition: "left",
+              iconThickness: "thick",
+              borderRadius: "sm"
             }
           },
           {
@@ -84,11 +88,15 @@ const hotstarSchema: PageSchema = {
               textColor: "#ffffff"
             },
             secondaryCTA: {
-              label: "+ Add to Watchlist",
+              label: "Add to Watchlist",
               link: "/watchlist",
               variant: "outline",
               backgroundColor: "#ffffff",
-              textColor: "#000000"
+              textColor: "#000000",
+              icon: "Plus",
+              iconPosition: "left",
+              iconThickness: "thick",
+              borderRadius: "sm"
             }
           },
           {
@@ -114,11 +122,15 @@ const hotstarSchema: PageSchema = {
               textColor: "#ffffff"
             },
             secondaryCTA: {
-              label: "+ Add to Watchlist",
+              label: "Add to Watchlist",
               link: "/watchlist/leo",
               variant: "outline",
               backgroundColor: "#ffffff",
-              textColor: "#000000"
+              textColor: "#000000",
+              icon: "Plus",
+              iconPosition: "left",
+              iconThickness: "thick",
+              borderRadius: "sm"
             }
           },
           {
@@ -144,11 +156,15 @@ const hotstarSchema: PageSchema = {
               textColor: "#ffffff"
             },
             secondaryCTA: {
-              label: "+ Add to Watchlist",
+              label: "Add to Watchlist",
               link: "/watchlist/vikram",
               variant: "outline",
               backgroundColor: "#ffffff",
-              textColor: "#000000"
+              textColor: "#000000",
+              icon: "Plus",
+              iconPosition: "left",
+              iconThickness: "thick",
+              borderRadius: "sm"
             }
           }
         ]
