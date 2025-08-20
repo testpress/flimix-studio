@@ -466,9 +466,9 @@ const sampleSchema: PageSchema = {
         title: "Action Extravaganza",
         itemShape: "rectangle-portrait",
         alignment: "left",
-        autoplay: false,
-        scrollSpeed: 3000,
-        showArrows: true,
+        autoplay: true,
+        scrollSpeed: 2000,
+        showArrows: false,
         itemSize: "medium",
         items: [
           {

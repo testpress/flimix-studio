@@ -447,7 +447,11 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                 onScroll={handleManualScroll}
               >
                 {items.map((item, index) => (
-                  <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} group`} data-item-id={item.id}>
+                  <div 
+                    key={item.id} 
+                    className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} group`} 
+                    data-item-id={item.id}
+                  >
                     <a 
                       href={item.link || '#'} 
                       onClick={(e) => {
@@ -459,7 +463,11 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                       }`}
                     >
                       <div className={`${getItemShapeClass()} overflow-hidden ${
-                        itemShape === 'circle' ? 'rounded-full' : 'rounded-lg'
+                        itemShape === 'circle' ? 'rounded-full' : 
+                        style?.borderRadius === 'none' ? '' : 
+                        style?.borderRadius === 'lg' ? 'rounded-2xl' : 
+                        style?.borderRadius === 'md' ? 'rounded-lg' : 
+                        style?.borderRadius === 'sm' ? 'rounded-md' : 'rounded-lg'
                       } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
                         <img
                           src={item.image}
