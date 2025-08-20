@@ -177,6 +177,15 @@ const hotstarSchema: PageSchema = {
         scrollSpeed: 3000,
         showArrows: true,
         itemSize: "medium",
+        button: {
+          text: "View All",
+          enabled: true,
+          alignment: "right",
+          icon: "ChevronRight",
+          iconPosition: "right",
+          textColor: "#ffffff",
+          link: "/latest"
+        },
         items: [
           {
             id: "item-1",
@@ -356,6 +365,15 @@ const hotstarSchema: PageSchema = {
             scrollSpeed: 2000,
             showArrows: false,
             itemSize: "medium",
+            button: {
+              text: "View All",
+              enabled: true,
+              alignment: "right",
+              icon: "ChevronRight",
+              iconPosition: "right",
+              textColor: "#ffffff",
+              link: "/latest"
+            },
             items: [
               {
                 id: "independence-1",

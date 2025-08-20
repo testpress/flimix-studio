@@ -2,10 +2,10 @@ import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
-import type { CarouselBlockProps, ItemShape, ItemSize } from './schema';
+import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, ItemShape, ItemSize } from './schema';
 import { CAROUSEL_ITEM_LIMIT } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Carousel block editor schema - only basic properties
 const carouselEditorFields: Field[] = [
@@ -27,6 +27,40 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
     if (updateStyle) {
       updateStyle({ [key]: value });
     }
+  };
+
+  // Initialize button props if they don't exist
+  const initializeButtonProps = () => {
+    if (!carouselProps.button) {
+      updateProps({
+        ...carouselProps,
+        button: {
+          text: 'View All',
+          enabled: false,
+          alignment: 'right',
+          icon: 'ArrowRight',
+          iconPosition: 'right',
+          textColor: '#ffffff',
+          link: ''
+        }
+      });
+    }
+  };
+
+  // Handle button property changes
+  const handleButtonChange = (key: string, value: any) => {
+    if (!carouselProps.button) {
+      initializeButtonProps();
+      return;
+    }
+    
+    updateProps({
+      ...carouselProps,
+      button: {
+        ...carouselProps.button,
+        [key]: value
+      }
+    });
   };
 
   return (
@@ -169,6 +203,140 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               <p className="text-xs text-gray-500 mt-1">
                 Time between scroll actions in milliseconds (1000-10000ms)
               </p>
+            </div>
+          )}
+        </div>
+
+        {/* Button Settings */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <h3 className="font-medium text-gray-700 mb-4">Button Settings</h3>
+          
+          {/* Enable Button */}
+          <div className="mb-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="buttonEnabled"
+                checked={carouselProps.button?.enabled || false}
+                onChange={e => {
+                  if (!carouselProps.button && e.target.checked) {
+                    initializeButtonProps();
+                  } else if (carouselProps.button) {
+                    handleButtonChange('enabled', e.target.checked);
+                  }
+                }}
+                className="rounded"
+              />
+              <label htmlFor="buttonEnabled" className="text-sm text-gray-700">
+                Show Button
+              </label>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Display a customizable button below the carousel title
+            </p>
+          </div>
+
+          {carouselProps.button?.enabled && (
+            <div className="space-y-4">
+              {/* Button Text */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Button Text</label>
+                <input
+                  type="text"
+                  value={carouselProps.button?.text || 'View All'}
+                  onChange={e => handleButtonChange('text', e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  placeholder="View All"
+                />
+              </div>
+
+              {/* Button Link */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Button Link</label>
+                <input
+                  type="text"
+                  value={carouselProps.button?.link || ''}
+                  onChange={e => handleButtonChange('link', e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  placeholder="https://example.com"
+                />
+              </div>
+
+              {/* Button Alignment */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Button Alignment</label>
+                <select
+                  value={carouselProps.button?.alignment || 'right'}
+                  onChange={e => handleButtonChange('alignment', e.target.value as ButtonAlignment)}
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                >
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                </select>
+              </div>
+
+              {/* Button Icon */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Button Icon</label>
+                <select
+                  value={carouselProps.button?.icon || 'ArrowRight'}
+                  onChange={e => handleButtonChange('icon', e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                >
+                  <option value="ArrowRight">Arrow Right</option>
+                  <option value="ArrowLeft">Arrow Left</option>
+                  <option value="ChevronRight">Chevron Right</option>
+                  <option value="ChevronLeft">Chevron Left</option>
+                </select>
+                <div className="mt-2 flex items-center gap-4 p-2 bg-gray-100 rounded">
+                  <div className="flex items-center gap-2">
+                    <ArrowRight size={16} /> <span className="text-xs">Arrow Right</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ArrowLeft size={16} /> <span className="text-xs">Arrow Left</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ChevronRight size={16} /> <span className="text-xs">Chevron Right</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ChevronLeft size={16} /> <span className="text-xs">Chevron Left</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Icon Position */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Icon Position</label>
+                <select
+                  value={carouselProps.button?.iconPosition || 'right'}
+                  onChange={e => handleButtonChange('iconPosition', e.target.value as ButtonIconPosition)}
+                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                >
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="none">No Icon</option>
+                </select>
+              </div>
+
+              {/* Button Text Color */}
+              <div>
+                <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={carouselProps.button?.textColor || '#ffffff'}
+                    onChange={e => handleButtonChange('textColor', e.target.value)}
+                    className="w-8 h-8 p-0 border-0"
+                  />
+                  <input
+                    type="text"
+                    value={carouselProps.button?.textColor || '#ffffff'}
+                    onChange={e => handleButtonChange('textColor', e.target.value)}
+                    className="flex-1 p-2 border border-gray-300 rounded text-sm"
+                    placeholder="#ffffff"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>

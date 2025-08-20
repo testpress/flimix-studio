@@ -5,7 +5,7 @@ import type { CarouselBlock, ItemSize } from './schema';
 import { CAROUSEL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { generateUniqueId } from '@utils/id';
 
 interface CarouselWidgetProps extends Omit<BaseWidgetProps<CarouselBlock>, 'block'> {
@@ -24,7 +24,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000 } = props;
+  const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -362,6 +362,22 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
 
+  // Render button icon based on selected icon type
+  const renderButtonIcon = (iconName: string | undefined) => {
+    switch (iconName) {
+      case 'ArrowRight':
+        return <ArrowRight size={16} />;
+      case 'ArrowLeft':
+        return <ArrowLeft size={16} />;
+      case 'ChevronRight':
+        return <ChevronRight size={16} />;
+      case 'ChevronLeft':
+        return <ChevronLeft size={16} />;
+      default:
+        return <ArrowRight size={16} />;
+    }
+  };
+
   // Check if we're at the item limit
   const isAtItemLimit = (items?.length || 0) >= CAROUSEL_ITEM_LIMIT;
 
@@ -416,11 +432,61 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         }}
       >
       <div className={`w-full ${textAlignClass}`}>
-        {title && (
-          <h2 className={`text-xl font-semibold mb-6 ${textColorClass}`} style={textColorStyle}>
-            {title}
-          </h2>
-        )}
+        {/* Header with title and button */}
+        <div className="mb-6">
+          {button?.enabled ? (
+            button.alignment === 'left' ? (
+              /* Left alignment: title and button on same line */
+              <div className="flex items-center gap-4">
+                {title && title.trim() !== "" && (
+                  <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                    {title}
+                  </h2>
+                )}
+                <a 
+                  href={button.link || '#'} 
+                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    color: button.textColor || '#ffffff'
+                  }}
+                >
+                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                  {button.text || 'View All'}
+                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                </a>
+              </div>
+            ) : (
+              /* Right alignment: title on left, button on right */
+              <div className="flex items-center justify-between w-full">
+                <div className="flex-1">
+                  {title && title.trim() !== "" && (
+                    <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                      {title}
+                    </h2>
+                  )}
+                </div>
+                <a 
+                  href={button.link || '#'} 
+                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    color: button.textColor || '#ffffff'
+                  }}
+                >
+                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                  {button.text || 'View All'}
+                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                </a>
+              </div>
+            )
+          ) : (
+            /* No button: just title (if exists) */
+            title && title.trim() !== "" && (
+              <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                {title}
+              </h2>
+            )
+          )}
+        </div>
         
         <div className="relative w-full">
           <div className="flex items-center w-full">

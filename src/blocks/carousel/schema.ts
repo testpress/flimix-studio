@@ -9,6 +9,12 @@ export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' 
 // Define alignment type
 export type Alignment = 'left' | 'center' | 'right';
 
+// Define button alignment type
+export type ButtonAlignment = 'left' | 'right';
+
+// Define button icon type
+export type ButtonIconPosition = 'left' | 'right' | 'none';
+
 // Define item size type using abstract values
 export type ItemSize = 'small' | 'medium' | 'large' | 'extra-large';
 
@@ -32,6 +38,17 @@ export interface CarouselBlock extends Omit<Block, 'props'> {
   props: CarouselBlockProps;
 }
 
+// Button properties interface
+export interface ButtonProps {
+  text: string;
+  enabled: boolean;
+  alignment: ButtonAlignment;
+  icon: string;
+  iconPosition: ButtonIconPosition;
+  textColor?: string;
+  link?: string;
+}
+
 // Carousel block props interface
 export interface CarouselBlockProps {
   title?: string;
@@ -42,4 +59,5 @@ export interface CarouselBlockProps {
   showArrows: boolean;
   itemSize?: ItemSize;
   items: CarouselItem[];
+  button?: ButtonProps;
 } 
