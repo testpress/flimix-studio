@@ -6,6 +6,7 @@ interface CarouselItemFormProps {
   item: CarouselItem;
   onChange: (updatedItem: CarouselItem) => void;
   title: string;
+  progressBarEnabled?: boolean;
 }
 
 // Rating options for the select dropdown
@@ -70,7 +71,8 @@ const carouselItemFields = [
 const CarouselItemForm: React.FC<CarouselItemFormProps> = ({ 
   item, 
   onChange, 
-  title
+  title,
+  progressBarEnabled = false
 }) => {
   const formatDuration = (minutes: number): string => {
     if (minutes === 0) return '';
@@ -116,6 +118,32 @@ const CarouselItemForm: React.FC<CarouselItemFormProps> = ({
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Carousel Meta Information</h3>
         <div className="space-y-3">
+          {/* Progress Percentage - only show when progress bar is enabled */}
+          {progressBarEnabled && (
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">Progress Percentage</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={item.progress || 4}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    onChange({
+                      ...item,
+                      progress: value
+                    });
+                  }}
+                  className="w-full"
+                />
+                <span className="text-sm font-medium w-12 text-right">
+                  {item.progress || 4}%
+                </span>
+              </div>
+            </div>
+          )}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Rating</label>
             <select

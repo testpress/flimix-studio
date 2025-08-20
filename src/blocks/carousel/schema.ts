@@ -25,6 +25,7 @@ export interface CarouselItem {
   subtitle?: string;
   image: string;
   link?: string;
+  progress?: number; 
   meta?: {
     rating?: string;
     badge?: string;
@@ -49,6 +50,12 @@ export interface ButtonProps {
   link?: string;
 }
 
+// Progress bar interface
+export interface ProgressBarProps {
+  enabled: boolean;
+  color?: string;
+}
+
 // Carousel block props interface
 export interface CarouselBlockProps {
   title?: string;
@@ -60,4 +67,5 @@ export interface CarouselBlockProps {
   itemSize?: ItemSize;
   items: CarouselItem[];
   button?: ButtonProps;
+  progressBar?: ProgressBarProps;
 } 

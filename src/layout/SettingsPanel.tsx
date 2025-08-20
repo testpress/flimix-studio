@@ -139,6 +139,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Carousel Item"
+            progressBarEnabled={(selectedBlock.props as CarouselBlockProps).progressBar?.enabled || false}
           />
         );
       }

@@ -545,33 +545,64 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           }}
                         />
                       </div>
-                      <div className="mt-3 space-y-1">
-                        <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
-                          {item.title}
-                        </p>
-                        {item.subtitle && (
-                          <p className={`text-xs ${textColorClass} opacity-80`} style={textColorStyle}>
-                            {item.subtitle}
-                          </p>
+                      {/* Content section - only render if there's actual content */}
+                      {(item.title && item.title.trim() !== "") || 
+                       item.subtitle || 
+                       props.progressBar?.enabled ||
+                       item.meta?.badge || 
+                       item.meta?.rating || 
+                       item.meta?.duration ? (
+                        <div className="mt-3 space-y-1">
+                          {/* Title - only render if not empty */}
+                          {item.title && item.title.trim() !== "" && (
+                            <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
+                              {item.title}
+                            </p>
+                          )}
+                          
+                          {/* Subtitle - only render if exists */}
+                          {item.subtitle && (
+                            <p className={`text-xs ${textColorClass} opacity-80`} style={textColorStyle}>
+                              {item.subtitle}
+                            </p>
+                          )}
+          {/* Progress Bar - only render if enabled */}
+                        {props.progressBar?.enabled && (
+                          <div className="mt-2 mb-2">
+                            <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full" 
+                                style={{ 
+                                  width: `${item.progress !== undefined ? item.progress : 4}%`,
+                                  backgroundColor: props.progressBar.color || '#ff0000'
+                                }}
+                              ></div>
+                            </div>
+                          </div>
                         )}
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {item.meta?.badge && (
-                            <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getBadgeColor(item.meta.badge)}`}>
-                              {item.meta.badge}
-                            </span>
-                          )}
-                          {item.meta?.rating && (
-                            <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                              {item.meta.rating}
-                            </span>
-                          )}
-                          {item.meta?.duration && (
-                            <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                              {item.meta.duration}
-                            </span>
+                          
+                          {/* Meta information - only render if any meta exists */}
+                          {(item.meta?.badge || item.meta?.rating || item.meta?.duration) && (
+                            <div className="flex items-center gap-2 flex-wrap">
+                              {item.meta?.badge && (
+                                <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getBadgeColor(item.meta.badge)}`}>
+                                  {item.meta.badge}
+                                </span>
+                              )}
+                              {item.meta?.rating && (
+                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                                  {item.meta.rating}
+                                </span>
+                              )}
+                              {item.meta?.duration && (
+                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                                  {item.meta.duration}
+                                </span>
+                              )}
+                            </div>
                           )}
                         </div>
-                      </div>
+                      ) : null}
                     </a>
                     <ItemsControl 
                       index={index}

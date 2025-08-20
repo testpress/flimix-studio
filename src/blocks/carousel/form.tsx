@@ -46,6 +46,18 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       });
     }
   };
+  // Initialize progress bar props if they don't exist
+  const initializeProgressBarProps = () => {
+    if (!carouselProps.progressBar) {
+      updateProps({
+        ...carouselProps,
+        progressBar: {
+          enabled: false,
+          color: '#ff0000'
+        }
+      });
+    }
+  };
 
   // Handle button property changes
   const handleButtonChange = (key: string, value: any) => {
@@ -58,6 +70,21 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       ...carouselProps,
       button: {
         ...carouselProps.button,
+        [key]: value
+      }
+    });
+  };
+  // Handle progress bar property changes
+  const handleProgressBarChange = (key: string, value: any) => {
+    if (!carouselProps.progressBar) {
+      initializeProgressBarProps();
+      return;
+    }
+    
+    updateProps({
+      ...carouselProps,
+      progressBar: {
+        ...carouselProps.progressBar,
         [key]: value
       }
     });
@@ -340,6 +367,66 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
             </div>
           )}
         </div>
+      </div>
+      
+      {/* Progress Bar Settings */}
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <h3 className="font-medium text-gray-700 mb-4">Progress Bar Settings</h3>
+        
+        {/* Enable Progress Bar */}
+        <div className="mb-4">
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="progressBarEnabled"
+              checked={carouselProps.progressBar?.enabled || false}
+              onChange={e => {
+                if (!carouselProps.progressBar && e.target.checked) {
+                  initializeProgressBarProps();
+                } else if (carouselProps.progressBar) {
+                  handleProgressBarChange('enabled', e.target.checked);
+                }
+              }}
+              className="rounded"
+            />
+            <label htmlFor="progressBarEnabled" className="text-sm text-gray-700">
+              Show Progress Bar
+            </label>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            Display a progress bar for each item (set percentage in item settings)
+          </p>
+        </div>
+        
+        {carouselProps.progressBar?.enabled && (
+          <div className="space-y-4">
+            {/* Progress Bar Color */}
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">Progress Bar Color</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={carouselProps.progressBar?.color || '#ff0000'}
+                  onChange={e => handleProgressBarChange('color', e.target.value)}
+                  className="w-8 h-8 p-0 border-0"
+                />
+                <input
+                  type="text"
+                  value={carouselProps.progressBar?.color || '#ff0000'}
+                  onChange={e => handleProgressBarChange('color', e.target.value)}
+                  className="flex-1 p-2 border border-gray-300 rounded text-sm"
+                  placeholder="#ff0000"
+                />
+              </div>
+            </div>
+            
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs text-blue-800">
+                Set the progress percentage for each item in the item settings panel.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
