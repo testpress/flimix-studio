@@ -28,7 +28,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const baseDelay = 2000; // 2 second base delay
 
   // Robust error recovery with exponential backoff
-  const attemptRecovery = (hls: Hls, errorType: string, errorDetails: any) => {
+  const attemptRecovery = (hls: Hls, errorType: string, errorDetails: unknown) => {
     if (retryCountRef.current >= maxRetries) {
       console.error(`Max retries (${maxRetries}) reached for ${errorType}. Giving up.`, errorDetails);
       hls.destroy();

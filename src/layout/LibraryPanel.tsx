@@ -9,6 +9,7 @@ import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
+import type { BlockLibraryItem } from '@blocks/shared/Library';
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -92,7 +93,7 @@ const LibraryPanel: React.FC = () => {
     : allTemplates;
 
   // Handle mouse enter to show tooltip and set its position
-  const handleMouseEnter = useCallback((e: React.MouseEvent, template: any) => {
+  const handleMouseEnter = useCallback((e: React.MouseEvent, template: BlockLibraryItem) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;

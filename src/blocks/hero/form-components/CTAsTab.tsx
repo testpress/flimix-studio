@@ -20,7 +20,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
   const tertiaryCTA = currentItem.tertiaryCTA;
 
   // Generic handler for primary CTA changes
-  const handlePrimaryCTAChange = (field: keyof HeroCTABtn, value: any) => {
+  const handlePrimaryCTAChange = (field: keyof HeroCTABtn, value: string | boolean) => {
     const newCTA = {
       ...(currentItem.primaryCTA || {}),
       label: currentItem.primaryCTA?.label ?? 'CTA',
@@ -39,7 +39,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
   };
 
   // Generic handler for secondary CTA changes
-  const handleSecondaryCTAChange = (field: keyof HeroCTABtn, value: any) => {
+  const handleSecondaryCTAChange = (field: keyof HeroCTABtn, value: string | boolean) => {
     if (!secondaryCTA) return;
     
     const newCTA = {
@@ -55,7 +55,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
   };
 
   // Generic handler for tertiary CTA changes
-  const handleTertiaryCTAChange = (field: keyof HeroCTABtn, value: any) => {
+  const handleTertiaryCTAChange = (field: keyof HeroCTABtn, value: string | boolean) => {
     if (!tertiaryCTA || !updateHeroItemTertiaryCTA) return;
     
     const newCTA = {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
-import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, ItemShape, ItemSize } from './schema';
+import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, ItemShape, ItemSize, ButtonProps, ProgressBarProps } from './schema';
 import { CAROUSEL_ITEM_LIMIT } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -60,7 +60,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   };
 
   // Handle button property changes
-  const handleButtonChange = (key: string, value: any) => {
+  const handleButtonChange = (key: keyof ButtonProps, value: string | boolean) => {
     if (!carouselProps.button) {
       initializeButtonProps();
       return;
@@ -75,7 +75,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
     });
   };
   // Handle progress bar property changes
-  const handleProgressBarChange = (key: string, value: any) => {
+  const handleProgressBarChange = (key: keyof ProgressBarProps, value: string | boolean) => {
     if (!carouselProps.progressBar) {
       initializeProgressBarProps();
       return;

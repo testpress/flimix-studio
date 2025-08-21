@@ -67,7 +67,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
   const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
 
   // Icon mapping for rendering
-  const iconMap: Record<string, React.ComponentType<any>> = {
+  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, 
     Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette
   };

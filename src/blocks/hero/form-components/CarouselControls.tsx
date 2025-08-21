@@ -1,12 +1,12 @@
 import React from 'react';
-import type { HeroBlock, HeroItem } from '../schema';
+import type { HeroBlock, HeroBlockProps, HeroItem } from '../schema';
 import { generateUniqueId } from '@utils/id';
 
 interface CarouselControlsProps {
   heroBlock: HeroBlock;
   currentItemIndex: number;
   setCurrentItemIndex: (index: number) => void;
-  updateProps: (props: any) => void;
+  updateProps: (props: Partial<HeroBlockProps>) => void;
 }
 
 const CarouselControls: React.FC<CarouselControlsProps> = ({

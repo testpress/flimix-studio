@@ -4,6 +4,7 @@ import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibrary
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
+import type { TabsBlockProps, Tab } from '@blocks/tabs/schema';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -178,9 +179,9 @@ export function createBlock(type: BlockType['type']): BlockType {
         id,
         props: {
           ...TabsLibraryItem.defaultProps,
-          tabs: (TabsLibraryItem.defaultProps as any).tabs.map((tab: any) => ({
+          tabs: (TabsLibraryItem.defaultProps as TabsBlockProps).tabs.map((tab: Tab) => ({
             ...tab,
-            children: tab.children?.map((child: any) => ({
+            children: tab.children?.map((child: BlockType) => ({
               ...child,
               id: generateUniqueId(),
             })) || [],
@@ -271,9 +272,9 @@ export function duplicateBlockWithNewIds(block: BlockType): BlockType {
       id: newId,
       props: {
         ...block.props,
-        tabs: tabsBlock.props.tabs.map((tab: any) => ({
+        tabs: tabsBlock.props.tabs.map((tab: Tab) => ({
           ...tab,
-          children: tab.children?.map((child: any) => duplicateBlockWithNewIds(child)) || []
+          children: tab.children?.map((child: BlockType) => duplicateBlockWithNewIds(child)) || []
         }))
       }
     } as BlockType;

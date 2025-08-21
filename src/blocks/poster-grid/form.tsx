@@ -2,7 +2,7 @@ import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
-import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, ItemShape, GridDimension } from './schema';
+import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, ItemShape, GridDimension, ButtonProps, ProgressBarProps } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -63,7 +63,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
   };
 
   // Handle button property changes
-  const handleButtonChange = (key: string, value: any) => {
+  const handleButtonChange = (key: keyof ButtonProps, value: string | boolean) => {
     if (!posterGridProps.button) {
       initializeButtonProps();
       return;
@@ -79,7 +79,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
   };
   
   // Handle progress bar property changes
-  const handleProgressBarChange = (key: string, value: any) => {
+  const handleProgressBarChange = (key: keyof ProgressBarProps, value: string | boolean) => {
     if (!posterGridProps.progressBar) {
       initializeProgressBarProps();
       return;

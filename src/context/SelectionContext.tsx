@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { Block, BlockType } from '@blocks/shared/Block';
+import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
@@ -34,7 +35,7 @@ interface SelectionContextType {
     blockId: string,
     defaultEntry: T
   ) => string;
-  updateBlockItem: <T extends { id: string }>(
+  updateBlockItem: <T extends BlockItem>(
     blockId: string,
     itemId: string,
     updatedItem: T
@@ -509,7 +510,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
   const modifyBlockItems = (
     blockId: string,
-    modifyItems: (items: any[]) => any[]
+    modifyItems: (items: BlockItem[]) => BlockItem[]
   ) => {
     const block = findBlockAndParent(blockId, pageSchema.blocks);
     if (!block || !block.block) return;
@@ -517,7 +518,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
       return blocks.map(b => {
         if (b.id === blockId) {
-          const currentItems = (b.props as any).items || [];
+          const currentItems = (b.props as { items?: BlockItem[] }).items || [];
           const newItems = modifyItems(currentItems);
           return {
             ...b,
@@ -572,13 +573,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     return newEntryId;
   };
 
-  const updateBlockItem = <T extends { id: string }>(
+  const updateBlockItem = <T extends BlockItem>(
     blockId: string,
     itemId: string,
     updatedItem: T
   ): void => {
     modifyBlockItems(blockId, (items) =>
-      items.map((item: any) =>
+      items.map((item: BlockItem) =>
         item.id === itemId ? { ...item, ...updatedItem } : item
       )
     );
@@ -589,7 +590,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     itemId: string
   ): void => {
     modifyBlockItems(blockId, (items) =>
-      items.filter((item: any) => item.id !== itemId)
+      items.filter((item: BlockItem) => item.id !== itemId)
     );
   };
 

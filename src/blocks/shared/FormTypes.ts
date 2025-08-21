@@ -36,6 +36,12 @@ export type BlockProps =
   | CTAButtonBlockProps
   | BadgeStripBlockProps;
 
+// Generic type for block items that have an id
+export interface BlockItem {
+  id: string;
+  [key: string]: unknown;
+}
+
 export interface BlockFormProps {
   block: Block;
   updateProps: (newProps: Partial<BlockProps>) => void;

@@ -1,10 +1,10 @@
 import React from 'react';
-import type { HeroBlock, HeroItem, HeroHashtag } from '../schema';
+import type { HeroBlock, HeroItem, HeroHashtag, HeroBlockProps } from '../schema';
 
 interface ContentTabProps {
   heroBlock: HeroBlock;
   currentItem: HeroItem;
-  updateProps: (props: any) => void;
+  updateProps: (props: Partial<HeroBlockProps>) => void;
   updateHeroItemTitle: (title: string) => void;
   updateHeroItemSubtitle: (subtitle: string) => void;
   updateHeroItemBackgroundImage: (backgroundImage: string) => void;
