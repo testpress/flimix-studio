@@ -15,6 +15,8 @@ export default defineConfig({
       '@utils': '/src/utils',
       '@domain': '/src/domain',
       '@types': '/src/types',
+      '@pageSchemas': '/src/pageSchemas',
+      '@hooks': '/src/hooks',
       '@blocks': '/src/blocks',
       '@blocks/ui': '/src/blocks/ui',
       '@blocks/settings': '/src/blocks/settings',
