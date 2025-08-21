@@ -1,0 +1,542 @@
+{
+  "title": "Flimix Studio",
+  "theme": "dark",
+  "visibility": {
+    "platform": ["mobile", "desktop"]
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "id": "hero-netflix-001",
+      "props": {
+        "variant": "single",
+        "aspectRatio": "16:9",
+        "autoplay": false,
+        "showArrows": false,
+        "scrollSpeed": 3000,
+        "items": [
+          {
+            "id": "hero-item-netflix-1",
+            "title": "THE CLIENT",
+            "titleType": "image",
+            "titleImage": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABTK8CGD-smG7qZBEEQcNw734VCF2OONsB_2I8aJBZaAUXZ-ed5r_E3leBm4cX_efOLYBGDMx1bgbcIA8JDUolGXhXFAXTMMRfpLLEEy7CRqP.webp?r=397",
+            "backgroundImage": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABU0pgEY5kjEHi8lVRi9Mmm6oDAVZLAPS3QXDLSUC6gs6chTusE6uq11ov-C3NQqCg5St6yUiH1wXeYaFA2Tg336-a0kJZOLW-nKf.webp?r=d55",
+            "videoBackground": "",
+            "metadata": {
+              "year": "1994",
+              "language": "English",
+              "rating": "U/A 16+"
+            },
+            "badges": [
+              { "id": "badge-netflix-1", "label": "US Crime TV Dramas" }
+            ],
+            "primaryCTA": {
+              "label": "Play",
+              "link": "/watch/the-client",
+              "variant": "solid",
+              "backgroundColor": "#ffffff",
+              "textColor": "#000000",
+              "icon": "Play",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "sm"
+            },
+            "secondaryCTA": {
+              "label": "More Info",
+              "link": "/info/the-client",
+              "variant": "solid",
+              "backgroundColor": "#747573",
+              "textColor": "#ffffff",
+              "icon": "Info",
+              "iconPosition": "left",
+              "iconThickness": "thick"
+            }
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "none",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "AU"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-made-in-india",
+      "props": {
+        "title": "Made in India",
+        "itemShape": "landscape",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "Explore All",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#54b9c5",
+          "link": "/browse/made-in-india"
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABVrnmyAWv5vJeMymWSxbUShRjpGMbrCudwxP7DKGwTzfCguOMPfCgV_IJNAljBsjpP1raVDEbPvnGpnbTD3x1jUB8oDdLF3tWs4LV-5NjN3HO6F8bd-_veQ7SSIn8QyRkNbao9tTRBgjoXO5AGl50hsrZmh23oyTNcsw69ywOHEZ7Hjd5XrZqZrAigqpmNIP01J4OAgLk6AbSCBcS5iqREA5RVzukdjPL0Y1mxE.webp?r=955",
+            "link": "/watch/oho-enthan-baby"
+          },
+          {
+            "id": "item-2",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABYohSNU9orJcdU9rCtfnq2L2_ft13wLMkENw6ZrJilwpHioRT84watcFBNd_wgz1H-XjH6KExxv-fHUaL417lkJBj294io0kEW0JnDroUo_mP4TOwiX27RSmN-zsyEIP3cUqtuxbHTiWDovAhEtqHDsH-qNDFRMJPp_pINVQchv7f120aLYS_6oFgRist1xkiCV9KwaZkqoeBh-pYUPjT26rIdAxFWjauGVayX0wM-_QxaUlhlAhuC0YIDaobvKMsrA.jpg?r=61e",
+            "link": "/watch/saare-jahan-se-accha"
+          },
+          {
+            "id": "item-3",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABcjZsHz9Akueh2KUrGmkX_PLAO7csuWvCCU-JpAMOHOUQYJsBXJv4Q2zytv4Mczo2KDYBeoEBP-eXh3Jwq61wCzpejmLf3UCg2A.webp?r=80b",
+            "link": "/watch/leo"
+          },
+          {
+            "id": "item-4",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQpo7AM0IiCaHCqBZ5hljvLrWN6_75MjIXy5kwYz_KUzoQueqs3PBCyNHnsSWSSRT-6bu-KN85ta7aNhqXMiras6yKzoPGV-xUMvW4-GkW6QEPV9AWN6ZojQ9EodYwVrSnrX.jpg?r=b8c",
+            "link": "/watch/dabba-cartel"
+          },
+          {
+            "id": "item-5",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfmHfxdOotpoN5tg2b1HGyMUb3Dhd2DWWeAGayUwYmItDcaf37J7nszLsVZnhWTp2V4qC-m5e_defd08-JF-TGM-awk04_YwOKE.webp?r=44e",
+            "link": "/watch/maharaja"
+          },
+          {
+            "id": "item-6",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdNpmpoyM-AVHRbQDfkSyZH5i1KvMFJ4O3Paug6sVPPaS03chTL1khIcMUGGkhw2eePK1Pd0VZLfJpjb9QSCpZOLAyD0OMzDVa4.webp?r=3d2",
+            "link": "/watch/retro"
+          },
+          {
+            "id": "item-7",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABR9_wiVxpUtXuPBq1PigECPgYkGVir9WZb_-wQ-0PaLCT8woCPQW9J7-C9Zr0PJkwcN7U1wSqmfZCHbVBpi351TjcIi4NpZPpr8.webp?r=f54",
+            "link": "/browse/collection"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["IN", "US", "CA", "UK", "AU"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-continue-watching",
+      "props": {
+        "title": "Continue Watching for Harish",
+        "itemShape": "landscape",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "progressBar": {
+          "enabled": true,
+          "color": "#e50914"
+        },
+        "items": [
+          {
+            "id": "continue-1",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABbOQGGkhJ4lrUSVrnKQM9LtmzwpkUjddPpievFV0rJgjtUc1g9uvfckyecZeEY1aXRHj0yg-P5i3wd1AYfU8DhGFXu5532hcw6hGb0HYMKIdG8Dk7h6T_CI2OD8R_uYQQXMY.jpg?r=b2c",
+            "link": "/watch/breaking-bad",
+            "progress": 35
+          },
+          {
+            "id": "continue-2",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABYuxzbdpocA1pbDy-cOMVcCcjWtdBpEcI7lupGCnX_SoWMZOW4wcwdpeC6Q2jvJrv_ezZTjpA4VWgMGFiOhvSbkXo_H0ZT13qVc.webp?r=dfc",
+            "link": "/watch/stranger-things",
+            "progress": 68
+          },
+          {
+            "id": "continue-3",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWA82hZwHj5j8OiLO_Rx7cNoXXNCpKUjr4iH32cN19jmcVASsyYaaS0rWkuzlj_eNi-xsS9to_pygRLviuMecA1_D6H_fgkyyKQ.webp?r=3f3",
+            "link": "/watch/the-crown",
+            "progress": 12
+          },
+          {
+            "id": "continue-4",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTwdTR-lM-vSD_Hm35enIskVhVeGrcNKyEvUrWK_8hYf5OYE-EqB1dQqCQQGJaMdOMcUMLk9PpWf1geZpIoeK-g5_0g-OTTnBFk.webp?r=db5",
+            "link": "/watch/wednesday",
+            "progress": 89
+          },
+          {
+            "id": "continue-5",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABaCGszujpDcpn2h30q2g_nrdfKIUR0miLzTnt5U5LMTR43dPZQ2aPhI1cfCRoC-vjCr6NpbT2vD3L7ShDEt9uyfmg3RlfsEtCms.webp?r=bc7",
+            "link": "/watch/money-heist",
+            "progress": 45
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "AU", "IN"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-top-10-india",
+      "props": {
+        "title": "Top 10 TV Shows in India Today",
+        "itemShape": "rectangle-portrait",
+        "alignment": "left",
+        "autoplay": true,
+        "scrollSpeed": 1000,
+        "showArrows": false,
+        "itemSize": "small",
+        "button": {
+          "text": "Explore All",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#54b9c5",
+          "link": "/browse/top-10-india"
+        },
+        "items": [
+          {
+            "id": "top10-1",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABdh4Uef8hiNZZaec33JD7iX5-Ce4M6vQKdO2wMyPNprBfKtRkldLV_Tbeq0y0v57j_ym1UFa9T7NGDCjMgzbwwRj2-K5OzH1muUV4_hLcpTM6wPlWtUKtETDkAu7Py4IZWIksljnHe6E7c3eLvIRbnfuiVB0FrE1Sv87egaE_u17Ou90JIY7YEvAGmQvr3cTl0FkSr1m2Q.jpg?r=378",
+            "link": "/watch/saare-jahan-se-accha"
+          },
+          {
+            "id": "top10-2",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABYAbjEiTznUlPk4egPnXSFxdoCswd9prWxeNwUCnoJZ03jftnl3vH_vPLJcnghNi02FkFbFBXqFa08hGjYQH6ecPw1LrgCif8_Bfa0YhPPRdY6DTuIiEL9s8cnmyG1pfy0ECuFrsX3E1IgXDemZUKeVqT_fw38g5rx1z1lX8v1MAoqbOPKFacf-PcSKeNFwMDAuh.jpg?r=05b",
+            "link": "/watch/wednesday"
+          },
+          {
+            "id": "top10-3",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABc6SwuKrQA-2TD7Os0CHh-U11TjFi64s5LZ8-k_aCEEzJ3SUIbjA0Sagp__lZ2UvsajbAt7o_dDjZclfWnKnaxxWQAqM4_97P35zp9uHdyTBxGibKaFqQxbfN2xqBVa0gRvkwPQOod_H0-RpkRrxXjyvfJrElOTeam09fjOQILpHGo0kr_xigJzUqMPvD7mcea34_YtWGQ.jpg?r=7c3",
+            "link": "/watch/mandala-murders"
+          },
+          {
+            "id": "top10-4",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABdDndpao96QJ3ZwMKJl6_n4eB_YWVnF6JyjRCzIbI1quPJi7g98PeB6fB9Ni7w5J32Vwi4jeWC1tBxb0EF7LXE3_nxDaHfPLvfLCjlHsoS3cdblXP3GJ14wSoL7LYJgjaKAKSszYloYzx4h3Sq46F9fKX7KiWV0wwr6yXh2oHrNwHZ9yH-Qd0VG1sp_GYeD8jJIXxmIjKYP0XSjNSijlRUSsQ5nN47hLIGjuQQJ_bLf58sNx47SpBYbI1Af5H1VUNo96x8WNPjR5nPm3o57fNyW1NAXyeRjHMcu-03VRABP9DTzzOhBf3UhlNlx_TBfgYOsccyG70hadVyUGmn_ofgXjJA.jpg?r=c28",
+            "link": "/watch/great-indian-kapil-show"
+          },
+          {
+            "id": "top10-5",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABS8zGoBHxjZBsurSHeDBdGQIL16ZiNXc5PAnzwiBjchKgGmgoJa6ArLcLxbNMqq10zCGZWPjCHpPkmHa1KWVrhrXO_Hp-om2rvf34TKfP5hxRB9cIJaJIjFJxXB3u-Bd5mWCiugWBl7OGTJSBE0EiIcuptxfZIVG52RbTkXttK6uIcHDVhIKXURa5RxS6cG-pnnRgn8nfBMlVPda26wrrl9wuce55pDUGzaHrXB_faOS4otDfcullIsDY1malMi4qhn-ya_iL2oHUxBeWb5QgL7zM9pfP6AkiVaMgTfZT0j_LyGZab5hX2dsnKrKiLd0yJS_KpVXRd5A1jmRQICPsIJmig.jpg?r=522",
+            "link": "/watch/beyond-the-bar"
+          },
+          {
+            "id": "top10-6",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABVpk4kiSCJdEXj1AriPFyUreC1qRN2J5xQ4zZ6OidB1ruC2Ji37mn9vCRNEMrx3onhfeTOzROhyfdN6RPDheKI9YToGheyV2_OXHmHHonWdlPTUdbwgZrYJGpXQDpPqZrWf0-kIJVdyK34a9WdjBdBZADmC9eUL-GxMdvr2AOaxdRp5jODdvVynaADn6XWwRqKoCd0c-Mppapu543a-YT-GxuHGrQJ6Xh-8jKX7U6TisPaMFB16TYWaAakkheXQU8OIkqqtueTJuZcJ0MtXbxhXx0SWUKwhyebJ6ZkqfSxpXsV-NxQ.jpg?r=44f",
+            "link": "/watch/wwe-raw"
+          },
+          {
+            "id": "top10-7",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABaUaz_5IXfEgtUzpMsOsBecy1TBHEw1zYidRkgkT8nacRBLWlFjM-dW2UieB0Wz3vAevYhiJ2saketwojFcUZR41somCSKaDRlts9bqbabFfi0WCuFBhLuTZqa6_U75m0a1eHg.jpg?r=b67",
+            "link": "/watch/mirzapur"
+          },
+          {
+            "id": "top10-8",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABU7PT4tjPh5jhqF8QRkZ4CmGCf7jUHcfmSQ1ytX50QJXciJX87EoQRQ-LprjJFWQdTloBRqgOujOzqU3otg8--d43fuQDvlQnUwMHhKxnp1zmHmAZMLqtQh5QodjDCCYoWME1g.jpg?r=424",
+            "link": "/watch/sacred-games"
+          },
+          {
+            "id": "top10-9",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABVNyM7x39-hOSgTf2rZGVdHAxNxMxuD-1r_P60w43KXGXKP-XQLdWoIcoIzzqMD8smPlnLO0H9WrRUoujV92ze0VYYOUZgHACMliHVVshHCfx8fUfXW5gjQFucmQvWJKBZRHvwdY4dtY0ScBB1I48xdgnJZj-88LD8S6TdooaSCo6lGiwUiqaJzpvjy2KSYh_u4HXtuVs0IcZy-Hj9efsJ1VWWPX61YOslFUoZDs-YwB3gvDJs090mw-Q4TG4PtgM19e5wcwGbUAHFImt7xbGH5sHKY9280BplpUyUAatMmbwytl.jpg?r=abd",
+            "link": "/watch/delhi-crime"
+          },
+          {
+            "id": "top10-10",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABdVPrnR47bQ5JG_MNrkO2DlFuhxBs920VFU7KshPsbQTaXpwbpv4UcOBe68658U5-pomMh6sg_THnYNg8D59X0cB3PhUD4SGopfT4R9XU20Uyiw2ignK00t5g6I6BNCsR41o2bg8XxPOY1qoiE90C76qw_VSDQKH-_uBRKaZSvCjYFZ5r4YONj73FscN2py-apIT9W0aBA.jpg?r=acd",
+            "link": "/watch/little-things"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left",
+        "gridGap": "lg"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["IN", "US", "CA", "UK", "AU"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-children-family-tv",
+      "props": {
+        "title": "Children & Family TV",
+        "itemShape": "landscape",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "Explore All",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#54b9c5",
+          "link": "/browse/children-family-tv"
+        },
+        "items": [
+          {
+            "id": "children-1",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf82SeVQ8L0bEmWnFvKPKVazOXERIKwCcFr09ny5uMg5GA12EIJtom4x32_BEzfBc2SMGVDztHMi_RoX7wfa6Al80tAF3ofQlGY.webp?r=f7a",
+            "link": "/watch/ben-10"
+          },
+          {
+            "id": "children-2",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABazC1Zj3ILUHyqU5ZTb7H5jwFW2lhLGMwE_3KkJ9r0nbx7XL7XVyX5M4i4COwvo_RtfiW0dkFuh7xp7s2XeJGQn2dAlk2HEl9VAuhpopgdfAywSgqHiBBvku596BY1KeOepA.jpg?r=0b3",
+            "link": "/watch/lost-in-space"
+          },
+          {
+            "id": "children-3",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABX2PfVhkMZlw8pvS-LUgyk8GpmKv48_tRsA6rgSV8ppFvijet4MWICbJW-3I369_O1kaxVEl0aCY957Ma9wpLzqm37MYsN5AQT8.webp?r=cfb",
+            "link": "/watch/adventure-time"
+          },
+          {
+            "id": "children-4",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABaTt-AH76H4wSJGnG3UzUOm2-9bDMKWkeE3hEHYOzA7JQt4KqQ_xw8IsWfd-xNH93eg4rn-p_X9Y34nTszL7INQ8AKO1vJbcxgpXsrqkXrrv7afx9Yrk4bZR_M8Iqs4ixC8I.jpg?r=7f6",
+            "link": "/watch/kung-fu-panda-dragon-knight"
+          },
+          {
+            "id": "children-5",
+            "title": "",
+            "image": "http://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABadSt0xjECjE-Yn0va0B1aU0OEJ6EX9QMQTnZGzshhDTuDlw1CMs2Mf-LVrg5YmSpEXa7J9F5RNHQc3G1Ma4N8v_eQb7dW14N0DpkxCVwm05gyMDSxtG-URRoyvHvpMNyibE.jpg?r=213",
+            "link": "/watch/series-of-unfortunate-events"
+          },
+          {
+            "id": "children-6",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABavB0PGkeKk-3s0XHddnN1en9Z2vhcdIHqeYiv05rLZsqZeuytBpKFrgvU_fQHkU6dC2TjXqzeOfsrGogCXCS5xGXzuUbEEsoTc.webp?r=f6c",
+            "link": "/watch/justice-league"
+          },
+          {
+            "id": "children-7",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABU2r8gMABLOfbY__iP2NRUcNsFkKtKvCpgI_ieZ9w00UqMoij1B2No7V1ACEyqEtbYQifKgQFq64hm3bSvtFz5z_cbCmI1FyeGc.webp?r=e55",
+            "link": "/watch/stranger-things"
+          },
+          {
+            "id": "children-8",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXEv5o7EqSi9Mq-Ck2c3GYB6hn7AfSK3V8X7-Xm2BGyN6qd8qjEJs-sfdZEX0lzDxT58ixZZPwKAJlQD2LeI2-H65eh5_q6I82-yIz3Tvk5TVaZNs7ZO4EfS2GNL-_Ta_dnh.jpg?r=711",
+            "link": "/watch/stranger-things"
+          },
+          {
+            "id": "children-9",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABT2aTagPxp_dTpfsaw2OsylI7Q3t6lzvJc3R3CRFbRi29myCxqrKpPAAHdCxiAcMP5iDBz4eMRGUA1LGx_DIGHvm8wx3SCxCYgE.webp?r=a0a",
+            "link": "/watch/stranger-things"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "AU", "IN"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-tamil-language-movies",
+      "props": {
+        "title": "Tamil-Language Movies",
+        "itemShape": "landscape",
+        "alignment": "left",
+        "autoplay": true,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "Explore All",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#54b9c5",
+          "link": "/browse/tamil-language-movies"
+        },
+        "items": [
+          {
+            "id": "tamil-1",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfm6Q5v0OcuC4Gx4Cny1Z6CyaX_h-PrJamnxh_Co06MuuAz4hykZjs9qC6aTdz8-mXybvwxMtgmyjfiSYf0iXlI1roZYchvePiE.webp?r=a9e",
+            "link": "/watch/good-bad-ugly"
+          },
+          {
+            "id": "tamil-2",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABRbMF_z06epYFSl6TiTs8doq1luzxpnSILeUCkYYCIM-iAtC0fj28hYlwHverosu7GtJFXLB8WxTWGMD7-6H0ar94WHn0nUXV48.webp?r=dc5",
+            "link": "/watch/doctor"
+          },
+          {
+            "id": "tamil-3",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABZoJYYvVAH9ZuEjxMcymYQtJNAkhfCL1qP4ZD5JRfmUpzO1Wl88Wiu47Ey3fJf8O5iv2_z4brgnoYW_4-1Q7a2opUt9PATkQwVI.webp?r=911",
+            "link": "/watch/love-today"
+          },
+          {
+            "id": "tamil-4",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf-I6lOwucYm0eePRHNgtElHAeVWF9YXp_PDx0ZQW2WuFGxQJs1E8HnC9w-diy-Thnd4HT1TAFJarMbP2urcWCovIGvOxopBHjE.webp?r=457",
+            "link": "/watch/jigar-thanda-double-x"
+          },
+          {
+            "id": "tamil-5",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABefKzTSyaOw9s0nXF7gVPqZJpD1_FUnT-yRzyARi1G3QwpUAl-_e4OxpyyUXWTxaTIYtCvoL2j-5o9aWigo8xTiHkQJDSkhuRfI.webp?r=66e",
+            "link": "/watch/mandela"
+          },
+          {
+            "id": "tamil-6",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABVdl1RAxJ50S_FZ24S1cvuyVIGD_Mqt-waOqyvxrA1h7FILbZo_vfzzCLT_aTNCq2gc_THaTBz4Hp16jUKJ1vT0s-oZsuYGBcY4.webp?r=6f3",
+            "link": "/watch/vicharanai-interrogation"
+          },
+          {
+            "id": "tamil-7",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQspihxSxnSNAglDkdYbEv7TZLJ7lp1CBvIVpJWV1zIIMv6vax55GHF83XoQveeeumntzvGVNySk42QvtHQwMSoztRDU0mddy5c.webp?r=1f3",
+            "link": "/watch/kadha-neram"
+          },
+          {
+            "id": "tamil-8",
+            "title": "",
+            "image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABeq-YELPchV_cPABzKpQoDTLU_dHbwE8pyoRpoVYaYjhS-X6MojbdQt-KnBFpZpv10xvI6P6wz68CZo58fcFFd-hx5k5xu6JXDH3rd-cAbnFVN3Qvj8JgvcDERS2OdlwOzzi.jpg?r=023",
+            "link": "/watch/vikram"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "sm",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["IN", "US", "CA", "UK", "AU"]
+      }
+    },
+    {
+      "type": "footer",
+      "id": "footer-netflix",
+      "props": {
+        "items": [
+          {
+            "id": "footer-column-1",
+            "title": "",
+            "links": [
+              { "id": "footer-link-1", "label": "Audio Description", "url": "/help/audio-description" },
+              { "id": "footer-link-2", "label": "Investor Relations", "url": "/investor-relations" },
+              { "id": "footer-link-3", "label": "Legal Notices", "url": "/legal-notices" }
+            ]
+          },
+          {
+            "id": "footer-column-2",
+            "title": "",
+            "links": [
+              { "id": "footer-link-4", "label": "Help Centre", "url": "/help" },
+              { "id": "footer-link-5", "label": "Jobs", "url": "/jobs" },
+              { "id": "footer-link-6", "label": "Cookie Preferences", "url": "/cookie-preferences" }
+            ]
+          },
+          {
+            "id": "footer-column-3",
+            "title": "",
+            "links": [
+              { "id": "footer-link-7", "label": "Gift Cards", "url": "/gift-cards" },
+              { "id": "footer-link-8", "label": "Media Centre", "url": "/media-centre" },
+              { "id": "footer-link-9", "label": "Privacy", "url": "/privacy" },
+              { "id": "footer-link-10", "label": "Corporate Information", "url": "/corporate-information" },
+              { "id": "footer-link-11", "label": "Contact Us", "url": "/contact" }
+            ]
+          }
+        ],
+        "socialLinks": [
+          { "id": "social-1", "platform": "facebook", "url": "" },
+          { "id": "social-2", "platform": "instagram", "url": "" },
+          { "id": "social-3", "platform": "twitter", "url": "" },
+          { "id": "social-4", "platform": "youtube", "url": "" }
+        ],
+        "branding": "© 1997-2025 Netflix Inc"
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#737373",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "none",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "AU", "IN"]
+      }
+    }
+  ]
+}

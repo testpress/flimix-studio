@@ -11,6 +11,7 @@ import { BlockInsertProvider } from '@context/BlockInsertContext';
 import { LibraryPanelProvider } from '@context/LibraryPanelContext';
 import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { useState } from 'react';
+import netflixSchemaData from './schemas/netflixSchema.json';
 
 // Move the sample schema here so it can be shared
 const hotstarSchema: PageSchema = {
@@ -609,11 +610,13 @@ const hotstarSchema: PageSchema = {
   ]
 };
 
+const netflixSchema: PageSchema = netflixSchemaData as PageSchema;
+
 function App() {
   const [showDebug, setShowDebug] = useState(false);
 
   return (
-    <HistoryProvider initialSchema={hotstarSchema}>
+    <HistoryProvider initialSchema={netflixSchema}>
       <SelectionProvider>
         <BlockInsertProvider>
           <LibraryPanelProvider>
