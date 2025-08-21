@@ -26,6 +26,25 @@ const ContentTab: React.FC<ContentTabProps> = ({
   updateHeroItemTitleType,
   updateHeroItemTitleImage
 }) => {
+  // Helper function to handle hashtag changes with default fallback
+  const handleHashtagChange = (update: Partial<HeroHashtag>) => {
+    if (currentItem.hashtag) {
+      // Update existing hashtag
+      updateHeroItemHashtag({
+        ...currentItem.hashtag,
+        ...update
+      });
+    } else {
+      // Create new hashtag with defaults
+      updateHeroItemHashtag({
+        text: '#trending',
+        size: 'medium',
+        color: '#dc2626',
+        ...update
+      });
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
@@ -194,19 +213,7 @@ const ContentTab: React.FC<ContentTabProps> = ({
             <input
               type="color"
               value={currentItem.hashtag?.color || '#dc2626'}
-              onChange={(e) => {
-                if (currentItem.hashtag) {
-                  updateHeroItemHashtag({
-                    ...currentItem.hashtag,
-                    color: e.target.value
-                  });
-                } else {
-                  updateHeroItemHashtag({
-                    text: '#trending',
-                    color: e.target.value
-                  });
-                }
-              }}
+              onChange={(e) => handleHashtagChange({ color: e.target.value })}
               className="w-full h-10 border-0 p-0"
             />
           </div>
@@ -215,19 +222,7 @@ const ContentTab: React.FC<ContentTabProps> = ({
             <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
             <select
               value={currentItem.hashtag?.size || 'medium'}
-              onChange={(e) => {
-                if (currentItem.hashtag) {
-                  updateHeroItemHashtag({
-                    ...currentItem.hashtag,
-                    size: e.target.value as 'small' | 'medium' | 'large' | 'xl'
-                  });
-                } else {
-                  updateHeroItemHashtag({
-                    text: '#trending',
-                    size: e.target.value as 'small' | 'medium' | 'large' | 'xl'
-                  });
-                }
-              }}
+              onChange={(e) => handleHashtagChange({ size: e.target.value as 'small' | 'medium' | 'large' | 'xl' })}
               className="w-full p-2 border border-gray-300 rounded"
             >
               <option value="small">Small</option>

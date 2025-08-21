@@ -109,9 +109,7 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
   };
 
   const removeTertiaryCTA = () => {
-    if (updateHeroItemTertiaryCTA) {
-      updateHeroItemTertiaryCTA(undefined);
-    }
+    updateHeroItemTertiaryCTA!(undefined);
   };
 
   return (
