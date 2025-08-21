@@ -113,6 +113,16 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     updateProps({ ...heroBlock.props, items: newItems });
   };
   
+  const updateHeroItemTertiaryCTA = (tertiaryCTA: HeroCTABtn | undefined) => {
+    const newItems = [...(heroBlock.props.items || [])];
+    if (!newItems[currentItemIndex]) {
+      newItems[currentItemIndex] = createDefaultHeroItem();
+    }
+    
+    newItems[currentItemIndex].tertiaryCTA = tertiaryCTA;
+    updateProps({ ...heroBlock.props, items: newItems });
+  };
+  
   const updateHeroItemHashtag = (hashtag: HeroHashtag | undefined) => {
     const newItems = [...(heroBlock.props.items || [])];
     if (!newItems[currentItemIndex]) {
@@ -216,6 +226,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           currentItem={currentItem}
           updateHeroItemPrimaryCTA={updateHeroItemPrimaryCTA}
           updateHeroItemSecondaryCTA={updateHeroItemSecondaryCTA}
+          updateHeroItemTertiaryCTA={updateHeroItemTertiaryCTA}
         />
       )}
     </div>

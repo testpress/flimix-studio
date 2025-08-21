@@ -62,6 +62,35 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
     }
   };
 
+  // Helper function to get hashtag text size classes
+  const getHashtagSizeClass = (size?: string) => {
+    switch (size) {
+      case 'small': return 'text-sm md:text-base';
+      case 'large': return 'text-lg md:text-xl';
+      case 'xl': return 'text-xl md:text-2xl';
+      default: return 'text-base md:text-lg'; // medium (default)
+    }
+  };
+
+  // Helper function to get button size classes
+  const getButtonSizeClass = (size?: string, isCircle?: boolean) => {
+    if (isCircle) return 'w-12 h-12 p-0';
+    
+    switch (size) {
+      case 'small': return 'py-1.5 px-4 text-sm';
+      case 'large': return 'py-3 px-8 text-lg';
+      default: return 'py-2.5 px-6 text-base'; // medium (default)
+    }
+  };
+
+  // Helper function to get button variant classes
+  const getButtonVariantClass = (variant?: string) => {
+    switch (variant) {
+      case 'outline': return 'border bg-transparent';
+      default: return 'border'; // solid variant
+    }
+  };
+
   return (
     <div 
       className={`relative w-full ${aspectRatioClass}`}
@@ -95,18 +124,6 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       
       {/* Content Container - Positioned at bottom with padding */}
       <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
-        
-        {/* Hashtag - Display above badges if present */}
-        {item.hashtag && item.hashtag.text && (
-          <div className="mb-3">
-            <span 
-              className="text-xl md:text-2xl font-bold"
-              style={{ color: item.hashtag.color || '#dc2626' }}
-            >
-              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
-            </span>
-          </div>
-        )}
         
         {/* Category Badges */}
         {item.badges && item.badges.length > 0 && (
@@ -163,16 +180,24 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           </p>
         )}
         
+        {/* Hashtag - Display after subtitle and before buttons */}
+        {item.hashtag && item.hashtag.text && (
+          <div className="mb-4">
+            <span 
+              className={`font-bold ${getHashtagSizeClass(item.hashtag.size)}`}
+              style={{ color: item.hashtag.color || '#dc2626' }}
+            >
+              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
+            </span>
+          </div>
+        )}
+        
         {/* CTA Buttons */}
         <div className="flex flex-wrap gap-3 mt-2">
           {/* Primary CTA */}
           {item.primaryCTA && (
             <button 
-              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.primaryCTA.borderRadius)} ${
-                item.primaryCTA.borderRadius === 'full' 
-                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
-                  : 'py-2.5 px-6'    // Regular: normal padding
-              }`}
+              className={`font-semibold transition-colors duration-200 ${getButtonVariantClass(item.primaryCTA.variant)} flex items-center justify-center gap-2 ${getBorderRadiusClass(item.primaryCTA.borderRadius)} ${getButtonSizeClass(item.primaryCTA.size, item.primaryCTA.borderRadius === 'full')}`}
               style={{
                 backgroundColor: item.primaryCTA.backgroundColor || '#dc2626',
                 color: item.primaryCTA.textColor || '#ffffff',
@@ -184,12 +209,16 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                 item.primaryCTA.icon && item.primaryCTA.icon !== 'None' ? (
                   <ButtonIcon 
                     icon={item.primaryCTA.icon} 
-                    size={20} 
+                    size={item.primaryCTA.size === 'small' ? 16 : item.primaryCTA.size === 'large' ? 24 : 20} 
                     thickness={item.primaryCTA.iconThickness}
                   />
                 ) : (
                   // If no icon, show first letter of label
-                  <span className="text-lg font-bold">
+                  <span className={`font-bold ${
+                    item.primaryCTA.size === 'small' ? 'text-base' : 
+                    item.primaryCTA.size === 'large' ? 'text-xl' : 
+                    'text-lg'
+                  }`}>
                     {item.primaryCTA.label.charAt(0).toUpperCase()}
                   </span>
                 )
@@ -200,7 +229,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                   {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'left' && (
                     <ButtonIcon 
                       icon={item.primaryCTA.icon} 
-                      size={20} 
+                      size={item.primaryCTA.size === 'small' ? 16 : item.primaryCTA.size === 'large' ? 24 : 20}
                       thickness={item.primaryCTA.iconThickness}
                     />
                   )}
@@ -212,7 +241,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                   {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'right' && (
                     <ButtonIcon 
                       icon={item.primaryCTA.icon} 
-                      size={20} 
+                      size={item.primaryCTA.size === 'small' ? 16 : item.primaryCTA.size === 'large' ? 24 : 20}
                       thickness={item.primaryCTA.iconThickness}
                     />
                   )}
@@ -224,11 +253,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           {/* Secondary CTA */}
           {item.secondaryCTA && (
             <button 
-              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.secondaryCTA.borderRadius)} ${
-                item.secondaryCTA.borderRadius === 'full' 
-                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
-                  : 'py-2.5 px-5'    // Regular: normal padding
-              }`}
+              className={`font-semibold transition-colors duration-200 ${getButtonVariantClass(item.secondaryCTA.variant)} flex items-center justify-center gap-2 ${getBorderRadiusClass(item.secondaryCTA.borderRadius)} ${getButtonSizeClass(item.secondaryCTA.size, item.secondaryCTA.borderRadius === 'full')}`}
               style={{
                 backgroundColor: item.secondaryCTA.backgroundColor || '#ffffff',
                 color: item.secondaryCTA.textColor || '#000000',
@@ -240,12 +265,16 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                 item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' ? (
                   <ButtonIcon 
                     icon={item.secondaryCTA.icon} 
-                    size={20} 
+                    size={item.secondaryCTA.size === 'small' ? 16 : item.secondaryCTA.size === 'large' ? 24 : 20}
                     thickness={item.secondaryCTA.iconThickness}
                   />
                 ) : (
                   // If no icon, show first letter of label
-                  <span className="text-lg font-bold">
+                  <span className={`font-bold ${
+                    item.secondaryCTA.size === 'small' ? 'text-base' : 
+                    item.secondaryCTA.size === 'large' ? 'text-xl' : 
+                    'text-lg'
+                  }`}>
                     {item.secondaryCTA.label.charAt(0).toUpperCase()}
                   </span>
                 )
@@ -256,7 +285,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                   {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'left' && (
                     <ButtonIcon 
                       icon={item.secondaryCTA.icon} 
-                      size={20} 
+                      size={item.secondaryCTA.size === 'small' ? 16 : item.secondaryCTA.size === 'large' ? 24 : 20}
                       thickness={item.secondaryCTA.iconThickness}
                     />
                   )}
@@ -268,8 +297,64 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
                   {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'right' && (
                     <ButtonIcon 
                       icon={item.secondaryCTA.icon} 
-                      size={20} 
+                      size={item.secondaryCTA.size === 'small' ? 16 : item.secondaryCTA.size === 'large' ? 24 : 20}
                       thickness={item.secondaryCTA.iconThickness}
+                    />
+                  )}
+                </>
+              )}
+            </button>
+          )}
+          
+          {/* Tertiary CTA */}
+          {item.tertiaryCTA && (
+            <button 
+              className={`font-semibold transition-colors duration-200 ${getButtonVariantClass(item.tertiaryCTA.variant)} flex items-center justify-center gap-2 ${getBorderRadiusClass(item.tertiaryCTA.borderRadius)} ${getButtonSizeClass(item.tertiaryCTA.size, item.tertiaryCTA.borderRadius === 'full')}`}
+              style={{
+                backgroundColor: item.tertiaryCTA.backgroundColor || '#333333',
+                color: item.tertiaryCTA.textColor || '#ffffff',
+                borderColor: item.tertiaryCTA.variant === 'outline' ? item.tertiaryCTA.textColor || '#ffffff' : 'transparent'
+              }}
+            >
+              {item.tertiaryCTA.borderRadius === 'full' ? (
+                // Circle button: only show icon, no text
+                item.tertiaryCTA.icon && item.tertiaryCTA.icon !== 'None' ? (
+                  <ButtonIcon 
+                    icon={item.tertiaryCTA.icon} 
+                    size={item.tertiaryCTA.size === 'small' ? 16 : item.tertiaryCTA.size === 'large' ? 24 : 20}
+                    thickness={item.tertiaryCTA.iconThickness}
+                  />
+                ) : (
+                  // If no icon, show first letter of label
+                  <span className={`font-bold ${
+                    item.tertiaryCTA.size === 'small' ? 'text-base' : 
+                    item.tertiaryCTA.size === 'large' ? 'text-xl' : 
+                    'text-lg'
+                  }`}>
+                    {item.tertiaryCTA.label.charAt(0).toUpperCase()}
+                  </span>
+                )
+              ) : (
+                // Regular button: show icon + text
+                <>
+                  {/* Left Icon */}
+                  {item.tertiaryCTA.icon && item.tertiaryCTA.icon !== 'None' && item.tertiaryCTA.iconPosition === 'left' && (
+                    <ButtonIcon 
+                      icon={item.tertiaryCTA.icon} 
+                      size={item.tertiaryCTA.size === 'small' ? 16 : item.tertiaryCTA.size === 'large' ? 24 : 20}
+                      thickness={item.tertiaryCTA.iconThickness}
+                    />
+                  )}
+                  
+                  {/* Label */}
+                  <span>{item.tertiaryCTA.label}</span>
+                  
+                  {/* Right Icon */}
+                  {item.tertiaryCTA.icon && item.tertiaryCTA.icon !== 'None' && item.tertiaryCTA.iconPosition === 'right' && (
+                    <ButtonIcon 
+                      icon={item.tertiaryCTA.icon} 
+                      size={item.tertiaryCTA.size === 'small' ? 16 : item.tertiaryCTA.size === 'large' ? 24 : 20}
+                      thickness={item.tertiaryCTA.iconThickness}
                     />
                   )}
                 </>
