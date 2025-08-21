@@ -333,28 +333,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
               blockType={selectedBlock.type}
             />
           )}
-          
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Page Settings</h2>
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-medium text-gray-700 mb-2">Page Title</h3>
-                <input 
-                  type="text" 
-                  placeholder="Enter page title"
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
-                />
-              </div>
-              
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-medium text-gray-700 mb-2">Meta Description</h3>
-                <textarea 
-                  placeholder="Enter meta description"
-                  className="w-full p-2 border border-gray-300 rounded text-sm h-20"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

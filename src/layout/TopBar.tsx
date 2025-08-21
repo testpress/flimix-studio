@@ -1,15 +1,39 @@
 import React from 'react';
-import { Undo, Redo, Plus, X, SlidersHorizontal } from 'lucide-react';
+import { Undo, Redo, Plus, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
 import { useSettingsPanel } from '@context/SettingsPanelContext';
 import { useSelection } from '@context/SelectionContext';
+import { usePageSchemaWithHistory, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
 
 const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo } = useHistory();
   const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
   const { isSettingsOpen, toggleSettings } = useSettingsPanel();
   const { setSelectedBlock, setSelectedBlockId, setSelectedItemId, setSelectedItemBlockId } = useSelection();
+  const { currentPageSchemaKey, switchPageSchema } = usePageSchemaWithHistory();
+  
+  const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+  
+  // Handle click outside to close dropdown
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsPageSchemaDropdownOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  const handlePageSchemaChange = (pageSchemaKey: PageSchemaKey) => {
+    switchPageSchema(pageSchemaKey);
+    setIsPageSchemaDropdownOpen(false);
+  };
 
   const handleSettingsToggle = () => {
     if (isSettingsOpen) {
@@ -26,6 +50,34 @@ const TopBar: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <h1 className="text-xl font-bold">Flimix Studio</h1>
+          
+          {/* Page Schema Selector - Choose between Netflix and Hotstar page layouts */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsPageSchemaDropdownOpen(!isPageSchemaDropdownOpen)}
+              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded flex items-center space-x-2"
+            >
+              <span>{availablePageSchemas[currentPageSchemaKey].name}</span>
+              <ChevronDown size={16} className={`transition-transform ${isPageSchemaDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {isPageSchemaDropdownOpen && (
+              <div className="absolute top-full left-0 mt-1 bg-gray-700 rounded shadow-lg w-48 z-50">
+                {Object.entries(availablePageSchemas).map(([key, { name }]) => (
+                  <button
+                    key={key}
+                    onClick={() => handlePageSchemaChange(key as PageSchemaKey)}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-600 ${
+                      currentPageSchemaKey === key ? 'bg-blue-600' : ''
+                    }`}
+                  >
+                    {name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          
           <button 
             onClick={toggleLibrary}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
