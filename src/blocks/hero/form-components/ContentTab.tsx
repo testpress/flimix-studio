@@ -26,6 +26,25 @@ const ContentTab: React.FC<ContentTabProps> = ({
   updateHeroItemTitleType,
   updateHeroItemTitleImage
 }) => {
+  // Helper function to handle hashtag changes with default fallback
+  const handleHashtagChange = (update: Partial<HeroHashtag>) => {
+    if (currentItem.hashtag) {
+      // Update existing hashtag
+      updateHeroItemHashtag({
+        ...currentItem.hashtag,
+        ...update
+      });
+    } else {
+      // Create new hashtag with defaults
+      updateHeroItemHashtag({
+        text: '#trending',
+        size: 'medium',
+        color: '#dc2626',
+        ...update
+      });
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
@@ -166,7 +185,7 @@ const ContentTab: React.FC<ContentTabProps> = ({
         </p>
       </div>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Text</label>
           <input
@@ -188,26 +207,30 @@ const ContentTab: React.FC<ContentTabProps> = ({
           />
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
-          <input
-            type="color"
-            value={currentItem.hashtag?.color || '#dc2626'}
-            onChange={(e) => {
-              if (currentItem.hashtag) {
-                updateHeroItemHashtag({
-                  ...currentItem.hashtag,
-                  color: e.target.value
-                });
-              } else {
-                updateHeroItemHashtag({
-                  text: '#trending',
-                  color: e.target.value
-                });
-              }
-            }}
-            className="w-10 h-10 border-0 p-0"
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
+            <input
+              type="color"
+              value={currentItem.hashtag?.color || '#dc2626'}
+              onChange={(e) => handleHashtagChange({ color: e.target.value })}
+              className="w-full h-10 border-0 p-0"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
+            <select
+              value={currentItem.hashtag?.size || 'medium'}
+              onChange={(e) => handleHashtagChange({ size: e.target.value as 'small' | 'medium' | 'large' | 'xl' })}
+              className="w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+              <option value="xl">Extra Large</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

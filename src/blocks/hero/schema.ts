@@ -18,6 +18,7 @@ export interface HeroItem {
   badges?: HeroBadge[];
   primaryCTA?: HeroCTABtn;
   secondaryCTA?: HeroCTABtn;
+  tertiaryCTA?: HeroCTABtn;
   hashtag?: HeroHashtag;
 }
 
@@ -41,6 +42,7 @@ export interface HeroCTABtn {
   iconPosition?: 'left' | 'right';
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   iconThickness?: 'thin' | 'normal' | 'thick';
+  size?: 'small' | 'medium' | 'large'; // Button size option
 }
 
 export interface HeroMetadata {
@@ -57,4 +59,5 @@ export interface HeroBadge {
 export interface HeroHashtag {
   text: string;
   color?: string; // Hex color code for the hashtag
+  size?: 'small' | 'medium' | 'large' | 'xl'; // Text size of the hashtag
 }

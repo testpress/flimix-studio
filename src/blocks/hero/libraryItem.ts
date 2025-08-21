@@ -28,7 +28,8 @@ export const HeroLibraryItem = {
           icon: 'Play',
           iconPosition: 'left',
           iconThickness: 'normal',
-          borderRadius: 'md'
+          borderRadius: 'md',
+          size: 'medium'
         },
         secondaryCTA: { 
           label: 'Trailer', 
@@ -37,7 +38,8 @@ export const HeroLibraryItem = {
           icon: 'Info',
           iconPosition: 'right',
           iconThickness: 'normal',
-          borderRadius: 'md'
+          borderRadius: 'md',
+          size: 'medium'
         },
         metadata: { 
           year: '2025', 

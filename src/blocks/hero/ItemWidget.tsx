@@ -1,7 +1,7 @@
 import React from 'react';
 import type { HeroItem } from './schema';
 import VideoPlayer from './VideoPlayer';
-import { ButtonIcon } from './form-components/ButtonIcons';
+import CTAButton, { getHashtagSizeClass } from './CTAButton';
 
 interface ItemWidgetProps {
   item: HeroItem;
@@ -50,17 +50,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
 
   const aspectRatioClass = getAspectRatioClass(aspectRatio);
 
-  // Helper function to get border radius classes
-  const getBorderRadiusClass = (borderRadius?: string) => {
-    switch (borderRadius) {
-      case 'none': return '';
-      case 'sm': return 'rounded-sm';
-      case 'md': return 'rounded-md';
-      case 'lg': return 'rounded-lg';
-      case 'full': return 'rounded-full';
-      default: return 'rounded-md';
-    }
-  };
+
 
   return (
     <div 
@@ -95,18 +85,6 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       
       {/* Content Container - Positioned at bottom with padding */}
       <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
-        
-        {/* Hashtag - Display above badges if present */}
-        {item.hashtag && item.hashtag.text && (
-          <div className="mb-3">
-            <span 
-              className="text-xl md:text-2xl font-bold"
-              style={{ color: item.hashtag.color || '#dc2626' }}
-            >
-              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
-            </span>
-          </div>
-        )}
         
         {/* Category Badges */}
         {item.badges && item.badges.length > 0 && (
@@ -163,118 +141,45 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           </p>
         )}
         
+        {/* Hashtag - Display after subtitle and before buttons */}
+        {item.hashtag && item.hashtag.text && (
+          <div className="mb-4">
+            <span 
+              className={`font-bold ${getHashtagSizeClass(item.hashtag.size)}`}
+              style={{ color: item.hashtag.color || '#dc2626' }}
+            >
+              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
+            </span>
+          </div>
+        )}
+        
         {/* CTA Buttons */}
         <div className="flex flex-wrap gap-3 mt-2">
           {/* Primary CTA */}
           {item.primaryCTA && (
-            <button 
-              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.primaryCTA.borderRadius)} ${
-                item.primaryCTA.borderRadius === 'full' 
-                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
-                  : 'py-2.5 px-6'    // Regular: normal padding
-              }`}
-              style={{
-                backgroundColor: item.primaryCTA.backgroundColor || '#dc2626',
-                color: item.primaryCTA.textColor || '#ffffff',
-                borderColor: item.primaryCTA.variant === 'outline' ? item.primaryCTA.textColor || '#ffffff' : 'transparent'
-              }}
-            >
-              {item.primaryCTA.borderRadius === 'full' ? (
-                // Circle button: only show icon, no text
-                item.primaryCTA.icon && item.primaryCTA.icon !== 'None' ? (
-                  <ButtonIcon 
-                    icon={item.primaryCTA.icon} 
-                    size={20} 
-                    thickness={item.primaryCTA.iconThickness}
-                  />
-                ) : (
-                  // If no icon, show first letter of label
-                  <span className="text-lg font-bold">
-                    {item.primaryCTA.label.charAt(0).toUpperCase()}
-                  </span>
-                )
-              ) : (
-                // Regular button: show icon + text
-                <>
-                  {/* Left Icon */}
-                  {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'left' && (
-                    <ButtonIcon 
-                      icon={item.primaryCTA.icon} 
-                      size={20} 
-                      thickness={item.primaryCTA.iconThickness}
-                    />
-                  )}
-                  
-                  {/* Label */}
-                  <span>{item.primaryCTA.label}</span>
-                  
-                  {/* Right Icon */}
-                  {item.primaryCTA.icon && item.primaryCTA.icon !== 'None' && item.primaryCTA.iconPosition === 'right' && (
-                    <ButtonIcon 
-                      icon={item.primaryCTA.icon} 
-                      size={20} 
-                      thickness={item.primaryCTA.iconThickness}
-                    />
-                  )}
-                </>
-              )}
-            </button>
+            <CTAButton 
+              cta={item.primaryCTA}
+              defaultBackgroundColor="#dc2626"
+              defaultTextColor="#ffffff"
+            />
           )}
           
           {/* Secondary CTA */}
           {item.secondaryCTA && (
-            <button 
-              className={`font-semibold text-base transition-colors duration-200 border flex items-center justify-center gap-2 ${getBorderRadiusClass(item.secondaryCTA.borderRadius)} ${
-                item.secondaryCTA.borderRadius === 'full' 
-                  ? 'w-12 h-12 p-0' // Circle: fixed square dimensions with no padding
-                  : 'py-2.5 px-5'    // Regular: normal padding
-              }`}
-              style={{
-                backgroundColor: item.secondaryCTA.backgroundColor || '#ffffff',
-                color: item.secondaryCTA.textColor || '#000000',
-                borderColor: item.secondaryCTA.variant === 'outline' ? item.secondaryCTA.textColor || '#000000' : 'transparent'
-              }}
-            >
-              {item.secondaryCTA.borderRadius === 'full' ? (
-                // Circle button: only show icon, no text
-                item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' ? (
-                  <ButtonIcon 
-                    icon={item.secondaryCTA.icon} 
-                    size={20} 
-                    thickness={item.secondaryCTA.iconThickness}
-                  />
-                ) : (
-                  // If no icon, show first letter of label
-                  <span className="text-lg font-bold">
-                    {item.secondaryCTA.label.charAt(0).toUpperCase()}
-                  </span>
-                )
-              ) : (
-                // Regular button: show icon + text
-                <>
-                  {/* Left Icon */}
-                  {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'left' && (
-                    <ButtonIcon 
-                      icon={item.secondaryCTA.icon} 
-                      size={20} 
-                      thickness={item.secondaryCTA.iconThickness}
-                    />
-                  )}
-                  
-                  {/* Label */}
-                  <span>{item.secondaryCTA.label}</span>
-                  
-                  {/* Right Icon */}
-                  {item.secondaryCTA.icon && item.secondaryCTA.icon !== 'None' && item.secondaryCTA.iconPosition === 'right' && (
-                    <ButtonIcon 
-                      icon={item.secondaryCTA.icon} 
-                      size={20} 
-                      thickness={item.secondaryCTA.iconThickness}
-                    />
-                  )}
-                </>
-              )}
-            </button>
+            <CTAButton 
+              cta={item.secondaryCTA}
+              defaultBackgroundColor="#ffffff"
+              defaultTextColor="#000000"
+            />
+          )}
+          
+          {/* Tertiary CTA */}
+          {item.tertiaryCTA && (
+            <CTAButton 
+              cta={item.tertiaryCTA}
+              defaultBackgroundColor="#333333"
+              defaultTextColor="#ffffff"
+            />
           )}
         </div>
       </div>
