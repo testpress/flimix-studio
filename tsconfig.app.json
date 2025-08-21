@@ -37,6 +37,8 @@
       "@utils/*": ["src/utils/*"],
       "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],
+      "@pageSchemas/*": ["src/pageSchemas/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@types/*": ["src/types/*"]
     }
   },

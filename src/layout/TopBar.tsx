@@ -4,34 +4,26 @@ import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
 import { useSettingsPanel } from '@context/SettingsPanelContext';
 import { useSelection } from '@context/SelectionContext';
-import { usePageSchemaWithHistory, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
+import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
+import { useOnClickOutside } from '@hooks/useOnClickOutside';
 
 const TopBar: React.FC = () => {
-  const { undo, canUndo, redo, canRedo } = useHistory();
+  const { undo, canUndo, redo, canRedo, updatePageSchema } = useHistory();
   const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
   const { isSettingsOpen, toggleSettings } = useSettingsPanel();
   const { setSelectedBlock, setSelectedBlockId, setSelectedItemId, setSelectedItemBlockId } = useSelection();
-  const { currentPageSchemaKey, switchPageSchema } = usePageSchemaWithHistory();
+  const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
   
   const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   
-  // Handle click outside to close dropdown
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsPageSchemaDropdownOpen(false);
-      }
-    };
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  useOnClickOutside(dropdownRef, () => setIsPageSchemaDropdownOpen(false));
   
   const handlePageSchemaChange = (pageSchemaKey: PageSchemaKey) => {
-    switchPageSchema(pageSchemaKey);
+    // This logic is moved from the hook - orchestrating both contexts
+    const newPageSchema = availablePageSchemas[pageSchemaKey].pageSchema;
+    setCurrentPageSchemaKey(pageSchemaKey);
+    updatePageSchema(newPageSchema);
     setIsPageSchemaDropdownOpen(false);
   };
 

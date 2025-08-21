@@ -9,7 +9,7 @@ import { LibraryPanelProvider } from '@context/LibraryPanelContext';
 import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { useState } from 'react';
-import netflixSchemaData from './pageSchemas/netflixSchema.json';
+import netflixSchemaData from '@pageSchemas/netflixSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
 
 function App() {

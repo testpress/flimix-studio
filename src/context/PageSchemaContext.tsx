@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
-import netflixSchemaData from '../pageSchemas/netflixSchema.json';
-import hotstarSchemaData from '../pageSchemas/hotstarSchema.json';
-import { useHistory } from './HistoryContext';
+import netflixSchemaData from '@pageSchemas/netflixSchema.json';
+import hotstarSchemaData from '@pageSchemas/hotstarSchema.json';
 
 // Define available page schemas
 export const availablePageSchemas = {
@@ -50,22 +49,6 @@ export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({
   );
 };
 
-// Hook to use page schema with history integration
-export const usePageSchemaWithHistory = () => {
-  const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
-  const { updatePageSchema } = useHistory();
-  
-  const switchPageSchema = (pageSchemaKey: PageSchemaKey) => {
-    const newPageSchema = availablePageSchemas[pageSchemaKey].pageSchema;
-    setCurrentPageSchemaKey(pageSchemaKey);
-    updatePageSchema(newPageSchema);
-  };
-  
-  return {
-    currentPageSchemaKey,
-    switchPageSchema
-  };
-};
 
 export const usePageSchema = (): PageSchemaContextType => {
   const context = useContext(PageSchemaContext);
