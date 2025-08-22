@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, type ReactNode } from 'reac
 import type { PageSchema } from '@blocks/shared/Page';
 import netflixSchemaData from '@pageSchemas/netflixSchema.json';
 import hotstarSchemaData from '@pageSchemas/hotstarSchema.json';
+import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 
 // Define available page schemas
 export const availablePageSchemas = {
@@ -12,6 +13,10 @@ export const availablePageSchemas = {
   hotstar: {
     name: 'Hotstar Page',
     pageSchema: hotstarSchemaData as PageSchema
+  },
+  amazon: {
+    name: 'Amazon Prime Page',
+    pageSchema: amazonSchemaData as PageSchema
   }
 };
 
@@ -32,7 +37,7 @@ interface PageSchemaProviderProps {
 
 export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({ 
   children, 
-  initialPageSchemaKey = 'netflix' 
+  initialPageSchemaKey = 'amazon' as PageSchemaKey
 }) => {
   const [currentPageSchemaKey, setCurrentPageSchemaKey] = useState<PageSchemaKey>(initialPageSchemaKey);
 

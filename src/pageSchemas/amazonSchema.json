@@ -1,0 +1,638 @@
+{
+  "title": "Flimix Studio",
+  "theme": "dark",
+  "visibility": {
+    "platform": ["mobile", "desktop"]
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "id": "hero-amazon-001",
+      "props": {
+        "variant": "carousel",
+        "aspectRatio": "16:9",
+        "autoplay": false,
+        "showArrows": true,
+        "scrollSpeed": 5000,
+        "items": [
+          {
+            "id": "hero-item-amazon-2",
+            "title": "JURASSIC WORLD REBIRTH",
+            "titleType": "image",
+            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/56699a1c-41e7-4b44-a624-76a2735f4a41._BR-6_AC_SX1000_FMpng_.png",
+            "subtitle": "After the events of Jurassic World Dominion, the planet's ecology has proven largely inhospitable to dinosaurs.",
+            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/da44ae5a-9d30-4f50-af31-4b1e364c624f._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "videoBackground": "",
+            "metadata": {
+              "year": "2024"
+            },
+            "badges": [
+              { "id": "badge-amazon-2", "label": "U/A 13+" }
+            ],
+            "hashtag": {
+              "text": "#8 in UK",
+              "color": "#33DF98",
+              "size": "small"
+            },
+            "primaryCTA": {
+              "label": "Watch now",
+              "link": "/watch/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "medium",
+              "borderRadius": "lg"
+            },
+            "secondaryCTA": {
+              "label": "Watch list",
+              "link": "/watchlist",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Plus",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            },
+            "tertiaryCTA": {
+              "label": "Details",
+              "link": "/info/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Info",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            }
+          },
+          {
+            "id": "hero-item-amazon-1",
+            "title": "KUBERA",
+            "titleType": "image",
+            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/7b4b65b1-8b37-4fb1-b0f4-a36f065b6cab._BR-6_AC_SX1000_FMpng_.png",
+            "subtitle": "A fearless warrior, Kubera, embarks on a quest to reclaim his lost kingdom and avenge his father's death.",
+            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/d0fe3280-b79d-4d54-9b0a-1b946ee47704._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "videoBackground": "",
+            "metadata": {
+              "year": "2025"
+            },
+            "badges": [
+              { "id": "badge-amazon-1", "label": "U/A 16+" }
+            ],
+            "hashtag": {
+              "text": "#1 in India",
+              "color": "#33DF98",
+              "size": "small"
+            },
+            "primaryCTA": {
+              "label": "Watch now",
+              "link": "/watch/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "medium",
+              "borderRadius": "lg"
+            },
+            "secondaryCTA": {
+              "label": "Watch list",
+              "link": "/watchlist",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Plus",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            },
+            "tertiaryCTA": {
+              "label": "Details",
+              "link": "/info/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Info",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            }
+          },
+          {
+            "id": "hero-item-amazon-3",
+            "title": "MISSION: IMPOSSIBLE",
+            "titleType": "image",
+            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/b20bace5-9d55-47c3-9498-3d38709924bb._BR-6_AC_SX1000_FMpng_.png",
+            "subtitle": "Our lives are the sum of our choices. Tom Cruise is Ethan Hunt in Mission: Impossible – The Final Reckoning.",
+            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/2c32baaf-e7d6-4171-817d-0659bb79a944._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "videoBackground": "",
+            "metadata": {
+              "year": "2024"
+            },
+            "badges": [
+              { "id": "badge-amazon-2", "label": "U/A 13+" }
+            ],
+            "primaryCTA": {
+              "label": "Watch now",
+              "link": "/watch/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "medium",
+              "borderRadius": "lg"
+            },
+            "secondaryCTA": {
+              "label": "Watch list",
+              "link": "/watchlist",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Plus",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            },
+            "tertiaryCTA": {
+              "label": "Details",
+              "link": "/info/veera-mallu",
+              "variant": "solid",
+              "backgroundColor": "#303439",
+              "textColor": "#ffffff",
+              "size": "large",
+              "icon": "Info",
+              "iconPosition": "left",
+              "iconThickness": "thick",
+              "borderRadius": "full"
+            }
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "none",
+        "margin": "none",
+        "borderRadius": "none",
+        "textAlign": "left"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "IN"]
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-amazon-popular-indian",
+      "props": {
+        "title": "Popular Indian movies - Free with ads",
+        "itemShape": "landscape-portrait",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "See more",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#ffffff",
+          "link": "/browse/popular-indian"
+        },
+        "items": [
+          {
+            "id": "indian-1",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/45550866314cfc960b742405016c3d39038f4b8291aa71b151428c9947955806._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMpng_.png",
+            "link": "/movie/satyaprem-ki-katha"
+          },
+          {
+            "id": "indian-2",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/4dfe4199a16838c45911af3f5a9fdf543c68f0f6fcaca51dc7fd49220ec42d75._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/bawaal"
+          },
+          {
+            "id": "indian-3",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/e760df94a86869aea8ee7caa200ada9655184be078d770d6095048a2c2dd2aa4._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/olarisu"
+          },
+          {
+            "id": "indian-4",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/e3fa3e1c0553ecd0664133badc75a7cb7db3c3869196cb266e2c1812330ea914._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/mahaan"
+          },
+          {
+            "id": "indian-5",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9ad1b2653c6cf86b524e2c448ac8469f70d43760f4df7654107d84059029f01b._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/maaveeran"
+          },
+          {
+            "id": "indian-6",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/aa8470e9424422494f4f4dd8e6a5c53c8c6496e4b2c32538e0863ebf8ed1de95._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/bigil"
+          },
+          {
+            "id": "indian-7",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/b715ab10c77064b447425210ea866120b9390019c0b29ad959a33124e68711cc._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/boxing-champion"
+          },
+          {
+            "id": "indian-8",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/aa038c39825dacc8090896e2105a2f6a01aa172dc0c32ce0d86a01966aaf273c._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/captain"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "lg",
+        "textAlign": "left"
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-amazon-recommended",
+      "props": {
+        "title": "Recommended movies",
+        "itemShape": "landscape-portrait",
+        "alignment": "left",
+        "autoplay": true,
+        "scrollSpeed": 2000,
+        "showArrows": false,
+        "itemSize": "medium",
+        "items": [
+          {
+            "id": "recommended-1",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/0374efe2dcdb867d03619f4a3f53ac30f15883aa3fd611391fd4f8fe252e8009._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/3bhk"
+          },
+          {
+            "id": "recommended-2",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/c1550950d067c85866610b662671dd8497f5a65c9670b1a4ed26241293266ba1._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/kuberaa"
+          },
+          {
+            "id": "recommended-3",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/808f0246da225e5017a0fba4461a26b1308bbb9f9f6bb58eecbfffa6a2a44130._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/maargan"
+          },
+          {
+            "id": "recommended-4",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/ef8d81b802df73636860c1f5ef32827fb4bf15cdaa31c8f7528bd10b4579343a._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/jailer"
+          },
+          {
+            "id": "recommended-5",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/981281eaef0c773735320ab51f5124c5402b209a9e63a5328165b74764326298._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/master"
+          },
+          {
+            "id": "recommended-6",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/e7415aa67157141a86395ba42c7c590aead9ad7232f43dd72a061cc6dfb1d1d5._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/padai-thalaivan"
+          },
+          {
+            "id": "recommended-7",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/d6d43088db211d95bbb23ec9be604807b677fd13a0bc9f79106fc19fb264d309._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/action-thriller"
+          },
+          {
+            "id": "recommended-8",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/522b3162ad279b3d6eb8860a0970d9994a90631013c9d3dea36489ddf45e5984._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/action-thriller"
+          },
+          {
+            "id": "recommended-9",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/092bdb20ca04e5e9e9c318ea7b4902736e621b72a4cb385c490134735449ef72._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/action-thriller"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "lg",
+        "textAlign": "left"
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-amazon-featured-originals",
+      "props": {
+        "title": "Featured Originals: Movies",
+        "itemShape": "rectangle-portrait",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "See more",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#ffffff",
+          "link": "/browse/featured-originals"
+        },
+        "items": [
+          {
+            "id": "originals-1",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/b8c056b8501343be484b7eb681bf4a632171e82daf33a7f8028940b9975a8989._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMpng_.png",
+            "link": "/movie/my-fault"
+          },
+          {
+            "id": "originals-2",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/b9b2e4fba69fc0e1029efb8aba0c6296256ef7571b3a28bcd87e279d0bb1f2e9._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/follow"
+          },
+          {
+            "id": "originals-3",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/2c87bd3d1c759fa293d84ed91b42fe0a9aeee5fc6f2f30be33c9d482ff0895f0._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/deep-water"
+          },
+          {
+            "id": "originals-4",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/6c89b0633c0c78f411d8fea79027866f1fe2626b1630d0f91c5392673a277d14._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/ammu"
+          },
+          {
+            "id": "originals-5",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/ec1eb3a83e42ecd8d2769c247b1521e04ae5d0d8fa81fd3b405c0600a615d25c._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/killers-game"
+          },
+          {
+            "id": "originals-6",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/b48d0ba025803d51774f11decbf386de6a9dba9e6f0eed1c79a20b8039d38b26._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/mehta-boys"
+          },
+          {
+            "id": "originals-7",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/55877643d2ea2e2dc9e8e366b6bd151166c368307d7c7cff72e0cdefa5d9372c._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMjpg_.jpg",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "originals-8",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/ffd57c9d5cf3dd96dbf26a7b573027b2a28b26b52131d220e1e769809b4a7666._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMpng_.png",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "originals-9",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/f632c2d7632c4d971592d020442441bd113e83d4fc985210bcf7892ad6e418dd._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMpng_.png",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "originals-10",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/358678a756ff626282037fdb1129a9d46a46d09081dfd3a6952854401f2eb4f9._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/movie/action-drama"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "lg",
+        "textAlign": "left"
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-amazon-shop-spotlight",
+      "props": {
+        "title": "Shop: In the spotlight",
+        "itemShape": "rectangle-portrait",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "itemSize": "medium",
+        "button": {
+          "text": "See more",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#ffffff",
+          "link": "/browse/top-movies"
+        },
+        "items": [
+          {
+            "id": "shop-1",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9bb99904054925ef3c2d7ed7a483f4ffd59fe43fe33f439a2c26a1f5ba364470._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/shop/jurassic-world-rebirth"
+          },
+          {
+            "id": "shop-2",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/41d8069389732d20e653118999f5401970a4c37512cd837fab4eac0f75789f65._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/shop/how-to-train-your-dragon"
+          },
+          {
+            "id": "shop-3",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/a2e5c8276f2c2771b915a809356ef9cd4e6b2373143ca1af4ea28b4fe8422400._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMpng_.png",
+            "link": "/shop/materialists"
+          },
+          {
+            "id": "shop-4",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/651a3009bc782ce578aa35f79cd61e622a9b9819389f665a832ec6cf970eee44._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMjpg_.jpg",
+            "link": "/shop/karate-kid-legends"
+          },
+          {
+            "id": "shop-5",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/b48d0ba025803d51774f11decbf386de6a9dba9e6f0eed1c79a20b8039d38b26._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/shop/final-destination-bloodlines"
+          },
+          {
+            "id": "shop-6",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/4dc4b9bd023b6acb8472263da11f2511d01ca5a6f198a3749e1618732d094cc0._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1665,2767,253,150_kvf21cb47db8d34aa971cd86f57a65cf8d_SX750_FMpng_.png",
+            "link": "/shop/28-years-later"
+          },
+          {
+            "id": "shop-7",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/4d4b6ad54a38b5c4a59ffe682df08daaec9ee7d1e7a8657ffaa04388ab7274a3._UR2000,3000_SX750_FMjpg_.jpg",
+            "link": "/shop/action-thriller"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "lg",
+        "textAlign": "left"
+      }
+    },
+    {
+      "type": "carousel",
+      "id": "carousel-amazon-top-movies",
+      "props": {
+        "title": "Top movies",
+        "itemShape": "landscape-portrait",
+        "alignment": "left",
+        "autoplay": false,
+        "scrollSpeed": 3000,
+        "showArrows": true,
+        "button": {
+          "text": "See more",
+          "enabled": true,
+          "alignment": "left",
+          "icon": "ChevronRight",
+          "iconPosition": "right",
+          "textColor": "#ffffff",
+          "link": "/browse/top-movies"
+        },
+        "itemSize": "medium",
+        "items": [
+          {
+            "id": "top-1",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/a23c562e9a58e7389dd216aa9fc99bd8e3bd25ba149726ba5755cf7a42ce4e07._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/nadikar"
+          },
+          {
+            "id": "top-2",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/fbd45ebc66f5294c3a64adf2f29826da93ec8fbb4282b49d914017f3ff46bb31._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/gangers"
+          },
+          {
+            "id": "top-3",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/05df91ebfb398cea41408b1976c275e718b7c90801ef601ef9b64c79a7ea24bf._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/chennai-city-gangsters"
+          },
+          {
+            "id": "top-4",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/90e194cb221797f73e84b744c6fbfb02cbc115779202333bf988fa4a06bf659b._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/kalki-2898-ad"
+          },
+          {
+            "id": "top-5",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/8407d02875444d7f7b485e31665157a8edccd0d5ac39d9b44e43c911fea6b6f9._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/the-hunter"
+          },
+          {
+            "id": "top-6",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/ac63679c33fafc6d4c2219ba18b74a277fd552f2485b50e5554c5a90fff70d9b._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/oru-jaathi-jaathakam"
+          },
+          {
+            "id": "top-7",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/9c4dcb082415a707a81dfdce619e13a0d85d67c91bc00a3194f1299f7b4b746a._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMpng_.png",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "top-8",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/69ebb83a0e0d7d7a3df1dfd79781d72a2a503b83cb599ee3b318a49ef1ecdecd._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/31/digital/video/merch/subs/benefit-id/a-f/freewithads/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1224,847,617,156_kvd4515e4783875e4179be3fd9d4a0bfc7_SX500_FMjpg_.jpg",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "top-9",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/0374efe2dcdb867d03619f4a3f53ac30f15883aa3fd611391fd4f8fe252e8009._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMjpg_.jpg",
+            "link": "/movie/action-drama"
+          },
+          {
+            "id": "top-10",
+            "title": "",
+            "image": "https://images-eu.ssl-images-amazon.com/images/S/pv-target-images/bd5cab1423cccfedc8127afcef2602f16b41e593cf37c9863800b9a98d5b5e49._UR1920,1080_CLs%7C1920,1080%7C/G/bundle/BottomRightCardGradient16x9.png,/G/01/digital/video/merch/subs/benefit-id/m-r/Prime/logos/channels-logo-white.png%7C0,0,1920,1080+0,0,1920,1080+1578,847,263,156_kvf21cb47db8d34aa971cd86f57a65cf8d_SX500_FMpng_.png",
+            "link": "/movie/action-drama"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "lg",
+        "textAlign": "left"
+      }
+    },
+    {
+      "type": "footer",
+      "id": "footer-amazon",
+      "props": {
+        "items": [
+          {
+            "id": "footer-column-1",
+            "title": "",
+            "links": [
+              { "id": "footer-link-1", "label": "Terms and Privacy Notice", "url": "/terms" },
+              { "id": "footer-link-2", "label": "Send us feedback", "url": "/feedback" },
+              { "id": "footer-link-3", "label": "Help", "url": "/help" }
+            ]
+          }
+        ],
+        "socialLinks": [
+          { "id": "social-1", "platform": "facebook", "url": "" },
+          { "id": "social-2", "platform": "twitter", "url": "" },
+          { "id": "social-3", "platform": "instagram", "url": "" }
+        ],
+        "branding": "© 1996-2025, Amazon.com, Inc. or its affiliates"
+      },
+      "style": {
+        "backgroundColor": "#000000",
+        "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
+        "borderRadius": "none",
+        "textAlign": "center"
+      },
+      "visibility": {
+        "platform": ["mobile", "desktop"],
+        "region": ["US", "CA", "UK", "AU", "IN"]
+      }
+    }
+  ]
+}

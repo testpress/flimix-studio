@@ -9,7 +9,7 @@ import { LibraryPanelProvider } from '@context/LibraryPanelContext';
 import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { useState } from 'react';
-import netflixSchemaData from '@pageSchemas/netflixSchema.json';
+import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <PageSchemaProvider>
-      <HistoryProvider initialSchema={netflixSchemaData as PageSchema}>
+      <HistoryProvider initialSchema={amazonSchemaData as PageSchema}>
         <SelectionProvider>
           <BlockInsertProvider>
             <LibraryPanelProvider>

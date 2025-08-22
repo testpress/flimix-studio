@@ -133,16 +133,8 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
             )}
           </div>
         )}
-        
-        {/* Subtitle */}
-        {item.subtitle && (
-          <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90`} style={textColorStyle}>
-            {item.subtitle}
-          </p>
-        )}
-        
-        {/* Hashtag - Display after subtitle and before buttons */}
-        {item.hashtag && item.hashtag.text && (
+          {/* Hashtag - Display after subtitle and before buttons */}
+          {item.hashtag && item.hashtag.text && (
           <div className="mb-4">
             <span 
               className={`font-bold ${getHashtagSizeClass(item.hashtag.size)}`}
@@ -151,6 +143,12 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
               {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
             </span>
           </div>
+        )}
+        {/* Subtitle */}
+        {item.subtitle && (
+          <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90`} style={textColorStyle}>
+            {item.subtitle}
+          </p>
         )}
         
         {/* CTA Buttons */}
