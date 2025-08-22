@@ -103,7 +103,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({
         ) : (
           // If no icon, show first letter of label
           <span className={`font-bold ${getCircleFallbackTextSizeClass(cta.size)}`}>
-            {cta.label.charAt(0).toUpperCase()}
+            {cta.label.split('\n')[0].charAt(0).toUpperCase()}
           </span>
         )
       ) : (
@@ -119,7 +119,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({
           )}
           
           {/* Button text */}
-          <span>{cta.label}</span>
+          <span className="whitespace-pre-line text-left">{cta.label}</span>
           
           {/* Icon on the right */}
           {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'right' && (

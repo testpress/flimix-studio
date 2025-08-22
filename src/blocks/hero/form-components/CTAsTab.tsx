@@ -121,13 +121,13 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
         <div className="space-y-2">
           <div>
             <label className="block text-xs text-gray-600 mb-1">Label</label>
-         <input
-                type="text"
-                value={currentItem.primaryCTA?.label ?? ''}
-                onChange={(e) => handlePrimaryCTAChange('label', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-                placeholder="Enter CTA text..."
-              />
+            <textarea
+              value={currentItem.primaryCTA?.label ?? ''}
+              onChange={(e) => handlePrimaryCTAChange('label', e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded resize-none"
+              placeholder="Enter CTA text... (Press Enter for new lines)"
+              rows={2}
+            />
           </div>
           
           <div>
@@ -293,12 +293,12 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
             <div className="space-y-2">
               <div>
                 <label className="block text-xs text-gray-600 mb-1">Label</label>
-                <input
-                  type="text"
+                <textarea
                   value={secondaryCTA.label ?? ''}
                   onChange={(e) => handleSecondaryCTAChange('label', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Enter CTA text..."
+                  className="w-full p-2 border border-gray-300 rounded resize-none"
+                  placeholder="Enter CTA text... (Press Enter for new lines)"
+                  rows={2}
                 />
               </div>
               
@@ -468,12 +468,12 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
               <div className="space-y-2">
                 <div>
                   <label className="block text-xs text-gray-600 mb-1">Label</label>
-                  <input
-                    type="text"
+                  <textarea
                     value={tertiaryCTA.label ?? ''}
                     onChange={(e) => handleTertiaryCTAChange('label', e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    placeholder="Enter CTA text..."
+                    className="w-full p-2 border border-gray-300 rounded resize-none"
+                    placeholder="Enter CTA text... (Press Enter for new lines)"
+                    rows={2}
                   />
                 </div>
                 
