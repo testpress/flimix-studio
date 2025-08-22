@@ -1,12 +1,18 @@
-import type { TextBlockProps } from './schema';
+import type { BlockLibraryItem } from '@blocks/shared/Library';
 
-// Text block template for library
-export const TextLibraryItem = {
-  type: 'text' as const,
-  name: 'Text Block',
-  description: 'Simple text content with formatting options',
-  icon: 'Type' as const,
+export const TextLibraryItem: BlockLibraryItem = {
+  type: 'text',
+  name: 'Text',
+  description: 'A simple text block for displaying content',
+  icon: 'Type',
   defaultProps: {
-    content: 'Enter your text content here...'
-  } as TextBlockProps
+    content: 'Enter your text content here...',
+    fontFamily: 'sans',
+    fontSize: 'base',
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    textDecoration: 'none',
+    lineHeight: 'normal',
+    letterSpacing: 'normal'
+  }
 };  

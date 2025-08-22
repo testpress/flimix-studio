@@ -5,6 +5,7 @@ import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 import type { TabsBlockProps, Tab } from '@blocks/tabs/schema';
+import type { TextBlockProps } from '@/blocks/text/schema';
 
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -19,7 +20,9 @@ export function createBlock(type: BlockType['type']): BlockType {
       return {
         type: 'text',
         id,
-        props: TextLibraryItem.defaultProps,
+        props: {
+          ...TextLibraryItem.defaultProps,
+        } as TextBlockProps,
         style: {
           padding: 'md',
           textAlign: 'left'

@@ -19,12 +19,84 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { content } = props;
+  const { content, fontFamily, fontSize, fontWeight, fontStyle, textDecoration, lineHeight, letterSpacing } = props;
   
   // Clean object maps for CSS classes (similar to other blocks)
   const paddingClass = { lg: 'p-8', md: 'p-6', sm: 'p-4', none: 'p-0' }[style?.padding ?? 'md'];
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
+  
+  // Font family classes
+  const fontFamilyClass = {
+    sans: 'font-sans',
+    serif: 'font-serif', 
+    mono: 'font-mono',
+    display: 'font-serif' // Using serif as fallback for display since font-display might not be available
+  }[fontFamily || 'sans'];
+
+  // Font size classes
+  const fontSizeClass = {
+    xs: 'text-xs',
+    sm: 'text-sm',
+    base: 'text-base',
+    lg: 'text-lg',
+    xl: 'text-xl',
+    '2xl': 'text-2xl',
+    '3xl': 'text-3xl',
+    '4xl': 'text-4xl',
+    '5xl': 'text-5xl',
+    '6xl': 'text-6xl',
+  }[fontSize || 'base'];
+
+  // Font weight classes
+  const fontWeightClass = {
+    thin: 'font-thin',
+    extralight: 'font-extralight',
+    light: 'font-light',
+    normal: 'font-normal',
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold',
+    extrabold: 'font-extrabold',
+  }[fontWeight || 'normal'];
+
+  // Font style classes
+  const fontStyleClass = {
+    normal: '',
+    italic: 'italic'
+  }[fontStyle || 'normal'];
+
+  // Text decoration classes
+  const textDecorationClass = {
+    none: '',
+    underline: 'underline',
+    'line-through': 'line-through',
+    overline: '' // Will be handled with custom style
+  }[textDecoration || 'none'];
+
+  // Custom text decoration style for overline
+  const textDecorationStyle = textDecoration === 'overline' ? { textDecoration: 'overline' } : {};
+
+  // Line height classes
+  const lineHeightClass = {
+    none: 'leading-none',
+    tight: 'leading-tight',
+    normal: 'leading-normal',
+    relaxed: 'leading-relaxed',
+    loose: 'leading-loose'
+  }[lineHeight || 'normal'];
+
+  // Letter spacing classes
+  const letterSpacingClass = {
+    tighter: 'tracking-tighter',
+    tight: 'tracking-tight',
+    normal: '',
+    wide: 'tracking-wide',
+    wider: 'tracking-wider',
+    widest: 'tracking-widest'
+  }[letterSpacing || 'normal'];
+
+
   
   // Custom box shadow styles for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
@@ -74,7 +146,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
           }}
         >
-          <p className="text-gray-500 text-center">No content provided</p>
+          <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-gray-500 text-center`} style={textDecorationStyle}>No content provided</p>
         </BaseWidget>
       </div>
     );
@@ -98,9 +170,9 @@ const TextWidget: React.FC<TextWidgetProps> = ({
         }}
       >
         <div className={`${textAlignClass}`}>
-          <p className={`text-lg ${textColorClass}`} style={textColorStyle}>
+          <div className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} whitespace-pre-line ${textColorClass}`} style={{ ...textColorStyle, ...textDecorationStyle }}>
             {content}
-          </p>
+          </div>
         </div>
       </BaseWidget>
     </div>

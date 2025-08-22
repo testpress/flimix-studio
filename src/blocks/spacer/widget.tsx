@@ -41,9 +41,10 @@ const SpacerWidget: React.FC<SpacerWidgetProps> = ({
       onMoveDown={onMoveDown}
       onDuplicate={onDuplicate}
       onRemove={onRemove}
-      className=""
+      className="bg-transparent"
+      style={{ backgroundColor: 'transparent' }}
     >
-      <div className={`${heightClasses[height] || 'h-8'} w-full`} />
+      <div className={`${heightClasses[height] || 'h-8'} w-full bg-transparent`} />
     </BaseWidget>
   );
 };

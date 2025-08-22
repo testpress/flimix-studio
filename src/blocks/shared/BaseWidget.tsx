@@ -54,7 +54,7 @@ const BaseWidget = <T extends Block = Block>({
     'duration-200',
     'relative', // Added for absolute positioning of controls
     'overflow-visible', // Ensure controls are visible even if they extend beyond block bounds
-    'bg-black text-white', // Default black background with white text
+    'bg-transparent', // Default transparent background instead of black
     isSelected ? 'ring-2 ring-blue-500' : '',
     className
   ].filter(Boolean).join(' ');
