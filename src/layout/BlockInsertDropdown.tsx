@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import type { BlockType } from '@blocks/shared/Block';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
-import Dropdown, { DropdownItem } from '@components/Dropdown';
-import { Plus } from 'lucide-react';
+import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard, RectangleEllipsis, Search } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
+import { getAllBlockLibraryItems } from '@blocks/shared/Library';
+import type { BlockLibraryItem } from '@blocks/shared/Library';
+
+// Icon mapping for the templates
+const iconMap: Record<string, LucideIcon> = {
+  Layout,
+  Type,
+  Square,
+  Grid2x2,
+  GalleryHorizontalEnd,
+  AlignVerticalSpaceBetween,
+  Columns3Cog,
+  Minus,
+  MessageSquare,
+  Sparkles,
+  HelpCircle,
+  Image,
+  Video,
+  CreditCard,
+  RectangleEllipsis,
+};
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -67,7 +89,26 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockBefore, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
-  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState<{ name: string; description: string; icon: string }>({ name: '', description: '', icon: '' });
+
+  // Add click outside handler to close dropdown
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isOpen && !(event.target as Element).closest('.block-insert-dropdown')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   // Helper function to check if a block is a child of a Section or Tab
   const isChildBlock = (blockId: string) => {
@@ -139,6 +180,72 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     return null;
   };
 
+  // Get all block templates
+  const allTemplates = getAllBlockLibraryItems();
+  
+  // Filter templates based on context (e.g., don't show section/tabs inside child blocks)
+  const filteredTemplates = allTemplates.filter(template => {
+    if (selectedBlockId && isChildBlock(selectedBlockId)) {
+      // Don't allow section or tabs blocks inside child blocks
+      if (template.type === 'section' || template.type === 'tabs') {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // Filter templates based on search query
+  const searchFilteredTemplates = searchQuery 
+    ? filteredTemplates.filter(template => 
+        template.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        template.description.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : filteredTemplates;
+
+  // Handle mouse enter to show tooltip and set its position
+  const handleMouseEnter = useCallback((e: React.MouseEvent, template: BlockLibraryItem) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const tooltipWidth = 250;
+    const tooltipHeight = 120;
+    
+    // Check if tooltip would go off-screen to the right
+    const rightEdgePosition = rect.right + 10 + tooltipWidth;
+    const isOffScreenRight = rightEdgePosition > windowWidth;
+    
+    // Check if tooltip would go off-screen at the bottom
+    const bottomEdgePosition = rect.top + tooltipHeight;
+    const isOffScreenBottom = bottomEdgePosition > windowHeight;
+    
+    // Calculate top position with adjustment for scrolling
+    const topPosition = isOffScreenBottom 
+      ? rect.top - (tooltipHeight - rect.height)
+      : rect.top;
+    
+    // Position the tooltip based on available space
+    if (isOffScreenRight) {
+      setTooltipPosition({
+        top: topPosition,
+        left: rect.left - tooltipWidth - 10
+      });
+    } else {
+      setTooltipPosition({
+        top: topPosition,
+        left: rect.right + 10
+      });
+    }
+    
+    // Set tooltip content and make it visible
+    setTooltipContent({
+      name: template.name,
+      description: template.description,
+      icon: template.icon
+    });
+    setActiveTooltip(template.type);
+    setTooltipVisible(true);
+  }, []);
+
   // Find the block and check its visibility
   const block = findBlockById(blockId);
   if (!block || !evaluateVisibility(block.visibility, visibilityContext)) {
@@ -170,83 +277,140 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     } else {
       insertBlockAfter(blockType);
     }
+    
+    // Close the dropdown after inserting
+    setIsOpen(false);
+    // Clear search query
+    setSearchQuery('');
+  };
+
+  // Tooltip component to be rendered in portal
+  const Tooltip = () => {
+    if (!tooltipVisible || !activeTooltip) return null;
+    
+    const IconComponent = iconMap[tooltipContent.icon] || Layout;
+    
+    return createPortal(
+      <div 
+        className="fixed z-[9999] bg-white border border-gray-200 rounded-lg p-4 shadow-lg"
+        style={{
+          width: '250px',
+          top: tooltipPosition.top,
+          left: tooltipPosition.left,
+          maxWidth: '300px',
+          maxHeight: '200px',
+          overflow: 'auto'
+        }}
+      >
+        <div className="flex items-center space-x-2 mb-2">
+          <IconComponent size={18} />
+          <h3 className="font-medium text-gray-900">{tooltipContent.name}</h3>
+        </div>
+        <p className="text-sm text-gray-600">
+          {tooltipContent.description}
+        </p>
+        {/* Arrow pointing to the block - position depends on which side the tooltip is on */}
+        {tooltipPosition.left > window.innerWidth / 2 ? (
+          /* Arrow pointing right when tooltip is on the left side */
+          <div className="absolute top-4 right-0 transform translate-x-1/2 rotate-45 w-3 h-3 bg-white border-t border-r border-gray-200"></div>
+        ) : (
+          /* Arrow pointing left when tooltip is on the right side */
+          <div className="absolute top-4 left-0 transform -translate-x-1/2 rotate-45 w-3 h-3 bg-white border-l border-b border-gray-200"></div>
+        )}
+      </div>,
+      document.body
+    );
   };
 
   return (
     <div 
-      className={`flex justify-center py-1 ${position === 'above' ? 'mb-2' : 'mt-2'}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`block-insert-dropdown relative flex justify-center py-1 ${position === 'above' ? 'mb-2' : 'mt-2'}`}
     >
-      <Dropdown
-        trigger={
-          <button 
-            className={`
-              w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
-              ${isHovered 
-                ? 'bg-blue-500 text-white shadow-lg scale-110' 
-                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }
-            `}
-            title={`Insert block ${position} this block`}
-          >
-            <Plus size={16} />
-          </button>
-        }
+      {/* Plus button */}
+      <button 
+        className={`
+          w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
+          ${isOpen 
+            ? 'bg-blue-500 text-white shadow-lg scale-110' 
+            : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+          }
+        `}
+        title={`Insert block ${position} this block`}
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <DropdownItem onClick={() => handleInsert('text')}>
-          Text Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('cta-button')}>
-          CTA Button Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('hero')}>
-          Hero Block
-        </DropdownItem>
-        {!isChildBlock(selectedBlockId) && (
-          <DropdownItem onClick={() => handleInsert('section')}>
-            Section Block
-          </DropdownItem>
-        )}
-        {!isChildBlock(selectedBlockId) && (
-          <DropdownItem onClick={() => handleInsert('tabs')}>
-            Tabs Block
-          </DropdownItem>
-        )}
-        <DropdownItem onClick={() => handleInsert('posterGrid')}>
-          Poster Grid Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('carousel')}>
-          Carousel Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('spacer')}>
-          Spacer Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('divider')}>
-          Divider Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('testimonial')}>
-          Testimonial Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('featureCallout')}>
-          Feature Callout Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('badge-strip')}>
-          Badge Strip Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('faq-accordion')}>
-          FAQ Accordion Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('image')}>
-          Image Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('video')}>
-          Video Block
-        </DropdownItem>
-        <DropdownItem onClick={() => handleInsert('footer')}>
-          Footer Block
-        </DropdownItem>
-      </Dropdown>
+        <Plus size={16} />
+      </button>
+
+      {/* Dropdown panel - positioned above the plus button */}
+      {isOpen && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg p-3 shadow-lg min-w-[260px] max-w-[400px] z-50">
+          <div className="flex items-center space-x-2 mb-3">
+            <Plus size={16} className="text-blue-500" />
+            <h3 className="text-sm font-medium text-gray-900">
+              Insert block {position} this block
+            </h3>
+          </div>
+
+          {/* Search bar */}
+          <div className="mb-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search blocks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              />
+            </div>
+          </div>
+          
+          {/* Block templates grid */}
+          <div className="grid gap-2 grid-cols-4">
+            {searchFilteredTemplates.length === 0 ? (
+              <div className="col-span-4 flex flex-col items-center justify-center py-4 text-gray-500">
+                <Search size={20} className="mb-2" />
+                <p className="text-xs">No blocks found matching "{searchQuery}"</p>
+              </div>
+            ) : (
+              searchFilteredTemplates.map((template) => {
+                const IconComponent = iconMap[template.icon] || Layout;
+                
+                return (
+                  <div key={template.type} className="relative">
+                    <button
+                      onClick={() => handleInsert(template.type)}
+                      onMouseEnter={(e) => handleMouseEnter(e, template)}
+                      onMouseLeave={() => {
+                        setActiveTooltip(null);
+                        setTooltipVisible(false);
+                      }}
+                      data-template-type={template.type}
+                      className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
+                    >
+                      {/* Icon */}
+                      <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-1">
+                        <IconComponent 
+                          size={14} 
+                          className={template.type === 'footer' ? 'rotate-180' : ''} 
+                        />
+                      </div>
+                      
+                      {/* Name */}
+                      <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
+                        {template.name}
+                      </span>
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Render tooltip through portal */}
+      <Tooltip />
     </div>
   );
 };
