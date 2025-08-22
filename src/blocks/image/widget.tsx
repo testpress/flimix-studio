@@ -39,15 +39,20 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
     if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.backgroundColor || 'bg-black text-white';
+    return style?.backgroundColor || 'bg-transparent';
   };
 
-  // Get background color as inline style for hex colors
   const getBackgroundColorStyle = (): React.CSSProperties => {
-    if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
-      return { backgroundColor: style.backgroundColor };
+    if (style?.backgroundColor) {
+      if (style.backgroundColor.startsWith('rgba')) {
+        return { backgroundColor: style.backgroundColor };
+      }
+      if (style.backgroundColor.startsWith('#')) {
+        return { backgroundColor: style.backgroundColor };
+      }
+      return {};
     }
-    return {};
+    return { backgroundColor: 'transparent' };
   };
 
   // Get border radius class
@@ -155,7 +160,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate} 
           onRemove={onRemove}
-          className={widgetClasses}
+          className={`${widgetClasses} ${style?.backgroundColor && style.backgroundColor.startsWith('rgba') ? '!bg-transparent' : ''}`}
           style={getBackgroundColorStyle()}
         >
           <div className={`w-full ${getPaddingClass()}`}>
@@ -182,7 +187,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate} 
         onRemove={onRemove}
-        className={widgetClasses}
+        className={`${widgetClasses} ${style?.backgroundColor && style.backgroundColor.startsWith('rgba') ? '!bg-transparent' : ''}`}
         style={getBackgroundColorStyle()}
       >
         {/* Apply padding from style settings */}
