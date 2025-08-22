@@ -1,5 +1,7 @@
 import React from 'react';
+import { X } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
+import { useSettingsPanel } from '@context/SettingsPanelContext';
 import type { 
   BlockFormProps
 } from '@blocks/shared/FormTypes';
@@ -40,7 +42,6 @@ import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
 import CTAButtonForm from '@blocks/cta-button/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
-import { useSettingsPanel } from '@context/SettingsPanelContext';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -56,8 +57,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockStyle, 
     updateSelectedBlockVisibility,
     updateBlockItem,
+    setSelectedBlock,
+    setSelectedBlockId,
+    setSelectedItemId,
+    setSelectedItemBlockId,
   } = useSelection();
-  const { isSettingsOpen, openSettings } = useSettingsPanel();
+  const { isSettingsOpen, openSettings, closeSettings } = useSettingsPanel();
 
   // Auto-open settings when a block gets selected
   React.useEffect(() => {
@@ -65,6 +70,17 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
       openSettings();
     }
   }, [selectedBlock, openSettings]);
+
+  // Handle closing settings panel and unselecting block
+  const handleCloseSettings = () => {
+    // Unselect the block and any selected items
+    setSelectedBlock(null);
+    setSelectedBlockId(null);
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
+    // Close the settings panel
+    closeSettings();
+  };
 
   // Block editor registry for dynamic lookup
   const BlockPropEditors: Record<string, React.FC<BlockFormProps>> = {
@@ -279,7 +295,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     <div className={`${isSettingsOpen ? 'w-[28rem] bg-white border-l border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 transition-all duration-300 ease-in-out overflow-hidden`}>
       <div className={`${isSettingsOpen ? 'p-8' : 'p-0'} min-w-0 h-full min-h-0 flex flex-col`}>
         <div className="mb-6 flex-shrink-0">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Block Settings</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-800">Block Settings</h2>
+            <button 
+              onClick={handleCloseSettings}
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200"
+              title="Close settings"
+            >
+              <X size={16} />
+            </button>
+          </div>
           <div className="flex items-center justify-between mb-4">
             <label className="flex items-center space-x-2">
               <input

@@ -1,17 +1,13 @@
 import React from 'react';
-import { Undo, Redo, Plus, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { Undo, Redo, Plus, X, ChevronDown } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
-import { useSettingsPanel } from '@context/SettingsPanelContext';
-import { useSelection } from '@context/SelectionContext';
 import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 
 const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo, updatePageSchema } = useHistory();
   const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
-  const { isSettingsOpen, toggleSettings } = useSettingsPanel();
-  const { setSelectedBlock, setSelectedBlockId, setSelectedItemId, setSelectedItemBlockId } = useSelection();
   const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
   
   const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
@@ -25,16 +21,6 @@ const TopBar: React.FC = () => {
     setCurrentPageSchemaKey(pageSchemaKey);
     updatePageSchema(newPageSchema);
     setIsPageSchemaDropdownOpen(false);
-  };
-
-  const handleSettingsToggle = () => {
-    if (isSettingsOpen) {
-      setSelectedBlock(null);
-      setSelectedBlockId(null);
-      setSelectedItemId(null);
-      setSelectedItemBlockId(null);
-    }
-    toggleSettings();
   };
 
   return (
@@ -76,13 +62,6 @@ const TopBar: React.FC = () => {
             title={isLibraryOpen ? "Close block library" : "Open block library"}
           >
             {isLibraryOpen ? <X size={16} /> : <Plus size={16} />}
-          </button>
-          <button 
-            onClick={handleSettingsToggle}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-indigo-500 text-white hover:bg-indigo-600 transition-all duration-200"
-            title={isSettingsOpen ? "Close settings" : "Open settings"}
-          >
-            {isSettingsOpen ? <X size={16} /> : <SlidersHorizontal size={16} />}
           </button>
         </div>
         <div className="flex items-center space-x-4">
