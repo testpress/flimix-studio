@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import type { BlockType } from '@blocks/shared/Block';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
@@ -10,6 +10,35 @@ import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
+
+// Type for dropdown event callback
+type DropdownEventCallback = (blockId: string | null, position: 'above' | 'below' | null) => void;
+
+// Event bus for dropdown communication
+const dropdownEventBus = {
+  // The currently open dropdown info
+  currentDropdown: {
+    blockId: null as string | null,
+    position: null as 'above' | 'below' | null
+  },
+  
+  // List of subscribers
+  listeners: [] as DropdownEventCallback[],
+  
+  // Subscribe to dropdown open/close events
+  subscribe(callback: DropdownEventCallback) {
+    this.listeners.push(callback);
+    return () => {
+      this.listeners = this.listeners.filter(cb => cb !== callback);
+    };
+  },
+  
+  // Notify all subscribers about dropdown state change
+  notify(blockId: string | null, position: 'above' | 'below' | null) {
+    this.currentDropdown = { blockId, position };
+    this.listeners.forEach(callback => callback(blockId, position));
+  }
+};
 
 // Icon mapping for the templates
 const iconMap: Record<string, LucideIcon> = {
@@ -96,11 +125,30 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipContent, setTooltipContent] = useState<{ name: string; description: string; icon: string }>({ name: '', description: '', icon: '' });
 
+  // Listen for dropdown open/close events
+  useEffect(() => {
+    // Handler for dropdown events
+    const handleDropdownEvent = (openBlockId: string | null, openPosition: 'above' | 'below' | null) => {
+      // If another dropdown is opening, close this one
+      if (openBlockId && (openBlockId !== blockId || openPosition !== position)) {
+        setIsOpen(false);
+      }
+    };
+    
+    // Subscribe to dropdown events
+    const unsubscribe = dropdownEventBus.subscribe(handleDropdownEvent);
+    
+    // Cleanup subscription when component unmounts
+    return unsubscribe;
+  }, [blockId, position]);
+
   // Add click outside handler to close dropdown
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isOpen && !(event.target as Element).closest('.block-insert-dropdown')) {
         setIsOpen(false);
+        // Also clear the dropdown state in the event bus
+        dropdownEventBus.notify(null, null);
       }
     };
 
@@ -111,7 +159,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
   }, [isOpen]);
   
   // Reset tooltip state when selected block changes
-  React.useEffect(() => {
+  useEffect(() => {
     setActiveTooltip(null);
     setTooltipVisible(false);
     setTooltipContent({ name: '', description: '', icon: '' });
@@ -293,6 +341,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     setActiveTooltip(null);
     setTooltipVisible(false);
     setTooltipContent({ name: '', description: '', icon: '' });
+    
+    // Clear the dropdown state in the event bus
+    dropdownEventBus.notify(null, null);
   };
 
   // Tooltip component to be rendered in portal
@@ -349,7 +400,17 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
         title={`Insert block ${position} this block`}
         onClick={(e) => {
           e.stopPropagation();
-          setIsOpen(!isOpen);
+          
+          const newIsOpen = !isOpen;
+          setIsOpen(newIsOpen);
+          
+          // If opening, notify event bus to close other dropdowns
+          if (newIsOpen) {
+            dropdownEventBus.notify(blockId, position);
+          } else {
+            // If closing, clear the current dropdown
+            dropdownEventBus.notify(null, null);
+          }
         }}
       >
         <Plus size={16} />
