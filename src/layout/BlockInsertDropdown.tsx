@@ -347,14 +347,20 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
           }
         `}
         title={`Insert block ${position} this block`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
       >
         <Plus size={16} />
       </button>
 
       {/* Dropdown panel - positioned above the plus button */}
       {isOpen && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg p-3 shadow-lg min-w-[260px] max-w-[400px] z-50">
+        <div 
+          className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg p-3 shadow-lg min-w-[260px] max-w-[400px] z-50"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="flex items-center space-x-2 mb-3">
             <Plus size={16} className="text-blue-500" />
             <h3 className="text-sm font-medium text-gray-900">
@@ -371,6 +377,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
                 placeholder="Search blocks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
               />
             </div>
@@ -379,7 +386,10 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
           {/* Block templates grid */}
           <div className="grid gap-2 grid-cols-4">
             {searchFilteredTemplates.length === 0 ? (
-              <div className="col-span-4 flex flex-col items-center justify-center py-4 text-gray-500">
+              <div 
+                className="col-span-4 flex flex-col items-center justify-center py-4 text-gray-500"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <Search size={20} className="mb-2" />
                 <p className="text-xs">No blocks found matching "{searchQuery}"</p>
               </div>
@@ -390,7 +400,10 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
                 return (
                   <div key={template.type} className="relative">
                     <button
-                      onClick={() => handleInsert(template.type)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleInsert(template.type);
+                      }}
                       onMouseEnter={(e) => handleMouseEnter(e, template)}
                       onMouseLeave={() => {
                         setActiveTooltip(null);
