@@ -39,7 +39,6 @@ export type BlockProps =
 // Generic type for block items that have an id
 export interface BlockItem {
   id: string;
-  [key: string]: unknown;
 }
 
 export interface BlockFormProps {
