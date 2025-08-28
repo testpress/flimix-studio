@@ -109,6 +109,13 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+  
+  // Reset tooltip state when selected block changes
+  React.useEffect(() => {
+    setActiveTooltip(null);
+    setTooltipVisible(false);
+    setTooltipContent({ name: '', description: '', icon: '' });
+  }, [selectedBlockId]);
 
   // Helper function to check if a block is a child of a Section or Tab
   const isChildBlock = (blockId: string) => {
@@ -282,6 +289,10 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     setIsOpen(false);
     // Clear search query
     setSearchQuery('');
+    // Reset tooltip state
+    setActiveTooltip(null);
+    setTooltipVisible(false);
+    setTooltipContent({ name: '', description: '', icon: '' });
   };
 
   // Tooltip component to be rendered in portal
