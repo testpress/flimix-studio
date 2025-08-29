@@ -545,9 +545,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                       {(item.title && item.title.trim() !== "") || 
                        item.subtitle || 
                        props.progressBar?.enabled ||
-                       item.meta?.badge || 
-                       item.meta?.rating || 
-                       item.meta?.duration ? (
+                       (props.showBadge && item.meta?.badge) || 
+                       (props.showRating && item.meta?.rating) || 
+                       (props.showDuration && item.meta?.duration) ? (
                         <div className="mt-3 space-y-1">
                           {/* Title - only render if not empty and global showTitle is not false */}
                           {props.showTitle !== false && item.title && item.title.trim() !== "" && (

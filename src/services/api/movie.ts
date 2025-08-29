@@ -14,7 +14,7 @@ export interface Movie {
   image?: string;
   duration?: number;
   rating?: number;
-  badge?: string;
+  badges?: Array<{ label: string }>;
   progress?: number;
 }
 

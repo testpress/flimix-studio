@@ -36,7 +36,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       }
     };
   }, [duplicateWarning]);
-  
+
   const handleSelectMovie = (movie: Movie) => {
     // Map the movie to a carousel item
     const carouselItem = {
@@ -47,7 +47,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       progress: movie.progress,
       meta: {
         rating: movie.rating?.toString(),
-        badge: movie.badge,
+        badge: movie.badges && movie.badges.length > 0 ? movie.badges[0].label : undefined,
         duration: movie.duration?.toString()
       }
     };
