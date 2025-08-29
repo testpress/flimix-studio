@@ -1,6 +1,5 @@
-import React from 'react';
-import type { HeroBlock, HeroBlockProps, HeroItem } from '../schema';
-import { generateUniqueId } from '@utils/id';
+import React, { useEffect, useRef } from 'react';
+import type { HeroBlock, HeroBlockProps } from '../schema';
 
 interface CarouselControlsProps {
   heroBlock: HeroBlock;
@@ -15,32 +14,42 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
   setCurrentItemIndex,
   updateProps
 }) => {
-  const createDefaultHeroItem = (): HeroItem => ({
-    id: generateUniqueId(),
-    title: 'New Hero Screen',
-    subtitle: '',
-    backgroundImage: ''
-  });
+  const previousItemsLengthRef = useRef<number>(0);
+  
+  // Effect to detect when new items are added and select the last item
+  useEffect(() => {
+    const currentItemsLength = heroBlock.props.items?.length || 0;
+    
+    if (previousItemsLengthRef.current > 0 && currentItemsLength > previousItemsLengthRef.current) {
+      setCurrentItemIndex(currentItemsLength - 1);
+    }
+    
+    previousItemsLengthRef.current = currentItemsLength;
+  }, [heroBlock.props.items, setCurrentItemIndex]);
 
-  const addHeroItem = () => {
-    const newItems = [...(heroBlock.props.items || [])];
-    newItems.push(createDefaultHeroItem());
-    updateProps({ ...heroBlock.props, items: newItems });
-    setCurrentItemIndex(newItems.length - 1);
-  };
-
+  // Update block props when currentItemIndex changes
+  useEffect(() => {
+    if (heroBlock.props.currentIndex !== currentItemIndex) {
+      updateProps({
+        ...heroBlock.props,
+        currentIndex: currentItemIndex
+      });
+    }
+  }, [currentItemIndex, heroBlock.props, updateProps]);
   const removeHeroItem = () => {
-    const newItems = [...(heroBlock.props.items || [])];
+    const newItems = [...(heroBlock.props.items || [])];    
     newItems.splice(currentItemIndex, 1);
     
     updateProps({ ...heroBlock.props, items: newItems });
+    let newIndex = currentItemIndex;
     
-    // Adjust current index if needed
-    if (currentItemIndex >= newItems.length && newItems.length > 0) {
-      setCurrentItemIndex(newItems.length - 1);
-    } else if (newItems.length === 0) {
-      setCurrentItemIndex(0);
+    if (newItems.length === 0) {
+      newIndex = 0;
+    } else if (currentItemIndex >= newItems.length) {
+      newIndex = newItems.length - 1;
     }
+    
+    setCurrentItemIndex(newIndex);
   };
 
   if (heroBlock.props.variant !== 'carousel') {
@@ -51,15 +60,8 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
     <div className="space-y-4">
       {/* Hero Screens Navigation */}
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="mb-2">
           <label className="block text-sm font-medium text-gray-700">Hero Screens</label>
-          <button
-            type="button"
-            onClick={addHeroItem}
-            className="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Add Screen
-          </button>
         </div>
         
         <div className="flex gap-2 mb-2">
