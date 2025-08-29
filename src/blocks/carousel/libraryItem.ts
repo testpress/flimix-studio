@@ -14,6 +14,11 @@ export const CarouselLibraryItem = {
     scrollSpeed: 1000,
     showArrows: true,
     itemSize: 'large',
-    items: []
+    items: [],
+    showTitle: true,
+    showSubtitle: true,
+    showRating: true,
+    showBadge: true,
+    showDuration: true
   } as CarouselBlockProps
 }; 
