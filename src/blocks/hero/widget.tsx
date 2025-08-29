@@ -21,16 +21,16 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(props.currentIndex || 0);
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
   const autoplayIntervalRef = useRef<number | null>(null);
+  const previousItemsLengthRef = useRef<number>(0); // Ref to track previous items length
   
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
   // Determine background styling - default to black
   const hasCustomBackground = !!style?.backgroundColor;
-  const defaultBackgroundClass = 'bg-black';
-  const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
+  const backgroundClass = hasCustomBackground ? '' : 'bg-black';
 
 
   
@@ -57,7 +57,36 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       }
     };
   }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused]);
+//handle new items added to the hero block and set the current index to the last item
+  useEffect(() => {
+    if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
+      const timer = setTimeout(() => {
+        setCurrentIndex(props.items.length - 1);
+      }, 100);
 
+      return () => clearTimeout(timer);
+    }
+
+    previousItemsLengthRef.current = props.items?.length || 0;
+  }, [props.items]);
+
+  // Sync with currentIndex from props (form controls)
+  useEffect(() => {
+    if (props.currentIndex !== undefined && props.currentIndex !== currentIndex) {
+      setCurrentIndex(props.currentIndex);
+    }
+  }, [props.currentIndex]);
+
+  // Ensure currentIndex is valid when items change
+  useEffect(() => {
+    if (props.items && props.items.length > 0) {
+      if (currentIndex >= props.items.length) {
+        setCurrentIndex(props.items.length - 1);
+      }
+    } else if (props.items && props.items.length === 0) {
+      setCurrentIndex(0);
+    }
+  }, [props.items, currentIndex]);
   // Handle carousel navigation
   const nextSlide = () => {
     if (props.items && props.items.length > 1) {
@@ -107,7 +136,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         {/* Hero Content */}
         <div className="relative">
           {/* Render current hero item */}
-          {props.items && props.items.length > 0 && (
+          {props.items && props.items.length > 0 && props.items[currentIndex] ? (
             <ItemWidget
               item={props.items[currentIndex]}
               aspectRatio={props.aspectRatio}
@@ -117,7 +146,15 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
               backgroundColor={style?.backgroundColor}
               autoplay={!isAutoplayPaused}
             />
-          )}
+                      ) : (
+              /* Fallback when no items or current item is undefined */
+              <div className="w-full h-full flex items-center justify-center text-gray-500 min-h-[400px]">
+                <div className="text-center">
+                  <p className="text-lg font-medium">No Hero Items</p>
+                  <p className="text-sm">Add items to your hero carousel</p>
+                </div>
+              </div>
+            )}
           
           {/* Carousel Navigation (only if multiple items) */}
           {props.variant === 'carousel' && props.items && props.items.length > 1 && (
