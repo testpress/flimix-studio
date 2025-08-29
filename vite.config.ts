@@ -23,7 +23,8 @@ export default defineConfig({
       '@blocks/shared': '/src/blocks/shared',
       '@blocks/hero': '/src/blocks/hero',
       '@blocks/text': '/src/blocks/text',
-      '@blocks/section': '/src/blocks/section'
+      '@blocks/section': '/src/blocks/section',
+      '@services': '/src/services'
     }
   }
 })
