@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { useDebouncedValue } from '@hooks/useDebouncedValue';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import { DEFAULT_PAGE_SIZE } from '@services/api/movie';
 
 interface ApiSearchDropdownProps<T> {
   // Search function that returns items of type T
@@ -12,7 +13,7 @@ interface ApiSearchDropdownProps<T> {
   label?: string;
   disabled?: boolean;
   className?: string;
-  getItemId?: (item: T) => string | number;
+  getItemId: (item: T) => string | number;
   noResultsMessage?: string;
   initialQuery?: string;
   debounceDelay?: number;
@@ -26,11 +27,14 @@ export function ApiSearchDropdown<T>({
   label,
   disabled = false,
   className = '',
-  getItemId = (item: any) => item.id,
+  getItemId,
   noResultsMessage = 'No results found',
   initialQuery = '',
   debounceDelay = 250
 }: ApiSearchDropdownProps<T>) {
+  // Constants for better maintainability
+  const PAGE_SIZE = DEFAULT_PAGE_SIZE;
+  const SCROLL_TOLERANCE = 10;
   // State
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState(initialQuery);
@@ -40,6 +44,7 @@ export function ApiSearchDropdown<T>({
   const [currentOffset, setCurrentOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
   
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -60,6 +65,7 @@ export function ApiSearchDropdown<T>({
     setCurrentOffset(0);
     setHasMore(true);
     setItems([]); // Clear previous items
+    setLoadMoreError(null);
     
     // Cancel previous request if exists
     if (abortControllerRef.current) {
@@ -76,12 +82,12 @@ export function ApiSearchDropdown<T>({
         
         const data = await searchFunction({
           query: debouncedQuery,
-          limit: 20,
+          limit: PAGE_SIZE,
           offset: 0
         }, controller.signal);
         
         setItems(data);
-        setHasMore(data.length === 20);
+        setHasMore(data.length === PAGE_SIZE);
         
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
@@ -107,26 +113,27 @@ export function ApiSearchDropdown<T>({
   const handleDropdownScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     
-    // If scrolled to bottom (with 10px tolerance)
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
+    // If scrolled to bottom (with scroll tolerance)
+    if (scrollTop + clientHeight >= scrollHeight - SCROLL_TOLERANCE) {
       if (!isLoadingMore && hasMore && !loading) {
         setIsLoadingMore(true);
         
         try {
-          const nextOffset = currentOffset + 20;
+          const nextOffset = currentOffset + PAGE_SIZE;
           const data = await searchFunction({
             query: debouncedQuery,
-            limit: 20,
+            limit: PAGE_SIZE,
             offset: nextOffset
           });
           
           // Append new items
           setItems(prev => [...prev, ...data]);
           setCurrentOffset(nextOffset);
-          setHasMore(data.length === 20);
+          setHasMore(data.length === PAGE_SIZE);
           
         } catch (err) {
-          // Ignore errors during load more
+          console.error("Failed to load more items:", err);
+          setLoadMoreError('Failed to load more items. Please try again.');
         } finally {
           setIsLoadingMore(false);
         }
@@ -208,8 +215,29 @@ export function ApiSearchDropdown<T>({
                 </div>
               )}
               
+              {/* Load more error message */}
+              {loadMoreError && (
+                <div className="p-3 text-center text-sm text-red-500 border-t">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <span>⚠️ {loadMoreError}</span>
+                    <button
+                      onClick={() => {
+                        setLoadMoreError(null);
+                        // Retry loading more items
+                        if (!isLoadingMore && hasMore && !loading) {
+                          handleDropdownScroll({ currentTarget: { scrollTop: 0, scrollHeight: 0, clientHeight: 0 } } as React.UIEvent<HTMLDivElement>);
+                        }
+                      }}
+                      className="px-3 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded border border-red-300 transition-colors"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              )}
+              
               {/* End of results indicator */}
-              {!hasMore && items.length > 0 && (
+              {!hasMore && items.length > 0 && !loadMoreError && (
                 <div className="p-3 text-center text-xs text-gray-400 border-t">
                   End of results
                 </div>
