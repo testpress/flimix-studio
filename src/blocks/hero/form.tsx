@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { HeroBlock, HeroCTABtn } from './schema';
+import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
 import { generateUniqueId } from '@utils/id';
 import CTAsTab from './form-components/CTAsTab';
 import CarouselControls from './form-components/CarouselControls';
@@ -88,6 +88,18 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     newItems[currentItemIndex].tertiaryCTA = tertiaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
+
+  // Helper function to update the current hero item with new properties
+  const updateCurrentHeroItem = (updatedProps: Partial<HeroItem>) => {
+    const newItems = [...(heroBlock.props.items || [])];
+    if (newItems[currentItemIndex]) {
+      newItems[currentItemIndex] = {
+        ...newItems[currentItemIndex],
+        ...updatedProps,
+      };
+      updateProps({ ...heroBlock.props, items: newItems });
+    }
+  };
   
   // Movie picker functionality
   const handleSelectMovie = (movie: Movie) => {
@@ -117,7 +129,6 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     const existingItems = heroBlock.props.items || [];
     if (existingItems.some(item => item.id === heroItem.id)) {
       setDuplicateWarning(`"${movie.title}" is already in your hero`);
-      setTimeout(() => setDuplicateWarning(null), 3000);
       return; 
     }
     
@@ -128,13 +139,15 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     });
   };
   
-  // Cleanup warning timeout on unmount
+  // This useEffect will manage the warning visibility and cleanup
   useEffect(() => {
-    return () => {
-      if (duplicateWarning) {
+    if (duplicateWarning) {
+      const timer = setTimeout(() => {
         setDuplicateWarning(null);
-      }
-    };
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
   }, [duplicateWarning]);
   
   return (
@@ -265,294 +278,258 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           )}
         </div>
         
-        {/* Current Item Preview */}
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium text-gray-700 mb-4">Current Item Preview</h3>
-          
-          <div className="space-y-4">
-            {/* Title Preview */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-              <div className="p-3 bg-gray-100 rounded">
-                {currentItem.titleType === 'image' && currentItem.titleImage ? (
-                  <div className="flex justify-center">
-                    <img 
-                      src={currentItem.titleImage} 
-                      alt="Title" 
-                      className="max-h-16"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://placehold.co/300x50/cccccc/666666?text=Title+Image';
-                      }}
-                    />
+        {/* Conditional rendering for item-dependent sections */}
+        {heroBlock.props.items && heroBlock.props.items.length > 0 ? (
+          <>
+            {/* Current Item Preview */}
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-4">Current Item Preview</h3>
+              
+              <div className="space-y-4">
+                {/* Title Preview */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                  <div className="p-3 bg-gray-100 rounded">
+                    {currentItem.titleType === 'image' && currentItem.titleImage ? (
+                      <div className="flex justify-center">
+                        <img 
+                          src={currentItem.titleImage} 
+                          alt="Title" 
+                          className="max-h-16"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://placehold.co/300x50/cccccc/666666?text=Title+Image';
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="font-bold text-lg">{currentItem.title || 'No title'}</div>
+                    )}
                   </div>
-                ) : (
-                  <div className="font-bold text-lg">{currentItem.title || 'No title'}</div>
-                )}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Title is automatically populated from the Movie API
-              </p>
-            </div>
-            
-            {/* Subtitle Preview */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-              <div className="p-3 bg-gray-100 rounded">
-                <div className="text-sm">{currentItem.subtitle || 'No subtitle'}</div>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Subtitle is automatically populated from the Movie API
-              </p>
-            </div>
-            
-            {/* Background Preview */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Background</label>
-              <div className="p-3 bg-gray-100 rounded">
-                {currentItem.videoBackground ? (
-                  <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
-                ) : currentItem.backgroundImage ? (
-                  <div className="aspect-video bg-gray-200 relative overflow-hidden">
-                    <img 
-                      src={currentItem.backgroundImage} 
-                      alt="Background" 
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://placehold.co/600x340/cccccc/666666?text=Background+Image';
-                      }}
-                    />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Title is automatically populated from the Movie API
+                  </p>
+                </div>
+                
+                {/* Subtitle Preview */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+                  <div className="p-3 bg-gray-100 rounded">
+                    <div className="text-sm">{currentItem.subtitle || 'No subtitle'}</div>
                   </div>
-                ) : (
-                  <div className="text-sm">No background</div>
-                )}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Background is automatically populated from the Movie API
-              </p>
-            </div>
-            
-            {/* Metadata Preview */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Metadata</label>
-              <div className="p-3 bg-gray-100 rounded">
-                <div className="text-sm">
-                  {currentItem.metadata?.year && <span className="mr-2">Year: {currentItem.metadata.year}</span>}
-                  {currentItem.metadata?.language && <span>Language: {currentItem.metadata.language}</span>}
-                  {!currentItem.metadata?.year && !currentItem.metadata?.language && <span>No metadata</span>}
+                  <p className="text-xs text-gray-500 mt-1">
+                    Subtitle is automatically populated from the Movie API
+                  </p>
+                </div>
+                
+                {/* Background Preview */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Background</label>
+                  <div className="p-3 bg-gray-100 rounded">
+                    {currentItem.videoBackground ? (
+                      <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
+                    ) : currentItem.backgroundImage ? (
+                      <div className="aspect-video bg-gray-200 relative overflow-hidden">
+                        <img 
+                          src={currentItem.backgroundImage} 
+                          alt="Background" 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://placehold.co/600x340/cccccc/666666?text=Background+Image';
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="text-sm">No background</div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Background is automatically populated from the Movie API
+                  </p>
+                </div>
+                
+                {/* Metadata Preview */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Metadata</label>
+                  <div className="p-3 bg-gray-100 rounded">
+                    <div className="text-sm">
+                      {currentItem.metadata?.year && <span className="mr-2">Year: {currentItem.metadata.year}</span>}
+                      {currentItem.metadata?.language && <span>Language: {currentItem.metadata.language}</span>}
+                      {!currentItem.metadata?.year && !currentItem.metadata?.language && <span>No metadata</span>}
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Metadata is automatically populated from the Movie API
+                  </p>
                 </div>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Metadata is automatically populated from the Movie API
+            </div>
+            
+            {/* Item Display Options */}
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Control which elements are displayed for the current hero item.
               </p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Item Display Options */}
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
-          <p className="text-sm text-gray-600 mb-3">
-            Control which elements are displayed for the current hero item.
-          </p>
-          
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="showTitle"
-                checked={currentItem.showTitle !== false}
-                onChange={e => {
-                  const newItems = [...(heroBlock.props.items || [])];
-                  if (newItems[currentItemIndex]) {
-                    newItems[currentItemIndex] = {
-                      ...newItems[currentItemIndex],
-                      showTitle: e.target.checked
-                    };
-                    updateProps({ ...heroBlock.props, items: newItems });
-                  }
-                }}
-                className="rounded"
-              />
-              <label htmlFor="showTitle" className="text-sm text-gray-700">
-                Show Title
-              </label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="showSubtitle"
-                checked={currentItem.showSubtitle !== false}
-                onChange={e => {
-                  const newItems = [...(heroBlock.props.items || [])];
-                  if (newItems[currentItemIndex]) {
-                    newItems[currentItemIndex] = {
-                      ...newItems[currentItemIndex],
-                      showSubtitle: e.target.checked
-                    };
-                    updateProps({ ...heroBlock.props, items: newItems });
-                  }
-                }}
-                className="rounded"
-              />
-              <label htmlFor="showSubtitle" className="text-sm text-gray-700">
-                Show Subtitle
-              </label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="showBadges"
-                checked={currentItem.showBadges !== false}
-                onChange={e => {
-                  const newItems = [...(heroBlock.props.items || [])];
-                  if (newItems[currentItemIndex]) {
-                    newItems[currentItemIndex] = {
-                      ...newItems[currentItemIndex],
-                      showBadges: e.target.checked
-                    };
-                    updateProps({ ...heroBlock.props, items: newItems });
-                  }
-                }}
-                className="rounded"
-              />
-              <label htmlFor="showBadges" className="text-sm text-gray-700">
-                Show Badges
-              </label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="showMeta"
-                checked={currentItem.showMeta !== false}
-                onChange={e => {
-                  const newItems = [...(heroBlock.props.items || [])];
-                  if (newItems[currentItemIndex]) {
-                    newItems[currentItemIndex] = {
-                      ...newItems[currentItemIndex],
-                      showMeta: e.target.checked
-                    };
-                    updateProps({ ...heroBlock.props, items: newItems });
-                  }
-                }}
-                className="rounded"
-              />
-              <label htmlFor="showMeta" className="text-sm text-gray-700">
-                Show Metadata (Year, Language)
-              </label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="showHashtag"
-                checked={currentItem.showHashtag !== false}
-                onChange={e => {
-                  const newItems = [...(heroBlock.props.items || [])];
-                  if (newItems[currentItemIndex]) {
-                    newItems[currentItemIndex] = {
-                      ...newItems[currentItemIndex],
-                      showHashtag: e.target.checked
-                    };
-                    updateProps({ ...heroBlock.props, items: newItems });
-                  }
-                }}
-                className="rounded"
-              />
-              <label htmlFor="showHashtag" className="text-sm text-gray-700">
-                Show Hashtag
-              </label>
-            </div>
-          </div>
-        </div>
-        
-        {/* Hashtag Customization Section */}
-        {currentItem.hashtag && (
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-4">Hashtag Customization</h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Customize the appearance of your hashtag. The hashtag text comes from the API.
-            </p>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {/* Hashtag Color */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
-                <input
-                  type="color"
-                  value={currentItem.hashtag.color || '#dc2626'}
-                  onChange={(e) => {
-                    const newItems = [...(heroBlock.props.items || [])];
-                    if (newItems[currentItemIndex] && newItems[currentItemIndex].hashtag) {
-                      newItems[currentItemIndex] = {
-                        ...newItems[currentItemIndex],
-                        hashtag: {
-                          ...newItems[currentItemIndex].hashtag!,
-                          color: e.target.value
-                        }
-                      };
-                      updateProps({ ...heroBlock.props, items: newItems });
-                    }
-                  }}
-                  className="w-full h-10 border border-gray-300 rounded cursor-pointer"
-                />
-              </div>
               
-              {/* Hashtag Size */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
-                <select
-                  value={currentItem.hashtag.size || 'medium'}
-                  onChange={(e) => {
-                    const newItems = [...(heroBlock.props.items || [])];
-                    if (newItems[currentItemIndex] && newItems[currentItemIndex].hashtag) {
-                      newItems[currentItemIndex] = {
-                        ...newItems[currentItemIndex],
-                        hashtag: {
-                          ...newItems[currentItemIndex].hashtag!,
-                          size: e.target.value as 'small' | 'medium' | 'large' | 'xl'
-                        }
-                      };
-                      updateProps({ ...heroBlock.props, items: newItems });
-                    }
-                  }}
-                  className="w-full p-2 border border-gray-300 rounded"
-                >
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
-                  <option value="large">Large</option>
-                  <option value="xl">Extra Large</option>
-                </select>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="showTitle"
+                    checked={currentItem.showTitle !== false}
+                    onChange={e => updateCurrentHeroItem({ showTitle: e.target.checked })}
+                    className="rounded"
+                  />
+                  <label htmlFor="showTitle" className="text-sm text-gray-700">
+                    Show Title
+                  </label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="showSubtitle"
+                    checked={currentItem.showSubtitle !== false}
+                    onChange={e => updateCurrentHeroItem({ showSubtitle: e.target.checked })}
+                    className="rounded"
+                  />
+                  <label htmlFor="showSubtitle" className="text-sm text-gray-700">
+                    Show Subtitle
+                  </label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="showBadges"
+                    checked={currentItem.showBadges !== false}
+                    onChange={e => updateCurrentHeroItem({ showBadges: e.target.checked })}
+                    className="rounded"
+                  />
+                  <label htmlFor="showBadges" className="text-sm text-gray-700">
+                    Show Badges
+                  </label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="showMeta"
+                    checked={currentItem.showMeta !== false}
+                    onChange={e => updateCurrentHeroItem({ showMeta: e.target.checked })}
+                    className="rounded"
+                  />
+                  <label htmlFor="showMeta" className="text-sm text-gray-700">
+                    Show Metadata (Year, Language)
+                  </label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="showHashtag"
+                    checked={currentItem.showHashtag !== false}
+                    onChange={e => updateCurrentHeroItem({ showHashtag: e.target.checked })}
+                    className="rounded"
+                  />
+                  <label htmlFor="showHashtag" className="text-sm text-gray-700">
+                    Show Hashtag
+                  </label>
+                </div>
               </div>
             </div>
             
-            {/* Hashtag Preview */}
-            <div className="mt-4 p-3 bg-gray-100 rounded">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
-              <span 
-                className={`font-bold ${getHashtagSizeClass(currentItem.hashtag.size)}`}
-                style={{ color: currentItem.hashtag.color || '#dc2626' }}
-              >
-                {currentItem.hashtag.text.startsWith('#') ? currentItem.hashtag.text : `#${currentItem.hashtag.text}`}
-              </span>
+            {/* Hashtag Customization Section */}
+            {currentItem.hashtag && (
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-medium text-gray-700 mb-4">Hashtag Customization</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Customize the appearance of your hashtag. The hashtag text comes from the API.
+                </p>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Hashtag Color */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
+                    <input
+                      type="color"
+                      value={currentItem.hashtag.color || '#dc2626'}
+                      onChange={(e) => {
+                        if (currentItem.hashtag) {
+                          updateCurrentHeroItem({
+                            hashtag: {
+                              ...currentItem.hashtag,
+                              color: e.target.value
+                            }
+                          });
+                        }
+                      }}
+                      className="w-full h-10 border border-gray-300 rounded cursor-pointer"
+                    />
+                  </div>
+                  
+                  {/* Hashtag Size */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
+                    <select
+                      value={currentItem.hashtag.size || 'medium'}
+                      onChange={(e) => {
+                        if (currentItem.hashtag) {
+                          updateCurrentHeroItem({
+                            hashtag: {
+                              ...currentItem.hashtag,
+                              size: e.target.value as 'small' | 'medium' | 'large' | 'xl'
+                            }
+                          });
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded"
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                      <option value="xl">Extra Large</option>
+                    </select>
+                  </div>
+                </div>
+                
+                {/* Hashtag Preview */}
+                <div className="mt-4 p-3 bg-gray-100 rounded">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                  <span 
+                    className={`font-bold ${getHashtagSizeClass(currentItem.hashtag.size)}`}
+                    style={{ color: currentItem.hashtag.color || '#dc2626' }}
+                  >
+                    {currentItem.hashtag.text.startsWith('#') ? currentItem.hashtag.text : `#${currentItem.hashtag.text}`}
+                  </span>
+                </div>
+              </div>
+            )}
+            
+            {/* CTAs Section */}
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-700 mb-4">Call-to-Action Buttons</h3>
+              <CTAsTab
+                currentItem={currentItem}
+                updateHeroItemPrimaryCTA={updateHeroItemPrimaryCTA}
+                updateHeroItemSecondaryCTA={updateHeroItemSecondaryCTA}
+                updateHeroItemTertiaryCTA={updateHeroItemTertiaryCTA}
+              />
+            </div>
+          </>
+        ) : (
+          /* Message when no hero items exist */
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="text-center">
+              <h3 className="font-medium text-blue-700 mb-2">No Hero Items Added Yet</h3>
+              <p className="text-sm text-blue-600 mb-3">
+                Use the Movie Picker above to search for and add movies to your hero. Once you add items, you'll be able to configure their display options, customize hashtags, and set up call-to-action buttons.
+              </p>
             </div>
           </div>
         )}
-        
-        {/* CTAs Section */}
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium text-gray-700 mb-4">Call-to-Action Buttons</h3>
-        <CTAsTab
-          currentItem={currentItem}
-          updateHeroItemPrimaryCTA={updateHeroItemPrimaryCTA}
-          updateHeroItemSecondaryCTA={updateHeroItemSecondaryCTA}
-          updateHeroItemTertiaryCTA={updateHeroItemTertiaryCTA}
-        />
-        </div>
       </div>
     </div>
   );
