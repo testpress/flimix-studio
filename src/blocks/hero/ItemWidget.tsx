@@ -87,7 +87,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
         
         {/* Category Badges */}
-        {item.badges && item.badges.length > 0 && (
+        {item.showBadges !== false && item.badges && item.badges.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {item.badges.map((badge) => (
               <span 
@@ -101,22 +101,24 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
         )}
         
         {/* Title - either text or image */}
-        {item.titleType === 'image' && item.titleImage ? (
-          <div className="mb-3">
-            <img 
-              src={item.titleImage} 
-              alt="Title" 
-              className="max-w-full h-auto max-h-24 md:max-h-32"
-            />
-          </div>
-        ) : item.title && (
-          <h1 className={`text-4xl md:text-5xl font-bold mb-1 ${textColorClass}`} style={textColorStyle}>
-            {item.title}
-          </h1>
+        {item.showTitle !== false && (
+          item.titleType === 'image' && item.titleImage ? (
+            <div className="mb-3">
+              <img 
+                src={item.titleImage} 
+                alt="Title" 
+                className="max-w-full h-auto max-h-24 md:max-h-32"
+              />
+            </div>
+          ) : item.title && (
+            <h1 className={`text-4xl md:text-5xl font-bold mb-1 ${textColorClass}`} style={textColorStyle}>
+              {item.title}
+            </h1>
+          )
         )}
         
         {/* Metadata Row */}
-        {item.metadata && Object.values(item.metadata).some(value => !!value) && (
+        {item.showMeta !== false && item.metadata && Object.values(item.metadata).some(value => !!value) && (
           <div className="flex flex-wrap items-center gap-x-3 text-sm text-white/80 mb-2">
             {item.metadata.year && <span>{item.metadata.year}</span>}
             {item.metadata.seasons && (
@@ -134,18 +136,18 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           </div>
         )}
           {/* Hashtag - Display after subtitle and before buttons */}
-          {item.hashtag && item.hashtag.text && (
-          <div className="mb-4">
-            <span 
-              className={`font-bold ${getHashtagSizeClass(item.hashtag.size)}`}
-              style={{ color: item.hashtag.color || '#dc2626' }}
-            >
-              {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
-            </span>
-          </div>
-        )}
+          {item.showHashtag !== false && item.hashtag && item.hashtag.text && (
+            <div className="mb-4">
+              <span 
+                className={`font-bold ${getHashtagSizeClass(item.hashtag.size)}`}
+                style={{ color: item.hashtag.color || '#dc2626' }}
+              >
+                {item.hashtag.text.startsWith('#') ? item.hashtag.text : `#${item.hashtag.text}`}
+              </span>
+            </div>
+          )}
         {/* Subtitle */}
-        {item.subtitle && (
+        {item.showSubtitle !== false && item.subtitle && (
           <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90`} style={textColorStyle}>
             {item.subtitle}
           </p>

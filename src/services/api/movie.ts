@@ -16,6 +16,11 @@ export interface Movie {
   rating?: number;
   badges?: Array<{ label: string }>;
   progress?: number;
+  titleImage?: string;      
+  videoBackground?: string;  
+  year?: string;            
+  language?: string;        
+  hashtag?: string; 
 }
 
 // Search params interface
