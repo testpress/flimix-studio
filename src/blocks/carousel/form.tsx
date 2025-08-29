@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
@@ -25,6 +25,18 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   const itemCount = carouselProps.items?.length || 0;
   const isAtLimit = itemCount >= CAROUSEL_ITEM_LIMIT;
   
+  // Warning state for duplicate items
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+  
+  // Cleanup warning timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (duplicateWarning) {
+        setDuplicateWarning(null);
+      }
+    };
+  }, [duplicateWarning]);
+  
   const handleSelectMovie = (movie: Movie) => {
     // Map the movie to a carousel item
     const carouselItem = {
@@ -43,8 +55,16 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
     // Check if item with this ID already exists
     const existingItems = carouselProps.items || [];
     if (existingItems.some(item => item.id === carouselItem.id)) {
+      // Show warning for duplicate item
+      setDuplicateWarning(`"${movie.title}" is already in your carousel`);
+      
+      // Clear warning after 3 seconds
+      setTimeout(() => setDuplicateWarning(null), 3000);
       return; // Skip if duplicate
     }
+    
+    // Clear any existing warnings
+    setDuplicateWarning(null);
     
     // Add the new item
     updateProps({
@@ -52,17 +72,6 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       items: [...existingItems, carouselItem]
     });
     
-    // Scroll to the last item after a short delay to ensure DOM update
-    setTimeout(() => {
-      // Find the specific carousel container for this block using the block ID
-      const carouselContainer = document.querySelector(`[data-block-id="${block.id}"] .carousel-scroll-container`);
-      if (carouselContainer) {
-        carouselContainer.scrollTo({
-          left: carouselContainer.scrollWidth,
-          behavior: 'smooth'
-        });
-      }
-    }, 300);
   };
 
   const handleStyleChange = (key: keyof StyleProps, value: StyleValue) => {
@@ -161,12 +170,25 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           </div>
         )}
         
+        {/* Duplicate item warning */}
+        {duplicateWarning && (
+          <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-yellow-600" />
+              <span className="text-sm font-medium text-yellow-700">
+                {duplicateWarning}
+              </span>
+            </div>
+          </div>
+        )}
+        
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Movie>
           searchFunction={movieApi.search}
           disabled={isAtLimit}
           placeholder="Search for movies..."
           onSelect={handleSelectMovie}
+          getItemId={(movie) => movie.id}
           renderItem={(movie, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"

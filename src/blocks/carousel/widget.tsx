@@ -33,6 +33,26 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   const autoplayIntervalRef = useRef<number | null>(null);
   const manualScrollPauseTimeoutRef = useRef<number | null>(null);
   
+  // Auto-scroll to end when new items are added
+  useEffect(() => {
+    if (items && items.length > previousItemsLengthRef.current) {
+      // New items were added, scroll to the end
+      const timer = setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTo({
+            left: scrollContainerRef.current.scrollWidth,
+            behavior: 'smooth'
+          });
+        }
+      }, 100); // Small delay to ensure DOM is updated
+      
+      return () => clearTimeout(timer);
+    }
+    
+    // Update the previous length reference
+    previousItemsLengthRef.current = items?.length || 0;
+  }, [items]);
+  
   // Map abstract item size values to Tailwind classes
   const getItemSizeClass = (size: ItemSize): string => {
     switch (size) {
@@ -391,7 +411,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   }
 
   return (
-    <div style={{ boxShadow: boxShadowStyle }} data-block-id={block.id}>
+    <div style={{ boxShadow: boxShadowStyle }}>
       <BaseWidget
         block={block}
         onSelect={onSelect}
@@ -483,7 +503,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             <div className="flex-1 overflow-hidden">
               <div 
                 ref={scrollContainerRef}
-                className={`carousel-scroll-container flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
+                className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
                 onMouseEnter={() => autoplay && setIsAutoplayPaused(true)}
                 onMouseLeave={() => autoplay && setIsAutoplayPaused(false)}
                 onScroll={handleManualScroll}

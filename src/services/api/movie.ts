@@ -3,6 +3,9 @@ import { getJSON } from '@utils/http';
 // API base URL
 const MOVIE_API_BASE = "https://68b005943b8db1ae9c026d70.mockapi.io/api/studio/";
 
+// Default pagination values
+export const DEFAULT_PAGE_SIZE = 20;
+
 // Movie content interface
 export interface Movie {
   id: string;
@@ -37,7 +40,7 @@ export const movieApi = {
     params: MovieSearchParams,
     signal?: AbortSignal
   ): Promise<Movie[]> {
-    const { query, limit = 10, offset = 0 } = params;
+    const { query, limit = DEFAULT_PAGE_SIZE, offset = 0 } = params;
     
     // Calculate page number from offset and limit
     const page = Math.floor(offset / limit) + 1;
