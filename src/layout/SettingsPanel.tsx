@@ -15,9 +15,6 @@ import PosterGridForm from '@blocks/poster-grid/form';
 import PosterGridItemForm from '@blocks/poster-grid/ItemForm';
 import type { PosterGridItem } from '@blocks/poster-grid/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
-import type { CarouselBlockProps } from '@blocks/carousel/schema';
-import CarouselItemForm from '@blocks/carousel/ItemForm';
-import type { CarouselItem } from '@blocks/carousel/schema';
 import CarouselForm from '@blocks/carousel/form';
 import TestimonialForm from '@blocks/testimonial/form';
 import TestimonialItemForm from '@blocks/testimonial/ItemForm';
@@ -141,25 +138,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
         );
       }
       
-      case 'carousel': {
-        const items = (selectedBlock.props as CarouselBlockProps).items || [];
-        const item = items.find((i: CarouselItem) => i.id === selectedItemId);
-        
-        if (!item) return null;
-        
-        const handleItemChange = (updatedItem: CarouselItem) => {
-          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
-        };
-
-        return (
-          <CarouselItemForm
-            item={item}
-            onChange={handleItemChange}
-            title="Carousel Item"
-            progressBarEnabled={(selectedBlock.props as CarouselBlockProps).progressBar?.enabled || false}
-          />
-        );
-      }
       
       case 'testimonial': {
         const items = (selectedBlock.props as TestimonialBlockProps).items || [];

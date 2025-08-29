@@ -2,11 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { CarouselBlock, ItemSize } from './schema';
-import { CAROUSEL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { generateUniqueId } from '@utils/id';
 
 interface CarouselWidgetProps extends Omit<BaseWidgetProps<CarouselBlock>, 'block'> {
   block: CarouselBlock;
@@ -25,7 +23,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
-  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -326,24 +324,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
 
-  const handleAddItem = () => {
-    const currentItemCount = items?.length || 0;
-    
-    if (currentItemCount >= CAROUSEL_ITEM_LIMIT) {
-      return; // Don't add more items if at limit
-    }
-    
-    const defaultItem = {
-      id: generateUniqueId(),
-      title: 'New Carousel Item',
-      subtitle: 'Subtitle',
-      image: 'https://images.unsplash.com/photo-1534840641466-b1cdb8fb155e',
-      link: '',
-      meta: {}
-    };
-    const newId = addBlockItem(block.id, defaultItem);
-    selectArrayItem(block.id, newId);
-  };
 
   const handleItemClick = (itemId: string) => {
     selectArrayItem(block.id, itemId);
@@ -378,8 +358,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
 
-  // Check if we're at the item limit
-  const isAtItemLimit = (items?.length || 0) >= CAROUSEL_ITEM_LIMIT;
 
   if (!items || items.length === 0) {
     return (
@@ -394,7 +372,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
-          onAddItem={!isAtItemLimit ? handleAddItem : undefined}
           className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
           style={{
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
@@ -414,7 +391,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   }
 
   return (
-    <div style={{ boxShadow: boxShadowStyle }}>
+    <div style={{ boxShadow: boxShadowStyle }} data-block-id={block.id}>
       <BaseWidget
         block={block}
         onSelect={onSelect}
@@ -425,7 +402,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        onAddItem={!isAtItemLimit ? handleAddItem : undefined}
         className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
@@ -507,7 +483,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             <div className="flex-1 overflow-hidden">
               <div 
                 ref={scrollContainerRef}
-                className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
+                className={`carousel-scroll-container flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
                 onMouseEnter={() => autoplay && setIsAutoplayPaused(true)}
                 onMouseLeave={() => autoplay && setIsAutoplayPaused(false)}
                 onScroll={handleManualScroll}
@@ -541,7 +517,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = 'https://via.placeholder.com/300x170?text=Image+Not+Found';
+                            target.src = 'https://placehold.co/300x170/cccccc/666666?text=Image+Not+Found';
                           }}
                         />
                       </div>
@@ -553,15 +529,15 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                        item.meta?.rating || 
                        item.meta?.duration ? (
                         <div className="mt-3 space-y-1">
-                          {/* Title - only render if not empty */}
-                          {item.title && item.title.trim() !== "" && (
+                          {/* Title - only render if not empty and global showTitle is not false */}
+                          {props.showTitle !== false && item.title && item.title.trim() !== "" && (
                             <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
                               {item.title}
                             </p>
                           )}
                           
-                          {/* Subtitle - only render if exists */}
-                          {item.subtitle && (
+                          {/* Subtitle - only render if exists and global showSubtitle is true */}
+                          {props.showSubtitle && item.subtitle && (
                             <p className={`text-xs ${textColorClass} opacity-80`} style={textColorStyle}>
                               {item.subtitle}
                             </p>
@@ -581,20 +557,22 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           </div>
                         )}
                           
-                          {/* Meta information - only render if any meta exists */}
-                          {(item.meta?.badge || item.meta?.rating || item.meta?.duration) && (
+                          {/* Meta information - only render if any meta exists and global options are enabled */}
+                          {((props.showBadge && item.meta?.badge) || 
+                            (props.showRating && item.meta?.rating) || 
+                            (props.showDuration && item.meta?.duration)) && (
                             <div className="flex items-center gap-2 flex-wrap">
-                              {item.meta?.badge && (
+                              {props.showBadge && item.meta?.badge && (
                                 <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getBadgeColor(item.meta.badge)}`}>
                                   {item.meta.badge}
                                 </span>
                               )}
-                              {item.meta?.rating && (
+                              {props.showRating && item.meta?.rating && (
                                 <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
                                   {item.meta.rating}
                                 </span>
                               )}
-                              {item.meta?.duration && (
+                              {props.showDuration && item.meta?.duration && (
                                 <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
                                   {item.meta.duration}
                                 </span>

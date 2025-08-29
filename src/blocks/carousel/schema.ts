@@ -68,4 +68,9 @@ export interface CarouselBlockProps {
   items: CarouselItem[];
   button?: ButtonProps;
   progressBar?: ProgressBarProps;
+  showTitle?: boolean;
+  showSubtitle?: boolean;
+  showRating?: boolean;
+  showBadge?: boolean;
+  showDuration?: boolean;
 } 
