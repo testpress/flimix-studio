@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -19,10 +19,14 @@ import {
   CreditCard,
   RectangleEllipsis,
   Zap,
-  Award
+  Award,
+  MoreVertical,
+  Copy,
+  Trash2
 } from 'lucide-react';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { useSelection } from '@context/SelectionContext';
+import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import type { SectionBlockProps } from '@blocks/section/schema';
@@ -37,10 +41,59 @@ interface BlockItemProps {
   level: number;
   onSelect: (block: Block) => void;
   selectedBlockId: string | null;
+  findTabContainingBlock: (blockId: string) => { tabsBlock: TabsBlock; tabId: string } | null;
 }
 
-const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedBlockId }) => {
+interface BlockOptionsMenuProps {
+  onClose: () => void;
+  onDuplicate: () => void;
+  onDelete: () => void;
+}
+
+const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
+  onClose,
+  onDuplicate,
+  onDelete
+}) => {
+  const handleAction = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation();
+    action();
+    onClose();
+  };
+
+  return (
+    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
+        <button
+          onClick={(e) => handleAction(e, onDuplicate)}
+          className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+        >
+          <Copy size={14} />
+          Duplicate
+        </button>
+        
+        <button
+          onClick={(e) => handleAction(e, onDelete)}
+          className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+        >
+          <Trash2 size={14} />
+          Delete
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedBlockId, findTabContainingBlock }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showOptionsMenu, setShowOptionsMenu] = useState(false);
+  const { duplicateSelectedBlock, deleteSelectedBlock } = useSelection();
+  const blockOptionsRef = useRef<HTMLDivElement>(null);
+  
+  // Close options menu when clicking outside
+  useOnClickOutside(blockOptionsRef, () => {
+    setShowOptionsMenu(false);
+  });
   
   // Get tabs for tabs blocks
   const getTabs = () => {
@@ -107,7 +160,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   };
   
   return (
-    <div className="select-none" data-layout-item-id={block.id}>
+    <div className="select-none relative" data-layout-item-id={block.id} ref={blockOptionsRef}>
       <div 
         className={`${getLevelClasses(level)} ${isSelected ? 'bg-blue-100 border border-blue-200' : 'hover:bg-gray-100'}`}
         onClick={() => onSelect(block)}
@@ -185,7 +238,31 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
             );
           })()}
         </div>
+        
+        {isSelected && (
+          <div className="ml-auto">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowOptionsMenu(!showOptionsMenu);
+              }}
+              className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded transition-colors duration-200"
+              title="Block options"
+            >
+              <MoreVertical size={14} />
+            </button>
+          </div>
+        )}
       </div>
+      
+      {/* Options menu */}
+      {showOptionsMenu && (
+        <BlockOptionsMenu
+          onClose={() => setShowOptionsMenu(false)}
+          onDuplicate={duplicateSelectedBlock}
+          onDelete={deleteSelectedBlock}
+        />
+      )}
       
       {isExpanded && hasTabs && (
         <div className="ml-2 space-y-2">
@@ -213,6 +290,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
                       level={level + 2} 
                       onSelect={onSelect}
                       selectedBlockId={selectedBlockId}
+                      findTabContainingBlock={findTabContainingBlock}
                     />
                   ))}
                 </div>
@@ -231,6 +309,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
               level={level + 1} 
               onSelect={onSelect}
               selectedBlockId={selectedBlockId}
+              findTabContainingBlock={findTabContainingBlock}
             />
           ))}
         </div>
@@ -361,6 +440,7 @@ const LayoutPanel: React.FC = () => {
                 level={0}
                 onSelect={handleBlockSelect}
                 selectedBlockId={selectedBlockId}
+                findTabContainingBlock={findTabContainingBlock}
               />
             ))}
           </div>
