@@ -9,9 +9,9 @@ import { useOnClickOutside } from '@hooks/useOnClickOutside';
 
 const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo, updatePageSchema } = useHistory();
-  const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
-  const { isLayoutOpen, toggleLayout } = useLayoutPanel();
-  const { openLibrarySafely, openLayoutSafely } = usePanelCoordinator();
+  const { isLibraryOpen } = useLibraryPanel();
+  const { isLayoutOpen } = useLayoutPanel();
+  const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
   const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
   
   const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
@@ -61,7 +61,7 @@ const TopBar: React.FC = () => {
           </div>
           
           <button 
-            onClick={isLibraryOpen ? toggleLibrary : openLibrarySafely}
+            onClick={toggleLibrarySafely}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLibraryOpen ? "Close block library" : "Open block library"}
           >
@@ -69,8 +69,8 @@ const TopBar: React.FC = () => {
           </button>
           
           <button 
-            onClick={isLayoutOpen ? toggleLayout : openLayoutSafely}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
+            onClick={toggleLayoutSafely}
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-purple-500 text-white hover:bg-purple-600 transition-all duration-200"
             title={isLayoutOpen ? "Close layout panel" : "Open layout panel"}
           >
             <Layers size={16} />

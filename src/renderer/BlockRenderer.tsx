@@ -238,7 +238,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   };
 
   return (
-    <div data-block-id={block.id}>
+    <div>
       {renderBlock()}
     </div>
   );

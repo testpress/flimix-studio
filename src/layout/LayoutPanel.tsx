@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -25,6 +25,12 @@ import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { useSelection } from '@context/SelectionContext';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { TabsBlock } from '@blocks/tabs/schema';
+import type { SectionBlockProps } from '@blocks/section/schema';
+import type { FeatureCalloutBlockProps } from '@blocks/feature-callout/schema';
+import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
+import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
+import type { CarouselBlockProps } from '@blocks/carousel/schema';
+import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
 
 interface BlockItemProps {
   block: Block;
@@ -77,42 +83,27 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
     const iconSize = 14;
     const iconClass = "w-5 h-5 rounded-md flex items-center justify-center bg-gray-100 text-gray-600";
     
-    switch (block.type) {
-      case 'hero':
-        return <div className={iconClass}><LayoutIcon size={iconSize} /></div>;
-      case 'text':
-        return <div className={iconClass}><Type size={iconSize} /></div>;
-      case 'section':
-        return <div className={iconClass}><Columns size={iconSize} /></div>;
-      case 'posterGrid':
-        return <div className={iconClass}><Grid2x2 size={iconSize} /></div>;
-      case 'carousel':
-        return <div className={iconClass}><GalleryHorizontalEnd size={iconSize} /></div>;
-      case 'testimonial':
-        return <div className={iconClass}><MessageSquare size={iconSize} /></div>;
-      case 'spacer':
-        return <div className={iconClass}><AlignVerticalSpaceBetween size={iconSize} /></div>;
-      case 'divider':
-        return <div className={iconClass}><Minus size={iconSize} /></div>;
-      case 'featureCallout':
-        return <div className={iconClass}><Sparkles size={iconSize} /></div>;
-      case 'faq-accordion':
-        return <div className={iconClass}><HelpCircle size={iconSize} /></div>;
-      case 'image':
-        return <div className={iconClass}><Image size={iconSize} /></div>;
-      case 'video':
-        return <div className={iconClass}><Video size={iconSize} /></div>;
-      case 'tabs':
-        return <div className={iconClass}><Columns3Cog size={iconSize} /></div>;
-      case 'footer':
-        return <div className={iconClass}><CreditCard size={iconSize} /></div>;
-      case 'cta-button':
-        return <div className={iconClass}><Zap size={iconSize} /></div>;
-      case 'badge-strip':
-        return <div className={iconClass}><Award size={iconSize} /></div>;
-      default:
-        return <div className={iconClass}><RectangleEllipsis size={iconSize} /></div>;
-    }
+    const iconMap: Partial<Record<BlockType['type'], React.ReactNode>> = {
+      hero: <LayoutIcon size={iconSize} />,
+      text: <Type size={iconSize} />,
+      section: <Columns size={iconSize} />,
+      posterGrid: <Grid2x2 size={iconSize} />,
+      carousel: <GalleryHorizontalEnd size={iconSize} />,
+      testimonial: <MessageSquare size={iconSize} />,
+      spacer: <AlignVerticalSpaceBetween size={iconSize} />,
+      divider: <Minus size={iconSize} />,
+      featureCallout: <Sparkles size={iconSize} />,
+      'faq-accordion': <HelpCircle size={iconSize} />,
+      image: <Image size={iconSize} />,
+      video: <Video size={iconSize} />,
+      tabs: <Columns3Cog size={iconSize} />,
+      footer: <CreditCard size={iconSize} />,
+      'cta-button': <Zap size={iconSize} />,
+      'badge-strip': <Award size={iconSize} />,
+    };
+    
+    const icon = iconMap[block.type] ?? <RectangleEllipsis size={iconSize} />;
+    return <div className={iconClass}>{icon}</div>;
   };
   
   return (
@@ -135,25 +126,65 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
           <div className="w-6 mr-2"></div>
         )}
         {getBlockIcon()}
-        <span className="ml-3 text-base font-medium truncate">
-          {block.type === 'hero' ? 'Hero' :
-           block.type === 'text' ? 'Text' :
-           block.type === 'section' ? 'Section' :
-           block.type === 'posterGrid' ? 'Poster Grid' :
-           block.type === 'carousel' ? 'Carousel' :
-           block.type === 'testimonial' ? 'Testimonial' :
-           block.type === 'spacer' ? 'Spacer' :
-           block.type === 'divider' ? 'Divider' :
-           block.type === 'featureCallout' ? 'Feature Callout' :
-           block.type === 'faq-accordion' ? 'FAQ Accordion' :
-           block.type === 'image' ? 'Image' :
-           block.type === 'video' ? 'Video' :
-           block.type === 'tabs' ? `Tabs (${tabs.length})` :
-           block.type === 'footer' ? 'Footer' :
-           block.type === 'cta-button' ? 'CTA Button' :
-           block.type === 'badge-strip' ? 'Badge Strip' :
-           'Unknown Block'}
-        </span>
+        <div className="ml-3 flex flex-col">
+          {(() => {
+            // Get block title if available
+            const getBlockTitle = (): string | undefined => {
+              switch (block.type) {
+                case 'carousel':
+                  return (block.props as CarouselBlockProps).title;
+                case 'posterGrid':
+                  return (block.props as PosterGridBlockProps).title;
+                case 'section':
+                  return (block.props as SectionBlockProps).title;
+                case 'featureCallout':
+                  return (block.props as FeatureCalloutBlockProps).title;
+                case 'faq-accordion':
+                  return (block.props as FAQAccordionBlockProps).title;
+                case 'testimonial':
+                  return (block.props as TestimonialBlockProps).title;
+                default:
+                  return undefined;
+              }
+            };
+
+            const blockTitle = getBlockTitle();
+            
+            const displayNameMap: Partial<Record<BlockType['type'], string>> = {
+              'hero': 'Hero',
+              'text': 'Text',
+              'section': 'Section',
+              'posterGrid': 'Poster Grid',
+              'carousel': 'Carousel',
+              'testimonial': 'Testimonial',
+              'spacer': 'Spacer',
+              'divider': 'Divider',
+              'featureCallout': 'Feature Callout',
+              'faq-accordion': 'FAQ Accordion',
+              'image': 'Image',
+              'video': 'Video',
+              'tabs': `Tabs (${tabs.length})`,
+              'footer': 'Footer',
+              'cta-button': 'CTA Button',
+              'badge-strip': 'Badge Strip',
+            };
+            
+            const defaultDisplayName = displayNameMap[block.type] || 'Unknown Block';
+            
+            return (
+              <>
+                <span className="text-base font-medium truncate">
+                  {defaultDisplayName}
+                </span>
+                {blockTitle && blockTitle.trim() && (
+                  <span className="text-xs text-gray-500 truncate">
+                    {blockTitle}
+                  </span>
+                )}
+              </>
+            );
+          })()}
+        </div>
       </div>
       
       {isExpanded && hasTabs && (
@@ -223,10 +254,6 @@ const LayoutPanel: React.FC = () => {
           block: 'center',
           inline: 'nearest'
         });
-        
-        setTimeout(() => {
-          blockElement.classList.remove('ring-4', 'ring-blue-300', 'ring-opacity-50', 'transition-all', 'duration-300');
-        }, 2000);
       } else {
         console.warn(`Block with ID ${blockId} not found in the DOM`);
       }
@@ -239,28 +266,30 @@ const LayoutPanel: React.FC = () => {
     scrollToBlock(block.id);
   };
   
-  // Filter blocks based on search query
-  const filterBlocks = (blocks: BlockType[]): BlockType[] => {
-    if (!searchQuery) return blocks;
-    
-    return blocks.filter(block => {
-      const matchesType = block.type.toLowerCase().includes(searchQuery.toLowerCase());
-      const hasMatchingChildren = block.children ? filterBlocks(block.children).length > 0 : false;
-      
-      // For tabs blocks, check tab children
-      let hasMatchingTabChildren = false;
-      if (block.type === 'tabs') {
-        const tabsBlock = block as TabsBlock;
-        hasMatchingTabChildren = tabsBlock.props.tabs.some(tab => 
-          tab.children && filterBlocks(tab.children).length > 0
-        );
-      }
-      
-      return matchesType || hasMatchingChildren || hasMatchingTabChildren;
-    });
-  };
-  
-  const filteredBlocks = filterBlocks(pageSchema.blocks);
+  // Memoized filtering logic for better performance
+  const filteredBlocks = useMemo(() => {
+    const filter = (blocks: BlockType[]): BlockType[] => {
+      if (!searchQuery) return blocks;
+
+      return blocks.filter(block => {
+        const matchesType = block.type.toLowerCase().includes(searchQuery.toLowerCase());
+        const hasMatchingChildren = block.children ? filter(block.children).length > 0 : false;
+
+        // For tabs blocks, check tab children
+        let hasMatchingTabChildren = false;
+        if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          hasMatchingTabChildren = tabsBlock.props.tabs.some(tab => 
+            tab.children && filter(tab.children).length > 0
+          );
+        }
+
+        return matchesType || hasMatchingChildren || hasMatchingTabChildren;
+      });
+    };
+
+    return filter(pageSchema.blocks);
+  }, [pageSchema.blocks, searchQuery]);
 
   return (
     <div className={`${isLayoutOpen ? 'w-[22rem] bg-white border-r border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
@@ -268,13 +297,13 @@ const LayoutPanel: React.FC = () => {
       <div className="p-6 border-b border-gray-200 flex-shrink-0">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Layout Structure</h2>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Search blocks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
       </div>
@@ -283,7 +312,7 @@ const LayoutPanel: React.FC = () => {
       <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {filteredBlocks.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <Search size={24} className="mb-2" />
+            <Search size={24} className="flex flex-col items-center justify-center h-full text-gray-500" />
             <p>No blocks found matching "{searchQuery}"</p>
           </div>
         ) : (
