@@ -219,7 +219,7 @@ export function ApiSearchDropdown<T>({
               {loadMoreError && (
                 <div className="p-3 text-center text-sm text-red-500 border-t">
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <span>⚠️ {loadMoreError}</span>
+                    <span>{loadMoreError}</span>
                     <button
                       onClick={() => {
                         setLoadMoreError(null);
