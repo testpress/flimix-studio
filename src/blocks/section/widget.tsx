@@ -126,7 +126,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           {children && children.length > 0 ? (
             <div className="space-y-0 w-full">
               {children.map((childBlock) => (
-                <div key={childBlock.id} className="w-full">
+                <div key={childBlock.id} className="w-full" data-block-id={childBlock.id}>
                   <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
                   <BlockRenderer 
                     block={childBlock} 

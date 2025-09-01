@@ -152,7 +152,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
         
         <div className="space-y-0 px-6">
           {pageSchema.blocks.map((block: Block) => (
-            <div key={block.id}>
+            <div key={block.id} data-block-id={block.id}>
               <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
               <BlockRenderer 
                 block={block} 
