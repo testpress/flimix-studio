@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { TabsBlock } from './schema';
@@ -32,7 +32,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { tabs } = props;
-  const { activeTabId, setActiveTabId } = useSelection();
+  const { activeTabId, setActiveTabId, setSelectedItemId, setSelectedItemBlockId, selectedBlockId: contextSelectedBlockId, setSelectedBlockId, setSelectedBlock } = useSelection();
   
   // Convert style properties to Tailwind classes
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
@@ -60,48 +60,50 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   };
   const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
   
-  // State for currently selected tab - use activeTabId from context if available, otherwise use first tab
-  const [selectedTab, setSelectedTab] = useState(() => activeTabId || tabs[0]?.id);
-  
-  // Update activeTabId in context when tab changes
-  useEffect(() => {
-    if (selectedTab && selectedTab !== activeTabId) {
-      setActiveTabId(selectedTab);
-    }
-  }, [selectedTab, activeTabId, setActiveTabId]);
-  
   // Initialize activeTabId if not set
   useEffect(() => {
     if (!activeTabId && tabs[0]?.id) {
       setActiveTabId(tabs[0].id);
-      setSelectedTab(tabs[0].id);
     }
   }, [activeTabId, tabs, setActiveTabId]);
   
-  // Handle case when selected tab is deleted - fallback to first available tab
   useEffect(() => {
-    // If the selected tab no longer exists in the tabs list (e.g., it was deleted),
-    // reset the selection to the first available tab.
-    if (selectedTab && !tabs.some(tab => tab.id === selectedTab)) {
-      const newSelectedTab = tabs[0]?.id;
-      if (newSelectedTab) {
-        setSelectedTab(newSelectedTab);
-        // Also update the global context if it was pointing to the deleted tab
-        if (activeTabId === selectedTab) {
-          setActiveTabId(newSelectedTab);
+    if (activeTabId && !tabs.some(tab => tab.id === activeTabId)) {
+      const newActiveTabId = tabs[0]?.id;
+      if (newActiveTabId) {
+        setActiveTabId(newActiveTabId);
+      }
+    }
+  }, [tabs, activeTabId, setActiveTabId]);
+  
+  // Memoize the current tab to prevent unnecessary recalculations
+  const currentTab = useMemo(() => tabs.find(tab => tab.id === activeTabId), [tabs, activeTabId]);
+  
+  // Helper function to check if a block is a child of this tabs block
+  const isChildOfThisTabsBlock = useCallback((blockId: string): boolean => {
+    for (const tab of tabs) {
+      if (tab.children) {
+        for (const child of tab.children) {
+          if (child.id === blockId) {
+            return true;
+          }
         }
       }
     }
-  }, [tabs, selectedTab, activeTabId, setActiveTabId]);
-  
-  // Memoize the current tab to prevent unnecessary recalculations
-  const currentTab = useMemo(() => tabs.find(tab => tab.id === selectedTab), [tabs, selectedTab]);
+    return false;
+  }, [tabs]);
   
   const handleTabChange = useCallback((tabId: string) => {
-    if (tabId !== selectedTab) {
-      setSelectedTab(tabId);
+    if (tabId !== activeTabId) {
+      setActiveTabId(tabId);
+      if (contextSelectedBlockId && isChildOfThisTabsBlock(contextSelectedBlockId)) {
+        setSelectedBlockId(null);
+        setSelectedBlock(null);
+      }
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
     }
-  }, [selectedTab]);
+  }, [activeTabId, setActiveTabId, contextSelectedBlockId, isChildOfThisTabsBlock, setSelectedBlockId, setSelectedBlock, setSelectedItemId, setSelectedItemBlockId]);
 
   const handleSelect = useCallback((tabsBlock: TabsBlock) => {
     onSelect?.(tabsBlock as Block);
@@ -145,13 +147,13 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
             e.stopPropagation(); // Prevent block selection when clicking tabs
             handleTabChange(tab.id);
           }}
-          className={`${getTabStyleClass(selectedTab === tab.id)} text-center`}
+          className={`${getTabStyleClass(activeTabId === tab.id)} text-center`}
         >
           {tab.label}
         </button>
       ))}
     </div>
-  ), [tabs, selectedTab, handleTabChange, getTabStyleClass, tabAlignmentClass]);
+  ), [tabs, activeTabId, handleTabChange, getTabStyleClass, tabAlignmentClass]);
 
   // Memoize the tab content section to prevent re-rendering
   const tabContent = useMemo(() => {
@@ -168,7 +170,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         {/* Render children blocks for the selected tab - exactly like section block */}
         {currentTab.children && currentTab.children.length > 0 ? (
           currentTab.children.map((childBlock) => (
-            <div key={childBlock.id}>
+            <div key={childBlock.id} data-block-id={childBlock.id}>
               <BlockInsertDropdown 
                 position="above" 
                 blockId={childBlock.id} 
