@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
 import { generateUniqueId } from '@utils/id';
@@ -18,7 +18,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
   
-  const getEditingItemIndex = () => {
+  // Memoized editing item index calculation
+  const editingItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === heroBlock.id) {
       const selectedIndex = heroBlock.props.items?.findIndex(item => item.id === selectedItemId);
       if (selectedIndex !== -1) {
@@ -26,9 +27,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       }
     }
     return 0;
-  };
-  
-  const editingItemIndex = getEditingItemIndex();
+  }, [selectedItemId, selectedItemBlockId, heroBlock.id, heroBlock.props.items]);
   
   const currentItem = heroBlock.props.items?.[editingItemIndex] || {
     id: generateUniqueId(),

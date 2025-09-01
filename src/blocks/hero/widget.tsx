@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { HeroBlock } from './schema';
@@ -32,7 +32,8 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   
   const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectArrayItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
   
-  const getCurrentItemIndex = () => {
+  // Memoized current item index calculation
+  const currentItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === block.id) {
       const selectedIndex = props.items?.findIndex(item => item.id === selectedItemId);
       if (selectedIndex !== -1) {
@@ -40,10 +41,19 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       }
     }
     return displayIndex; // Use displayIndex when no item is selected
+  }, [selectedItemId, selectedItemBlockId, block.id, props.items, displayIndex]);
+  
+  // Helper function to change slide with conditional selection
+  const changeSlide = (newIndex: number) => {
+    if (!props.items?.[newIndex]) return;
+
+    if (isSelected) {
+      selectArrayItem(block.id, props.items[newIndex].id);
+    } else {
+      setDisplayIndex(newIndex);
+    }
   };
-  
-  const currentItemIndex = getCurrentItemIndex();
-  
+
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
   // Determine background styling - default to black
@@ -64,14 +74,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     if (props.variant === 'carousel' && props.autoplay && !isAutoplayPaused && props.items && props.items.length > 1) {
       autoplayIntervalRef.current = window.setInterval(() => {
         const nextIndex = (currentItemIndex + 1) % props.items!.length;
-        
-        // Only select item if block is selected
-        if (isSelected) {
-          selectArrayItem(block.id, props.items![nextIndex].id);
-        } else {
-          // Just update the display without selecting
-          setDisplayIndex(nextIndex);
-        }
+        changeSlide(nextIndex);
       }, props.scrollSpeed || 5000);
     }
     
@@ -82,7 +85,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         autoplayIntervalRef.current = null;
       }
     };
-  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, selectArrayItem, block.id, isSelected]);
+  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, changeSlide]);
   
   useEffect(() => {
     if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
@@ -106,14 +109,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         }, 1500); // Resume after 1.5 seconds
       }
       const nextIndex = (currentItemIndex + 1) % props.items.length;
-      
-      // Only select item if block is selected
-      if (isSelected) {
-        selectArrayItem(block.id, props.items[nextIndex].id);
-      } else {
-        // Just update the display without selecting
-        setDisplayIndex(nextIndex);
-      }
+      changeSlide(nextIndex);
     }
   };
 
@@ -127,35 +123,29 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         }, 1500); // Resume after 1.5 seconds
       }
       const prevIndex = (currentItemIndex - 1 + props.items.length) % props.items.length;
-      
-      // Only select item if block is selected
-      if (isSelected) {
-        selectArrayItem(block.id, props.items[prevIndex].id);
-      } else {
-        setDisplayIndex(prevIndex);
-      }
+      changeSlide(prevIndex);
     }
   };
 
   // Handle item movement with conditional selection update
   const handleMoveLeft = () => {
     if (currentItemIndex > 0) {
+      const movingItemId = props.items[currentItemIndex].id;
       moveBlockItemLeft(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        const newIndex = currentItemIndex - 1;
-        selectArrayItem(block.id, props.items[newIndex].id);
+        selectArrayItem(block.id, movingItemId);
       }
     }
   };
 
   const handleMoveRight = () => {
     if (currentItemIndex < props.items.length - 1) {
+      const movingItemId = props.items[currentItemIndex].id;
       moveBlockItemRight(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        const newIndex = currentItemIndex + 1;
-        selectArrayItem(block.id, props.items[newIndex].id);
+        selectArrayItem(block.id, movingItemId);
       }
     }
   };
@@ -288,14 +278,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                     key={`${item.id}-${idx}`}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
-                      
-                      // Only select item if block is selected
-                      if (isSelected) {
-                        selectArrayItem(block.id, item.id);
-                      } else {
-                        // Just update the display without selecting
-                        setDisplayIndex(idx);
-                      }
+                      changeSlide(idx);
                       
                       if (props.autoplay) {
                         setIsAutoplayPaused(true);
