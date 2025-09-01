@@ -55,15 +55,17 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
   onDuplicate,
   onDelete
 }) => {
+  const handleAction = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation();
+    action();
+    onClose();
+  };
+
   return (
     <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDuplicate();
-            onClose();
-          }}
+          onClick={(e) => handleAction(e, onDuplicate)}
           className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
         >
           <Copy size={14} />
@@ -71,11 +73,7 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
         </button>
         
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-            onClose();
-          }}
+          onClick={(e) => handleAction(e, onDelete)}
           className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
         >
           <Trash2 size={14} />
@@ -89,20 +87,8 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
 const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedBlockId, findTabContainingBlock }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
-  const { duplicateSelectedBlock, deleteSelectedBlock, setSelectedBlockId, setSelectedBlock } = useSelection();
+  const { duplicateSelectedBlock, deleteSelectedBlock } = useSelection();
   const blockOptionsRef = useRef<HTMLDivElement>(null);
-  
-  const handleDuplicate = () => {
-    setSelectedBlockId(block.id);
-    setSelectedBlock(block);
-    duplicateSelectedBlock();
-  };
-  
-  const handleDelete = () => {
-    setSelectedBlockId(block.id);
-    setSelectedBlock(block);
-    deleteSelectedBlock();
-  };
   
   // Close options menu when clicking outside
   useOnClickOutside(blockOptionsRef, () => {
@@ -273,8 +259,8 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
       {showOptionsMenu && (
         <BlockOptionsMenu
           onClose={() => setShowOptionsMenu(false)}
-          onDuplicate={handleDuplicate}
-          onDelete={handleDelete}
+          onDuplicate={duplicateSelectedBlock}
+          onDelete={deleteSelectedBlock}
         />
       )}
       
