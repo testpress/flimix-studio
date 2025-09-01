@@ -138,7 +138,7 @@ const FooterWidget: React.FC<FooterWidgetProps> = ({
             <div 
               onClick={() => handleItemClick(col.id)}
               className={`cursor-pointer transition-all duration-200 p-4 rounded-lg ${
-                isItemSelected(block.id, col.id) ? 'ring-2 ring-blue-500 ring-offset-1' : 'hover:ring-1 hover:ring-blue-300'
+                isItemSelected(block.id, col.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
               }`}
             >
               {col.title && (
