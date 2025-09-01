@@ -70,7 +70,7 @@ const TopBar: React.FC = () => {
           
           <button 
             onClick={toggleLayoutSafely}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-purple-500 text-white hover:bg-purple-600 transition-all duration-200"
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLayoutOpen ? "Close layout panel" : "Open layout panel"}
           >
             <Layers size={16} />
