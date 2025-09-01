@@ -241,8 +241,39 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
 
 const LayoutPanel: React.FC = () => {
   const { isLayoutOpen } = useLayoutPanel();
-  const { pageSchema, selectedBlockId, setSelectedBlockId, setSelectedBlock } = useSelection();
+  const { pageSchema, selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const findTabContainingBlock = (blockId: string): { tabsBlock: TabsBlock; tabId: string } | null => {
+    const findInBlocks = (blocks: BlockType[]): { tabsBlock: TabsBlock; tabId: string } | null => {
+      for (const block of blocks) {
+        if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          for (const tab of tabsBlock.props.tabs) {
+            if (tab.children) {
+              for (const child of tab.children) {
+                if (child.id === blockId) {
+                  return { tabsBlock, tabId: tab.id };
+                }
+                // Recursively check nested children
+                if (child.children) {
+                  const found = findInBlocks(child.children);
+                  if (found) return found;
+                }
+              }
+            }
+          }
+        }
+        if (block.children) {
+          const found = findInBlocks(block.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    
+    return findInBlocks(pageSchema.blocks);
+  };
   
   const scrollToBlock = (blockId: string) => {
     setTimeout(() => {
@@ -263,6 +294,12 @@ const LayoutPanel: React.FC = () => {
   const handleBlockSelect = (block: Block) => {
     setSelectedBlockId(block.id);
     setSelectedBlock(block);
+    
+    const tabInfo = findTabContainingBlock(block.id);
+    if (tabInfo) {
+      setActiveTabId(tabInfo.tabId);
+    }
+    
     scrollToBlock(block.id);
   };
   
