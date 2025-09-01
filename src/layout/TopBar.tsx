@@ -1,13 +1,17 @@
 import React from 'react';
-import { Undo, Redo, Plus, X, ChevronDown } from 'lucide-react';
+import { Undo, Redo, Plus, X, ChevronDown,Layers } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
+import { useLayoutPanel } from '@context/LayoutPanelContext';
+import { usePanelCoordinator } from '@context/PanelCoordinator';
 import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 
 const TopBar: React.FC = () => {
   const { undo, canUndo, redo, canRedo, updatePageSchema } = useHistory();
   const { isLibraryOpen, toggleLibrary } = useLibraryPanel();
+  const { isLayoutOpen, toggleLayout } = useLayoutPanel();
+  const { openLibrarySafely, openLayoutSafely } = usePanelCoordinator();
   const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
   
   const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
@@ -57,11 +61,19 @@ const TopBar: React.FC = () => {
           </div>
           
           <button 
-            onClick={toggleLibrary}
+            onClick={isLibraryOpen ? toggleLibrary : openLibrarySafely}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLibraryOpen ? "Close block library" : "Open block library"}
           >
             {isLibraryOpen ? <X size={16} /> : <Plus size={16} />}
+          </button>
+          
+          <button 
+            onClick={isLayoutOpen ? toggleLayout : openLayoutSafely}
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
+            title={isLayoutOpen ? "Close layout panel" : "Open layout panel"}
+          >
+            <Layers size={16} />
           </button>
         </div>
         <div className="flex items-center space-x-4">
