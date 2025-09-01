@@ -4,6 +4,8 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { HeroBlock } from './schema';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ItemWidget from './ItemWidget';
+import ItemsControl from '@blocks/shared/ItemsControl';
+import { useSelection } from '@context/SelectionContext';
 
 interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
   block: HeroBlock;
@@ -21,10 +23,26 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const [currentIndex, setCurrentIndex] = useState(props.currentIndex || 0);
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
   const autoplayIntervalRef = useRef<number | null>(null);
   const previousItemsLengthRef = useRef<number>(0); // Ref to track previous items length
+  
+  // Local state for display when block is not selected
+  const [displayIndex, setDisplayIndex] = useState(0);
+  
+  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectArrayItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
+  
+  const getCurrentItemIndex = () => {
+    if (selectedItemId && selectedItemBlockId === block.id) {
+      const selectedIndex = props.items?.findIndex(item => item.id === selectedItemId);
+      if (selectedIndex !== -1) {
+        return selectedIndex;
+      }
+    }
+    return displayIndex; // Use displayIndex when no item is selected
+  };
+  
+  const currentItemIndex = getCurrentItemIndex();
   
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
@@ -45,7 +63,15 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     // Start autoplay if enabled and not paused
     if (props.variant === 'carousel' && props.autoplay && !isAutoplayPaused && props.items && props.items.length > 1) {
       autoplayIntervalRef.current = window.setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % props.items!.length);
+        const nextIndex = (currentItemIndex + 1) % props.items!.length;
+        
+        // Only select item if block is selected
+        if (isSelected) {
+          selectArrayItem(block.id, props.items![nextIndex].id);
+        } else {
+          // Just update the display without selecting
+          setDisplayIndex(nextIndex);
+        }
       }, props.scrollSpeed || 5000);
     }
     
@@ -56,37 +82,19 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         autoplayIntervalRef.current = null;
       }
     };
-  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused]);
-//handle new items added to the hero block and set the current index to the last item
+  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, selectArrayItem, block.id, isSelected]);
+  
   useEffect(() => {
     if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
       const timer = setTimeout(() => {
-        setCurrentIndex(props.items.length - 1);
+        selectArrayItem(block.id, props.items[props.items.length - 1].id);
       }, 100);
 
       return () => clearTimeout(timer);
     }
 
     previousItemsLengthRef.current = props.items?.length || 0;
-  }, [props.items]);
-
-  // Sync with currentIndex from props (form controls)
-  useEffect(() => {
-    if (props.currentIndex !== undefined && props.currentIndex !== currentIndex) {
-      setCurrentIndex(props.currentIndex);
-    }
-  }, [props.currentIndex]);
-
-  // Ensure currentIndex is valid when items change
-  useEffect(() => {
-    if (props.items && props.items.length > 0) {
-      if (currentIndex >= props.items.length) {
-        setCurrentIndex(props.items.length - 1);
-      }
-    } else if (props.items && props.items.length === 0) {
-      setCurrentIndex(0);
-    }
-  }, [props.items, currentIndex]);
+  }, [props.items, selectArrayItem, block.id]);
   // Handle carousel navigation
   const nextSlide = () => {
     if (props.items && props.items.length > 1) {
@@ -97,7 +105,15 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
           setIsAutoplayPaused(false);
         }, 1500); // Resume after 1.5 seconds
       }
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % props.items.length);
+      const nextIndex = (currentItemIndex + 1) % props.items.length;
+      
+      // Only select item if block is selected
+      if (isSelected) {
+        selectArrayItem(block.id, props.items[nextIndex].id);
+      } else {
+        // Just update the display without selecting
+        setDisplayIndex(nextIndex);
+      }
     }
   };
 
@@ -110,11 +126,44 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
           setIsAutoplayPaused(false);
         }, 1500); // Resume after 1.5 seconds
       }
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + props.items.length) % props.items.length);
+      const prevIndex = (currentItemIndex - 1 + props.items.length) % props.items.length;
+      
+      // Only select item if block is selected
+      if (isSelected) {
+        selectArrayItem(block.id, props.items[prevIndex].id);
+      } else {
+        setDisplayIndex(prevIndex);
+      }
     }
   };
 
+  // Handle item movement with conditional selection update
+  const handleMoveLeft = () => {
+    if (currentItemIndex > 0) {
+      moveBlockItemLeft(block.id, currentItemIndex);
+      // Only update selection if block is selected
+      if (isSelected) {
+        const newIndex = currentItemIndex - 1;
+        selectArrayItem(block.id, props.items[newIndex].id);
+      }
+    }
+  };
 
+  const handleMoveRight = () => {
+    if (currentItemIndex < props.items.length - 1) {
+      moveBlockItemRight(block.id, currentItemIndex);
+      // Only update selection if block is selected
+      if (isSelected) {
+        const newIndex = currentItemIndex + 1;
+        selectArrayItem(block.id, props.items[newIndex].id);
+      }
+    }
+  };
+
+  // Handle item click for selection
+  const handleItemClick = (itemId: string) => {
+    selectArrayItem(block.id, itemId);
+  };
 
   return (
     <div>
@@ -136,16 +185,51 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         {/* Hero Content */}
         <div className="relative">
           {/* Render current hero item */}
-          {props.items && props.items.length > 0 && props.items[currentIndex] ? (
-            <ItemWidget
-              item={props.items[currentIndex]}
-              aspectRatio={props.aspectRatio}
-              customHeight={props.customHeight}
-              textAlign={style?.textAlign}
-              textColor={style?.textColor}
-              backgroundColor={style?.backgroundColor}
-              autoplay={!isAutoplayPaused}
-            />
+          {props.items && props.items.length > 0 && props.items[currentItemIndex] ? (
+            <div className="relative group">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleItemClick(props.items[currentItemIndex].id);
+                }}
+                className={`cursor-pointer transition-all duration-200 ${
+                  isItemSelected(block.id, props.items[currentItemIndex].id) 
+                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' 
+                    : ''
+                }`}
+              >
+                <ItemWidget
+                  item={props.items[currentItemIndex]}
+                  aspectRatio={props.aspectRatio}
+                  customHeight={props.customHeight}
+                  textAlign={style?.textAlign}
+                  textColor={style?.textColor}
+                  backgroundColor={style?.backgroundColor}
+                  autoplay={!isAutoplayPaused}
+                />
+                
+                {/* Selection indicator overlay */}
+                {isItemSelected(block.id, props.items[currentItemIndex].id) && (
+                  <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full z-10">
+                    Selected for editing
+                  </div>
+                )}
+              </div>
+              
+              {/* ItemsControl - positioned at the top, visible on hover */}
+              <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <ItemsControl
+                  index={currentItemIndex}
+                  count={props.items.length}
+                  onMoveLeft={currentItemIndex > 0 ? handleMoveLeft : undefined}
+                  onMoveRight={currentItemIndex < props.items.length - 1 ? handleMoveRight : undefined}
+                  onRemove={() => removeBlockItem(block.id, props.items[currentItemIndex].id)}
+                  showMoveControls={props.items.length > 1}
+                  showRemoveControl={true}
+                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
+                />
+              </div>
+            </div>
                       ) : (
               /* Fallback when no items or current item is undefined */
               <div className="w-full h-full flex items-center justify-center text-gray-500 min-h-[400px]">
@@ -204,7 +288,15 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                     key={`${item.id}-${idx}`}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
-                      setCurrentIndex(idx);
+                      
+                      // Only select item if block is selected
+                      if (isSelected) {
+                        selectArrayItem(block.id, item.id);
+                      } else {
+                        // Just update the display without selecting
+                        setDisplayIndex(idx);
+                      }
+                      
                       if (props.autoplay) {
                         setIsAutoplayPaused(true);
                         setTimeout(() => {
@@ -213,9 +305,12 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                       }
                     }}
                     className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                      idx === currentIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
+                      idx === currentItemIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
+                    } ${
+                      isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
+                    title={`Select slide ${idx + 1} for editing`}
                   />
                 ))}
               </div>
