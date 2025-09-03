@@ -44,6 +44,11 @@ export interface PosterGridBlockProps {
   items?: PosterGridItem[];
   button?: ButtonProps;
   progressBar?: ProgressBarProps;
+  showTitle?: boolean;
+  showSubtitle?: boolean;
+  showRating?: boolean;
+  showBadge?: boolean;
+  showDuration?: boolean;
 }
 
 // Individual poster item interface
@@ -51,6 +56,12 @@ export interface PosterGridItem {
   id: string;
   image: string;
   title: string;
+  subtitle?: string;
   link?: string;
   progress?: number;
+  meta?: {
+    rating?: string;
+    badge?: string;
+    duration?: string;
+  };
 } 

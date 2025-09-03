@@ -12,9 +12,6 @@ import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
 import PosterGridForm from '@blocks/poster-grid/form';
-import PosterGridItemForm from '@blocks/poster-grid/ItemForm';
-import type { PosterGridItem } from '@blocks/poster-grid/schema';
-import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
 import CarouselForm from '@blocks/carousel/form';
 import TestimonialForm from '@blocks/testimonial/form';
 import TestimonialItemForm from '@blocks/testimonial/ItemForm';
@@ -118,25 +115,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     if (selectedItemBlockId !== selectedBlock.id) return null;
 
     switch (selectedBlock.type) {
-      case 'posterGrid': {
-        const items = (selectedBlock.props as PosterGridBlockProps).items || [];
-        const item = items.find((i: PosterGridItem) => i.id === selectedItemId);
-        
-        if (!item) return null;
-
-        const handleItemChange = (updatedItem: PosterGridItem) => {
-          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
-        };
-
-        return (
-          <PosterGridItemForm
-            item={item}
-            onChange={handleItemChange}
-            title="Poster Grid Item"
-            progressBarEnabled={(selectedBlock.props as PosterGridBlockProps).progressBar?.enabled || false}
-          />
-        );
-      }
       
       
       case 'testimonial': {
