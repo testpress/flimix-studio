@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -22,11 +22,14 @@ import {
   Award,
   MoreVertical,
   Copy,
-  Trash2
+  Trash2,
+  MoveUp,
+  MoveDown
 } from 'lucide-react';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { useSelection } from '@context/SelectionContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import { findBlockPositionForUI } from '@context/domain/blockTraversal';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import type { SectionBlockProps } from '@blocks/section/schema';
@@ -48,22 +51,92 @@ interface BlockOptionsMenuProps {
   onClose: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  triggerElement: HTMLElement | null;
 }
 
 const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
   onClose,
   onDuplicate,
-  onDelete
+  onDelete,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp = false,
+  canMoveDown = false,
+  triggerElement
 }) => {
+  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const calculatePosition = () => {
+      if (triggerElement && menuRef.current) {
+        const triggerRect = triggerElement.getBoundingClientRect();
+        const menuHeight = menuRef.current.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate available space above and below
+        const spaceAbove = triggerRect.top;
+        const spaceBelow = viewportHeight - triggerRect.bottom;
+        
+        if (spaceBelow >= menuHeight || spaceBelow >= spaceAbove) {
+          setPosition('bottom');
+        } else {
+          setPosition('top');
+        }
+      }
+    };
+
+    calculatePosition();
+
+    window.addEventListener('resize', calculatePosition);
+    window.addEventListener('scroll', calculatePosition, true);
+
+    return () => {
+      window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener('scroll', calculatePosition, true);
+    };
+  }, [triggerElement, canMoveUp, canMoveDown]);
+
   const handleAction = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation();
     action();
     onClose();
   };
 
+  const getPositionClasses = () => {
+    if (position === 'top') {
+      return 'absolute right-2 bottom-full mb-1';
+    }
+    return 'absolute right-2 top-full mt-1';
+  };
+
   return (
-    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
+    <div className={`${getPositionClasses()} z-50`} ref={menuRef}>
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
+        {canMoveUp && onMoveUp && (
+          <button
+            onClick={(e) => handleAction(e, onMoveUp)}
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <MoveUp size={14} />
+            Move Up
+          </button>
+        )}
+        
+        {canMoveDown && onMoveDown && (
+          <button
+            onClick={(e) => handleAction(e, onMoveDown)}
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <MoveDown size={14} />
+            Move Down
+          </button>
+        )}
+        
         <button
           onClick={(e) => handleAction(e, onDuplicate)}
           className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
@@ -87,8 +160,9 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
 const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedBlockId, findTabContainingBlock }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
-  const { duplicateSelectedBlock, deleteSelectedBlock } = useSelection();
+  const { duplicateSelectedBlock, deleteSelectedBlock, moveBlockUp, moveBlockDown, pageSchema } = useSelection();
   const blockOptionsRef = useRef<HTMLDivElement>(null);
+  const triggerButtonRef = useRef<HTMLButtonElement>(null);
   
   // Close options menu when clicking outside
   useOnClickOutside(blockOptionsRef, () => {
@@ -119,6 +193,15 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   const hasChildren = (block.children && block.children.length > 0) || hasTabs;
   
   const isSelected = selectedBlockId === block.id;
+  
+  // Determine if block can move up or down - memoized for performance
+  const { canMoveUp, canMoveDown } = useMemo(() => {
+    const position = findBlockPositionForUI(block.id, pageSchema.blocks);
+    return {
+      canMoveUp: position.index > 0,
+      canMoveDown: position.index < position.totalSiblings - 1,
+    };
+  }, [block.id, pageSchema.blocks]);
   
   // Get level-based padding classes
   const getLevelClasses = (level: number) => {
@@ -242,6 +325,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
         {isSelected && (
           <div className="ml-auto">
             <button
+              ref={triggerButtonRef}
               onClick={(e) => {
                 e.stopPropagation();
                 setShowOptionsMenu(!showOptionsMenu);
@@ -261,6 +345,11 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
           onClose={() => setShowOptionsMenu(false)}
           onDuplicate={duplicateSelectedBlock}
           onDelete={deleteSelectedBlock}
+          onMoveUp={moveBlockUp}
+          onMoveDown={moveBlockDown}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          triggerElement={triggerButtonRef.current}
         />
       )}
       
