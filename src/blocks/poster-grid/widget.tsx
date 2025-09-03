@@ -3,7 +3,7 @@ import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { PosterGridBlock } from './schema';
 import { useSelection } from '@context/SelectionContext';
-import { ArrowLeft, ArrowRight,ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PosterGridWidgetProps extends Omit<BaseWidgetProps<PosterGridBlock>, 'block'> {
   block: PosterGridBlock;

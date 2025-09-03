@@ -30,13 +30,15 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
   
-  // Cleanup warning timeout on unmount
+  // Clear warning after a delay
   useEffect(() => {
-    return () => {
-      if (duplicateWarning) {
+    if (duplicateWarning) {
+      const timerId = setTimeout(() => {
         setDuplicateWarning(null);
-      }
-    };
+      }, 3000);
+
+      return () => clearTimeout(timerId);
+    }
   }, [duplicateWarning]);
 
   const handleSelectMovie = (movie: Movie) => {
@@ -60,9 +62,6 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
     if (existingItems.some(item => item.id === posterGridItem.id)) {
       // Show warning for duplicate item
       setDuplicateWarning(`"${movie.title}" is already in your poster grid`);
-      
-      // Clear warning after 3 seconds
-      setTimeout(() => setDuplicateWarning(null), 3000);
       return; // Skip if duplicate
     }
     
@@ -325,7 +324,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <input
               type="checkbox"
               id="showTitle"
-              checked={posterGridProps.showTitle !== false}
+              checked={posterGridProps.showTitle ?? true}
               onChange={e => updateProps({ ...posterGridProps, showTitle: e.target.checked })}
               className="rounded"
             />
@@ -338,7 +337,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <input
               type="checkbox"
               id="showSubtitle"
-              checked={posterGridProps.showSubtitle === true}
+              checked={posterGridProps.showSubtitle ?? false}
               onChange={e => updateProps({ ...posterGridProps, showSubtitle: e.target.checked })}
               className="rounded"
             />
@@ -351,7 +350,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <input
               type="checkbox"
               id="showRating"
-              checked={posterGridProps.showRating === true}
+              checked={posterGridProps.showRating ?? false}
               onChange={e => updateProps({ ...posterGridProps, showRating: e.target.checked })}
               className="rounded"
             />
@@ -364,7 +363,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <input
               type="checkbox"
               id="showBadge"
-              checked={posterGridProps.showBadge === true}
+              checked={posterGridProps.showBadge ?? false}
               onChange={e => updateProps({ ...posterGridProps, showBadge: e.target.checked })}
               className="rounded"
             />
@@ -377,7 +376,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <input
               type="checkbox"
               id="showDuration"
-              checked={posterGridProps.showDuration === true}
+              checked={posterGridProps.showDuration ?? false}
               onChange={e => updateProps({ ...posterGridProps, showDuration: e.target.checked })}
               className="rounded"
             />
