@@ -72,22 +72,34 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (triggerElement && menuRef.current) {
-      const triggerRect = triggerElement.getBoundingClientRect();
-      const menuHeight = menuRef.current.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      
-      // Calculate available space above and below
-      const spaceAbove = triggerRect.top;
-      const spaceBelow = viewportHeight - triggerRect.bottom;
-      
-      if (spaceBelow >= menuHeight || spaceBelow >= spaceAbove) {
-        setPosition('bottom');
-      } else {
-        setPosition('top');
+    const calculatePosition = () => {
+      if (triggerElement && menuRef.current) {
+        const triggerRect = triggerElement.getBoundingClientRect();
+        const menuHeight = menuRef.current.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate available space above and below
+        const spaceAbove = triggerRect.top;
+        const spaceBelow = viewportHeight - triggerRect.bottom;
+        
+        if (spaceBelow >= menuHeight || spaceBelow >= spaceAbove) {
+          setPosition('bottom');
+        } else {
+          setPosition('top');
+        }
       }
-    }
-  }, [triggerElement]);
+    };
+
+    calculatePosition();
+
+    window.addEventListener('resize', calculatePosition);
+    window.addEventListener('scroll', calculatePosition, true);
+
+    return () => {
+      window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener('scroll', calculatePosition, true);
+    };
+  }, [triggerElement, canMoveUp, canMoveDown]);
 
   const handleAction = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation();
@@ -182,10 +194,14 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   
   const isSelected = selectedBlockId === block.id;
   
-  // Determine if block can move up or down
-  const blockPosition = findBlockPositionForUI(block.id, pageSchema.blocks);
-  const canMoveUp = blockPosition.index > 0;
-  const canMoveDown = blockPosition.index < blockPosition.totalSiblings - 1;
+  // Determine if block can move up or down - memoized for performance
+  const { canMoveUp, canMoveDown } = useMemo(() => {
+    const position = findBlockPositionForUI(block.id, pageSchema.blocks);
+    return {
+      canMoveUp: position.index > 0,
+      canMoveDown: position.index < position.totalSiblings - 1,
+    };
+  }, [block.id, pageSchema.blocks]);
   
   // Get level-based padding classes
   const getLevelClasses = (level: number) => {
