@@ -14,18 +14,47 @@ const s3 = new AWS.S3({
 const BUILD_DIR = path.join(__dirname, "dist");
 const BUCKET_NAME = process.env.AWS_STORAGE_BUCKET_NAME;
 
+// Function to determine Content-Type based on file extension
+function getContentType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const contentTypes = {
+    '.html': 'text/html',
+    '.css': 'text/css',
+    '.js': 'application/javascript',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon',
+    '.woff': 'font/woff',
+    '.woff2': 'font/woff2',
+    '.ttf': 'font/ttf',
+    '.eot': 'application/vnd.ms-fontobject',
+    '.otf': 'font/otf',
+    '.xml': 'application/xml',
+    '.txt': 'text/plain',
+    '.pdf': 'application/pdf'
+  };
+  return contentTypes[ext] || 'application/octet-stream';
+}
+
 function uploadFile(filePath, key) {
   const fileContent = fs.readFileSync(filePath);
+  const contentType = getContentType(filePath);
+  
   return s3
     .putObject({
       Bucket: BUCKET_NAME,
       Key: key,
       Body: fileContent,
+      ContentType: contentType,
       ACL: "public-read",
-      CacheControl: "max-age=86400",
+      CacheControl: "no-cache, no-store, must-revalidate",
     })
     .promise()
-    .then(() => console.log(`Uploaded ${key}`));
+    .then(() => console.log(`Uploaded ${key} with Content-Type: ${contentType}`));
 }
 
 async function uploadFolder(dir, prefix = "static/studio") {
