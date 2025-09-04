@@ -39,7 +39,7 @@ jobs:
         else
           echo "REMOTE_DIR=static/studio" >> $GITHUB_ENV
         fi
-
+    
     - name: Install rclone
       run: |
         curl https://rclone.org/install.sh | sudo bash
