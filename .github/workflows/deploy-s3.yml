@@ -1,0 +1,77 @@
+name: Deploy Flimix Studio to S3
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      remote_directory:
+        description: 'Optional: S3 folder to deploy to. Defaults to the studio directory.'
+        required: false
+        default: 'static/studio'
+        type: string
+
+env:
+  AWS_REGION: eu-central-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.19.0'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Flimix Studio
+      run: npm run build
+
+    - name: Set remote directory
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.remote_directory }}" ]; then
+          echo "REMOTE_DIR=${{ github.event.inputs.remote_directory }}" >> $GITHUB_ENV
+        elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "REMOTE_DIR=static/studio" >> $GITHUB_ENV
+        else
+          echo "REMOTE_DIR=${{ github.event.inputs.remote_directory }}" >> $GITHUB_ENV
+        fi
+
+    - name: Install rclone
+      run: |
+        curl https://rclone.org/install.sh | sudo bash
+
+    - name: Deploy to S3 using rclone
+      run: |
+        S3_BUCKET="flimix.testpress.in"
+        
+        echo "Deploying to S3 bucket: $S3_BUCKET"
+        echo "Remote directory: $REMOTE_DIR"
+        
+        # Create rclone config for Wasabi/MinIO
+        cat > rclone.conf << EOF
+        [s3]
+        type = s3
+        provider = Other
+        access_key_id = MP7PWKR5N10T72CDYTK2
+        secret_access_key = O1zJAMY3bHW95AqkbHLUVKks6RAgJHe6rg4E92RQ
+        endpoint = s3.eu-central-1.wasabisys.com
+        region = eu-central-1
+        force_path_style = true
+        EOF
+        
+        # Copy all build files to S3 with appropriate cache headers
+        echo "Copying build files to S3..."
+        rclone copy dist/ "s3:$S3_BUCKET/$REMOTE_DIR/" \
+          --config rclone.conf \
+          --checksum \
+          --header "Cache-Control: public,max-age=31536000,immutable"
+
+    - name: Deploy success
+      run: |
+        echo "Successfully deployed Flimix Studio to $REMOTE_DIR"
