@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "postbuild": "node upload-to-minio.cjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy:local": "chmod +x scripts/deploy-local-minio.sh && ./scripts/deploy-local-minio.sh",
