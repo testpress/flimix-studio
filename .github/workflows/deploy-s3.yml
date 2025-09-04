@@ -93,7 +93,7 @@ jobs:
           --header "Content-Type: application/javascript" \
           --s3-acl public-read
         
-        # Copy other assets (images, etc.)
+        # Copy other assets (images, etc)
         rclone copy dist/*.svg "s3:$S3_BUCKET/$REMOTE_DIR/" \
           --config rclone.conf \
           --checksum \
