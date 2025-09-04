@@ -28,7 +28,7 @@ const TopBar: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
+    <div className="sticky top-0 left-0 right-0 z-50 bg-red-800 text-white p-4 border-b border-gray-700">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           {/* Page Schema Selector - Choose between Netflix and Hotstar page layouts */}

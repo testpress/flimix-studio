@@ -1,4 +1,5 @@
 name: Deploy Build to S3
+run-name: Deploy Flimix Studio
 
 on:
   push:
@@ -12,6 +13,8 @@ on:
 
 env:
   AWS_REGION: eu-central-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   deploy:
@@ -56,10 +59,10 @@ jobs:
         [s3]
         type = s3
         provider = Other
-        access_key_id = MP7PWKR5N10T72CDYTK2
-        secret_access_key = O1zJAMY3bHW95AqkbHLUVKks6RAgJHe6rg4E92RQ
+        access_key_id = $AWS_ACCESS_KEY_ID
+        secret_access_key = $AWS_SECRET_ACCESS_KEY
         endpoint = s3.eu-central-1.wasabisys.com
-        region = eu-central-1
+        region = $AWS_REGION
         force_path_style = true
         no_check_bucket = true
         signature_version = v4
