@@ -13,11 +13,11 @@ on:
           - development
 
 env:
-  AWS_ACCESS_KEY_ID: admin
-  AWS_SECRET_ACCESS_KEY: admin123
-  AWS_STORAGE_BUCKET_NAME: flimix
-  AWS_S3_ENDPOINT_URL: http://localhost:9000
-  AWS_S3_REGION_NAME: us-east-1
+  AWS_ACCESS_KEY_ID: MP7PWKR5N10T72CDYTK2
+  AWS_SECRET_ACCESS_KEY: O1zJAMY3bHW95AqkbHLUVKks6RAgJHe6rg4E92RQ
+  AWS_STORAGE_BUCKET_NAME: flimix.testpress.in
+  AWS_S3_ENDPOINT_URL: https://s3.eu-central-1.wasabisys.com
+  AWS_S3_REGION_NAME: eu-central-1
 
 jobs:
   deploy:
@@ -51,4 +51,4 @@ jobs:
         mc alias set flimix-studio $AWS_S3_ENDPOINT_URL $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api s3v4
         mc mb flimix-studio/$AWS_STORAGE_BUCKET_NAME --ignore-existing --region $AWS_S3_REGION_NAME
         mc policy set public flimix-studio/$AWS_STORAGE_BUCKET_NAME
-        mc cp --recursive --attr "Cache-Control=public,max-age=31536000,immutable" dist/ flimix-studio/$AWS_STORAGE_BUCKET_NAME/static/flimix-studio/
+        mc cp --recursive --attr "Cache-Control=public,max-age=31536000,immutable" dist/ flimix-studio/$AWS_STORAGE_BUCKET_NAME/static/studio/
