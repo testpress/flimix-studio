@@ -62,42 +62,18 @@ jobs:
         region = eu-central-1
         force_path_style = true
         no_check_bucket = true
+        signature_version = v4
         EOF
         
         # Copy all build files to S3 with appropriate cache headers and MIME types
         echo "Copying build files to S3..."
         
-        # Copy files with proper MIME types and public access
+        # Copy all files to S3 with public access
         echo "Copying build files to S3..."
-        
-        # Copy HTML files with no-cache headers
-        rclone copy dist/*.html "s3:$S3_BUCKET/$REMOTE_DIR/" \
+        rclone copy dist/ "s3:$S3_BUCKET/$REMOTE_DIR/" \
           --config rclone.conf \
           --checksum \
-          --header "Cache-Control: no-cache,no-store,must-revalidate" \
-          --s3-acl public-read
-        
-        # Copy CSS files with correct MIME type
-        rclone copy dist/assets/ "s3:$S3_BUCKET/$REMOTE_DIR/assets/" \
-          --config rclone.conf \
-          --checksum \
-          --header "Cache-Control: public,max-age=31536000,immutable" \
-          --header "Content-Type: text/css" \
-          --s3-acl public-read
-        
-        # Copy JS files with correct MIME type
-        rclone copy dist/js/ "s3:$S3_BUCKET/$REMOTE_DIR/js/" \
-          --config rclone.conf \
-          --checksum \
-          --header "Cache-Control: public,max-age=31536000,immutable" \
-          --header "Content-Type: application/javascript" \
-          --s3-acl public-read
-        
-        # Copy other assets (images, etc)
-        rclone copy dist/*.svg "s3:$S3_BUCKET/$REMOTE_DIR/" \
-          --config rclone.conf \
-          --checksum \
-          --header "Cache-Control: public,max-age=31536000,immutable" \
+          --transfers 10 \
           --s3-acl public-read
 
     - name: Deploy success
