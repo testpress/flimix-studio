@@ -37,6 +37,9 @@ jobs:
 
     - name: Build Flimix Studio
       run: npm run build
+      
+    - name: Copy index.html to dist
+      run: cp index.html dist/
 
     - name: Install MinIO Client
       run: |
