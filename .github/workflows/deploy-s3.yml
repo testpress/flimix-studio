@@ -37,7 +37,8 @@ jobs:
         if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.remote_directory }}" ]; then
           echo "REMOTE_DIR=${{ github.event.inputs.remote_directory }}" >> $GITHUB_ENV
         else
-          echo "REMOTE_DIR=static/studio" >> $GITHUB_ENV
+          echo "REMOTE_DIR=static/studio" >> $
+          
         fi
 
     - name: Install rclone
@@ -63,9 +64,31 @@ jobs:
         force_path_style = true
         EOF
         
-        # Copy all build files to S3 with appropriate cache headers
+        # Copy all build files to S3 with appropriate cache headers and MIME types
         echo "Copying build files to S3..."
-        rclone copy dist/ "s3:$S3_BUCKET/$REMOTE_DIR/" \
+        
+        # Copy HTML files with no-cache headers
+        rclone copy dist/*.html "s3:$S3_BUCKET/$REMOTE_DIR/" \
+          --config rclone.conf \
+          --checksum \
+          --header "Cache-Control: no-cache,no-store,must-revalidate"
+        
+        # Copy CSS files with correct MIME type
+        rclone copy dist/assets/ "s3:$S3_BUCKET/$REMOTE_DIR/assets/" \
+          --config rclone.conf \
+          --checksum \
+          --header "Cache-Control: public,max-age=31536000,immutable" \
+          --header "Content-Type: text/css"
+        
+        # Copy JS files with correct MIME type
+        rclone copy dist/js/ "s3:$S3_BUCKET/$REMOTE_DIR/js/" \
+          --config rclone.conf \
+          --checksum \
+          --header "Cache-Control: public,max-age=31536000,immutable" \
+          --header "Content-Type: application/javascript"
+        
+        # Copy other assets (images, etc.)
+        rclone copy dist/*.svg "s3:$S3_BUCKET/$REMOTE_DIR/" \
           --config rclone.conf \
           --checksum \
           --header "Cache-Control: public,max-age=31536000,immutable"
