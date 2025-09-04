@@ -49,6 +49,4 @@ jobs:
     - name: Deploy to MinIO
       run: |
         mc alias set flimix-studio $AWS_S3_ENDPOINT_URL $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api s3v4
-        mc mb flimix-studio/$AWS_STORAGE_BUCKET_NAME --ignore-existing --region $AWS_S3_REGION_NAME
-        mc policy set public flimix-studio/$AWS_STORAGE_BUCKET_NAME
         mc cp --recursive --attr "Cache-Control=public,max-age=31536000,immutable" dist/ flimix-studio/$AWS_STORAGE_BUCKET_NAME/static/studio/
