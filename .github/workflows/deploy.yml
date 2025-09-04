@@ -54,7 +54,7 @@ jobs:
         echo "Deploying to S3 bucket: $S3_BUCKET"
         echo "Remote directory: $REMOTE_DIR"
         
-        # Create rclone config for Wasabi/MinIO
+        # Create rclone config for Wasabi
         cat > rclone.conf << EOF
         [s3]
         type = s3
