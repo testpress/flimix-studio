@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: '../flimix/app/static/studio', // Output directory for build
+    outDir: 'dist', // Output directory for build
     emptyOutDir: true,
     rollupOptions: {
       input: 'src/main.tsx',

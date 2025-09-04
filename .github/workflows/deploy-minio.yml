@@ -1,0 +1,53 @@
+name: Deploy Flimix Studio to MinIO
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+
+env:
+  AWS_ACCESS_KEY_ID: admin
+  AWS_SECRET_ACCESS_KEY: admin123
+  AWS_STORAGE_BUCKET_NAME: flimix
+  AWS_S3_ENDPOINT_URL: http://localhost:9000
+  AWS_S3_REGION_NAME: us-east-1
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.19.0'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Flimix Studio
+      run: npm run build
+
+    - name: Install MinIO Client
+      run: |
+        if ! command -v mc &> /dev/null; then
+          wget https://dl.min.io/client/mc/release/linux-amd64/mc
+          chmod +x mc
+          sudo mv mc /usr/local/bin/
+        fi
+
+    - name: Deploy to MinIO
+      run: |
+        mc alias set flimix-studio $AWS_S3_ENDPOINT_URL $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY --api s3v4
+        mc mb flimix-studio/$AWS_STORAGE_BUCKET_NAME --ignore-existing --region $AWS_S3_REGION_NAME
+        mc policy set public flimix-studio/$AWS_STORAGE_BUCKET_NAME
+        mc cp --recursive --attr "Cache-Control=public,max-age=31536000,immutable" dist/ flimix-studio/$AWS_STORAGE_BUCKET_NAME/static/flimix-studio/
