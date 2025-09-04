@@ -3,7 +3,7 @@
 # Local MinIO deployment script
 set -e
 
-echo "🚀 Starting local MinIO deployment..."
+echo "Starting local MinIO deployment..."
 
 # MinIO configuration
 MINIO_ENDPOINT="http://localhost:9000"
