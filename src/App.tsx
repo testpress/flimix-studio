@@ -11,6 +11,7 @@ import { LayoutPanelProvider } from '@context/LayoutPanelContext';
 import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
+import { SavePageProvider } from '@context/SavePageContext';
 import { useState } from 'react';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
@@ -21,6 +22,7 @@ function App() {
   return (
     <PageSchemaProvider>
       <HistoryProvider initialSchema={amazonSchemaData as PageSchema}>
+      <SavePageProvider>
         <SelectionProvider>
           <BlockInsertProvider>
             <LibraryPanelProvider>
@@ -47,6 +49,7 @@ function App() {
             </LibraryPanelProvider>
           </BlockInsertProvider>
         </SelectionProvider>
+        </SavePageProvider>
       </HistoryProvider>
     </PageSchemaProvider>
   );
