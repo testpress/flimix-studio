@@ -39,7 +39,8 @@
       "@context/*": ["src/context/*"],
       "@pageSchemas/*": ["src/pageSchemas/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "@services/*": ["src/services/*"]
     }
   },
   "include": ["src"]
