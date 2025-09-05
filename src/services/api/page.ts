@@ -60,7 +60,7 @@ export async function savePage(pageData: SavePageRequest): Promise<SavePageRespo
     throw new Error('A slug must be provided to save the page.');
   }
 
-  const response = await fetch(`${baseUrl}/api/v1/page/save/${slug}/`, {
+  const response = await fetch(`${baseUrl}/api/v1/page/${slug}/save/`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
