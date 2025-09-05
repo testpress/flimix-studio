@@ -1,16 +1,36 @@
 #!/bin/bash
 
 # Local MinIO deployment script
+# 
+# This script requires a .env file with the following variables:
+# MINIO_ENDPOINT=http://your-minio-endpoint
+# MINIO_ACCESS_KEY=your-access-key
+# MINIO_SECRET_KEY=your-secret-key
+# BUCKET_NAME=your-bucket-name
+# REMOTE_DIR=your-remote-directory
+#
+# Create .env file and run: ./scripts/deploy-local.sh
+
 set -e
+
+# Load .env file if it exists
+if [ -f .env ]; then
+    echo "Loading configuration from .env file..."
+    export $(cat .env | grep -v '^#' | xargs)
+else
+    echo "No .env file found!"
+    echo "Please create a .env file with required MinIO configuration."
+    exit 1
+fi
 
 echo "Starting local MinIO deployment..."
 
-# MinIO configuration
-MINIO_ENDPOINT="http://localhost:9000"
-MINIO_ACCESS_KEY="admin"
-MINIO_SECRET_KEY="admin123"
-BUCKET_NAME="flimix"
-REMOTE_DIR="static/studio"
+# MinIO configuration (must be provided via .env file)
+MINIO_ENDPOINT="${MINIO_ENDPOINT}"
+MINIO_ACCESS_KEY="${MINIO_ACCESS_KEY}"
+MINIO_SECRET_KEY="${MINIO_SECRET_KEY}"
+BUCKET_NAME="${BUCKET_NAME}"
+REMOTE_DIR="${REMOTE_DIR}"
 
 # Check if MinIO is running
 if ! curl -s "$MINIO_ENDPOINT/minio/health/live" > /dev/null; then
