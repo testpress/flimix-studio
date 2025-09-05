@@ -42,27 +42,40 @@ const TopBar: React.FC = () => {
     setIsPageSchemaDropdownOpen(false);
   };
 
-  const handleSave = async (status: number = 1) => {
+  const handleSave = React.useCallback(async (status: number = 1) => {
     try {
       await savePage(undefined, undefined, status);
-      setNotification({
-        type: 'success',
-        message: lastSuccess || 'Page saved successfully!',
-        isVisible: true
-      });
       setIsSaveDropdownOpen(false);
     } catch (error) {
-      setNotification({
-        type: 'error',
-        message: lastError || 'Failed to save page. Please try again.',
-        isVisible: true
-      });
+      console.error(error);
     }
-  };
+  }, [savePage]);
 
   const closeNotification = () => {
     setNotification(prev => ({ ...prev, isVisible: false }));
   };
+
+  // Handle success notifications
+  React.useEffect(() => {
+    if (lastSuccess) {
+      setNotification({
+        type: 'success',
+        message: lastSuccess,
+        isVisible: true
+      });
+    }
+  }, [lastSuccess]);
+
+  // Handle error notifications
+  React.useEffect(() => {
+    if (lastError) {
+      setNotification({
+        type: 'error',
+        message: lastError,
+        isVisible: true
+      });
+    }
+  }, [lastError]);
 
   // Keyboard shortcut handler
   React.useEffect(() => {
@@ -77,7 +90,7 @@ const TopBar: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isSaving]);
+  }, [isSaving, handleSave]);
 
   return (
     <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
