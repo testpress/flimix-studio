@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
@@ -9,6 +9,58 @@ export interface NotificationProps {
   onClose: () => void;
   duration?: number;
 }
+
+// Styling configuration for each notification type
+const NOTIFICATION_STYLES = {
+  success: {
+    container: 'bg-green-50 border-green-300',
+    text: 'text-green-800',
+    icon: 'text-green-400',
+    button: 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600'
+  },
+  error: {
+    container: 'bg-red-50 border-red-300',
+    text: 'text-red-800',
+    icon: 'text-red-400',
+    button: 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600'
+  },
+  warning: {
+    container: 'bg-yellow-50 border-yellow-300',
+    text: 'text-yellow-800',
+    icon: 'text-yellow-400',
+    button: 'bg-yellow-50 text-yellow-500 hover:bg-yellow-100 focus:ring-offset-yellow-50 focus:ring-yellow-600'
+  },
+  info: {
+    container: 'bg-indigo-50 border-indigo-300',
+    text: 'text-indigo-800',
+    icon: 'text-indigo-400',
+    button: 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 focus:ring-offset-indigo-50 focus:ring-indigo-700'
+  }
+} as const;
+
+// Icon components for each notification type
+const NotificationIcons = {
+  success: (className: string) => (
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+    </svg>
+  ),
+  error: (className: string) => (
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+      <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clipRule="evenodd" />
+    </svg>
+  ),
+  warning: (className: string) => (
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+      <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
+    </svg>
+  ),
+  info: (className: string) => (
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+      <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
+    </svg>
+  )
+} as const;
 
 const Notification: React.FC<NotificationProps> = ({
   type,
@@ -24,74 +76,22 @@ const Notification: React.FC<NotificationProps> = ({
     }
   }, [isVisible, duration, onClose]);
 
+  // Memoize styling and icon to prevent recreation on every render
+  const styling = useMemo(() => NOTIFICATION_STYLES[type] || NOTIFICATION_STYLES.info, [type]);
+  
+  const icon = useMemo(() => {
+    const IconComponent = NotificationIcons[type] || NotificationIcons.info;
+    return IconComponent(`h-5 w-5 ${styling.icon}`);
+  }, [type, styling.icon]);
+
   if (!isVisible) return null;
-
-  // Get styling based on type
-  const getStyling = () => {
-    switch (type) {
-      case 'success':
-        return {
-          container: 'bg-green-50 border-green-300',
-          text: 'text-green-800',
-          icon: 'text-green-400',
-          button: 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600'
-        };
-      case 'error':
-        return {
-          container: 'bg-red-50 border-red-300',
-          text: 'text-red-800',
-          icon: 'text-red-400',
-          button: 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600'
-        };
-      case 'warning':
-        return {
-          container: 'bg-yellow-50 border-yellow-300',
-          text: 'text-yellow-800',
-          icon: 'text-yellow-400',
-          button: 'bg-yellow-50 text-yellow-500 hover:bg-yellow-100 focus:ring-offset-yellow-50 focus:ring-yellow-600'
-        };
-      default:
-        return {
-          container: 'bg-indigo-50 border-indigo-300',
-          text: 'text-indigo-800',
-          icon: 'text-indigo-400',
-          button: 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 focus:ring-offset-indigo-50 focus:ring-indigo-700'
-        };
-    }
-  };
-
-  const styling = getStyling();
-
-  // Get icon SVG based on type
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return (
-          <svg className={`h-5 w-5 ${styling.icon}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-        );
-      case 'error':
-        return (
-          <svg className={`h-5 w-5 ${styling.icon}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clipRule="evenodd" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className={`h-5 w-5 ${styling.icon}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
-          </svg>
-        );
-    }
-  };
 
   return (
     <div className="w-full absolute flex flex-col items-center gap-2 z-50 top-2">
       <div className={`rounded border ${styling.container} py-1.5 px-3`}>
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            {getIcon()}
+            {icon}
           </div>
           <div className="ml-3">
             <p className={`text-sm font-medium ${styling.text}`}>
