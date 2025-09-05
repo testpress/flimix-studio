@@ -12,7 +12,7 @@ import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
 import { SavePageProvider } from '@context/SavePageContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
 import { fetchPage } from '@services/api/page';
@@ -28,41 +28,47 @@ function App() {
     slug: string;
   } | null>(null);
 
-  useEffect(() => {
-    const loadPageData = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
+  const loadPageData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        const response = await fetchPage("home");
-        
-        if (response.success && response.data) {
-          setPageData({
-            schema: response.data.schema,
-            title: response.data.title,
-            slug: response.data.slug
-          });
-        } else {
-          throw new Error(response.message || 'Failed to load page data');
-        }
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to load page data';
-        setError(errorMessage);
-        console.error('Error loading page data:', err);
-        
-        // Fallback to default schema on error
+      const response = await fetchPage("home");
+      
+      if (response.success && response.data) {
+        setPageData({
+          schema: response.data.schema,
+          title: response.data.title,
+          slug: response.data.slug
+        });
+      } else {
+        throw new Error(response.message || 'Failed to load page data');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load page data';
+      setError(errorMessage);
+      console.error('Error loading page data:', err);
+      
+      // For a 404-like error, we can fall back to the default schema and show a warning.
+      // For other errors, we'll show the full-page error with a retry option.
+      if (errorMessage.includes("not found")) {
+        // Fallback to default schema on 404 error
         setPageData({
           schema: amazonSchemaData as PageSchema,
           title: 'Flimix Studio',
           slug: 'home'
         });
-      } finally {
-        setIsLoading(false);
       }
-    };
-
-    loadPageData();
+      // For other errors (5xx, network, etc.), don't set pageData
+      // This will trigger the full-page error screen with retry button
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadPageData();
+  }, [loadPageData]);
 
   // Show loading state
   if (isLoading) {
@@ -81,11 +87,10 @@ function App() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="text-center max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
           <h1 className="text-white text-2xl font-bold mb-2">Failed to Load Page</h1>
           <p className="text-gray-300 mb-4">{error}</p>
           <button 
-            onClick={() => window.location.reload()}
+            onClick={loadPageData}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
           >
             Retry

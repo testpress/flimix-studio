@@ -99,18 +99,17 @@ export async function savePage(pageData: SavePageRequest): Promise<SavePageRespo
  * @throws Error if the API request fails
  */
 export async function fetchPage(slug: string = "home"): Promise<FetchPageResponse> {
-  // Get CSRF token and base URL from Django data
-  const { csrf_token: csrfToken, base_url: baseUrl } = window.DJANGO_DATA || {};
+  // Get base URL from Django data
+  const { base_url: baseUrl } = window.DJANGO_DATA || {};
   
-  if (!csrfToken || !baseUrl) {
-    throw new Error('CSRF token or base URL not found. Please refresh the page and try again.');
+  if (!baseUrl) {
+    throw new Error('Base URL not found. Please refresh the page and try again.');
   }
 
   const response = await fetch(`${baseUrl}/api/v1/page/${slug}/`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken
+      'Content-Type': 'application/json'
     },
   });
 
