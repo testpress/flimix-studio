@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
 import { generateUniqueId } from '@utils/id';
@@ -8,35 +8,28 @@ import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 import { movieApi, type Movie } from '@services/api/movie';
 import { AlertCircle } from 'lucide-react';
 import { getHashtagSizeClass } from './CTAButton';
+import { useSelection } from '@context/SelectionContext';
 
 const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const heroBlock = block as HeroBlock;
-  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  
+  const { selectedItemId, selectedItemBlockId } = useSelection();
   
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
   
-  // Store the current index as a custom property in the block
-  useEffect(() => {
-    if (heroBlock.props.currentIndex !== currentItemIndex) {
-      updateProps({
-        ...heroBlock.props,
-        currentIndex: currentItemIndex
-      });
+  // Memoized editing item index calculation
+  const editingItemIndex = useMemo(() => {
+    if (selectedItemId && selectedItemBlockId === heroBlock.id) {
+      const selectedIndex = heroBlock.props.items?.findIndex(item => item.id === selectedItemId);
+      if (selectedIndex !== -1) {
+        return selectedIndex;
+      }
     }
-  }, [currentItemIndex, heroBlock.props, updateProps]);
-
-  // Ensure currentItemIndex is valid when items change (add/remove)
-  useEffect(() => {
-    const itemsLength = heroBlock.props.items?.length || 0;
-    if (itemsLength > 0 && currentItemIndex >= itemsLength) {
-      setCurrentItemIndex(itemsLength - 1);
-    } else if (itemsLength === 0) {
-      setCurrentItemIndex(0);
-    }
-  }, [heroBlock.props.items?.length, currentItemIndex]);
-  // Get the current hero item
-  const currentItem = heroBlock.props.items?.[currentItemIndex] || {
+    return 0;
+  }, [selectedItemId, selectedItemBlockId, heroBlock.id, heroBlock.props.items]);
+  
+  const currentItem = heroBlock.props.items?.[editingItemIndex] || {
     id: generateUniqueId(),
     title: '',
     subtitle: '',
@@ -61,40 +54,40 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
   const updateHeroItemPrimaryCTA = (primaryCTA: HeroCTABtn) => {
     const newItems = [...(heroBlock.props.items || [])];
-    if (!newItems[currentItemIndex]) {
-      newItems[currentItemIndex] = createDefaultHeroItem();
+    if (!newItems[editingItemIndex]) {
+      newItems[editingItemIndex] = createDefaultHeroItem();
     }
     
-    newItems[currentItemIndex].primaryCTA = primaryCTA;
+    newItems[editingItemIndex].primaryCTA = primaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
 
   const updateHeroItemSecondaryCTA = (secondaryCTA: HeroCTABtn | undefined) => {
     const newItems = [...(heroBlock.props.items || [])];
-    if (!newItems[currentItemIndex]) {
-      newItems[currentItemIndex] = createDefaultHeroItem();
+    if (!newItems[editingItemIndex]) {
+      newItems[editingItemIndex] = createDefaultHeroItem();
     }
     
-    newItems[currentItemIndex].secondaryCTA = secondaryCTA;
+    newItems[editingItemIndex].secondaryCTA = secondaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
   
   const updateHeroItemTertiaryCTA = (tertiaryCTA: HeroCTABtn | undefined) => {
     const newItems = [...(heroBlock.props.items || [])];
-    if (!newItems[currentItemIndex]) {
-      newItems[currentItemIndex] = createDefaultHeroItem();
+    if (!newItems[editingItemIndex]) {
+      newItems[editingItemIndex] = createDefaultHeroItem();
     }
     
-    newItems[currentItemIndex].tertiaryCTA = tertiaryCTA;
+    newItems[editingItemIndex].tertiaryCTA = tertiaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
 
   // Helper function to update the current hero item with new properties
   const updateCurrentHeroItem = (updatedProps: Partial<HeroItem>) => {
     const newItems = [...(heroBlock.props.items || [])];
-    if (newItems[currentItemIndex]) {
-      newItems[currentItemIndex] = {
-        ...newItems[currentItemIndex],
+    if (newItems[editingItemIndex]) {
+      newItems[editingItemIndex] = {
+        ...newItems[editingItemIndex],
         ...updatedProps,
       };
       updateProps({ ...heroBlock.props, items: newItems });
@@ -156,8 +149,6 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       {/* Carousel Controls */}
       <CarouselControls
         heroBlock={heroBlock}
-        currentItemIndex={currentItemIndex}
-        setCurrentItemIndex={setCurrentItemIndex}
         updateProps={updateProps}
       />
       
@@ -283,7 +274,18 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           <>
             {/* Current Item Preview */}
             <div className="p-4 bg-gray-50 rounded-lg">
-              <h3 className="font-medium text-gray-700 mb-4">Current Item Preview</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-medium text-gray-700">Current Item Preview</h3>
+                {selectedItemId && selectedItemBlockId === heroBlock.id ? (
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                    Editing Item {editingItemIndex + 1}
+                  </span>
+                ) : (
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                    Carousel Item {editingItemIndex + 1}
+                  </span>
+                )}
+              </div>
               
               <div className="space-y-4">
                 {/* Title Preview */}

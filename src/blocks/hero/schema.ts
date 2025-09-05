@@ -36,7 +36,6 @@ export interface HeroBlockProps {
   showArrows?: boolean;
   autoplay?: boolean;
   scrollSpeed?: number; // in milliseconds
-  currentIndex?: number; // Current selected item index for bidirectional sync
 }
 export interface HeroCTABtn {
   label: string;
