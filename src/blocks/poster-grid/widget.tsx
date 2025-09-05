@@ -3,7 +3,6 @@ import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { PosterGridBlock } from './schema';
 import { useSelection } from '@context/SelectionContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PosterGridWidgetProps extends Omit<BaseWidgetProps<PosterGridBlock>, 'block'> {
@@ -22,9 +21,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, columns = 3, rows = 3, itemShape, items, button, progressBar } = props;
+  const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showBadge, showDuration } = props;
   const { gridGap = 'md' } = style || {};
-  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectArrayItem, isItemSelected } = useSelection();
   
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
@@ -134,24 +133,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
     }
   };
 
-  const handleAddItem = () => {
-    // Calculate max items based on grid size
-    const maxItems = (columns || 3) * (rows || 3);
-    
-    // Don't add more items if we're at the limit
-    if (items && items.length >= maxItems) {
-      console.log(`Maximum ${maxItems} items allowed. Cannot add more.`);
-      return;
-    }
-    
-    const defaultItem = {
-      image: 'https://plus.unsplash.com/premium_photo-1754392582865-6902ee69cdb9',
-      title: 'New Item',
-      link: ''
-    };
-    const newId = addBlockItem(block.id, defaultItem);
-    selectArrayItem(block.id, newId);
-  };
 
   const handleItemClick = (itemId: string) => {
     selectArrayItem(block.id, itemId);
@@ -170,7 +151,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
-          onAddItem={handleAddItem}
           className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
           style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
         >
@@ -199,7 +179,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        onAddItem={handleAddItem}
         className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={hasCustomBackground ? { backgroundColor: style.backgroundColor } : undefined}
       >
@@ -261,7 +240,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         </div>
 
         <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
-          {items.map((item, index) => (
+          {items.map((item) => (
             <div key={item.id} className="relative group">
               <a
                 href={item.link || '#'}
@@ -284,15 +263,49 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                 </div>
                 
                 {/* Content section - only render if there's actual content */}
-                {(item.title && item.title.trim() !== "") || 
+                {(showTitle !== false && item.title && item.title.trim() !== "") || 
+                 (showSubtitle && item.subtitle) ||
+                 (showRating && item.meta?.rating) ||
+                 (showBadge && item.meta?.badge) ||
+                 (showDuration && item.meta?.duration) ||
                  progressBar?.enabled ? (
                   <div className="mt-3 space-y-1">
-                    {/* Title - only render if not empty */}
-                    {item.title && item.title.trim() !== "" && (
+                    {/* Title - only render if enabled and not empty */}
+                    {showTitle !== false && item.title && item.title.trim() !== "" && (
                       <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
                         {item.title}
                       </p>
                     )}
+                    
+                    {/* Subtitle - only render if enabled */}
+                    {showSubtitle && item.subtitle && (
+                      <p className={`text-xs ${textColorClass} line-clamp-1 opacity-80`} style={textColorStyle}>
+                        {item.subtitle}
+                      </p>
+                    )}
+                    
+                    {/* Meta information row */}
+                    {(showRating && item.meta?.rating) ||
+                     (showBadge && item.meta?.badge) ||
+                     (showDuration && item.meta?.duration) ? (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {showRating && item.meta?.rating && (
+                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                            {item.meta.rating}
+                          </span>
+                        )}
+                        {showBadge && item.meta?.badge && (
+                          <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
+                            {item.meta.badge}
+                          </span>
+                        )}
+                        {showDuration && item.meta?.duration && (
+                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                            {item.meta.duration}
+                          </span>
+                        )}
+                      </div>
+                    ) : null}
                     
                     {/* Progress Bar - only render if enabled */}
                     {progressBar?.enabled && (
@@ -311,14 +324,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                   </div>
                 ) : null}
               </a>
-              <ItemsControl 
-                index={index}
-                count={items.length}
-                onMoveLeft={() => moveBlockItemLeft(block.id, index)}
-                onMoveRight={() => moveBlockItemRight(block.id, index)}
-                onRemove={() => removeBlockItem(block.id, item.id)}
-                className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              />
             </div>
           ))}
         </div>
