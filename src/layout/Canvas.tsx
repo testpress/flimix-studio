@@ -39,7 +39,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
   };
 
   return (
-    <div className="flex-1 bg-black">
+    <div className="flex-1 bg-black relative">
       <div className="bg-black min-h-[600px]">
         <div className="mb-6 px-6 pt-6">
           <div className="flex flex-col gap-4 mb-4">
@@ -52,7 +52,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Platform:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={visibilityContext.platform || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -69,7 +69,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Region:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={visibilityContext.region || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -88,7 +88,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Tier:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={visibilityContext.subscriptionTier || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -105,8 +105,8 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Login Status:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
-                  value={visibilityContext.isLoggedIn!.toString()}
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={visibilityContext.isLoggedIn?.toString() || 'true'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
                     isLoggedIn: e.target.value === 'true'
@@ -120,17 +120,15 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Subscription:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
-                  value={visibilityContext.isSubscribed!.toString()}
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={visibilityContext.isSubscribed?.toString() || 'false'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
                     isSubscribed: e.target.value === 'true'
                   }))}
                 >
-                  <option value="all">All Tiers</option>
-                  <option value="basic">Basic</option>
-                  <option value="premium">Premium</option>
-                  <option value="vip">VIP</option>
+                  <option value="true">Subscribed User</option>
+                  <option value="false">Non-Subscribed User</option>
                 </select>
               </div>
             </div>

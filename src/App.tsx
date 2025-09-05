@@ -27,9 +27,9 @@ function App() {
               <LayoutPanelProvider>
                 <SettingsPanelProvider>
                   <PanelCoordinatorProvider>
-                <div className="min-h-screen flex flex-col bg-black">
+                <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
                   <TopBar />
-                  <div className="flex-1 flex pt-16 min-h-0">
+                  <div className="flex-1 flex min-h-0">
                     <LibraryPanel />
                     <LayoutPanel />
                     <div className="flex-1 min-w-0">
