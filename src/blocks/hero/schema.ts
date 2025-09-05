@@ -20,6 +20,11 @@ export interface HeroItem {
   secondaryCTA?: HeroCTABtn;
   tertiaryCTA?: HeroCTABtn;
   hashtag?: HeroHashtag;
+  showTitle?: boolean;     
+  showSubtitle?: boolean; 
+  showBadges?: boolean;     
+  showMeta?: boolean;
+  showHashtag?: boolean; 
 }
 
 
@@ -31,6 +36,7 @@ export interface HeroBlockProps {
   showArrows?: boolean;
   autoplay?: boolean;
   scrollSpeed?: number; // in milliseconds
+  currentIndex?: number; // Current selected item index for bidirectional sync
 }
 export interface HeroCTABtn {
   label: string;
