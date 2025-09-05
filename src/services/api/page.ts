@@ -9,8 +9,23 @@ export interface SavePageRequest {
   slug: string;
 }
 
-// Response from the Django API
+// Response from the Django API for saving a page
 export interface SavePageResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    title: string;
+    slug: string;
+    schema: PageSchema;
+    status: number;
+    version: number;
+    description: string;
+  };
+}
+
+// Response from the Django API for fetching page data
+export interface FetchPageResponse {
   success: boolean;
   message: string;
   data: {
@@ -75,4 +90,42 @@ export async function savePage(pageData: SavePageRequest): Promise<SavePageRespo
   }
 
   return response.json() as Promise<SavePageResponse>;
+}
+
+/**
+ * Fetches page data from the Django backend API
+ * @param slug - The page slug to fetch (defaults to "home")
+ * @returns Promise<FetchPageResponse> - The API response
+ * @throws Error if the API request fails
+ */
+export async function fetchPage(slug: string = "home"): Promise<FetchPageResponse> {
+  // Get CSRF token and base URL from Django data
+  const { csrf_token: csrfToken, base_url: baseUrl } = window.DJANGO_DATA || {};
+  
+  if (!csrfToken || !baseUrl) {
+    throw new Error('CSRF token or base URL not found. Please refresh the page and try again.');
+  }
+
+  const response = await fetch(`${baseUrl}/api/v1/page/${slug}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(`Page with slug "${slug}" not found.`);
+    }
+    
+    try {
+      const errorData: ApiErrorResponse = await response.json();
+      throw new Error(errorData.message || `HTTP ${response.status}: Failed to fetch page`);
+    } catch (parseError) {
+      throw new Error(`HTTP ${response.status}: Failed to fetch page`);
+    }
+  }
+
+  return response.json() as Promise<FetchPageResponse>;
 }
