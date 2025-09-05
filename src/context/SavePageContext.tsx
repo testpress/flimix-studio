@@ -36,8 +36,8 @@ export const SavePageProvider: React.FC<SavePageProviderProps> = ({ children }) 
         title: title || pageSchema.title || 'Home Page',
         schema: pageSchema,
         status,
-        description: description || `Page saved on ${new Date().toLocaleDateString()}`,
-        slug: slug || "home"  // Use provided slug or default to "home"
+        description: description || `Page saved on ${new Date().toLocaleString()}`,
+        slug: slug || "home"  // Default slug for backward compatibility
       };
 
       const response = await savePage(pageData);

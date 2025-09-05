@@ -6,7 +6,7 @@ export interface SavePageRequest {
   schema: PageSchema;
   status: number;
   description: string;
-  slug?: string;
+  slug: string;
 }
 
 // Response from the Django API
@@ -49,15 +49,18 @@ declare global {
  * @throws Error if the API request fails
  */
 export async function savePage(pageData: SavePageRequest): Promise<SavePageResponse> {
-  // Get CSRF token from Django data
-  const csrfToken = window.DJANGO_DATA?.csrf_token;
-  if (!csrfToken) {
-    throw new Error('CSRF token not found. Please refresh the page and try again.');
-  } 
+  // Get CSRF token and base URL from Django data
+  const { csrf_token: csrfToken, base_url: baseUrl } = window.DJANGO_DATA || {};
+  if (!csrfToken || !baseUrl) {
+    throw new Error('CSRF token or base URL not found. Please refresh the page and try again.');
+  }
   
-  const slug = pageData.slug || "home";
+  const slug = pageData.slug;
+  if (!slug) {
+    throw new Error('A slug must be provided to save the page.');
+  }
 
-  const response = await fetch(`${window.DJANGO_DATA?.base_url}/api/v1/page/save/${slug}/`, {
+  const response = await fetch(`${baseUrl}/api/v1/page/save/${slug}/`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
