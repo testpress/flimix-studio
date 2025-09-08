@@ -99,7 +99,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
   // Clear selectedId if it no longer exists in the schema after undo/redo
   useEffect(() => {
-    if (selectedBlockId && !blockExistsInSchema(selectedBlockId, pageSchema.blocks)) {
+    if (selectedBlockId && pageSchema.blocks && !blockExistsInSchema(selectedBlockId, pageSchema.blocks)) {
       setSelectedBlockId(null);
       setSelectedBlock(null);
       setSelectedBlockParentId(null);
@@ -133,7 +133,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
         return null;
       };
 
-      const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
+      const currentBlockInSchema = pageSchema.blocks ? findBlockInSchema(pageSchema.blocks) : null;
       
       // Compare specific properties that are likely to change
       if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {

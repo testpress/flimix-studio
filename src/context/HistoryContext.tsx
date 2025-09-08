@@ -24,7 +24,15 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
   // History management constants
   const HISTORY_LIMIT = 50;
 
-  const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
+  // Validate and sanitize the initial schema
+  const sanitizedInitialSchema: PageSchema = {
+    title: initialSchema?.title || 'Untitled Page',
+    theme: initialSchema?.theme,
+    visibility: initialSchema?.visibility,
+    blocks: Array.isArray(initialSchema?.blocks) ? initialSchema.blocks : []
+  };
+
+  const [pageSchema, setPageSchema] = useState<PageSchema>(sanitizedInitialSchema);
   const [undoStack, setUndoStack] = useState<PageSchema[]>([]);
   const [redoStack, setRedoStack] = useState<PageSchema[]>([]);
 

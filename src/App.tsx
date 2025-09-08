@@ -36,8 +36,24 @@ function App() {
       const response = await fetchPage("home");
       
       if (response.success && response.data) {
+        // Validate the schema structure before using it
+        const schema = response.data.schema;
+        if (!schema || typeof schema !== 'object') {
+          throw new Error('Invalid schema: schema is not an object');
+        }
+        
+        if (!Array.isArray(schema.blocks)) {
+          console.warn('Schema blocks is not an array, using empty array as fallback');
+          schema.blocks = [];
+        }
+        
+        // Ensure required properties exist
+        if (!schema.title) {
+          schema.title = response.data.title || 'Untitled Page';
+        }
+        
         setPageData({
-          schema: response.data.schema,
+          schema: schema as PageSchema,
           title: response.data.title,
           slug: response.data.slug
         });
