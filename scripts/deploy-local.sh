@@ -40,12 +40,31 @@ fi
 
 echo "MinIO is running at $MINIO_ENDPOINT"
 
+# Check if MinIO client (mc) is installed
+if ! command -v mc &> /dev/null; then
+    echo "MinIO client (mc) is not installed!"
+    echo ""
+    echo "Please install mc using one of these methods:"
+    echo ""
+    echo "macOS (using Homebrew):"
+    echo "   brew install minio/stable/mc"
+    echo ""
+    echo "Linux:"
+    echo "   curl https://dl.min.io/client/mc/release/linux-amd64/mc -o mc"
+    echo "   chmod +x mc"
+    echo "   sudo mv mc /usr/local/bin/"
+    echo ""
+    echo "Or download from: https://min.io/download"
+    echo ""
+    exit 1
+fi
+
 # Set up MinIO client alias
-echo "🔧 Setting up MinIO client..."
+echo "Setting up MinIO client..."
 mc alias set local $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
 
 # Build the project
-echo "🔨 Building project..."
+echo "Building project..."
 npm run build
 
 # Deploy to local MinIO
