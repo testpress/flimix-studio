@@ -5,11 +5,12 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: './', // Use relative paths
   build: {
-    outDir: '../flimix/app/static/studio', // Output directory for build
+    outDir: 'dist', // Output directory for build
     emptyOutDir: true,
     rollupOptions: {
-      input: 'src/main.tsx',
+      input: 'index.html',
       output: {
         entryFileNames: 'js/[name].js',
         chunkFileNames: 'js/[name].js',
