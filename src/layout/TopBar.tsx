@@ -8,11 +8,11 @@ import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@contex
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import type { PageSchema } from '@blocks/shared/Page';
 
-interface TopBarProps {
+type TopBarProps = {
   onSave?: (schema: PageSchema) => void;
-}
+};
 
-const TopBar: React.FC<TopBarProps> = ({ onSave }) => {
+const TopBar = ({ onSave }: TopBarProps) => {
   const { undo, canUndo, redo, canRedo, updatePageSchema, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
@@ -33,11 +33,7 @@ const TopBar: React.FC<TopBarProps> = ({ onSave }) => {
   };
 
   const handleSave = () => {
-    if (onSave) {
-      onSave(pageSchema);
-    } else {
-      console.warn("No onSave callback provided");
-    }
+    onSave?.(pageSchema);
   };
 
   return (
@@ -116,7 +112,13 @@ const TopBar: React.FC<TopBarProps> = ({ onSave }) => {
           </button>
           <button 
             onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded"
+            disabled={!onSave}
+            className={`px-4 py-2 rounded ${
+              onSave 
+                ? 'bg-blue-600 hover:bg-blue-700' 
+                : 'bg-gray-600 cursor-not-allowed opacity-50'
+            }`}
+            title={onSave ? 'Save page' : 'Save functionality not available'}
           >
             Save
           </button>
