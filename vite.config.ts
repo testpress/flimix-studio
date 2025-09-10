@@ -55,10 +55,10 @@ export default defineConfig(({ mode }) => ({
         },
         chunkFileNames: 'js/[name]-[hash].js',
         assetFileNames: (asset) => {
-          if (asset.name && asset.name.endsWith('.css')) {
-            return 'css/style.css' // CSS goes to css/ folder for better organization
+          if (asset.name?.endsWith('.css')) {
+            return 'css/[name].css'
           }
-          return 'assets/[name].[ext]' // For non-CSS assets (like images, fonts) → keep original file names instead of hashed ones, making them predictable for Django static references
+          return 'assets/[name].[ext]'
         },
       },
     },

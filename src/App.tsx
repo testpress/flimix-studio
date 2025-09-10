@@ -15,7 +15,7 @@ import { useState } from 'react';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
 
-type AppProps = {
+export type AppProps = {
   initialSchema?: PageSchema;
 };
 
