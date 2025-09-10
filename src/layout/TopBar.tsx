@@ -6,9 +6,14 @@ import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { usePanelCoordinator } from '@context/PanelCoordinator';
 import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import type { PageSchema } from '@blocks/shared/Page';
 
-const TopBar: React.FC = () => {
-  const { undo, canUndo, redo, canRedo, updatePageSchema } = useHistory();
+interface TopBarProps {
+  onSave?: (schema: PageSchema) => void;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ onSave }) => {
+  const { undo, canUndo, redo, canRedo, updatePageSchema, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
   const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
@@ -25,6 +30,14 @@ const TopBar: React.FC = () => {
     setCurrentPageSchemaKey(pageSchemaKey);
     updatePageSchema(newPageSchema);
     setIsPageSchemaDropdownOpen(false);
+  };
+
+  const handleSave = () => {
+    if (onSave) {
+      onSave(pageSchema);
+    } else {
+      console.warn("No onSave callback provided");
+    }
   };
 
   return (
@@ -101,7 +114,10 @@ const TopBar: React.FC = () => {
             <span>Redo</span>
             <Redo className="w-4 h-4" />
           </button>
-          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">
+          <button 
+            onClick={handleSave}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded"
+          >
             Save
           </button>
           <button className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded">

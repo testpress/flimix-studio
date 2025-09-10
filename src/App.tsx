@@ -17,9 +17,10 @@ import type { PageSchema } from '@blocks/shared/Page';
 
 export type AppProps = {
   initialSchema?: PageSchema;
+  onSave?: (schema: PageSchema) => void;
 };
 
-function App({ initialSchema }: AppProps) {
+function App({ initialSchema, onSave }: AppProps) {
   const [showDebug, setShowDebug] = useState(false);
   
   const schema = initialSchema || (amazonSchemaData as PageSchema);
@@ -34,7 +35,7 @@ function App({ initialSchema }: AppProps) {
                 <SettingsPanelProvider>
                   <PanelCoordinatorProvider>
                     <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                      <TopBar />
+                      <TopBar onSave={onSave} />
                       <div className="flex-1 flex min-h-0">
                         <LibraryPanel />
                         <LayoutPanel />
