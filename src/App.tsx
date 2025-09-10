@@ -15,32 +15,38 @@ import { useState } from 'react';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
 
-function App() {
+type AppProps = {
+  initialSchema?: PageSchema;
+};
+
+function App({ initialSchema }: AppProps) {
   const [showDebug, setShowDebug] = useState(false);
+  
+  const schema = initialSchema || (amazonSchemaData as PageSchema);
 
   return (
     <PageSchemaProvider>
-      <HistoryProvider initialSchema={amazonSchemaData as PageSchema}>
+      <HistoryProvider initialSchema={schema}>
         <SelectionProvider>
           <BlockInsertProvider>
             <LibraryPanelProvider>
               <LayoutPanelProvider>
                 <SettingsPanelProvider>
                   <PanelCoordinatorProvider>
-                <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                  <TopBar />
-                  <div className="flex-1 flex min-h-0">
-                    <LibraryPanel />
-                    <LayoutPanel />
-                    <div className="flex-1 min-w-0">
-                      <Canvas showDebug={showDebug} />
+                    <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
+                      <TopBar />
+                      <div className="flex-1 flex min-h-0">
+                        <LibraryPanel />
+                        <LayoutPanel />
+                        <div className="flex-1 min-w-0">
+                          <Canvas showDebug={showDebug} />
+                        </div>
+                        <SettingsPanel 
+                          showDebug={showDebug}
+                          onToggleShowDebug={() => setShowDebug(current => !current)}
+                        />
+                      </div>
                     </div>
-                    <SettingsPanel 
-                      showDebug={showDebug}
-                      onToggleShowDebug={() => setShowDebug(current => !current)}
-                    />
-                  </div>
-                </div>
                   </PanelCoordinatorProvider>
                 </SettingsPanelProvider>
               </LayoutPanelProvider>
