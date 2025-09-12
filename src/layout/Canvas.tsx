@@ -52,7 +52,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Platform:</label>
                 <select
-                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.platform || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -69,7 +69,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Region:</label>
                 <select
-                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.region || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -88,7 +88,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Tier:</label>
                 <select
-                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.subscriptionTier || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -105,7 +105,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Login Status:</label>
                 <select
-                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.isLoggedIn?.toString() || 'true'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -120,7 +120,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-300 font-medium">Subscription:</label>
                 <select
-                  className="bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.isSubscribed?.toString() || 'false'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
