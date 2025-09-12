@@ -1,43 +1,66 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import dts from 'vite-plugin-dts'
+import path from 'path'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    tailwindcss(),
+    dts({
+      entryRoot: 'src',
+    }),
+  ],
   base: './', // Use relative paths
-  build: {
-    outDir: 'dist', // Output directory for build
-    emptyOutDir: true,
-    rollupOptions: {
-      input: 'index.html',
-      output: {
-        entryFileNames: 'js/[name].js',
-        chunkFileNames: 'js/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
-      }
-    }
-  },
   resolve: {
     alias: {
-      '@': '/src',
-      '@components': '/src/components',
-      '@layout': '/src/layout',
-      '@renderer': '/src/renderer',
-      '@context': '/src/context',
-      '@utils': '/src/utils',
-      '@domain': '/src/domain',
-      '@types': '/src/types',
-      '@pageSchemas': '/src/pageSchemas',
-      '@hooks': '/src/hooks',
-      '@blocks': '/src/blocks',
-      '@blocks/ui': '/src/blocks/ui',
-      '@blocks/settings': '/src/blocks/settings',
-      '@blocks/shared': '/src/blocks/shared',
-      '@blocks/hero': '/src/blocks/hero',
-      '@blocks/text': '/src/blocks/text',
-      '@blocks/section': '/src/blocks/section',
-      '@services': '/src/services'
+      '@': path.resolve(__dirname, 'src'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@layout': path.resolve(__dirname, 'src/layout'),
+      '@renderer': path.resolve(__dirname, 'src/renderer'),
+      '@context': path.resolve(__dirname, 'src/context'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@domain': path.resolve(__dirname, 'src/domain'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@pageSchemas': path.resolve(__dirname, 'src/pageSchemas'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
+      '@blocks': path.resolve(__dirname, 'src/blocks'),
+      '@blocks/ui': path.resolve(__dirname, 'src/blocks/ui'),
+      '@blocks/settings': path.resolve(__dirname, 'src/blocks/settings'),
+      '@blocks/shared': path.resolve(__dirname, 'src/blocks/shared'),
+      '@blocks/hero': path.resolve(__dirname, 'src/blocks/hero'),
+      '@blocks/text': path.resolve(__dirname, 'src/blocks/text'),
+      '@blocks/section': path.resolve(__dirname, 'src/blocks/section'),
+      '@services': path.resolve(__dirname, 'src/services')
     }
-  }
-})
+  },
+  define: {
+    'process.env': { ...loadEnv(mode, process.cwd()) },
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/studioEntry.tsx'),
+      name: 'FlimixStudio',
+      formats: ['umd'], // UMD ensures the library works both with <script> tags in browsers and in module-based systems. For Django we need the global (window.FlimixStudio).
+      fileName: () => 'js/flimix-studio.js', // Always output flimix-studio.js under dist/js/
+    },
+    rollupOptions: {
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+        chunkFileNames: 'js/[name]-[hash].js',
+        assetFileNames: (asset) => {
+          if (asset.name?.endsWith('.css')) {
+            return 'css/[name].css'
+          }
+          return 'assets/[name].[ext]'
+        },
+      },
+    },
+  },
+}))
