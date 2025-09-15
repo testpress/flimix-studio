@@ -51,6 +51,11 @@ if (typeof window !== 'undefined') {
   }
   
   // Mark as ready immediately when SDK is loaded
+  // NOTE: Currently the SDK is marked as ready as soon as the script loads.
+  // In the future, this will be changed to wait for internal SDK initialization
+  // to complete (e.g., API connections, authentication, data loading, etc.)
+  // before marking isReady = true. This will make the ready state dependent
+  // on async operations finishing successfully.
   if (!isReady) {
     isReady = true
     readyCallbacks.forEach(callback => callback())
