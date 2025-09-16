@@ -4,6 +4,7 @@ import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { Platform, VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
+import { usePageSchema } from '@context/PageSchemaContext';
 import { Search } from 'lucide-react';
 
 interface CanvasProps {
@@ -21,10 +22,13 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
     setSelectedBlockId,
     setSelectedBlock,
     setSelectedItemId,
-    setSelectedItemBlockId,
-    pageSchema 
+    setSelectedItemBlockId
   } = useSelection();
+  const { pages, currentPageSlug } = usePageSchema();
   const [visibilityContext, setVisibilityContext] = React.useState<VisibilityContext>(initialVisibilityContext);
+
+  // Get the current page from PageSchemaContext
+  const currentPage = pages[currentPageSlug];
 
   const handleBlockSelect = (block: Block) => {
     // Only clear item selection if selecting a different block
@@ -44,7 +48,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
         <div className="mb-6 px-6 pt-6">
           <div className="flex flex-col gap-4 mb-4">
             <h2 className="text-2xl font-semibold text-white">
-              {pageSchema.title}
+              {currentPage.title}
             </h2>
             
             {/* Render Context Controls */}
@@ -133,7 +137,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
               </div>
             </div>
             
-            <p className="text-gray-400">Rendering {pageSchema.blocks.length} blocks</p>
+            <p className="text-gray-400">Rendering {currentPage.blocks.length} blocks</p>
             {showDebug && (
               <>
                 <p className="text-xs text-yellow-400 mt-2 bg-gray-700 p-2 rounded flex items-center gap-2">
@@ -149,7 +153,7 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
         </div>
         
         <div className="space-y-0 px-6">
-          {pageSchema.blocks.map((block: Block) => (
+          {currentPage.blocks.map((block: Block) => (
             <div key={block.id} data-block-id={block.id}>
               <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
               <BlockRenderer 

@@ -12,22 +12,33 @@ import { SettingsPanelProvider } from '@context/SettingsPanelContext';
 import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
 import { useState } from 'react';
-import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import type { PageSchema } from '@blocks/shared/Page';
+import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 
 export type AppProps = {
-  initialSchema?: PageSchema;
-  onSave?: (schema: PageSchema) => void;
+  initialPages?: Record<string, PageSchema>;
+  defaultPageSlug?: string;
+  onSave?: (pageSlug: string, schema: PageSchema) => void;
 };
 
-function App({ initialSchema, onSave }: AppProps) {
+function App({ initialPages, defaultPageSlug, onSave }: AppProps) {
   const [showDebug, setShowDebug] = useState(false);
   
-  const schema = initialSchema || (amazonSchemaData as PageSchema);
+  // Provide default values if not provided
+  const pages = initialPages || {
+    'home': amazonSchemaData as PageSchema
+  };
+  const currentPageSlug = defaultPageSlug || 'home';
+  
+  // Get the initial schema for HistoryProvider (using the default page)
+  const initialSchema = pages[currentPageSlug];
 
   return (
-    <PageSchemaProvider>
-      <HistoryProvider initialSchema={schema}>
+    <PageSchemaProvider 
+      initialPages={pages} 
+      defaultPageSlug={currentPageSlug}
+    >
+      <HistoryProvider initialSchema={initialSchema}>
         <SelectionProvider>
           <BlockInsertProvider>
             <LibraryPanelProvider>

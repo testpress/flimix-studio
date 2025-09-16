@@ -1,70 +1,47 @@
-import React from 'react';
-import { Undo, Redo, Plus, X, ChevronDown,Layers } from 'lucide-react';
+import { Undo, Redo, Plus, X, Layers } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { usePanelCoordinator } from '@context/PanelCoordinator';
-import { usePageSchema, availablePageSchemas, type PageSchemaKey } from '@context/PageSchemaContext';
-import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import { usePageSchema } from '@context/PageSchemaContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type TopBarProps = {
-  onSave?: (schema: PageSchema) => void;
+  onSave?: (pageSlug: string, schema: PageSchema) => void;
 };
 
 const TopBar = ({ onSave }: TopBarProps) => {
-  const { undo, canUndo, redo, canRedo, updatePageSchema, pageSchema } = useHistory();
+  const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
   const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
-  const { currentPageSchemaKey, setCurrentPageSchemaKey } = usePageSchema();
-  
-  const [isPageSchemaDropdownOpen, setIsPageSchemaDropdownOpen] = React.useState(false);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-  
-  useOnClickOutside(dropdownRef, () => setIsPageSchemaDropdownOpen(false));
-  
-  const handlePageSchemaChange = (pageSchemaKey: PageSchemaKey) => {
-    // This logic is moved from the hook - orchestrating both contexts
-    const newPageSchema = availablePageSchemas[pageSchemaKey].pageSchema;
-    setCurrentPageSchemaKey(pageSchemaKey);
-    updatePageSchema(newPageSchema);
-    setIsPageSchemaDropdownOpen(false);
-  };
+  const { 
+    currentPageSlug, 
+    setCurrentPageSlug,
+    pages 
+  } = usePageSchema();
 
   const handleSave = () => {
-    onSave?.(pageSchema);
+    onSave?.(currentPageSlug, pageSchema);
   };
 
   return (
     <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          {/* Page Schema Selector - Choose between Netflix and Hotstar page layouts */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsPageSchemaDropdownOpen(!isPageSchemaDropdownOpen)}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded flex items-center space-x-2"
+          {/* Page Switcher - Switch between different pages */}
+          <div className="relative">
+            <select
+              value={currentPageSlug}
+              onChange={e => setCurrentPageSlug(e.target.value)}
+              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 text-white text-sm"
             >
-              <span>{availablePageSchemas[currentPageSchemaKey].name}</span>
-              <ChevronDown size={16} className={`transition-transform ${isPageSchemaDropdownOpen ? 'rotate-180' : ''}`} />
-            </button>
-            
-            {isPageSchemaDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 bg-gray-700 rounded shadow-lg w-48 z-50">
-                {Object.entries(availablePageSchemas).map(([key, { name }]) => (
-                  <button
-                    key={key}
-                    onClick={() => handlePageSchemaChange(key as PageSchemaKey)}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-600 ${
-                      currentPageSchemaKey === key ? 'bg-blue-600' : ''
-                    }`}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
-            )}
+              {Object.keys(pages).map(slug => (
+                <option key={slug} value={slug} className="bg-gray-700 text-white">
+                  {slug.charAt(0).toUpperCase() + slug.slice(1)}
+                </option>
+              ))}
+            </select>
           </div>
           
           <button 
