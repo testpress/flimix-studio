@@ -69,20 +69,20 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
-  const [lastPageSlug, setLastPageSlug] = useState<string>(currentPageSlug);
+  const prevPageSlugRef = React.useRef(currentPageSlug);
 
   // Clear selection only when switching pages
   useEffect(() => {
-    if (currentPageSlug !== lastPageSlug) {
+    if (currentPageSlug !== prevPageSlugRef.current) {
       setSelectedBlock(null);
       setSelectedBlockId(null);
       setSelectedBlockParentId(null);
       setSelectedItemId(null);
       setSelectedItemBlockId(null);
       setActiveTabId(null);
-      setLastPageSlug(currentPageSlug);
+      prevPageSlugRef.current = currentPageSlug;
     }
-  }, [currentPageSlug, lastPageSlug]);
+  }, [currentPageSlug]);
 
   // Helper function to recursively check if a block exists in the schema
   const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {

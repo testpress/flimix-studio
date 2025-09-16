@@ -31,12 +31,12 @@ export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({
   const [currentPageSlug, setCurrentPageSlug] = useState<string>(defaultPageSlug);
 
   // Update specific page helper
-  const updateSpecificPage = (slug: string, schema: PageSchema) => {
+  const updateSpecificPage = React.useCallback((slug: string, schema: PageSchema) => {
     setPages(prev => ({
       ...prev,
       [slug]: schema
     }));
-  };
+  }, []);
 
   return (
     <PageSchemaContext.Provider value={{

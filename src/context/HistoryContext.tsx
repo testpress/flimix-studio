@@ -31,17 +31,22 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
   
   // Get PageSchemaContext for multi-page support
   const { currentPageSlug, pages, updateSpecificPage } = usePageSchema();
+  const prevPageSlugRef = React.useRef(currentPageSlug);
 
   // Sync with current page when page changes
   React.useEffect(() => {
     const currentPage = pages[currentPageSlug];
-    if (currentPage && currentPage !== pageSchema) {
+    if (currentPage) {
       setPageSchema(currentPage);
-      // Clear history when switching pages
-      setUndoStack([]);
-      setRedoStack([]);
+      
+      // Only clear history when actually switching pages
+      if (currentPageSlug !== prevPageSlugRef.current) {
+        setUndoStack([]);
+        setRedoStack([]);
+        prevPageSlugRef.current = currentPageSlug;
+      }
     }
-  }, [currentPageSlug, pages, pageSchema]);
+  }, [currentPageSlug, pages]);
 
   // Exposed function to record state changes
   const recordState = (currentBlocks: BlockType[]) => {
