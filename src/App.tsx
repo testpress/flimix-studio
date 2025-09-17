@@ -16,16 +16,18 @@ import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 
 export type AppProps = {
-  initialPages?: Record<string, PageSchema>;
+  initialPage?: Record<string, PageSchema>;
   defaultPageSlug?: string;
-  onSave?: (pageSlug: string, schema: PageSchema) => void;
+  pagesList?: string[];
+  onSave?: (pageSlug: string, schema: PageSchema) => Promise<any>;
+  onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 };
 
-function App({ initialPages, defaultPageSlug, onSave }: AppProps) {
+function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: AppProps) {
   const [showDebug, setShowDebug] = useState(false);
   
   // Provide default values if not provided
-  const pages = initialPages || {
+  const pages = initialPage || {
     'home': amazonSchemaData as PageSchema
   };
   const currentPageSlug = defaultPageSlug || 'home';
@@ -35,8 +37,10 @@ function App({ initialPages, defaultPageSlug, onSave }: AppProps) {
 
   return (
     <PageSchemaProvider 
-      initialPages={pages} 
+      initialPage={pages} 
+      pagesList={pagesList}
       defaultPageSlug={currentPageSlug}
+      onLoadPage={onLoadPage}
     >
       <HistoryProvider initialSchema={initialSchema}>
         <SelectionProvider>

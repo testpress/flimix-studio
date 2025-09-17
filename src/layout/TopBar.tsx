@@ -17,8 +17,8 @@ const TopBar = ({ onSave }: TopBarProps) => {
   const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
   const { 
     currentPageSlug, 
-    setCurrentPageSlug,
-    pages 
+    loadPage,
+    pagesList 
   } = usePageSchema();
 
   const handleSave = () => {
@@ -33,10 +33,10 @@ const TopBar = ({ onSave }: TopBarProps) => {
           <div className="relative">
             <select
               value={currentPageSlug}
-              onChange={e => setCurrentPageSlug(e.target.value)}
+              onChange={e => loadPage(e.target.value)}
               className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 text-white text-sm"
             >
-              {Object.keys(pages).map(slug => (
+              {pagesList.map(slug => (
                 <option key={slug} value={slug} className="bg-gray-700 text-white">
                   {slug.charAt(0).toUpperCase() + slug.slice(1)}
                 </option>

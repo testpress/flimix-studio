@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 
 // Multi-page context interface
@@ -12,31 +12,63 @@ interface PageSchemaContextType {
   currentPageSlug: string;
   setCurrentPageSlug: (slug: string) => void;
   updateSpecificPage: (slug: string, schema: PageSchema) => void;
+  loadPage: (slug: string) => Promise<void>;
+  pagesList: string[];
 }
 
 const PageSchemaContext = createContext<PageSchemaContextType | undefined>(undefined);
 
 interface PageSchemaProviderProps {
   children: ReactNode;
-  initialPages: Record<string, PageSchema>;
+  initialPage: Record<string, PageSchema>;
   defaultPageSlug: string;
+  pagesList?: string[];
+  onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 }
 
 export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({ 
   children, 
-  initialPages,
-  defaultPageSlug
+  initialPage,
+  defaultPageSlug,
+  pagesList = [],
+  onLoadPage
 }) => {
-  const [pages, setPages] = useState<Record<string, PageSchema>>(initialPages);
+  const [pages, setPages] = useState<Record<string, PageSchema>>(initialPage);
   const [currentPageSlug, setCurrentPageSlug] = useState<string>(defaultPageSlug);
 
   // Update specific page helper
-  const updateSpecificPage = React.useCallback((slug: string, schema: PageSchema) => {
+  const updateSpecificPage = useCallback((slug: string, schema: PageSchema) => {
     setPages(prev => ({
       ...prev,
       [slug]: schema
     }));
   }, []);
+  
+  // Load page function that uses external onLoadPage callback
+  const loadPage = useCallback(async (slug: string) => {
+    // If page is already loaded, just switch to it
+    if (pages[slug]) {
+      setCurrentPageSlug(slug);
+      return;
+    }
+    
+    // If onLoadPage is provided, use it to load the page
+    if (onLoadPage) {
+      try {
+        // onLoadPage callback is provided by backend integration (Django template)
+        // It makes API call to fetch page data: GET /api/v1/page/{slug}/
+        // Returns: { slug: string, schema: PageSchema }
+        const data = await onLoadPage(slug);
+        setPages(prev => ({ ...prev, [slug]: data.schema }));
+        setCurrentPageSlug(slug);
+      } catch (error) {
+        console.error(`Failed to load page ${slug}:`, error);
+      }
+    } else {
+      console.warn(`No onLoadPage callback provided to load page ${slug}`);
+      setCurrentPageSlug(slug);
+    }
+  }, [pages, onLoadPage]);
 
   return (
     <PageSchemaContext.Provider value={{
@@ -44,7 +76,9 @@ export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({
       setPages,
       currentPageSlug,
       setCurrentPageSlug,
-      updateSpecificPage
+      updateSpecificPage,
+      loadPage,
+      pagesList: pagesList.length > 0 ? pagesList : Object.keys(pages)
     }}>
       {children}
     </PageSchemaContext.Provider>
