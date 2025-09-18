@@ -15,11 +15,7 @@ const TopBar = ({ onSave }: TopBarProps) => {
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
   const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
-  const { 
-    currentPageSlug, 
-    loadPage,
-    pagesList 
-  } = usePageSchema();
+  const { currentPageSlug } = usePageSchema();
 
   const handleSave = () => {
     onSave?.(currentPageSlug, pageSchema);
@@ -29,21 +25,6 @@ const TopBar = ({ onSave }: TopBarProps) => {
     <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          {/* Page Switcher - Switch between different pages */}
-          <div className="relative">
-            <select
-              value={currentPageSlug}
-              onChange={e => loadPage(e.target.value)}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 text-white text-sm"
-            >
-              {pagesList.map(slug => (
-                <option key={slug} value={slug} className="bg-gray-700 text-white">
-                  {slug.charAt(0).toUpperCase() + slug.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-          
           <button 
             onClick={toggleLibrarySafely}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
