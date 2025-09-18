@@ -16,6 +16,7 @@ import type { MenuSchema } from '@context/MenuSchemaContext';
 import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
 import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
+import { DEFAULT_MENU_STYLE, DEFAULT_MENU_PROPS } from './constants/theme';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 
 export type AppProps = {
@@ -43,22 +44,16 @@ function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage, init
   const menuSchema = initialMenuSchema || {
     type: "menu",
     props: {
-      enabled: true,
+      ...DEFAULT_MENU_PROPS,
       items: pagesList?.map(slug => ({
         id: `menu-${slug}`,
         label: slug.charAt(0).toUpperCase() + slug.slice(1),
         slug
       })) || [
         { id: "menu-home", label: "Home", slug: "home" }
-      ],
-      alignment: "left",
-      variant: "horizontal"
+      ]
     },
-    style: {
-      backgroundColor: "#000000", 
-      textColor: "#ffffff",
-      hoverColor: "#3b82f6"
-    }
+    style: DEFAULT_MENU_STYLE
   };
 
   return (
