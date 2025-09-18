@@ -11,7 +11,15 @@ import type { TabsBlock, Tab } from '@blocks/tabs/schema';
 import { useHistory } from './HistoryContext';
 import { usePageSchema } from './PageSchemaContext';
 
+export type Selection =
+  | { type: "block"; id: string }
+  | { type: "menu" }
+  | null;
+
 interface SelectionContextType {
+  selection: Selection;
+  select: (selection: Selection) => void;
+  selectNewBlock: (blockId: string) => void;
   selectedBlock: Block | null;
   setSelectedBlock: (block: Block | null) => void;
   selectedBlockId: string | null;
@@ -63,6 +71,10 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const { pageSchema, updatePageWithHistory } = useHistory();
   const { currentPageSlug } = usePageSchema();
 
+  // New selection state
+  const [selection, setSelection] = useState<Selection>(null);
+  
+  // Legacy selection state
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedBlockParentId, setSelectedBlockParentId] = useState<string | null>(null);
@@ -70,15 +82,48 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
   const prevPageSlugRef = React.useRef(currentPageSlug);
+  
+  // Selection methods
+  const select = (newSelection: Selection) => {
+    // Handle different selection types appropriately
+    if (!newSelection) {
+      // Clear everything
+      setSelection(null);
+      setSelectedBlockId(null);
+      setSelectedBlock(null);
+      setSelectedBlockParentId(null);
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
+      return;
+    }
+    
+    // Set the new selection
+    setSelection(newSelection);
+    
+    if (newSelection.type === 'block') {
+      // Select block - clear menu selection but preserve block item selection
+      const { block } = findBlockAndParent(newSelection.id, pageSchema.blocks);
+      if (block) {
+        setSelectedBlockId(newSelection.id);
+        setSelectedBlock(block as Block);
+        const { parent } = findBlockAndParent(newSelection.id, pageSchema.blocks);
+        setSelectedBlockParentId(parent?.id || null);
+        // Don't clear selectedItemId and selectedItemBlockId here - they might be valid
+      }
+    } else if (newSelection.type === 'menu') {
+      // Select menu - clear all block-related selection
+      setSelectedBlockId(null);
+      setSelectedBlock(null);
+      setSelectedBlockParentId(null);
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
+    }
+  };
 
   // Clear selection only when switching pages
   useEffect(() => {
     if (currentPageSlug !== prevPageSlugRef.current) {
-      setSelectedBlock(null);
-      setSelectedBlockId(null);
-      setSelectedBlockParentId(null);
-      setSelectedItemId(null);
-      setSelectedItemBlockId(null);
+      select(null);
       setActiveTabId(null);
       prevPageSlugRef.current = currentPageSlug;
     }
@@ -122,9 +167,9 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     }
   }, [pageSchema, selectedBlockId, blockExistsInSchema]);
 
-  // Sync selectedBlock reference with page schema when it changes (undo/redo)
+  // Sync selectedBlock reference with page schema when it changes (undo/redo or new blocks)
   useEffect(() => {
-    if (selectedBlockId && selectedBlock) {
+    if (selectedBlockId) {
       // Find the current version of the selected block in the schema
       const findBlockInSchema = (blocks: BlockType[]): BlockType | null => {
         for (const block of blocks) {
@@ -151,12 +196,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
       const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
       
-      // Compare specific properties that are likely to change
-      if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {
-        setSelectedBlock(currentBlockInSchema as Block);
+      if (currentBlockInSchema) {
+        // Update the selected block if it exists in the schema
+        if (!selectedBlock || hasBlockChanged(currentBlockInSchema, selectedBlock)) {
+          setSelectedBlock(currentBlockInSchema as Block);
+          const { parent } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
+          setSelectedBlockParentId(parent?.id || null);
+        }
       }
     }
-  }, [pageSchema, selectedBlockId, selectedBlock]);
+  }, [pageSchema, selectedBlockId]);
 
   // Efficient comparison function for block changes
   const hasBlockChanged = (block1: BlockType, block2: Block): boolean => {
@@ -482,9 +531,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     );
     
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
-    setSelectedBlockId(null);
-    setSelectedBlock(null);
-    setSelectedBlockParentId(null);
+    select(null);
   };
 
   const duplicateSelectedBlock = () => {
@@ -514,14 +561,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     
-    // Clear any previously selected item when selecting a newly duplicated block
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
-    
     // Select the newly duplicated block
-    setSelectedBlockId(duplicatedBlock.id);
-    setSelectedBlock(duplicatedBlock);
-    setSelectedBlockParentId(result.parent?.id || null);
+    selectNewBlock(duplicatedBlock.id);
   };
 
   const modifyBlockItems = (
@@ -626,11 +667,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     // First, ensure the parent block is selected
     const { block } = findBlockAndParent(blockId, pageSchema.blocks);
     if (block) {
-      setSelectedBlockId(blockId);
-      setSelectedBlock(block);
-      // Find and set the parent block ID if this block has a parent
-      const { parent } = findBlockAndParent(blockId, pageSchema.blocks);
-      setSelectedBlockParentId(parent?.id || null);
+      select({ type: 'block', id: blockId });
     }
     
     // Then select the item
@@ -687,12 +724,41 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     return pageSchema.blocks;
   };
 
+
+  // Helper function for selecting newly added blocks
+  const selectNewBlock = (blockId: string) => {
+    // Clear any item selection when selecting a new block
+    setSelectedItemId(null);
+    setSelectedItemBlockId(null);
+    
+    // For newly added blocks, set selection state directly
+    // The useEffect will handle finding and setting the block reference when pageSchema updates
+    setSelection({ type: 'block', id: blockId });
+    setSelectedBlockId(blockId);
+    // Note: selectedBlock will be set by the useEffect when pageSchema is updated
+  };
+
   return (
     <SelectionContext.Provider value={{
+      selection,
+      select,
+      selectNewBlock,
       selectedBlock,
-      setSelectedBlock,
+      setSelectedBlock: (block: Block | null) => {
+        if (block) {
+          select({ type: 'block', id: block.id });
+        } else {
+          select(null);
+        }
+      },
       selectedBlockId,
-      setSelectedBlockId,
+      setSelectedBlockId: (id: string | null) => {
+        if (id) {
+          select({ type: 'block', id });
+        } else {
+          select(null);
+        }
+      },
       selectedBlockParentId,
       setSelectedBlockParentId,
       selectedItemId,

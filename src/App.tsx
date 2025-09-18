@@ -83,6 +83,7 @@ function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage, init
                         <SettingsPanel 
                           showDebug={showDebug}
                           onToggleShowDebug={() => setShowDebug(current => !current)}
+                          pagesList={pagesList || []}
                         />
                       </div>
                     </div>
