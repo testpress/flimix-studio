@@ -1,6 +1,7 @@
 import React from "react";
 import { useMenuSchema } from "@context/MenuSchemaContext";
 import { usePageSchema } from "@context/PageSchemaContext";
+import { DEFAULT_MENU_STYLE } from "../constants/theme";
 
 const MenuBar: React.FC = () => {
   const { menuSchema } = useMenuSchema();
@@ -23,8 +24,8 @@ const MenuBar: React.FC = () => {
       <div 
         className="px-6 py-2 rounded-full flex items-center"
         style={{
-          background: menuSchema.style?.backgroundColor || "#1f2937",
-          color: menuSchema.style?.textColor || "#fff",
+          background: menuSchema.style?.backgroundColor ?? DEFAULT_MENU_STYLE.backgroundColor,
+          color: menuSchema.style?.textColor ?? DEFAULT_MENU_STYLE.textColor,
           border: "1px solid rgba(255, 255, 255, 0.1)"
         }}
       >
