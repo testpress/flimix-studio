@@ -32,11 +32,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   const { pageSchema, updatePageWithHistory } = useHistory();
   const { 
     selectedBlockId, 
-    setSelectedBlockId, 
-    setSelectedBlock, 
-    setSelectedBlockParentId,
-    setSelectedItemId,
-    setSelectedItemBlockId,
+    selectNewBlock,
     activeTabId
   } = useSelection();
 
@@ -126,16 +122,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     updatePageWithHistory(updatedSchema);
     
-    // Clear any previously selected item when selecting a newly inserted block
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
-    
     // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock);
-    
-    // The parent of the new block is the same as the selected block's parent
-    setSelectedBlockParentId(result.parent?.id || null);
+    selectNewBlock(newBlock.id);
   };
 
   /**
@@ -186,14 +174,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     updatePageWithHistory(updatedSchema);
     
-    // Clear any previously selected item when selecting a newly inserted block
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
-    
     // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as BlockType);
-    setSelectedBlockParentId(null);
+    selectNewBlock(newBlock.id);
   };
 
   /**
@@ -243,14 +225,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     // Record state for undo
     updatePageWithHistory(updatedSchema);
     
-    // Clear any previously selected item when selecting a newly inserted block
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
-    
     // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as BlockType);
-    setSelectedBlockParentId(sectionId);
+    selectNewBlock(newBlock.id);
   };
 
   /**
@@ -347,14 +323,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     
     updatePageWithHistory(updatedSchema);
     
-    // Clear any previously selected item when selecting a newly inserted block
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
-    
     // Select the newly inserted block
-    setSelectedBlockId(newBlock.id);
-    setSelectedBlock(newBlock as BlockType);
-    setSelectedBlockParentId(tabsBlockId);
+    selectNewBlock(newBlock.id);
   };
 
   return (

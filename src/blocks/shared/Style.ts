@@ -39,6 +39,7 @@ export interface StyleProps {
   textAlign?: TextAlign;
   backgroundColor?: string;
   textColor?: string;
+  hoverColor?: string;
   borderRadius?: BorderRadius;
   boxShadow?: BoxShadow;
   maxWidth?: string;

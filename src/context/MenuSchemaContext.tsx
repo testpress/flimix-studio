@@ -23,6 +23,7 @@ export interface MenuSchema {
 
 interface MenuSchemaContextType {
   menuSchema: MenuSchema;
+  updateMenuSchema: (updater: (schema: MenuSchema) => MenuSchema) => void;
 }
 
 const MenuSchemaContext = createContext<MenuSchemaContextType | undefined>(undefined);
@@ -36,10 +37,14 @@ export const MenuSchemaProvider: React.FC<MenuSchemaProviderProps> = ({
   children, 
   initialSchema 
 }) => {
-  const [menuSchema] = useState<MenuSchema>(initialSchema);
+  const [menuSchema, setMenuSchema] = useState<MenuSchema>(initialSchema);
+
+  const updateMenuSchema = (updater: (schema: MenuSchema) => MenuSchema) => {
+    setMenuSchema((prev) => updater(prev));
+  };
 
   return (
-    <MenuSchemaContext.Provider value={{ menuSchema }}>
+    <MenuSchemaContext.Provider value={{ menuSchema, updateMenuSchema }}>
       {children}
     </MenuSchemaContext.Provider>
   );

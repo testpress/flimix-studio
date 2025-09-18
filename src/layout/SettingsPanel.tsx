@@ -2,12 +2,14 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useSettingsPanel } from '@context/SettingsPanelContext';
+import { usePageSchema } from '@context/PageSchemaContext';
 import type { 
   BlockFormProps
 } from '@blocks/shared/FormTypes';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
 import type { StyleProps } from '@blocks/shared/Style';
 import { VisibilityForm, StyleForm } from '@blocks/settings';
+import MenuSettingsForm from '@blocks/settings/MenuSettingsForm';
 import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';
@@ -40,10 +42,13 @@ import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/s
 interface SettingsPanelProps {
   showDebug: boolean;
   onToggleShowDebug: () => void;
+  pagesList?: string[];
 }
 
-const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDebug }) => {
+const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDebug, pagesList = [] }) => {
   const { 
+    selection,
+    select,
     selectedBlock, 
     selectedItemId, 
     selectedItemBlockId,
@@ -51,27 +56,21 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockStyle, 
     updateSelectedBlockVisibility,
     updateBlockItem,
-    setSelectedBlock,
-    setSelectedBlockId,
-    setSelectedItemId,
-    setSelectedItemBlockId,
   } = useSelection();
+  const { pagesList: availablePages = [] } = usePageSchema();
   const { isSettingsOpen, openSettings, closeSettings } = useSettingsPanel();
 
-  // Auto-open settings when a block gets selected
+  // Auto-open settings when a block or menu gets selected
   React.useEffect(() => {
-    if (selectedBlock) {
+    if (selectedBlock || selection?.type === 'menu') {
       openSettings();
     }
-  }, [selectedBlock, openSettings]);
+  }, [selectedBlock, selection, openSettings]);
 
-  // Handle closing settings panel and unselecting block
+  // Handle closing settings panel and unselecting block or menu
   const handleCloseSettings = () => {
-    // Unselect the block and any selected items
-    setSelectedBlock(null);
-    setSelectedBlockId(null);
-    setSelectedItemId(null);
-    setSelectedItemBlockId(null);
+    // Clear any selection (block or menu)
+    select(null);
     // Close the settings panel
     closeSettings();
   };
@@ -252,7 +251,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
       <div className={`${isSettingsOpen ? 'p-8' : 'p-0'} min-w-0 h-full min-h-0 flex flex-col`}>
         <div className="mb-6 flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">Block Settings</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              {selection?.type === 'menu' ? 'Menu Settings' : 'Block Settings'}
+            </h2>
             <button 
               onClick={handleCloseSettings}
               className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200"
@@ -274,45 +275,51 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
           </div>
         </div>
         <div className="space-y-6 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Selected Block</h3>
-            {selectedBlock ? (
-              <div className="text-sm">
-                <p className="text-gray-700">
-                  <span className="font-medium">Type:</span> {selectedBlock.type}
-                </p>
-                <p className="text-gray-700">
-                  <span className="font-medium">ID:</span> {selectedBlock.id}
-                </p>
-                {selectedItemId && (
-                  <p className="text-gray-700">
-                    <span className="font-medium">Selected Item:</span> {selectedItemId}
-                  </p>
+          {selection?.type === 'menu' ? (
+            <MenuSettingsForm pagesList={pagesList.length > 0 ? pagesList : availablePages} />
+          ) : (
+            <>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-medium text-gray-700 mb-2">Selected Block</h3>
+                {selectedBlock ? (
+                  <div className="text-sm">
+                    <p className="text-gray-700">
+                      <span className="font-medium">Type:</span> {selectedBlock.type}
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-medium">ID:</span> {selectedBlock.id}
+                    </p>
+                    {selectedItemId && (
+                      <p className="text-gray-700">
+                        <span className="font-medium">Selected Item:</span> {selectedItemId}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">No block selected</p>
                 )}
               </div>
-            ) : (
-              <p className="text-sm text-gray-500">No block selected</p>
-            )}
-          </div>
-          
-          {selectedBlock && (
-            <VisibilityForm
-              block={selectedBlock}
-              visibility={selectedBlock.visibility || {}}
-              onUpdateVisibility={handleVisibilityChange}
-            />
-          )}
-          
-          {selectedItemId && renderItemEditor()}
-          
-          {renderBlockPropsEditor()}
-          
-          {selectedBlock && selectedBlock.type !== 'spacer' && selectedBlock.type !== 'divider' && (
-            <StyleForm
-              style={selectedBlock.style || {}}
-              onChange={handleStyleChange}
-              blockType={selectedBlock.type}
-            />
+              
+              {selectedBlock && (
+                <VisibilityForm
+                  block={selectedBlock}
+                  visibility={selectedBlock.visibility || {}}
+                  onUpdateVisibility={handleVisibilityChange}
+                />
+              )}
+              
+              {selectedItemId && renderItemEditor()}
+              
+              {renderBlockPropsEditor()}
+              
+              {selectedBlock && selectedBlock.type !== 'spacer' && selectedBlock.type !== 'divider' && (
+                <StyleForm
+                  style={selectedBlock.style || {}}
+                  onChange={handleStyleChange}
+                  blockType={selectedBlock.type}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
