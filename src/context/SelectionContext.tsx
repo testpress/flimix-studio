@@ -9,6 +9,7 @@ import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 import type { TabsBlock, Tab } from '@blocks/tabs/schema';
 import { useHistory } from './HistoryContext';
+import { usePageSchema } from './PageSchemaContext';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -60,6 +61,7 @@ interface SelectionProviderProps {
 
 export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }) => {
   const { pageSchema, updatePageWithHistory } = useHistory();
+  const { currentPageSlug } = usePageSchema();
 
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
@@ -67,6 +69,20 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
+  const prevPageSlugRef = React.useRef(currentPageSlug);
+
+  // Clear selection only when switching pages
+  useEffect(() => {
+    if (currentPageSlug !== prevPageSlugRef.current) {
+      setSelectedBlock(null);
+      setSelectedBlockId(null);
+      setSelectedBlockParentId(null);
+      setSelectedItemId(null);
+      setSelectedItemBlockId(null);
+      setActiveTabId(null);
+      prevPageSlugRef.current = currentPageSlug;
+    }
+  }, [currentPageSlug]);
 
   // Helper function to recursively check if a block exists in the schema
   const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {
