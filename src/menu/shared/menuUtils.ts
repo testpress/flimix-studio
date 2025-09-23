@@ -53,3 +53,14 @@ export const getContainerStyle = (backgroundColor: string, hoverColor?: string) 
 export const getHoverClassName = (hoverColor?: string): string => {
   return hoverColor ? 'has-hover-color' : '';
 };
+
+/**
+ * Get text color class and style
+ */
+export const getTextColorProps = (textColor: string, defaultClass: string = 'text-white') => {
+  const isHex = isHexColor(textColor);
+  return {
+    textColorClass: !isHex ? (textColor || defaultClass) : '',
+    textColorStyle: isHex ? { color: textColor } : {},
+  };
+};

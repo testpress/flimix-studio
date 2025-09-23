@@ -1,4 +1,5 @@
 import React from 'react';
+import { getContainerStyle, getHoverClassName } from './menuUtils';
 
 interface MenuWrapperProps {
   children: React.ReactNode;
@@ -14,21 +15,17 @@ const MenuWrapper: React.FC<MenuWrapperProps> = ({
   children,
   className = '',
   style = {},
-  backgroundColor,
+  backgroundColor = '',
   hoverColor,
   navClassName = '',
   navStyle = { backgroundColor: 'transparent' }
 }) => {
-  const isHexBackgroundColor = backgroundColor && backgroundColor.startsWith('#');
-  const backgroundColorStyle = isHexBackgroundColor ? { backgroundColor } : {};
-
   const containerStyle = {
-    ...backgroundColorStyle,
-    ...(hoverColor && { '--menu-item-hover-color': hoverColor }),
+    ...getContainerStyle(backgroundColor, hoverColor),
     ...style,
   };
 
-  const hoverClassName = hoverColor ? 'has-hover-color' : '';
+  const hoverClassName = getHoverClassName(hoverColor);
 
   return (
     <div className={`${className} ${hoverClassName}`} style={containerStyle}>

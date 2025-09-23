@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
+import type { StyleProps } from '@blocks/shared/Style';
 
 export interface MenuItem {
   id: string;
@@ -17,10 +18,8 @@ export interface Menu {
     alignment: "left" | "center" | "right";
     items: MenuItem[];
   };
-  style: {
-    backgroundColor: string;
-    textColor: string;
-    hoverColor: string;
+  style: StyleProps & {
+    hoverColor?: string;
   };
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import type { MenuItem as MenuItemType } from '@context/MenuSchemaContext';
 import { usePageSchema } from '@context/PageSchemaContext';
 import { ChevronDown } from 'lucide-react';
+import { getTextColorProps } from './menuUtils';
 
 interface MenuItemProps {
   item: MenuItemType;
@@ -19,9 +20,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, textColor }) => {
   };
 
   // Handle text color - use Tailwind class for predefined values, inline style for custom hex colors
-  const isHexTextColor = textColor && textColor.startsWith('#');
-  const textColorClass = !isHexTextColor ? (textColor || 'text-white') : '';
-  const textColorStyle = isHexTextColor ? { color: textColor } : {};
+  const { textColorClass, textColorStyle } = getTextColorProps(textColor);
 
   const hasChildren = item.children && item.children.length > 0;
   const commonProps = {
