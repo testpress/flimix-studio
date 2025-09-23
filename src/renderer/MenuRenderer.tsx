@@ -44,7 +44,8 @@ const MenuRenderer: React.FC<MenuRendererProps> = ({ location }) => {
   if (!menu || !menu.props.enabled) return null;
 
   const { alignment, items } = menu.props;
-  const { backgroundColor, textColor, hoverColor } = menu.style;
+  // Default to empty strings to avoid breaking type safety and CSS logic
+  const { backgroundColor = '', textColor = '', hoverColor = '' } = menu.style;
 
   // Get the appropriate component for the location
   const MenuComponent = getMenuComponent(actualLocation);
