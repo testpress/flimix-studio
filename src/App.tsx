@@ -14,16 +14,21 @@ import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
 import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
+import defaultMenuSchema from '@pageSchemas/defaultMenuSchema.json';
+import { MenuSchemaProvider, MenuBar, useMenuSchema, type MenuInitialData } from './menu';
 
 export type AppProps = {
   initialPage?: Record<string, PageSchema>;
   defaultPageSlug?: string;
   pagesList?: string[];
+  initialMenu?: MenuInitialData;
+  menuSlug?: string;
+  defaultLocation?: string;
   onSave?: (pageSlug: string, schema: PageSchema) => Promise<any>;
   onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 };
 
-function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: AppProps) {
+function App({ initialPage, defaultPageSlug, pagesList, initialMenu, menuSlug, defaultLocation, onSave, onLoadPage }: AppProps) {
   const [showDebug, setShowDebug] = useState(false);
   
   // Provide default values if not provided
@@ -31,46 +36,95 @@ function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: Ap
     'home': amazonSchemaData as PageSchema
   };
   const currentPageSlug = defaultPageSlug || 'home';
+  const menus = initialMenu || (defaultMenuSchema as MenuInitialData);
+  const menuLocation = defaultLocation || 'header';
   
   // Get the initial schema for HistoryProvider (using the default page)
   const initialSchema = pages[currentPageSlug];
 
   return (
-    <PageSchemaProvider 
-      initialPage={pages} 
-      pagesList={pagesList}
-      defaultPageSlug={currentPageSlug}
-      onLoadPage={onLoadPage}
+    <MenuSchemaProvider 
+      initialMenu={menus}
+      menuSlug={menuSlug}
+      defaultLocation={menuLocation}
     >
-      <HistoryProvider initialSchema={initialSchema}>
-        <SelectionProvider>
-          <BlockInsertProvider>
-            <LibraryPanelProvider>
-              <LayoutPanelProvider>
-                <SettingsPanelProvider>
-                  <PanelCoordinatorProvider>
-                    <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                      <TopBar onSave={onSave} />
-                      <div className="flex-1 flex min-h-0">
-                        <LibraryPanel />
-                        <LayoutPanel />
-                        <div className="flex-1 min-w-0">
-                          <Canvas showDebug={showDebug} />
-                        </div>
-                        <SettingsPanel 
-                          showDebug={showDebug}
-                          onToggleShowDebug={() => setShowDebug(current => !current)}
+      <PageSchemaProvider 
+        initialPage={pages} 
+        pagesList={pagesList}
+        defaultPageSlug={currentPageSlug}
+        onLoadPage={onLoadPage}
+      >
+        <HistoryProvider initialSchema={initialSchema}>
+          <SelectionProvider>
+            <BlockInsertProvider>
+              <LibraryPanelProvider>
+                <LayoutPanelProvider>
+                  <SettingsPanelProvider>
+                    <PanelCoordinatorProvider>
+                      <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
+                        <TopBar onSave={onSave} />
+                        
+                        {/* Header menu - directly below TopBar */}
+                        <MenuBar 
+                          location="header" 
+                          className="py-3 px-6" 
+                        />
+                        
+                        {/* Secondary header menu - below main header */}
+                        <MenuBar 
+                          location="secondary-header" 
+                        />
+                        
+                        {/* Sidebar menu - floating on the left side */}
+                        <MenuBar 
+                          location="sidebar" 
+                          className="h-full py-8 px-2" 
+                        />
+                        
+                        {/* Main content with conditional margin */}
+                        <MainContentWrapper>
+                          <LibraryPanel />
+                          <LayoutPanel />
+                          <div className="flex-1 min-w-0">
+                            <Canvas showDebug={showDebug} />
+                          </div>
+                          <SettingsPanel 
+                            showDebug={showDebug}
+                            onToggleShowDebug={() => setShowDebug(current => !current)}
+                          />
+                        </MainContentWrapper>
+                        
+                        {/* Footer menu - at bottom */}
+                        <MenuBar 
+                          location="footer" 
+                        />
+                        
+                        {/* Secondary footer menu - below main footer */}
+                        <MenuBar 
+                          location="secondary-footer" 
                         />
                       </div>
-                    </div>
-                  </PanelCoordinatorProvider>
-                </SettingsPanelProvider>
-              </LayoutPanelProvider>
-            </LibraryPanelProvider>
-          </BlockInsertProvider>
-        </SelectionProvider>
-      </HistoryProvider>
-    </PageSchemaProvider>
+                    </PanelCoordinatorProvider>
+                  </SettingsPanelProvider>
+                </LayoutPanelProvider>
+              </LibraryPanelProvider>
+            </BlockInsertProvider>
+          </SelectionProvider>
+        </HistoryProvider>
+      </PageSchemaProvider>
+    </MenuSchemaProvider>
+  );
+}
+
+// Simple wrapper that checks sidebar and applies margin
+const MainContentWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { menus } = useMenuSchema();
+  const hasSidebar = menus['sidebar']?.props?.enabled;
+  
+  return (
+    <div className={`flex-1 flex min-h-0 ${hasSidebar ? 'lg:ml-24' : ''}`}>
+      {children}
+    </div>
   );
 }
 

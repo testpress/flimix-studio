@@ -1,0 +1,257 @@
+{
+  "header": {
+    "props": {
+      "enabled": true,
+      "alignment": "center",
+      "items": [
+        {
+          "id": "home",
+          "label": "Home",
+          "type": "anchor",
+          "anchor": "#home"
+        },
+        {
+          "id": "about",
+          "label": "About Us",
+          "type": "anchor",
+          "anchor": "#about"
+        },
+        {
+          "id": "footer-block",
+          "label": "Footer",
+          "type": "anchor",
+          "anchor": "#footer-block"
+        },
+        {
+          "id": "contact",
+          "label": "Contact",
+          "type": "anchor",
+          "anchor": "#contact"
+        },
+        {
+          "id": "blog",
+          "label": "Blog",
+          "type": "external",
+          "url": "https://blog.example.com"
+        },
+        {
+          "id": "github",
+          "label": "GitHub",
+          "type": "external",
+          "url": "https://github.com/example"
+        },
+        {
+          "id": "dropdown",
+          "label": "Resources",
+          "type": "anchor",
+          "anchor": "#resources",
+          "children": [
+            {
+              "id": "docs",
+              "label": "Documentation",
+              "type": "external",
+              "url": "https://docs.example.com"
+            },
+            {
+              "id": "api",
+              "label": "API Reference",
+              "type": "external",
+              "url": "https://api.example.com"
+            },
+            {
+              "id": "tutorials",
+              "label": "Tutorials",
+              "type": "external",
+              "url": "https://tutorials.example.com"
+            },
+            {
+              "id": "support",
+              "label": "Support",
+              "type": "anchor",
+              "anchor": "#support"
+            }
+          ]
+        }
+      ]
+    },
+    "style": {
+      "backgroundColor": "#111111",
+      "textColor": "#ffffff",
+      "hoverColor": "#ff0000"
+    }
+  },
+  "footer": {
+    "props": {
+      "enabled": true,
+      "alignment": "center",
+      "items": [
+        {
+          "id": "copyright",
+          "label": "© 2024 Flimix Studio. All rights reserved.",
+          "type": "anchor",
+          "anchor": "#top"
+        },
+        {
+          "id": "privacy",
+          "label": "Privacy Policy",
+          "type": "external",
+          "url": "https://example.com/privacy"
+        },
+        {
+          "id": "terms",
+          "label": "Terms of Service",
+          "type": "external",
+          "url": "https://example.com/terms"
+        },
+        {
+          "id": "cookies",
+          "label": "Cookie Policy",
+          "type": "external",
+          "url": "https://example.com/cookies"
+        },
+        {
+          "id": "contact",
+          "label": "Contact Us",
+          "type": "external",
+          "url": "https://example.com/contact"
+        }
+      ]
+    },
+    "style": {
+      "backgroundColor": "#000000",
+      "textColor": "#666666",
+      "hoverColor": "#00ffff"
+    }
+  },
+  "sidebar": {
+    "props": {
+      "enabled": true,
+      "alignment": "left",
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "type": "anchor",
+          "anchor": "#dashboard"
+        },
+        {
+          "id": "profile",
+          "label": "Profile",
+          "type": "anchor",
+          "anchor": "#profile"
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "type": "anchor",
+          "anchor": "#settings"
+        },
+        {
+          "id": "content",
+          "label": "Content",
+          "type": "anchor",
+          "anchor": "#content",
+          "children": [
+            {
+              "id": "movies",
+              "label": "Movies",
+              "type": "anchor",
+              "anchor": "#movies"
+            },
+            {
+              "id": "series",
+              "label": "Series",
+              "type": "anchor",
+              "anchor": "#series"
+            },
+            {
+              "id": "documentaries",
+              "label": "Documentaries",
+              "type": "anchor",
+              "anchor": "#documentaries"
+            }
+          ]
+        },
+        {
+          "id": "help",
+          "label": "Help Center",
+          "type": "external",
+          "url": "https://help.example.com"
+        },
+        {
+          "id": "logout",
+          "label": "Logout",
+          "type": "external",
+          "url": "https://example.com/logout"
+        }
+      ]
+    },
+    "style": {
+      "backgroundColor": "#1a1a1a",
+      "textColor": "#cccccc",
+      "hoverColor": "#ff00ff"
+    }
+  },
+  "secondary-header": {
+    "props": {
+      "enabled": true,
+      "alignment": "center",
+      "items": [
+        {
+          "id": "secondary-home",
+          "label": "Home",
+          "type": "anchor",
+          "anchor": "#home"
+        },
+        {
+          "id": "secondary-services",
+          "label": "Services",
+          "type": "anchor",
+          "anchor": "#services"
+        },
+        {
+          "id": "secondary-portfolio",
+          "label": "Portfolio",
+          "type": "anchor",
+          "anchor": "#portfolio"
+        }
+      ]
+    },
+    "style": {
+      "backgroundColor": "#000000",
+      "textColor": "#ffffff",
+      "hoverColor": "#ff0000"
+    }
+  },
+  "secondary-footer": {
+    "props": {
+      "enabled": true,
+      "alignment": "center",
+      "items": [
+        {
+          "id": "secondary-privacy",
+          "label": "Privacy Policy",
+          "type": "anchor",
+          "anchor": "#privacy"
+        },
+        {
+          "id": "secondary-terms",
+          "label": "Terms of Service",
+          "type": "anchor",
+          "anchor": "#terms"
+        },
+        {
+          "id": "secondary-cookies",
+          "label": "Cookie Policy",
+          "type": "anchor",
+          "anchor": "#cookies"
+        }
+      ]
+    },
+    "style": {
+      "backgroundColor": "#000000",
+      "textColor": "#666666",
+      "hoverColor": "#00ff00"
+    }
+  }
+}
