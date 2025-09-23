@@ -1,14 +1,14 @@
 import React from 'react';
-import type { MenuItem } from './MenuSchemaContext';
+import type { MenuItem as MenuItemType } from '@context/MenuSchemaContext';
 import { usePageSchema } from '@context/PageSchemaContext';
 import { ChevronDown } from 'lucide-react';
 
-interface MenuItemComponentProps {
-  item: MenuItem;
+interface MenuItemProps {
+  item: MenuItemType;
   textColor: string;
 }
 
-const MenuItemComponent: React.FC<MenuItemComponentProps> = ({ item, textColor }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, textColor }) => {
   const { loadPage } = usePageSchema();
 
   const handleAnchorLink = (anchor: string) => {
@@ -23,26 +23,15 @@ const MenuItemComponent: React.FC<MenuItemComponentProps> = ({ item, textColor }
   const textColorClass = !isHexTextColor ? (textColor || 'text-white') : '';
   const textColorStyle = isHexTextColor ? { color: textColor } : {};
 
-  const getItemStyle = () => {
-    return {
-      cursor: 'pointer',
-      transition: 'color 0.2s ease',
-      ...textColorStyle,
-    };
-  };
-
-  const getLinkProps = () => {
-    return {
-      style: getItemStyle(),
-      className: `menu-item ${textColorClass}`,
-    };
-  };
-
   const renderMenuItem = () => {
     const hasChildren = item.children && item.children.length > 0;
     const commonProps = {
-      ...getLinkProps(),
-      className: getLinkProps().className
+      style: {
+        cursor: 'pointer',
+        transition: 'color 0.2s ease',
+        ...textColorStyle,
+      },
+      className: `menu-item ${textColorClass}`,
     };
     
     const renderContent = () => (
@@ -55,7 +44,7 @@ const MenuItemComponent: React.FC<MenuItemComponentProps> = ({ item, textColor }
     if (item.type === 'internal' && item.slug) {
       return (
         <button
-          onClick={() => item.slug && loadPage(item.slug)}
+          onClick={() => loadPage(item.slug!)}
           {...commonProps}
         >
           {renderContent()}
@@ -96,4 +85,4 @@ const MenuItemComponent: React.FC<MenuItemComponentProps> = ({ item, textColor }
   return <>{renderMenuItem()}</>;
 };
 
-export default MenuItemComponent;
+export default MenuItem;

@@ -11,23 +11,7 @@
 }
 
 /* Menu item hover effect using CSS custom properties - only when hoverColor is provided */
-.has-hover-color .menu-item:hover {
-  color: var(--menu-item-hover-color) !important;
-}
-
-/* Ensure hover works for all menu item types - only when hoverColor is provided */
-.has-hover-color .menu-item button:hover,
-.has-hover-color .menu-item a:hover,
-.has-hover-color .menu-item span:hover {
-  color: var(--menu-item-hover-color) !important;
-}
-
-/* More specific selectors for nested elements - only when hoverColor is provided */
+.has-hover-color .menu-item:hover,
 .has-hover-color .menu-item:hover * {
-  color: var(--menu-item-hover-color) !important;
-}
-
-/* Ensure dropdown arrows also change color on hover - only when hoverColor is provided */
-.has-hover-color .menu-item:hover svg {
   color: var(--menu-item-hover-color) !important;
 }

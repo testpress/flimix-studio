@@ -15,7 +15,8 @@ import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 import defaultMenuSchema from '@pageSchemas/defaultMenuSchema.json';
-import { MenuSchemaProvider, MenuBar, useMenuSchema, type MenuInitialData } from './menu';
+import { MenuSchemaProvider, useMenuSchema, type MenuInitialData } from '@context/MenuSchemaContext';
+import MenuRenderer from '@renderer/MenuRenderer';
 
 export type AppProps = {
   initialPage?: Record<string, PageSchema>;
@@ -65,20 +66,18 @@ function App({ initialPage, defaultPageSlug, pagesList, initialMenu, menuSlug, d
                         <TopBar onSave={onSave} />
                         
                         {/* Header menu - directly below TopBar */}
-                        <MenuBar 
+                        <MenuRenderer 
                           location="header" 
-                          className="py-3 px-6" 
                         />
                         
                         {/* Secondary header menu - below main header */}
-                        <MenuBar 
+                        <MenuRenderer 
                           location="secondary-header" 
                         />
                         
                         {/* Sidebar menu - floating on the left side */}
-                        <MenuBar 
+                        <MenuRenderer 
                           location="sidebar" 
-                          className="h-full py-8 px-2" 
                         />
                         
                         {/* Main content with conditional margin */}
@@ -95,12 +94,12 @@ function App({ initialPage, defaultPageSlug, pagesList, initialMenu, menuSlug, d
                         </MainContentWrapper>
                         
                         {/* Footer menu - at bottom */}
-                        <MenuBar 
+                        <MenuRenderer 
                           location="footer" 
                         />
                         
                         {/* Secondary footer menu - below main footer */}
-                        <MenuBar 
+                        <MenuRenderer 
                           location="secondary-footer" 
                         />
                       </div>

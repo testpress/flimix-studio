@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 export interface MenuItem {
   id: string;
@@ -51,7 +51,7 @@ export const MenuSchemaProvider: React.FC<{
   defaultLocation?: string;
   children: React.ReactNode;
 }> = ({ children, initialMenu, menuSlug, defaultLocation }) => {
-  const [menus, setMenus] = useState<{ [location: string]: Menu }>({});
+  const [menus, setMenus] = useState<{ [location: string]: Menu }>(initialMenu || {});
 
   const setMenu = (location: string, schema: Menu) => {
     setMenus(prev => ({
@@ -59,23 +59,6 @@ export const MenuSchemaProvider: React.FC<{
       [location]: schema
     }));
   };
-
-  useEffect(() => {
-    if (initialMenu && defaultLocation) {
-      // If initialMenu is provided with a defaultLocation, use that schema
-      const schema = initialMenu[defaultLocation];
-      if (schema) {
-        setMenu(defaultLocation, schema as Menu);
-      }
-      
-      // Also set up any other locations that might be in the initialMenu
-      Object.entries(initialMenu).forEach(([location, schema]) => {
-        if (location !== defaultLocation) {
-          setMenu(location, schema as Menu);
-        }
-      });
-    }
-  }, [initialMenu, defaultLocation]);
 
   return (
     <MenuSchemaContext.Provider value={{ menus, setMenu, menuSlug, defaultLocation }}>
