@@ -2,7 +2,7 @@
 
 **Flimix Studio** is a powerful visual page builder designed specifically for OTT (Over-The-Top) platforms like Netflix, Amazon Prime, Disney+, and Hotstar. It provides a complete visual editing experience for creating marketing pages, landing pages, and content discovery interfaces.
 
-## 🎯 What is Flimix Studio?
+## What is Flimix Studio?
 
 Flimix Studio is a React-based visual editor that renders a complete page builder interface. It allows content creators and developers to:
 
@@ -11,7 +11,7 @@ Flimix Studio is a React-based visual editor that renders a complete page builde
 - **Export structured data** - Get clean JSON schemas for rendering across platforms
 - **Integrate seamlessly** - Embed the studio into any web application
 
-## ✨ Key Features
+## Key Features
 
 - **16+ Pre-built Blocks** - Hero carousels, poster grids, text blocks, CTAs, and more
 - **Real-time Visual Editing** - Live preview with instant updates
@@ -22,21 +22,25 @@ Flimix Studio is a React-based visual editor that renders a complete page builde
 - **Undo/Redo** - Full history management for safe editing
 - **Block-based Architecture** - Modular, extensible block system
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React 19** - Latest React with concurrent features
 - **TypeScript** - Full type safety and IntelliSense
 - **Tailwind CSS v4** - Modern utility-first styling
 - **Vite** - Fast build tool and dev server
 - **Lucide React** - Beautiful icon library
-- **HLS.js** - Video streaming support
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 Flimix Studio is distributed as a static JavaScript file that gets served from a cloud storage bucket. There's no npm package installation required.
 
-### Build Process
+## 🛠️ Development
 
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Setup
 ```bash
 # Clone the repository
 git clone https://github.com/your-org/flimix-studio.git
@@ -44,6 +48,27 @@ cd flimix-studio
 
 # Install dependencies
 npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Project Structure
+```
+src/
+├── blocks/           # Individual block implementations
+│   ├── hero/         # Hero block (carousel, single)
+│   ├── carousel/      # Content carousels
+│   ├── text/          # Text content
+│   └── ...           # Other blocks
+├── components/        # Shared UI components
+├── context/          # React context providers
+├── layout/           # Main layout components
+├── renderer/         # Block rendering engine
+└── utils/            # Utility functions
 ```
 
 ### Deployment Options
@@ -56,11 +81,10 @@ For local development and testing, you can use a local MinIO bucket:
 ```bash
 # MinIO Configuration
 MINIO_ENDPOINT=http://localhost:9000
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET_NAME=flimix-studio-dev
+MINIO_ACCESS_KEY=admin
+MINIO_SECRET_KEY=admin123
+MINIO_BUCKET_NAME=flimix
 MINIO_REGION=us-east-1
-MINIO_USE_SSL=false
 ```
 
 2. **Deploy to local MinIO bucket**:
@@ -71,31 +95,20 @@ npm run deploy:local
 This will:
 - Build the project (`npm run build`)
 - Upload `dist/js/flimix-studio.js` and `dist/css/flimix-studio.css` to your local MinIO bucket
-- Make the files available at: `http://localhost:9000/flimix-studio-dev/static/studio/`
+- Make the files available at: `http://localhost:9000/flimix/static/studio/`
 
 3. **Use in integration**:
 ```html
 <!-- Use local MinIO URLs -->
-<link rel="stylesheet" href="http://localhost:9000/flimix-studio-dev/static/studio/css/flimix-studio.css">
-<script src="http://localhost:9000/flimix-studio-dev/static/studio/js/flimix-studio.js"></script>
+<link rel="stylesheet" href="http://localhost:9000/bucket-name/static/studio/css/flimix-studio.css">
+<script src="http://localhost:9000/bucket-name/static/studio/js/flimix-studio.js"></script>
 ```
 
 #### Production Deployment
 
 For production deployment, use GitHub Actions:
 
-1. **Set up production environment variables** in GitHub Secrets:
-```bash
-# Production MinIO/S3 Configuration
-PROD_MINIO_ENDPOINT=https://your-production-bucket.com
-PROD_MINIO_ACCESS_KEY=your-access-key
-PROD_MINIO_SECRET_KEY=your-secret-key
-PROD_MINIO_BUCKET_NAME=flimix-studio-prod
-PROD_MINIO_REGION=us-east-1
-PROD_MINIO_USE_SSL=true
-```
-
-2. **Trigger deployment**:
+1. **Trigger deployment**:
 
 **Automatic**: Push to main branch
 ```bash
@@ -112,93 +125,11 @@ git push origin main
 4. **Use in production integration**:
 ```html
 <!-- Use production URLs -->
-<link rel="stylesheet" href="https://your-production-bucket.com/flimix-studio-prod/static/studio/css/flimix-studio.css">
-<script src="https://your-production-bucket.com/flimix-studio-prod/static/studio/js/flimix-studio.js"></script>
+<link rel="stylesheet" href="https://your-production-bucket.com/bucket-name/static/studio/css/flimix-studio.css">
+<script src="https://your-production-bucket.com/bucket-name/static/studio/js/flimix-studio.js"></script>
 ```
 
-#### Manual Upload
-
-If you prefer manual upload:
-
-```bash
-# Build the project
-npm run build
-
-# Manually upload dist/ contents to your cloud storage bucket
-# Ensure the structure is maintained:
-# your-bucket/
-#   └── static/
-#       └── studio/
-#           ├── js/
-#           │   └── flimix-studio.js
-#           └── css/
-#               └── flimix-studio.css
-```
-
-## 🚀 Quick Start
-
-### Django Template Integration
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flimix Studio</title>
-    <!-- Include the studio CSS -->
-    <link rel="stylesheet" href="{% cloud_file_url 'static/studio/css/flimix-studio.css' %}">
-</head>
-<body>
-    <!-- Container for the studio -->
-    <div id="flimix-studio-container" style="height: 100vh;"></div>
-    
-    <!-- Include the studio JavaScript -->
-    <script src="{% cloud_file_url 'static/studio/js/flimix-studio.js' %}"></script>
-    
-    <script>
-        // Wait for the studio to be ready
-        window.FlimixStudio.onReady(function() {
-            // Render the studio
-            const root = window.FlimixStudio.render(
-                document.getElementById('flimix-studio-container'),
-                {
-                    initialPage: {
-                        'home': {
-                            title: 'My Landing Page',
-                            theme: 'dark',
-                            blocks: []
-                        }
-                    },
-                    defaultPageSlug: 'home',
-                    onSave: async function(pageSlug, schema) {
-                        console.log('Saving page:', pageSlug, schema);
-                        // Send to your Django backend
-                        try {
-                            const response = await fetch('/api/pages/save/', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': '{{ csrf_token }}'
-                                },
-                                body: JSON.stringify({
-                                    page_slug: pageSlug,
-                                    schema: schema
-                                })
-                            });
-                            return await response.json();
-                        } catch (error) {
-                            console.error('Failed to save page:', error);
-                            throw error;
-                        }
-                    }
-                }
-            );
-        });
-    </script>
-</body>
-</html>
-```
+## Quick Start
 
 ### Basic HTML Integration
 
@@ -265,10 +196,7 @@ The studio comes with 16+ pre-built blocks optimized for OTT platforms:
 - **Testimonial** - Customer testimonials and reviews
 - **Feature Callout** - Highlight key features or benefits
 
-### Navigation
-- **Footer** - Site footer with links and branding
-
-## 📊 JSON Schema Structure
+## JSON Schema Structure
 
 The studio outputs clean, structured JSON that can be rendered across any platform:
 
@@ -382,92 +310,12 @@ const root = window.FlimixStudio.render(container, options);
 window.FlimixStudio.unmount();
 ```
 
-## 🌍 Platform Support
+## Platform Support
 
 ### Rendering Platforms
 - **Web** - React components for web applications
 - **Mobile** - React Native compatible schemas
 - **TV** - Smart TV and set-top box applications
 - **Desktop** - Electron and desktop applications
-
-### Browser Support
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## 📱 Responsive Behavior
-
-The studio automatically handles responsive design:
-
-- **Mobile** (< 768px) - Single column, touch-optimized
-- **Tablet** (768px - 1024px) - Two column layouts
-- **Desktop** (> 1024px) - Full multi-column layouts
-- **TV** (> 1920px) - Large screen optimizations
-
-## 🔒 Security & Performance
-
-- **Type Safety** - Full TypeScript support prevents runtime errors
-- **Memory Management** - Automatic cleanup prevents memory leaks
-- **Bundle Size** - Optimized for production with tree shaking
-- **CSP Compatible** - Works with Content Security Policy
-- **No External Dependencies** - Self-contained with minimal footprint
-
-## 🛠️ Development
-
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-
-### Setup
-```bash
-# Clone the repository
-git clone https://github.com/your-org/flimix-studio.git
-cd flimix-studio
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-### Project Structure
-```
-src/
-├── blocks/           # Individual block implementations
-│   ├── hero/         # Hero block (carousel, single)
-│   ├── carousel/      # Content carousels
-│   ├── text/          # Text content
-│   └── ...           # Other blocks
-├── components/        # Shared UI components
-├── context/          # React context providers
-├── layout/           # Main layout components
-├── renderer/         # Block rendering engine
-└── utils/            # Utility functions
-```
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-- **Documentation** - [docs.flimix-studio.com](https://docs.flimix-studio.com)
-- **Issues** - [GitHub Issues](https://github.com/your-org/flimix-studio/issues)
-- **Discussions** - [GitHub Discussions](https://github.com/your-org/flimix-studio/discussions)
-
----
 
 **Built with ❤️ for the OTT industry** - Empowering content creators to build beautiful, engaging experiences across all platforms.
