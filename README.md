@@ -34,7 +34,7 @@ Flimix Studio is a React-based visual editor that renders a complete page builde
 
 Flimix Studio is distributed as a static JavaScript file that gets served from a cloud storage bucket. There's no npm package installation required.
 
-## 🛠️ Development
+## Development
 
 ### Prerequisites
 - Node.js 18+
@@ -140,12 +140,12 @@ git push origin main
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flimix Studio</title>
-    <link rel="stylesheet" href="https://your-bucket.com/static/studio/css/flimix-studio.css">
+    <link rel="stylesheet" href="https://your-bucket.com/bucket-name/static/studio/css/flimix-studio.css">
 </head>
 <body>
     <div id="flimix-studio-container" style="height: 100vh;"></div>
     
-    <script src="https://your-bucket.com/static/studio/js/flimix-studio.js"></script>
+    <script src="https://your-bucket.com/bucket-name/static/studio/js/flimix-studio.js"></script>
     <script>
         window.FlimixStudio.onReady(function() {
             const root = window.FlimixStudio.render(
@@ -171,7 +171,7 @@ git push origin main
 </html>
 ```
 
-## 🧩 Available Blocks
+## Available Blocks
 
 The studio comes with 16+ pre-built blocks optimized for OTT platforms:
 
@@ -259,7 +259,7 @@ Each block supports extensive styling options:
 - Platform-specific visibility controls
 - Device-optimized layouts
 
-## 🔧 API Reference
+## API Reference
 
 ### `window.FlimixStudio.render(element, props)`
 
@@ -285,15 +285,41 @@ Renders the Flimix Studio interface into a DOM element.
   defaultPageSlug: 'home', // Default page to load
   pagesList: ['home', 'movies', 'shows'], // Available pages
   onSave: async function(pageSlug, schema) {
-    // Handle page saving
+    // Handle page saving - called when user saves a page
     // Return a Promise
   },
   onLoadPage: async function(slug) {
-    // Handle page loading
+    // Handle page loading - called when user switches to a different page
+    // Useful for loading pages from your backend/database
     // Return { slug: string, schema: object }
   }
 }
 ```
+
+### When to Use `onLoadPage`
+
+The `onLoadPage` callback is useful when:
+
+- **Multiple Pages**: You have multiple pages and want to load them dynamically from your backend
+- **Database Storage**: Pages are stored in a database and need to be fetched on demand
+- **Lazy Loading**: You want to load page content only when the user switches to that page
+- **Real-time Updates**: You want to fetch the latest version of a page from your server
+
+**Example Usage:**
+```javascript
+onLoadPage: async function(slug) {
+  try {
+    const response = await fetch(`/api/pages/${slug}`);
+    const data = await response.json();
+    return { slug, schema: data };
+  } catch (error) {
+    console.error('Failed to load page:', error);
+    throw error;
+  }
+}
+```
+
+**Note**: If you don't provide `onLoadPage`, the studio will only work with the pages provided in `initialPage`. The `onLoadPage` callback enables dynamic page loading from external sources.
 
 ### Global API
 
