@@ -240,7 +240,7 @@ The studio outputs clean, structured JSON that can be rendered across any platfo
 }
 ```
 
-## 🎨 Styling & Theming
+## Styling & Theming
 
 ### Built-in Themes
 - **Dark Theme** - Optimized for OTT platforms
