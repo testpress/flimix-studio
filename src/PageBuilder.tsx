@@ -15,7 +15,7 @@ import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@pageSchemas/amazonSchema.json';
 
-export type AppProps = {
+export type PageBuilderProps = {
   initialPage?: Record<string, PageSchema>;
   defaultPageSlug?: string;
   pagesList?: string[];
@@ -23,7 +23,7 @@ export type AppProps = {
   onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 };
 
-function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: AppProps) {
+function PageBuilder({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: PageBuilderProps) {
   const [showDebug, setShowDebug] = useState(false);
   
   // Provide default values if not provided
@@ -74,4 +74,4 @@ function App({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: Ap
   );
 }
 
-export default App;
+export default PageBuilder;

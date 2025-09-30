@@ -1,12 +1,12 @@
 import { createRoot, type Root } from 'react-dom/client'
 import './index.css'
-import App, { type AppProps } from './App'
+import PageBuilder, { type PageBuilderProps } from './PageBuilder'
 
 // TypeScript declaration for global FlimixStudio 
 declare global {
   interface Window {
     FlimixStudio: {
-      render: (el: HTMLElement, props?: AppProps) => Root;
+      render: (el: HTMLElement, props?: PageBuilderProps) => Root;
       unmount: () => void;
       onReady: (callback: () => void) => void;
     };
@@ -17,14 +17,14 @@ let root: Root | null = null
 let readyCallbacks: (() => void)[] = []
 let isReady = false
 
-export function renderStudio(el: HTMLElement, props: AppProps = {}) {
+export function renderStudio(el: HTMLElement, props: PageBuilderProps = {}) {
   // Unmount previous instance if it exists to prevent memory leaks
   if (root) {
     unmountStudio();
   }
   
   root = createRoot(el)
-  root.render(<App {...props} />)
+  root.render(<PageBuilder {...props} />)
   return root
 }
 
