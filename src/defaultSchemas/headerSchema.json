@@ -1,0 +1,65 @@
+{
+  "type": "header",
+  "items": [
+    {
+      "id": "logo-1",
+      "type": "logo",
+      "attrs": { 
+        "src": "https://img.hotstar.com/image/upload/v1737554969/web-assets/prod/images/rebrand/logo.png", 
+        "alt": "Flimix Logo", 
+        "aspectRatio": "16:9"
+      },
+      "style": { "borderRadius": "8px" }
+    },
+    {
+      "id": "title-1",
+      "type": "title",
+      "label": "Flimix",
+      "style": { "fontSize": "24px", "color": "#ffffff" }
+    },
+    {
+      "id": "menu-1",
+      "type": "internal",
+      "label": "Home",
+      "link": "/home"
+    },
+    {
+      "id": "menu-2",
+      "type": "internal",
+      "label": "Movies",
+      "link": "/movies"
+    },
+    {
+      "id": "menu-3",
+      "type": "dropdown",
+      "label": "Categories",
+      "items": [
+        { "id": "submenu-1", "type": "internal", "label": "Action", "link": "/category/action" },
+        { "id": "submenu-2", "type": "internal", "label": "Comedy", "link": "/category/comedy" },
+        { "id": "submenu-3", "type": "internal", "label": "Drama", "link": "/category/drama" },
+        { "id": "submenu-4", "type": "internal", "label": "Sci-Fi", "link": "/category/sci-fi" }
+      ]
+    },
+    {
+      "id": "menu-4",
+      "type": "dropdown",
+      "label": "TV Shows",
+      "items": [
+        { "id": "submenu-5", "type": "internal", "label": "Popular", "link": "/tv/popular" },
+        { "id": "submenu-6", "type": "internal", "label": "New Releases", "link": "/tv/new" },
+        { "id": "submenu-7", "type": "internal", "label": "Originals", "link": "/tv/originals" }
+      ]
+    },
+    {
+      "id": "menu-5",
+      "type": "internal",
+      "label": "My List",
+      "link": "/my-list"
+    }
+  ],
+  "style": {
+    "padding": "10px 20px",
+    "backgroundColor": "#111111",
+    "textColor": "#ffffff"
+  }
+}

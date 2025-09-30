@@ -24,6 +24,8 @@ export default defineConfig(({ mode }) => ({
       '@domain': path.resolve(__dirname, 'src/domain'),
       '@types': path.resolve(__dirname, 'src/types'),
       '@pageSchemas': path.resolve(__dirname, 'src/pageSchemas'),
+      '@defaultSchemas': path.resolve(__dirname, 'src/defaultSchemas'),
+      '@editor': path.resolve(__dirname, 'src/editor'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@blocks': path.resolve(__dirname, 'src/blocks'),
       '@blocks/ui': path.resolve(__dirname, 'src/blocks/ui'),

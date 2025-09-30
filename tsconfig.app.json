@@ -39,6 +39,8 @@
       "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],
       "@pageSchemas/*": ["src/pageSchemas/*"],
+      "@defaultSchemas/*": ["src/defaultSchemas/*"],
+      "@editor/*": ["src/editor/*"],
       "@hooks/*": ["src/hooks/*"],
       "@types/*": ["src/types/*"],
       "@services/*": ["src/services/*"]
