@@ -6,12 +6,14 @@ interface NavigationItemFormProps {
   item: HeaderItem;
   onUpdate: (updatedItem: HeaderItem) => void;
   isDropdownItem?: boolean;
+  onSelectItem?: (id: string) => void;
 }
 
 const NavigationItemForm: React.FC<NavigationItemFormProps> = ({ 
   item, 
   onUpdate,
-  isDropdownItem = false
+  isDropdownItem = false,
+  onSelectItem
 }) => {
   const [expandedSubItems, setExpandedSubItems] = useState<boolean>(true);
   
@@ -70,6 +72,11 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     
     // Ensure sub-items are expanded
     setExpandedSubItems(true);
+    
+    // Auto-select the new sub-item
+    if (onSelectItem) {
+      onSelectItem(newItem.id || '');
+    }
   };
 
   const handleUpdateSubItem = (index: number, updatedSubItem: HeaderItem) => {

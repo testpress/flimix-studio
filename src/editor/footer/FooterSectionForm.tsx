@@ -66,6 +66,11 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       ...footerSchema,
       items: [...footerSchema.items, newColumn]
     });
+    
+    // Auto-select the new column
+    if (onSelectItem) {
+      onSelectItem(newColumn.id || '');
+    }
   };
 
   // Handle adding new row
@@ -80,23 +85,44 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       ...footerSchema,
       items: [...footerSchema.items, newRow]
     });
+    
+    // Auto-select the new row
+    if (onSelectItem) {
+      onSelectItem(newRow.id || '');
+    }
   };
 
   // Handle updating columns
   const handleUpdateColumns = (updatedColumns: FooterItem[]) => {
-    const nonColumns = footerSchema.items.filter(item => item.type !== 'column');
+    const updatedItems = footerSchema.items.map(item => {
+      if (item.type === 'column') {
+        // Find the corresponding updated column by ID
+        const updatedColumn = updatedColumns.find(col => col.id === item.id);
+        return updatedColumn || item;
+      }
+      return item;
+    });
+    
     onUpdate({
       ...footerSchema,
-      items: [...nonColumns, ...updatedColumns]
+      items: updatedItems
     });
   };
 
   // Handle updating rows
   const handleUpdateRows = (updatedRows: FooterItem[]) => {
-    const nonRows = footerSchema.items.filter(item => item.type !== 'row');
+    const updatedItems = footerSchema.items.map(item => {
+      if (item.type === 'row') {
+        // Find the corresponding updated row by ID
+        const updatedRow = updatedRows.find(row => row.id === item.id);
+        return updatedRow || item;
+      }
+      return item;
+    });
+    
     onUpdate({
       ...footerSchema,
-      items: [...nonRows, ...updatedRows]
+      items: updatedItems
     });
   };
 
@@ -143,17 +169,40 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
             </div>
           </div>
           
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-300 mb-1">Padding (px)</label>
-            <input
-              type="number"
-              value={parseInt(footerSchema.style?.padding?.split(' ')[0] || '40px')}
-              onChange={(e) => handlePaddingChange({ target: { value: e.target.value + 'px 20px' } } as React.ChangeEvent<HTMLInputElement>)}
-              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-              min="0"
-              max="100"
-              step="1"
-            />
+          <div className="flex flex-col space-y-2">
+            <label className="text-sm text-gray-300">Padding</label>
+            <div className="flex space-x-2">
+              <div className="flex-1">
+                <label className="text-xs text-gray-400 mb-1 block">Vertical</label>
+                <input
+                  type="number"
+                  value={parseInt(footerSchema.style?.padding?.split(' ')[0] || '40px')}
+                  onChange={(e) => {
+                    const horizontal = footerSchema.style?.padding?.split(' ')[1] || '20px';
+                    handlePaddingChange({ target: { value: `${e.target.value}px ${horizontal}` } } as React.ChangeEvent<HTMLInputElement>);
+                  }}
+                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  min="0"
+                  max="100"
+                  step="1"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-xs text-gray-400 mb-1 block">Horizontal</label>
+                <input
+                  type="number"
+                  value={parseInt(footerSchema.style?.padding?.split(' ')[1] || '20px')}
+                  onChange={(e) => {
+                    const vertical = footerSchema.style?.padding?.split(' ')[0] || '40px';
+                    handlePaddingChange({ target: { value: `${vertical} ${e.target.value}px` } } as React.ChangeEvent<HTMLInputElement>);
+                  }}
+                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  min="0"
+                  max="100"
+                  step="1"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

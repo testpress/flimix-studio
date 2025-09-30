@@ -89,6 +89,7 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
                     item={item}
                     onUpdate={(updatedItem) => handleUpdateNavigationItem(index, updatedItem)}
                     isDropdownItem={false}
+                    onSelectItem={onSelectItem}
                   />
                 </div>
               )}

@@ -22,14 +22,14 @@ const FooterPreview: React.FC<FooterPreviewProps> = ({
       }}
     >
       <div className="px-4">
-        <div className="flex flex-wrap">
+        <div className="flex">
           {/* Columns */}
           {footerSchema.items
             .filter(item => item.type === 'column')
             .map((column, index) => (
               <div 
                 key={column.id || index} 
-                className={`w-1/4 px-4 mb-6 cursor-pointer ${selectedItemId === column.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
+                className={`flex-1 px-4 mb-6 cursor-pointer ${selectedItemId === column.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
                 onClick={() => onItemSelect(column.id || '')}
               >
                 {column.label && (

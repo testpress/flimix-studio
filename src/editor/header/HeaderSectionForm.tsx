@@ -184,17 +184,40 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
             </div>
           </div>
           
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-300 mb-1">Padding (px)</label>
-            <input
-              type="number"
-              value={parseInt(headerSchema.style?.padding?.split(' ')[0] || '10px')}
-              onChange={(e) => handlePaddingChange({ target: { value: e.target.value + 'px 20px' } } as React.ChangeEvent<HTMLInputElement>)}
-              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-              min="0"
-              max="50"
-              step="1"
-            />
+          <div className="flex flex-col space-y-2">
+            <label className="text-sm text-gray-300">Padding</label>
+            <div className="flex space-x-2">
+              <div className="flex-1">
+                <label className="text-xs text-gray-400 mb-1 block">Vertical</label>
+                <input
+                  type="number"
+                  value={parseInt(headerSchema.style?.padding?.split(' ')[0] || '10px')}
+                  onChange={(e) => {
+                    const horizontal = headerSchema.style?.padding?.split(' ')[1] || '20px';
+                    handlePaddingChange({ target: { value: `${e.target.value}px ${horizontal}` } } as React.ChangeEvent<HTMLInputElement>);
+                  }}
+                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  min="0"
+                  max="50"
+                  step="1"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-xs text-gray-400 mb-1 block">Horizontal</label>
+                <input
+                  type="number"
+                  value={parseInt(headerSchema.style?.padding?.split(' ')[1] || '20px')}
+                  onChange={(e) => {
+                    const vertical = headerSchema.style?.padding?.split(' ')[0] || '10px';
+                    handlePaddingChange({ target: { value: `${vertical} ${e.target.value}px` } } as React.ChangeEvent<HTMLInputElement>);
+                  }}
+                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  min="0"
+                  max="50"
+                  step="1"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
