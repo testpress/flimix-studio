@@ -31,6 +31,11 @@ const ColumnForm: React.FC<ColumnEditorProps> = ({
     };
     
     onUpdate(updatedColumns);
+    
+    // Auto-select the new item
+    if (onSelectItem) {
+      onSelectItem(newItem.id || '');
+    }
   };
 
   const handleUpdateColumnItem = (columnIndex: number, itemIndex: number, updatedItem: FooterItem) => {
