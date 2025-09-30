@@ -143,6 +143,69 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
 
   return (
     <div className="space-y-4">
+      {/* Header Layout */}
+      <div className="p-4 bg-gray-800 rounded-lg">
+        <h3 className="text-lg font-semibold text-white mb-3">Header Layout</h3>
+        
+        <div className="space-y-3">
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Logo Position</label>
+            <select
+              value={headerSchema.layout?.logoPosition || 'start'}
+              onChange={(e) => onUpdate({
+                ...headerSchema,
+                layout: {
+                  ...headerSchema.layout,
+                  logoPosition: e.target.value as 'start' | 'end'
+                }
+              })}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+            >
+              <option value="start">Start (Left)</option>
+              <option value="end">End (Right)</option>
+            </select>
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Show Title</label>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={headerSchema.layout?.showTitle !== false}
+                onChange={(e) => onUpdate({
+                  ...headerSchema,
+                  layout: {
+                    ...headerSchema.layout,
+                    showTitle: e.target.checked
+                  }
+                })}
+                className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+              />
+              <span className="ml-2 text-sm text-gray-300">Enable header title</span>
+            </div>
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Navigation Alignment</label>
+            <select
+              value={headerSchema.layout?.navigationAlignment || 'left'}
+              onChange={(e) => onUpdate({
+                ...headerSchema,
+                layout: {
+                  ...headerSchema.layout,
+                  navigationAlignment: e.target.value as 'left' | 'center' | 'right'
+                }
+              })}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+            >
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* Header Styles */}
       <div className="p-4 bg-gray-800 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Header Styles</h3>

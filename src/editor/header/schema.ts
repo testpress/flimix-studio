@@ -29,4 +29,9 @@ export interface HeaderSchema {
     textColor?: string;
     borderRadius?: string;
   };
+  layout?: {
+    logoPosition?: 'start' | 'end';
+    showTitle?: boolean;
+    navigationAlignment?: 'left' | 'center' | 'right';
+  };
 }

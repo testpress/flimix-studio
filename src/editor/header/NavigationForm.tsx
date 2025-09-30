@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Trash2, ChevronDown } from 'lucide-react';
+import { Plus, Trash2, MoveUp, MoveDown, ChevronDown } from 'lucide-react';
 import type { HeaderItem } from '@editor/header/schema';
 import NavigationItemForm from '@editor/header/NavigationItemForm';
 
@@ -46,6 +46,23 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
     }
   };
 
+  const handleMoveNavigationItem = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    
+    // Check if move is valid
+    if (newIndex < 0 || newIndex >= navigationItems.length) {
+      return;
+    }
+    
+    const updatedItems = [...navigationItems];
+    // splice(startIndex, deleteCount) - Remove 1 item at current position
+    const [movedItem] = updatedItems.splice(index, 1);
+    // splice(startIndex, deleteCount, itemToInsert) - Insert item at new position, remove 0 items
+    updatedItems.splice(newIndex, 0, movedItem);
+    
+    onUpdate(updatedItems);
+  };
+
   return (
     <div className="space-y-3">
       {navigationItems.length > 0 ? (
@@ -67,6 +84,26 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
                 </div>
                 
                 <div className="flex items-center space-x-1">
+                  {/* Move Up Button */}
+                  <button 
+                    onClick={() => handleMoveNavigationItem(index, 'up')}
+                    disabled={index === 0}
+                    className={`p-1 rounded text-gray-300 hover:text-blue-400 hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed`}
+                    title="Move up"
+                  >
+                    <MoveUp size={16} />
+                  </button>
+                  
+                  {/* Move Down Button */}
+                  <button 
+                    onClick={() => handleMoveNavigationItem(index, 'down')}
+                    disabled={index === navigationItems.length - 1}
+                    className={`p-1 rounded text-gray-300 hover:text-blue-400 hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed`}
+                    title="Move down"
+                  >
+                    <MoveDown size={16} />
+                  </button>
+                  
                   <button 
                     onClick={() => onSelectItem?.(item.id || '')}
                     className={`p-1 rounded ${selectedItemId === item.id ? 'bg-blue-600' : 'hover:bg-gray-600'}`}

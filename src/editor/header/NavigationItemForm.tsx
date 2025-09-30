@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { HeaderItem } from '@editor/header/schema';
-import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Plus, Trash2, MoveUp, MoveDown } from 'lucide-react';
 
 interface NavigationItemFormProps {
   item: HeaderItem;
@@ -96,6 +96,28 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     });
   };
 
+  const handleMoveSubItem = (index: number, direction: 'up' | 'down') => {
+    if (!item.items) return;
+    
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    
+    // Check if move is valid
+    if (newIndex < 0 || newIndex >= item.items.length) {
+      return;
+    }
+    
+    const updatedItems = [...item.items];
+    // splice(startIndex, deleteCount) - Remove 1 item at current position
+    const [movedItem] = updatedItems.splice(index, 1);
+    // splice(startIndex, deleteCount, itemToInsert) - Insert item at new position, remove 0 items
+    updatedItems.splice(newIndex, 0, movedItem);
+    
+    onUpdate({
+      ...item,
+      items: updatedItems
+    });
+  };
+
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
@@ -171,12 +193,34 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-white">{subItem.label || 'Sub Item'}</span>
-                        <button 
-                          onClick={() => handleDeleteSubItem(index)}
-                          className="p-0.5 rounded text-gray-300 hover:text-red-400 hover:bg-gray-500"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                        <div className="flex items-center space-x-1">
+                          {/* Move Up Button */}
+                          <button 
+                            onClick={() => handleMoveSubItem(index, 'up')}
+                            disabled={index === 0}
+                            className={`p-0.5 rounded text-gray-300 hover:text-blue-400 hover:bg-gray-500 disabled:opacity-30 disabled:cursor-not-allowed`}
+                            title="Move up"
+                          >
+                            <MoveUp size={12} />
+                          </button>
+                          
+                          {/* Move Down Button */}
+                          <button 
+                            onClick={() => handleMoveSubItem(index, 'down')}
+                            disabled={index === (item.items?.length || 0) - 1}
+                            className={`p-0.5 rounded text-gray-300 hover:text-blue-400 hover:bg-gray-500 disabled:opacity-30 disabled:cursor-not-allowed`}
+                            title="Move down"
+                          >
+                            <MoveDown size={12} />
+                          </button>
+                          
+                          <button 
+                            onClick={() => handleDeleteSubItem(index)}
+                            className="p-0.5 rounded text-gray-300 hover:text-red-400 hover:bg-gray-500"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-2">
