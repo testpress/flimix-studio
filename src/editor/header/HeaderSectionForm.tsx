@@ -77,7 +77,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
   };
 
   const handleLayoutChange = (field: keyof NonNullable<HeaderSchema['layout']>, value: string | boolean) => {
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       layout: {
         ...headerSchema.layout,

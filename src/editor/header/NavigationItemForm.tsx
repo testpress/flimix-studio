@@ -109,7 +109,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     
     const updatedItems = moveItemInArray(item.items, index, newIndex);
     
-    onUpdate({
+    updateNavigationItem({
       ...item,
       items: updatedItems
     });
