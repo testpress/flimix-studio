@@ -3,39 +3,39 @@ import type { FooterItem } from '@editor/footer/schema';
 
 interface FooterItemFormProps {
   item: FooterItem;
-  onUpdate: (updatedItem: FooterItem) => void;
+  updateFooterItem: (updatedItem: FooterItem) => void;
   isColumnItem?: boolean;
 }
 
 const FooterItemForm: React.FC<FooterItemFormProps> = ({ 
   item, 
-  onUpdate,
+  updateFooterItem,
   isColumnItem = false
 }) => {
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = e.target.value as FooterItem['type'];
-    onUpdate({
+    updateFooterItem({
       ...item,
       type: newType
     });
   };
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterItem({
       ...item,
       label: e.target.value
     });
   };
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterItem({
       ...item,
       link: e.target.value
     });
   };
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterItem({
       ...item,
       icon: e.target.value
     });

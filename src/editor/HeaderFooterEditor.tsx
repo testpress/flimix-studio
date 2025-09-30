@@ -19,11 +19,11 @@ const HeaderFooterEditor: React.FC = () => {
   const [showCustomizePanel, setShowCustomizePanel] = useState<boolean>(true);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  const handleUpdateHeader = (updatedSchema: HeaderSchema) => {
+  const updateHeaderSchema = (updatedSchema: HeaderSchema) => {
     setHeaderSchema(updatedSchema);
   };
 
-  const handleUpdateFooter = (updatedSchema: FooterSchema) => {
+  const updateFooterSchema = (updatedSchema: FooterSchema) => {
     setFooterSchema(updatedSchema);
   };
 
@@ -124,7 +124,7 @@ const HeaderFooterEditor: React.FC = () => {
                 <TabPanel value="header" className="mt-0 space-y-4">
                   <HeaderSectionForm 
                     headerSchema={headerSchema} 
-                    onUpdate={handleUpdateHeader}
+                    updateHeaderSchema={updateHeaderSchema}
                     selectedItemId={selectedItemId}
                     onSelectItem={handleItemSelect}
                   />
@@ -133,7 +133,7 @@ const HeaderFooterEditor: React.FC = () => {
                 <TabPanel value="footer" className="mt-0 space-y-4">
                   <FooterSectionForm 
                     footerSchema={footerSchema} 
-                    onUpdate={handleUpdateFooter}
+                    updateFooterSchema={updateFooterSchema}
                     selectedItemId={selectedItemId}
                     onSelectItem={handleItemSelect}
                   />

@@ -3,16 +3,16 @@ import { Plus, Trash2, ChevronDown } from 'lucide-react';
 import type { FooterItem } from '@editor/footer/schema';
 import FooterItemForm from '@editor/footer/FooterItemForm';
 
-interface RowEditorProps {
+interface RowFormProps {
   rows: FooterItem[];
-  onUpdate: (updatedRows: FooterItem[]) => void;
+  updateRows: (updatedRows: FooterItem[]) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
-const RowForm: React.FC<RowEditorProps> = ({ 
+const RowForm: React.FC<RowFormProps> = ({ 
   rows, 
-  onUpdate,
+  updateRows,
   selectedItemId,
   onSelectItem
 }) => {
@@ -30,7 +30,7 @@ const RowForm: React.FC<RowEditorProps> = ({
       items: [...(updatedRows[rowIndex].items || []), newItem]
     };
     
-    onUpdate(updatedRows);
+    updateRows(updatedRows);
     
     // Auto-select the new item
     if (onSelectItem) {
@@ -47,7 +47,7 @@ const RowForm: React.FC<RowEditorProps> = ({
       items: updatedItems
     };
     
-    onUpdate(updatedRows);
+    updateRows(updatedRows);
   };
 
   const handleDeleteRowItem = (rowIndex: number, itemIndex: number) => {
@@ -58,12 +58,12 @@ const RowForm: React.FC<RowEditorProps> = ({
       items: updatedItems
     };
     
-    onUpdate(updatedRows);
+    updateRows(updatedRows);
   };
 
   const handleDeleteRow = (rowIndex: number) => {
     const updatedRows = rows.filter((_, i) => i !== rowIndex);
-    onUpdate(updatedRows);
+    updateRows(updatedRows);
   };
 
   return (
@@ -125,7 +125,7 @@ const RowForm: React.FC<RowEditorProps> = ({
                             
                             <FooterItemForm
                               item={item}
-                              onUpdate={(updatedItem: FooterItem) => handleUpdateRowItem(rowIndex, itemIndex, updatedItem)}
+                              updateFooterItem={(updatedItem: FooterItem) => handleUpdateRowItem(rowIndex, itemIndex, updatedItem)}
                             />
                           </div>
                         ))}
