@@ -3,16 +3,16 @@ import { Plus, Trash2, ChevronDown } from 'lucide-react';
 import type { FooterItem } from '@editor/footer/schema';
 import FooterItemForm from '@editor/footer/FooterItemForm';
 
-interface ColumnEditorProps {
+interface ColumnFormProps {
   columns: FooterItem[];
-  onUpdate: (updatedColumns: FooterItem[]) => void;
+  updateColumns: (updatedColumns: FooterItem[]) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
-const ColumnForm: React.FC<ColumnEditorProps> = ({ 
+const ColumnForm: React.FC<ColumnFormProps> = ({ 
   columns, 
-  onUpdate,
+  updateColumns,
   selectedItemId,
   onSelectItem
 }) => {
@@ -30,7 +30,7 @@ const ColumnForm: React.FC<ColumnEditorProps> = ({
       items: [...(updatedColumns[columnIndex].items || []), newItem]
     };
     
-    onUpdate(updatedColumns);
+    updateColumns(updatedColumns);
     
     // Auto-select the new item
     if (onSelectItem) {
@@ -47,7 +47,7 @@ const ColumnForm: React.FC<ColumnEditorProps> = ({
       items: updatedItems
     };
     
-    onUpdate(updatedColumns);
+    updateColumns(updatedColumns);
   };
 
   const handleDeleteColumnItem = (columnIndex: number, itemIndex: number) => {
@@ -58,12 +58,12 @@ const ColumnForm: React.FC<ColumnEditorProps> = ({
       items: updatedItems
     };
     
-    onUpdate(updatedColumns);
+    updateColumns(updatedColumns);
   };
 
   const handleDeleteColumn = (columnIndex: number) => {
     const updatedColumns = columns.filter((_, i) => i !== columnIndex);
-    onUpdate(updatedColumns);
+    updateColumns(updatedColumns);
   };
 
   return (
@@ -125,7 +125,7 @@ const ColumnForm: React.FC<ColumnEditorProps> = ({
                             
                             <FooterItemForm
                               item={item}
-                              onUpdate={(updatedItem: FooterItem) => handleUpdateColumnItem(columnIndex, itemIndex, updatedItem)}
+                              updateFooterItem={(updatedItem: FooterItem) => handleUpdateColumnItem(columnIndex, itemIndex, updatedItem)}
                               isColumnItem={true}
                             />
                           </div>

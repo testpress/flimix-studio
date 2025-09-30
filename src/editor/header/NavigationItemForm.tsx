@@ -4,16 +4,14 @@ import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 
 interface NavigationItemFormProps {
   item: HeaderItem;
-  onUpdate: (updatedItem: HeaderItem) => void;
+  updateNavigationItem: (updatedItem: HeaderItem) => void;
   isDropdownItem?: boolean;
-  onSelectItem?: (id: string) => void;
 }
 
 const NavigationItemForm: React.FC<NavigationItemFormProps> = ({ 
   item, 
-  onUpdate,
-  isDropdownItem = false,
-  onSelectItem
+  updateNavigationItem,
+  isDropdownItem = false
 }) => {
   const [expandedSubItems, setExpandedSubItems] = useState<boolean>(true);
   
@@ -22,7 +20,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     
     // If changing to/from dropdown, handle items array
     if (newType === 'dropdown' && item.type !== 'dropdown') {
-      onUpdate({
+      updateNavigationItem({
         ...item,
         type: newType,
         items: item.items || []
@@ -31,12 +29,12 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       // Remove items when changing from dropdown to another type
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { items, ...rest } = item;
-      onUpdate({
+      updateNavigationItem({
         ...rest,
         type: newType
       });
     } else {
-      onUpdate({
+      updateNavigationItem({
         ...item,
         type: newType
       });
@@ -44,14 +42,14 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
   };
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateNavigationItem({
       ...item,
       label: e.target.value
     });
   };
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateNavigationItem({
       ...item,
       link: e.target.value
     });
@@ -65,7 +63,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       link: '/'
     };
     
-    onUpdate({
+    updateNavigationItem({
       ...item,
       items: [...(item.items || []), newItem]
     });
@@ -73,10 +71,6 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     // Ensure sub-items are expanded
     setExpandedSubItems(true);
     
-    // Auto-select the new sub-item
-    if (onSelectItem) {
-      onSelectItem(newItem.id || '');
-    }
   };
 
   const handleUpdateSubItem = (index: number, updatedSubItem: HeaderItem) => {
@@ -85,7 +79,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     const updatedItems = [...item.items];
     updatedItems[index] = updatedSubItem;
     
-    onUpdate({
+    updateNavigationItem({
       ...item,
       items: updatedItems
     });
@@ -96,7 +90,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     
     const updatedItems = item.items.filter((_, i) => i !== index);
     
-    onUpdate({
+    updateNavigationItem({
       ...item,
       items: updatedItems
     });

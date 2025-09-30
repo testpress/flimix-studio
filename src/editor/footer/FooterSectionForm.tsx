@@ -6,14 +6,14 @@ import RowForm from '@editor/footer/RowForm';
 
 interface FooterSectionEditorProps {
   footerSchema: FooterSchema;
-  onUpdate: (updatedSchema: FooterSchema) => void;
+  updateFooterSchema: (updatedSchema: FooterSchema) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
 const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({ 
   footerSchema, 
-  onUpdate,
+  updateFooterSchema,
   selectedItemId,
   onSelectItem
 }) => {
@@ -23,7 +23,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
 
   // Handle background color change
   const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterSchema({
       ...footerSchema,
       style: {
         ...footerSchema.style,
@@ -34,7 +34,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
 
   // Handle text color change
   const handleTextColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterSchema({
       ...footerSchema,
       style: {
         ...footerSchema.style,
@@ -45,7 +45,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
 
   // Handle padding change
   const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateFooterSchema({
       ...footerSchema,
       style: {
         ...footerSchema.style,
@@ -62,7 +62,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       items: []
     };
     
-    onUpdate({
+    updateFooterSchema({
       ...footerSchema,
       items: [...footerSchema.items, newColumn]
     });
@@ -81,7 +81,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       items: []
     };
     
-    onUpdate({
+    updateFooterSchema({
       ...footerSchema,
       items: [...footerSchema.items, newRow]
     });
@@ -94,16 +94,13 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
 
   // Handle updating columns
   const handleUpdateColumns = (updatedColumns: FooterItem[]) => {
-    const updatedItems = footerSchema.items.map(item => {
-      if (item.type === 'column') {
-        // Find the corresponding updated column by ID
-        const updatedColumn = updatedColumns.find(col => col.id === item.id);
-        return updatedColumn || item;
-      }
-      return item;
-    });
+    // Get all non-column items
+    const nonColumnItems = footerSchema.items.filter(item => item.type !== 'column');
     
-    onUpdate({
+    // Combine non-column items with updated columns
+    const updatedItems = [...nonColumnItems, ...updatedColumns];
+    
+    updateFooterSchema({
       ...footerSchema,
       items: updatedItems
     });
@@ -111,16 +108,13 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
 
   // Handle updating rows
   const handleUpdateRows = (updatedRows: FooterItem[]) => {
-    const updatedItems = footerSchema.items.map(item => {
-      if (item.type === 'row') {
-        // Find the corresponding updated row by ID
-        const updatedRow = updatedRows.find(row => row.id === item.id);
-        return updatedRow || item;
-      }
-      return item;
-    });
+    // Get all non-row items
+    const nonRowItems = footerSchema.items.filter(item => item.type !== 'row');
     
-    onUpdate({
+    // Combine non-row items with updated rows
+    const updatedItems = [...nonRowItems, ...updatedRows];
+    
+    updateFooterSchema({
       ...footerSchema,
       items: updatedItems
     });
@@ -222,7 +216,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
         
           <ColumnForm
           columns={columns} 
-          onUpdate={handleUpdateColumns}
+          updateColumns={handleUpdateColumns}
           selectedItemId={selectedItemId}
           onSelectItem={onSelectItem}
         />
@@ -243,7 +237,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
         
           <RowForm
           rows={rows} 
-          onUpdate={handleUpdateRows}
+          updateRows={handleUpdateRows}
           selectedItemId={selectedItemId}
           onSelectItem={onSelectItem}
         />

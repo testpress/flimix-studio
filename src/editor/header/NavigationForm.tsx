@@ -5,14 +5,14 @@ import NavigationItemForm from '@editor/header/NavigationItemForm';
 
 interface NavigationEditorProps {
   navigationItems: HeaderItem[];
-  onUpdate: (updatedItems: HeaderItem[]) => void;
+  updateNavigationItems: (updatedItems: HeaderItem[]) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
 const NavigationForm: React.FC<NavigationEditorProps> = ({ 
   navigationItems, 
-  onUpdate,
+  updateNavigationItems,
   selectedItemId,
   onSelectItem
 }) => {
@@ -20,11 +20,11 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
     const newItem: HeaderItem = {
       id: `nav-item-${Date.now()}`,
       type: 'internal',
-      label: 'New Navigation Item',
+      label: 'Navigation Item',
       link: '/'
     };
     
-    onUpdate([...navigationItems, newItem]);
+    updateNavigationItems([...navigationItems, newItem]);
     if (onSelectItem) {
       onSelectItem(newItem.id || '');
     }
@@ -33,12 +33,12 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
   const handleUpdateNavigationItem = (index: number, updatedItem: HeaderItem) => {
     const updatedItems = [...navigationItems];
     updatedItems[index] = updatedItem;
-    onUpdate(updatedItems);
+    updateNavigationItems(updatedItems);
   };
 
   const handleDeleteNavigationItem = (index: number) => {
     const updatedItems = navigationItems.filter((_, i) => i !== index);
-    onUpdate(updatedItems);
+    updateNavigationItems(updatedItems);
     
     // If the deleted item was selected, clear selection
     if (selectedItemId === navigationItems[index].id) {
@@ -87,9 +87,8 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
                 <div className="px-3 pb-3 pt-1 border-t border-gray-600">
                   <NavigationItemForm
                     item={item}
-                    onUpdate={(updatedItem) => handleUpdateNavigationItem(index, updatedItem)}
+                    updateNavigationItem={(updatedItem) => handleUpdateNavigationItem(index, updatedItem)}
                     isDropdownItem={false}
-                    onSelectItem={onSelectItem}
                   />
                 </div>
               )}

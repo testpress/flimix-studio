@@ -3,10 +3,10 @@ import type { HeaderItem } from '@editor/header/schema';
 
 interface LogoEditorProps {
   logoItem: HeaderItem;
-  onUpdate: (updatedItem: HeaderItem) => void;
+  updateLogo: (updatedItem: HeaderItem) => void;
 }
 
-const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, onUpdate }) => {
+const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, updateLogo }) => {
   const handleSrcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedItem = {
       ...logoItem,
@@ -15,7 +15,7 @@ const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, onUpdate }) => {
         src: e.target.value
       }
     };
-    onUpdate(updatedItem);
+    updateLogo(updatedItem);
   };
 
   const handleAltChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +26,7 @@ const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, onUpdate }) => {
         alt: e.target.value
       }
     };
-    onUpdate(updatedItem);
+    updateLogo(updatedItem);
   };
 
   return (
