@@ -86,7 +86,7 @@ function evaluateVisibility(
   return true;
 }
 
-interface BlockRendererProps {
+interface BlockManagerProps {
   block: Block;
   showDebug?: boolean;
   visibilityContext: VisibilityContext;
@@ -95,7 +95,7 @@ interface BlockRendererProps {
   selectedBlockId?: string | null;
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ 
+const BlockManager: React.FC<BlockManagerProps> = ({ 
   block, 
   showDebug = false, 
   visibilityContext, 
@@ -244,4 +244,4 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
   );
 };
 
-export default BlockRenderer; 
+export default BlockManager; 
