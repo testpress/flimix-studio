@@ -23,6 +23,8 @@ export default defineConfig(({ mode }) => ({
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@types': path.resolve(__dirname, 'src/types'),
       '@fixtures': path.resolve(__dirname, 'src/fixtures'),
+      '@defaultSchemas': path.resolve(__dirname, 'src/defaultSchemas'),
+      '@editor': path.resolve(__dirname, 'src/editor'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@blocks': path.resolve(__dirname, 'src/blocks'),
       '@blocks/ui': path.resolve(__dirname, 'src/blocks/ui'),
