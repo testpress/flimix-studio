@@ -1,0 +1,282 @@
+import React from 'react';
+import type { HeaderItem, HeaderSchema } from '@editor/header/schema';
+import LogoForm from '@editor/header/LogoForm';
+import NavigationForm from '@editor/header/NavigationForm';
+
+interface HeaderSectionEditorProps {
+  headerSchema: HeaderSchema;
+  onUpdate: (updatedSchema: HeaderSchema) => void;
+  selectedItemId?: string | null;
+  onSelectItem?: (id: string) => void;
+}
+
+const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({ 
+  headerSchema, 
+  onUpdate,
+  selectedItemId,
+  onSelectItem
+}) => {
+  const logoItem = headerSchema.items.find(item => item.type === 'logo');
+  const titleItem = headerSchema.items.find(item => item.type === 'title');
+  const navigationItems = headerSchema.items.filter(item => 
+    item.type !== 'logo' && item.type !== 'title'
+  );
+
+  const handleUpdateLogo = (updatedLogo: HeaderItem) => {
+    const updatedItems = headerSchema.items.map(item => 
+      item.type === 'logo' ? updatedLogo : item
+    );
+    
+    onUpdate({
+      ...headerSchema,
+      items: updatedItems
+    });
+  };
+
+  const handleUpdateTitle = (updatedTitle: HeaderItem) => {
+    const updatedItems = headerSchema.items.map(item => 
+      item.type === 'title' ? updatedTitle : item
+    );
+    
+    onUpdate({
+      ...headerSchema,
+      items: updatedItems
+    });
+  };
+
+  const handleUpdateNavigationItems = (updatedNavigationItems: HeaderItem[]) => {
+    // Preserve logo and title, replace all other items
+    const nonNavigationItems = headerSchema.items.filter(item => 
+      item.type === 'logo' || item.type === 'title'
+    );
+    
+    onUpdate({
+      ...headerSchema,
+      items: [...nonNavigationItems, ...updatedNavigationItems]
+    });
+  };
+
+  const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdate({
+      ...headerSchema,
+      style: {
+        ...headerSchema.style,
+        backgroundColor: e.target.value
+      }
+    });
+  };
+
+  const handleTextColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdate({
+      ...headerSchema,
+      style: {
+        ...headerSchema.style,
+        textColor: e.target.value
+      }
+    });
+  };
+
+  const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdate({
+      ...headerSchema,
+      style: {
+        ...headerSchema.style,
+        padding: e.target.value
+      }
+    });
+  };
+
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!titleItem) {
+      // Create new title item if it doesn't exist
+      const newTitleItem: HeaderItem = {
+        id: `title-${Date.now()}`,
+        type: 'title',
+        label: e.target.value,
+        style: { fontSize: '24px', color: '#ffffff' }
+      };
+      
+      onUpdate({
+        ...headerSchema,
+        items: [...headerSchema.items, newTitleItem]
+      });
+    } else {
+      // Update existing title
+      const updatedTitle = {
+        ...titleItem,
+        label: e.target.value
+      };
+      
+      handleUpdateTitle(updatedTitle);
+    }
+  };
+
+  const handleTitleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!titleItem) return;
+    
+    const updatedTitle = {
+      ...titleItem,
+      style: {
+        ...titleItem.style,
+        fontSize: e.target.value
+      }
+    };
+    
+    handleUpdateTitle(updatedTitle);
+  };
+
+  const handleTitleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!titleItem) return;
+    
+    const updatedTitle = {
+      ...titleItem,
+      style: {
+        ...titleItem.style,
+        color: e.target.value
+      }
+    };
+    
+    handleUpdateTitle(updatedTitle);
+  };
+
+
+  return (
+    <div className="space-y-4">
+      {/* Header Styles */}
+      <div className="p-4 bg-gray-800 rounded-lg">
+        <h3 className="text-lg font-semibold text-white mb-3">Header Styles</h3>
+        
+        <div className="space-y-3">
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Background Color</label>
+            <div className="flex items-center">
+              <input
+                type="color"
+                value={headerSchema.style?.backgroundColor || '#111111'}
+                onChange={handleBackgroundColorChange}
+                className="w-10 h-10 rounded mr-2 border-0"
+              />
+              <input
+                type="text"
+                value={headerSchema.style?.backgroundColor || '#111111'}
+                onChange={handleBackgroundColorChange}
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white flex-1"
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Text Color</label>
+            <div className="flex items-center">
+              <input
+                type="color"
+                value={headerSchema.style?.textColor || '#ffffff'}
+                onChange={handleTextColorChange}
+                className="w-10 h-10 rounded mr-2 border-0"
+              />
+              <input
+                type="text"
+                value={headerSchema.style?.textColor || '#ffffff'}
+                onChange={handleTextColorChange}
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white flex-1"
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Padding (px)</label>
+            <input
+              type="number"
+              value={parseInt(headerSchema.style?.padding?.split(' ')[0] || '10px')}
+              onChange={(e) => handlePaddingChange({ target: { value: e.target.value + 'px 20px' } } as React.ChangeEvent<HTMLInputElement>)}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+              min="0"
+              max="50"
+              step="1"
+            />
+          </div>
+        </div>
+      </div>
+      
+      {/* Logo Editor */}
+      {logoItem && (
+        <div 
+          className="p-4 bg-gray-800 rounded-lg"
+          data-item-id={logoItem.id}
+        >
+          <h3 className="text-lg font-semibold text-white mb-3">Logo</h3>
+            <LogoForm
+            logoItem={logoItem} 
+            onUpdate={handleUpdateLogo} 
+          />
+        </div>
+      )}
+      
+      {/* Title Settings */}
+      <div 
+        className="p-4 bg-gray-800 rounded-lg"
+        data-item-id={titleItem?.id}
+      >
+        <h3 className="text-lg font-semibold text-white mb-3">Title</h3>
+        
+        <div className="space-y-3">
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Title Text</label>
+            <input
+              type="text"
+              value={titleItem?.label || ''}
+              onChange={handleTitleChange}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+              placeholder="Website Title"
+            />
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Font Size (px)</label>
+            <input
+              type="number"
+              value={parseInt(titleItem?.style?.fontSize || '24px')}
+              onChange={(e) => handleTitleFontSizeChange({ target: { value: e.target.value + 'px' } } as React.ChangeEvent<HTMLInputElement>)}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
+              min="8"
+              max="72"
+              step="1"
+            />
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-300 mb-1">Color</label>
+            <div className="flex items-center">
+              <input
+                type="color"
+                value={titleItem?.style?.color || '#ffffff'}
+                onChange={handleTitleColorChange}
+                className="w-10 h-10 rounded mr-2 border-0"
+              />
+              <input
+                type="text"
+                value={titleItem?.style?.color || '#ffffff'}
+                onChange={handleTitleColorChange}
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white flex-1"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Navigation Editor */}
+      <div className="p-4 bg-gray-800 rounded-lg">
+        <h3 className="text-lg font-semibold text-white mb-3">Navigation Items</h3>
+            <NavigationForm
+          navigationItems={navigationItems} 
+          onUpdate={handleUpdateNavigationItems}
+          selectedItemId={selectedItemId}
+          onSelectItem={onSelectItem}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default HeaderSectionForm;

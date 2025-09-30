@@ -38,6 +38,8 @@
       "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],
       "@fixtures/*": ["src/fixtures/*"],
+      "@defaultSchemas/*": ["src/defaultSchemas/*"],
+      "@editor/*": ["src/editor/*"],
       "@hooks/*": ["src/hooks/*"],
       "@types/*": ["src/types/*"],
       "@services/*": ["src/services/*"]
