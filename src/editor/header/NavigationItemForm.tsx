@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { HeaderItem } from '@editor/header/schema';
 import { ChevronDown, ChevronUp, Plus, Trash2, MoveUp, MoveDown } from 'lucide-react';
+import { moveItemInArray } from '@utils/array';
 
 interface NavigationItemFormProps {
   item: HeaderItem;
@@ -106,11 +107,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       return;
     }
     
-    const updatedItems = [...item.items];
-    // splice(startIndex, deleteCount) - Remove 1 item at current position
-    const [movedItem] = updatedItems.splice(index, 1);
-    // splice(startIndex, deleteCount, itemToInsert) - Insert item at new position, remove 0 items
-    updatedItems.splice(newIndex, 0, movedItem);
+    const updatedItems = moveItemInArray(item.items, index, newIndex);
     
     onUpdate({
       ...item,

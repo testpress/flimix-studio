@@ -76,6 +76,16 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
     });
   };
 
+  const handleLayoutChange = (field: keyof NonNullable<HeaderSchema['layout']>, value: string | boolean) => {
+    onUpdate({
+      ...headerSchema,
+      layout: {
+        ...headerSchema.layout,
+        [field]: value,
+      },
+    });
+  };
+
   const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateHeaderSchema({
       ...headerSchema,
@@ -152,13 +162,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
             <label className="text-sm text-gray-300 mb-1">Logo Position</label>
             <select
               value={headerSchema.layout?.logoPosition || 'start'}
-              onChange={(e) => onUpdate({
-                ...headerSchema,
-                layout: {
-                  ...headerSchema.layout,
-                  logoPosition: e.target.value as 'start' | 'end'
-                }
-              })}
+              onChange={(e) => handleLayoutChange('logoPosition', e.target.value as 'start' | 'end')}
               className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
             >
               <option value="start">Start (Left)</option>
@@ -172,13 +176,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
               <input
                 type="checkbox"
                 checked={headerSchema.layout?.showTitle !== false}
-                onChange={(e) => onUpdate({
-                  ...headerSchema,
-                  layout: {
-                    ...headerSchema.layout,
-                    showTitle: e.target.checked
-                  }
-                })}
+                onChange={(e) => handleLayoutChange('showTitle', e.target.checked)}
                 className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
               />
               <span className="ml-2 text-sm text-gray-300">Enable header title</span>
@@ -189,13 +187,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
             <label className="text-sm text-gray-300 mb-1">Navigation Alignment</label>
             <select
               value={headerSchema.layout?.navigationAlignment || 'left'}
-              onChange={(e) => onUpdate({
-                ...headerSchema,
-                layout: {
-                  ...headerSchema.layout,
-                  navigationAlignment: e.target.value as 'left' | 'center' | 'right'
-                }
-              })}
+              onChange={(e) => handleLayoutChange('navigationAlignment', e.target.value as 'left' | 'center' | 'right')}
               className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
             >
               <option value="left">Left</option>
