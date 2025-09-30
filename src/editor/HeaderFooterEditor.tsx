@@ -52,7 +52,6 @@ const HeaderFooterEditor: React.FC = () => {
   // Auto-scroll to selected item editor
   useEffect(() => {
     if (selectedItemId && showCustomizePanel) {
-      // Add a small delay to ensure tab switching is complete
       const timer = setTimeout(() => {
         // Find the element with the selected item ID
         const element = document.querySelector(`[data-item-id="${selectedItemId}"]`);
@@ -64,7 +63,7 @@ const HeaderFooterEditor: React.FC = () => {
             inline: 'nearest'
           });
         }
-      }, 100); // Small delay to allow tab switching
+      }, 0);
       
       return () => clearTimeout(timer);
     }

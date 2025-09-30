@@ -31,6 +31,11 @@ const RowForm: React.FC<RowEditorProps> = ({
     };
     
     onUpdate(updatedRows);
+    
+    // Auto-select the new item
+    if (onSelectItem) {
+      onSelectItem(newItem.id || '');
+    }
   };
 
   const handleUpdateRowItem = (rowIndex: number, itemIndex: number, updatedItem: FooterItem) => {
