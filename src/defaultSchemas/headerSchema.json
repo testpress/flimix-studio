@@ -61,5 +61,10 @@
     "padding": "10px 20px",
     "backgroundColor": "#111111",
     "textColor": "#ffffff"
+  },
+  "layout": {
+    "logoPosition": "start",
+    "showTitle": true,
+    "navigationAlignment": "right"
   }
 }
