@@ -5,14 +5,14 @@ import NavigationForm from '@editor/header/NavigationForm';
 
 interface HeaderSectionEditorProps {
   headerSchema: HeaderSchema;
-  onUpdate: (updatedSchema: HeaderSchema) => void;
+  updateHeaderSchema: (updatedSchema: HeaderSchema) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
 const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({ 
   headerSchema, 
-  onUpdate,
+  updateHeaderSchema,
   selectedItemId,
   onSelectItem
 }) => {
@@ -27,7 +27,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
       item.type === 'logo' ? updatedLogo : item
     );
     
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       items: updatedItems
     });
@@ -38,7 +38,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
       item.type === 'title' ? updatedTitle : item
     );
     
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       items: updatedItems
     });
@@ -50,14 +50,14 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
       item.type === 'logo' || item.type === 'title'
     );
     
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       items: [...nonNavigationItems, ...updatedNavigationItems]
     });
   };
 
   const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       style: {
         ...headerSchema.style,
@@ -67,7 +67,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
   };
 
   const handleTextColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       style: {
         ...headerSchema.style,
@@ -77,7 +77,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
   };
 
   const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate({
+    updateHeaderSchema({
       ...headerSchema,
       style: {
         ...headerSchema.style,
@@ -97,7 +97,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
         style: { fontSize: '24px', color: '#ffffff' }
       };
       
-      onUpdate({
+      updateHeaderSchema({
         ...headerSchema,
         items: [...headerSchema.items, newTitleItem]
       });
@@ -231,7 +231,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
           <h3 className="text-lg font-semibold text-white mb-3">Logo</h3>
             <LogoForm
             logoItem={logoItem} 
-            onUpdate={handleUpdateLogo} 
+            updateLogo={handleUpdateLogo} 
           />
         </div>
       )}
@@ -291,9 +291,9 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
       {/* Navigation Editor */}
       <div className="p-4 bg-gray-800 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Navigation Items</h3>
-            <NavigationForm
+          <NavigationForm
           navigationItems={navigationItems} 
-          onUpdate={handleUpdateNavigationItems}
+          updateNavigationItems={handleUpdateNavigationItems}
           selectedItemId={selectedItemId}
           onSelectItem={onSelectItem}
         />
