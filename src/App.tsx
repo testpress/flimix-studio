@@ -19,7 +19,7 @@ export type AppProps = {
   initialPage?: Record<string, PageSchema>;
   defaultPageSlug?: string;
   pagesList?: string[];
-  onSave?: (pageSlug: string, schema: PageSchema) => Promise<any>;
+  onSave?: (pageSlug: string, schema: PageSchema) => Promise<void>;
   onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 };
 

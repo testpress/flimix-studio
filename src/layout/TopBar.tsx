@@ -7,7 +7,7 @@ import { usePageSchema } from '@context/PageSchemaContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type TopBarProps = {
-  onSave?: (pageSlug: string, schema: PageSchema) => void;
+  onSave?: (pageSlug: string, schema: PageSchema) => Promise<void>;
 };
 
 const TopBar = ({ onSave }: TopBarProps) => {
@@ -21,8 +21,14 @@ const TopBar = ({ onSave }: TopBarProps) => {
     pagesList 
   } = usePageSchema();
 
-  const handleSave = () => {
-    onSave?.(currentPageSlug, pageSchema);
+  const handleSave = async () => {
+    if (onSave) {
+      try {
+        await onSave(currentPageSlug, pageSchema);
+      } catch (error) {
+        console.error('Failed to save page:', error);
+      }
+    }
   };
 
   return (
