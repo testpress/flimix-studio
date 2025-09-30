@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@domain': path.resolve(__dirname, 'src/domain'),
       '@types': path.resolve(__dirname, 'src/types'),
-      '@pageSchemas': path.resolve(__dirname, 'src/pageSchemas'),
+      '@fixtures': path.resolve(__dirname, 'src/fixtures'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@blocks': path.resolve(__dirname, 'src/blocks'),
       '@blocks/ui': path.resolve(__dirname, 'src/blocks/ui'),

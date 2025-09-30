@@ -13,7 +13,7 @@ import { PageSchemaProvider } from '@context/PageSchemaContext';
 import { PanelCoordinatorProvider } from '@context/PanelCoordinator';
 import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
-import amazonSchemaData from '@pageSchemas/amazonSchema.json';
+import amazonSchemaData from '@fixtures/amazonSchema.json';
 
 export type PageBuilderProps = {
   initialPage?: Record<string, PageSchema>;
