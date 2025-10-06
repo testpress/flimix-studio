@@ -151,15 +151,15 @@ git push origin main
             const root = window.FlimixStudio.render(
                 document.getElementById('flimix-studio-container'),
                 {
-                    initialPage: {
+                    initialPageSchema: {
                         'home': {
                             title: 'My Landing Page',
                             theme: 'dark',
                             blocks: []
                         }
                     },
-                    defaultPageSlug: 'home',
-                    onSave: async function(pageSlug, schema) {
+                    initialPageSlug: 'home',
+                    onSavePage: async function(pageSlug, schema) {
                         console.log('Saving page:', pageSlug, schema);
                         // Handle save logic here
                     }
@@ -275,16 +275,16 @@ Renders the Flimix Studio interface into a DOM element.
 
 ```javascript
 {
-  initialPage: {
+  initialPageSchema: {
     'page-slug': {
       title: 'Page Title',
       theme: 'dark', // or 'light'
       blocks: [] // Array of block objects
     }
   },
-  defaultPageSlug: 'home', // Default page to load
-  pagesList: ['home', 'movies', 'shows'], // Available pages
-  onSave: async function(pageSlug, schema) {
+  initialPageSlug: 'home', // Default page to load
+  availablePages: ['home', 'movies', 'shows'], // Available pages
+  onSavePage: async function(pageSlug, schema) {
     // Handle page saving - called when user saves a page
     // Return a Promise
   },
@@ -319,7 +319,7 @@ onLoadPage: async function(slug) {
 }
 ```
 
-**Note**: If you don't provide `onLoadPage`, the studio will only work with the pages provided in `initialPage`. The `onLoadPage` callback enables dynamic page loading from external sources.
+**Note**: If you don't provide `onLoadPage`, the studio will only work with the pages provided in `initialPageSchema`. The `onLoadPage` callback enables dynamic page loading from external sources.
 
 ### Global API
 

@@ -22,7 +22,7 @@ interface PageSchemaProviderProps {
   children: ReactNode;
   initialPage: Record<string, PageSchema>;
   defaultPageSlug: string;
-  pagesList?: string[];
+  availablePages?: string[];
   onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 }
 
@@ -30,7 +30,7 @@ export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({
   children, 
   initialPage,
   defaultPageSlug,
-  pagesList = [],
+  availablePages = [],
   onLoadPage
 }) => {
   const [pages, setPages] = useState<Record<string, PageSchema>>(initialPage);
@@ -78,7 +78,7 @@ export const PageSchemaProvider: React.FC<PageSchemaProviderProps> = ({
       setCurrentPageSlug,
       updateSpecificPage,
       loadPage,
-      pagesList: pagesList.length > 0 ? pagesList : Object.keys(pages)
+      pagesList: availablePages.length > 0 ? availablePages : Object.keys(pages)
     }}>
       {children}
     </PageSchemaContext.Provider>

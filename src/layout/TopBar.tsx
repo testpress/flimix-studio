@@ -7,10 +7,10 @@ import { usePageSchema } from '@context/PageSchemaContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type TopBarProps = {
-  onSave?: (pageSlug: string, schema: PageSchema) => Promise<void>;
+  onSavePage?: (pageSlug: string, schema: PageSchema) => Promise<void>;
 };
 
-const TopBar = ({ onSave }: TopBarProps) => {
+const TopBar = ({ onSavePage }: TopBarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
@@ -22,9 +22,9 @@ const TopBar = ({ onSave }: TopBarProps) => {
   } = usePageSchema();
 
   const handleSave = async () => {
-    if (onSave) {
+    if (onSavePage) {
       try {
-        await onSave(currentPageSlug, pageSchema);
+        await onSavePage(currentPageSlug, pageSchema);
       } catch (error) {
         console.error('Failed to save page:', error);
       }
@@ -95,13 +95,13 @@ const TopBar = ({ onSave }: TopBarProps) => {
           </button>
           <button 
             onClick={handleSave}
-            disabled={!onSave}
+            disabled={!onSavePage}
             className={`px-4 py-2 rounded ${
-              onSave 
+              onSavePage 
                 ? 'bg-blue-600 hover:bg-blue-700' 
                 : 'bg-gray-600 cursor-not-allowed opacity-50'
             }`}
-            title={onSave ? 'Save page' : 'Save functionality not available'}
+            title={onSavePage ? 'Save page' : 'Save functionality not available'}
           >
             Save
           </button>

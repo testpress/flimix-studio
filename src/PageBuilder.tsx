@@ -16,21 +16,21 @@ import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@fixtures/amazonSchema.json';
 
 export type PageBuilderProps = {
-  initialPage?: Record<string, PageSchema>;
-  defaultPageSlug?: string;
-  pagesList?: string[];
-  onSave?: (pageSlug: string, schema: PageSchema) => Promise<void>;
+  initialPageSchema?: Record<string, PageSchema>;
+  initialPageSlug?: string;
+  availablePages?: string[];
+  onSavePage?: (pageSlug: string, schema: PageSchema) => Promise<void>;
   onLoadPage?: (slug: string) => Promise<{ slug: string; schema: PageSchema }>;
 };
 
-function PageBuilder({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPage }: PageBuilderProps) {
+function PageBuilder({ initialPageSchema, initialPageSlug, availablePages, onSavePage, onLoadPage }: PageBuilderProps) {
   const [showDebug, setShowDebug] = useState(false);
   
   // Provide default values if not provided
-  const pages = initialPage || {
+  const pages = initialPageSchema || {
     'home': amazonSchemaData as PageSchema
   };
-  const currentPageSlug = defaultPageSlug || 'home';
+  const currentPageSlug = initialPageSlug || 'home';
   
   // Get the initial schema for HistoryProvider (using the default page)
   const initialSchema = pages[currentPageSlug];
@@ -38,7 +38,7 @@ function PageBuilder({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPa
   return (
     <PageSchemaProvider 
       initialPage={pages} 
-      pagesList={pagesList}
+      availablePages={availablePages}
       defaultPageSlug={currentPageSlug}
       onLoadPage={onLoadPage}
     >
@@ -50,7 +50,7 @@ function PageBuilder({ initialPage, defaultPageSlug, pagesList, onSave, onLoadPa
                 <SettingsPanelProvider>
                   <PanelCoordinatorProvider>
                     <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                      <TopBar onSave={onSave} />
+                      <TopBar onSavePage={onSavePage} />
                       <div className="flex-1 flex min-h-0">
                         <LibraryPanel />
                         <LayoutPanel />
