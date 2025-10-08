@@ -360,7 +360,6 @@ const LibraryPanel: React.FC = () => {
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-2">
                     <IconComponent 
                       size={18} 
-                      className={template.type === 'footer' ? 'rotate-180' : ''} 
                     />
                   </div>
                   

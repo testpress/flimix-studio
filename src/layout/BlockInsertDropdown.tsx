@@ -477,7 +477,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
                       <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-1">
                         <IconComponent 
                           size={14} 
-                          className={template.type === 'footer' ? 'rotate-180' : ''} 
                         />
                       </div>
                       

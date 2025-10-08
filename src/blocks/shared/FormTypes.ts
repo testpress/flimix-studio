@@ -13,7 +13,6 @@ import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import type { ImageBlockProps } from '@blocks/image/schema';
 import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
-import type { FooterBlockProps } from '@blocks/footer/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
 
@@ -32,7 +31,6 @@ export type BlockProps =
   | ImageBlockProps
   | VideoBlockProps
   | TabsBlockProps
-  | FooterBlockProps
   | CTAButtonBlockProps
   | BadgeStripBlockProps;
 

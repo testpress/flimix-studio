@@ -12,7 +12,6 @@ import { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
 import { ImageLibraryItem } from '@blocks/image/libraryItem';
 import { VideoLibraryItem } from '@blocks/video/libraryItem';
 import { TabsLibraryItem } from '@blocks/tabs/libraryItem';
-import { FooterLibraryItem } from '@blocks/footer/libraryItem';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
   import type { BlockType } from '@blocks/shared/Block';
@@ -32,7 +31,6 @@ export { FAQAccordionLibraryItem } from '@blocks/faq-accordion/libraryItem';
 export { ImageLibraryItem } from '@blocks/image/libraryItem';
 export { VideoLibraryItem } from '@blocks/video/libraryItem';
 export { TabsLibraryItem } from '@blocks/tabs/libraryItem';
-export { FooterLibraryItem } from '@blocks/footer/libraryItem';
 export { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 export { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 
@@ -60,7 +58,6 @@ export const allLibraryItems: BlockLibraryItem[] = [
   ImageLibraryItem,
   VideoLibraryItem,
   TabsLibraryItem,
-  FooterLibraryItem,
   CTAButtonLibraryItem,
   BadgeStripLibraryItem,
 ];

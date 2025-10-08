@@ -27,8 +27,6 @@ import type { VideoBlock } from '@blocks/video/schema';
 import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
-import type { FooterBlock } from '@blocks/footer/schema';
-import type { FooterBlockProps } from '@blocks/footer/schema';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
@@ -49,15 +47,14 @@ export type BlockType =
   | ImageBlock
   | VideoBlock
   | TabsBlock
-  | FooterBlock
   | CTAButtonBlock
   | BadgeStripBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'footer' | 'cta-button' | 'badge-strip';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | FooterBlockProps | CTAButtonBlockProps | BadgeStripBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'cta-button' | 'badge-strip';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | CTAButtonBlockProps | BadgeStripBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

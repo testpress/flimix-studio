@@ -800,41 +800,6 @@
         "borderRadius": "lg",
         "textAlign": "left"
       }
-    },
-    {
-      "type": "footer",
-      "id": "footer-amazon",
-      "props": {
-        "items": [
-          {
-            "id": "footer-column-1",
-            "title": "",
-            "links": [
-              { "id": "footer-link-1", "label": "Terms and Privacy Notice", "url": "/terms" },
-              { "id": "footer-link-2", "label": "Send us feedback", "url": "/feedback" },
-              { "id": "footer-link-3", "label": "Help", "url": "/help" }
-            ]
-          }
-        ],
-        "socialLinks": [
-          { "id": "social-1", "platform": "facebook", "url": "" },
-          { "id": "social-2", "platform": "twitter", "url": "" },
-          { "id": "social-3", "platform": "instagram", "url": "" }
-        ],
-        "branding": "© 1996-2025, Amazon.com, Inc. or its affiliates"
-      },
-      "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "padding": "lg",
-        "margin": "none",
-        "borderRadius": "none",
-        "textAlign": "center"
-      },
-      "visibility": {
-        "platform": ["mobile", "desktop"],
-        "region": ["US", "CA", "UK", "AU", "IN"]
-      }
     }
   ]
 }

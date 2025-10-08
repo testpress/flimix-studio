@@ -30,10 +30,6 @@ import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import ImageForm from '@blocks/image/form';
 import VideoForm from '@blocks/video/form';
 import TabsForm from '@blocks/tabs/form';
-import FooterForm from '@blocks/footer/form';
-import FooterItemForm from '@blocks/footer/ItemForm';
-import type { FooterBlockProps, FooterColumn } from '@blocks/footer/schema';
-import CTAButtonForm from '@blocks/cta-button/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
 
@@ -91,8 +87,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     image: ImageForm,
     video: VideoForm,
     tabs: TabsForm,
-    'footer': FooterForm,
-    'cta-button': CTAButtonForm,
     'badge-strip': BadgeStripForm,
   };
 
@@ -170,25 +164,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="FAQ Item"
-          />
-        );
-      }
-      
-      case 'footer': {
-        const items = (selectedBlock.props as FooterBlockProps).items || [];
-        const item = items.find((i: FooterColumn) => i.id === selectedItemId);
-        
-        if (!item) return null;
-        
-        const handleItemChange = (updatedItem: FooterColumn) => {
-          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
-        };
-
-        return (
-          <FooterItemForm
-            item={item}
-            onChange={handleItemChange}
-            title="Footer Item"
           />
         );
       }

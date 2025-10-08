@@ -368,16 +368,6 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
         return [
           renderColorField(),
         ];
-      case 'footer':
-        return [
-          renderPaddingField(),
-          renderMarginField(),
-          renderBackgroundColorField(),
-          renderTextAlignField(),
-          renderTextColorField(),
-          renderBorderRadiusField(),
-        ];
-      
       case 'hero':
         return [
         renderMarginField(),

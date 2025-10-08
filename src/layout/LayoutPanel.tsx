@@ -16,7 +16,6 @@ import {
   Image,
   Video,
   Columns3Cog,
-  CreditCard,
   RectangleEllipsis,
   Zap,
   Award,
@@ -233,7 +232,6 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
       image: <Image size={iconSize} />,
       video: <Video size={iconSize} />,
       tabs: <Columns3Cog size={iconSize} />,
-      footer: <CreditCard size={iconSize} />,
       'cta-button': <Zap size={iconSize} />,
       'badge-strip': <Award size={iconSize} />,
     };
@@ -300,7 +298,6 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
               'image': 'Image',
               'video': 'Video',
               'tabs': `Tabs (${tabs.length})`,
-              'footer': 'Footer',
               'cta-button': 'CTA Button',
               'badge-strip': 'Badge Strip',
             };

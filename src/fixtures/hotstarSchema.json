@@ -537,59 +537,6 @@
         "backgroundColor": "black",
         "textColor": "#ffffff"
       }
-    },
-    {
-      "type": "footer",
-      "id": "footer-main",
-      "props": {
-        "items": [
-          {
-            "id": "col-company",
-            "title": "Company",
-            "links": [
-              { "id": "about", "label": "About Us", "url": "/about" },
-              { "id": "careers", "label": "Careers", "url": "/careers" }
-            ]
-          },
-          {
-            "id": "col-language",
-            "title": "View Website in",
-            "links": [
-              { "id": "lang-en", "label": "English", "url": "#" }
-            ]
-          },
-          {
-            "id": "col-help",
-            "title": "Need Help?",
-            "links": [
-              { "id": "help-center", "label": "Visit Help Center", "url": "/help" },
-              { "id": "feedback", "label": "Share Feedback", "url": "/feedback" }
-            ]
-          },
-          {
-            "id": "col-legal",
-            "title": "Legal",
-            "links": [
-              { "id": "terms", "label": "Terms of Use", "url": "/terms" },
-              { "id": "privacy", "label": "Privacy Policy", "url": "/privacy" },
-              { "id": "faq", "label": "FAQ", "url": "/faq" }
-            ]
-          }
-        ],
-        "socialLinks": [
-          { "id": "facebook", "platform": "linkedin", "url": "https://www.linkedin.com/company/testpress/posts/?feedView=all" },
-          { "id": "instagram", "platform": "instagram", "url": "https://www.instagram.com/testpress_official?igsh=Nmw1Mmg0Y2R0Mm5h" }
-        ],
-        "branding": "© 2025 STAR. All Rights Reserved."
-      },
-      "style": {
-        "backgroundColor": "black",
-        "textColor": "#e5e7eb",
-        "padding": "lg",
-        "textAlign": "left",
-        "borderRadius": "none",
-        "boxShadow": "none"
-      }
     }
   ]
 }

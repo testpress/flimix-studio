@@ -481,62 +481,6 @@
         "platform": ["mobile", "desktop"],
         "region": ["IN", "US", "CA", "UK", "AU"]
       }
-    },
-    {
-      "type": "footer",
-      "id": "footer-netflix",
-      "props": {
-        "items": [
-          {
-            "id": "footer-column-1",
-            "title": "",
-            "links": [
-              { "id": "footer-link-1", "label": "Audio Description", "url": "/help/audio-description" },
-              { "id": "footer-link-2", "label": "Investor Relations", "url": "/investor-relations" },
-              { "id": "footer-link-3", "label": "Legal Notices", "url": "/legal-notices" }
-            ]
-          },
-          {
-            "id": "footer-column-2",
-            "title": "",
-            "links": [
-              { "id": "footer-link-4", "label": "Help Centre", "url": "/help" },
-              { "id": "footer-link-5", "label": "Jobs", "url": "/jobs" },
-              { "id": "footer-link-6", "label": "Cookie Preferences", "url": "/cookie-preferences" }
-            ]
-          },
-          {
-            "id": "footer-column-3",
-            "title": "",
-            "links": [
-              { "id": "footer-link-7", "label": "Gift Cards", "url": "/gift-cards" },
-              { "id": "footer-link-8", "label": "Media Centre", "url": "/media-centre" },
-              { "id": "footer-link-9", "label": "Privacy", "url": "/privacy" },
-              { "id": "footer-link-10", "label": "Corporate Information", "url": "/corporate-information" },
-              { "id": "footer-link-11", "label": "Contact Us", "url": "/contact" }
-            ]
-          }
-        ],
-        "socialLinks": [
-          { "id": "social-1", "platform": "facebook", "url": "" },
-          { "id": "social-2", "platform": "instagram", "url": "" },
-          { "id": "social-3", "platform": "twitter", "url": "" },
-          { "id": "social-4", "platform": "youtube", "url": "" }
-        ],
-        "branding": "© 1997-2025 Netflix Inc"
-      },
-      "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#737373",
-        "padding": "lg",
-        "margin": "none",
-        "borderRadius": "none",
-        "textAlign": "left"
-      },
-      "visibility": {
-        "platform": ["mobile", "desktop"],
-        "region": ["US", "CA", "UK", "AU", "IN"]
-      }
     }
   ]
 }
