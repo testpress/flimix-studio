@@ -1,7 +1,7 @@
 import React from 'react';
 import { Copy, Trash2, MoveUp, MoveDown, Plus } from 'lucide-react';
 
-interface ControlsProps {
+interface BlockControlsProps {
   canMoveUp: boolean;
   canMoveDown: boolean;
   onMoveUp?: () => void;
@@ -11,7 +11,7 @@ interface ControlsProps {
   onAddItem?: () => void;
 }
 
-const Controls: React.FC<ControlsProps> = ({
+const BlockControls: React.FC<BlockControlsProps> = ({
   canMoveUp,
   canMoveDown,
   onMoveUp,
@@ -90,4 +90,4 @@ const Controls: React.FC<ControlsProps> = ({
   );
 };
 
-export default Controls; 
+export default BlockControls; 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Controls from '@layout/Controls';
+import BlockControls from '@layout/BlockControls';
 import type { Block } from './Block';
 
 export interface BaseWidgetProps<T extends Block = Block> {
@@ -69,7 +69,7 @@ const BaseWidget = <T extends Block = Block>({
       
       {/* Show block controls when selected */}
       {isSelected && (onMoveUp || onMoveDown || onDuplicate || onRemove) && (
-        <Controls
+        <BlockControls
           canMoveUp={canMoveUp}
           canMoveDown={canMoveDown}
           onMoveUp={onMoveUp}

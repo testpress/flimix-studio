@@ -1,6 +1,6 @@
-import Canvas from '@layout/Canvas';
+import PageBuilderCanvas from '@layout/PageBuilderCanvas';
 import SettingsPanel from '@layout/SettingsPanel';
-import TopBar from '@layout/TopBar';
+import PageBuilderTopbar from '@layout/PageBuilderTopbar';
 import LibraryPanel from '@layout/LibraryPanel';
 import LayoutPanel from '@layout/LayoutPanel';
 import { SelectionProvider } from '@context/SelectionContext';
@@ -50,12 +50,12 @@ function PageBuilder({ initialPageSchema, initialPageSlug, availablePages, onSav
                 <SettingsPanelProvider>
                   <PanelCoordinatorProvider>
                     <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                      <TopBar onSavePage={onSavePage} />
+                      <PageBuilderTopbar onSavePage={onSavePage} />
                       <div className="flex-1 flex min-h-0">
                         <LibraryPanel />
                         <LayoutPanel />
                         <div className="flex-1 min-w-0">
-                          <Canvas showDebug={showDebug} />
+                          <PageBuilderCanvas showDebug={showDebug} />
                         </div>
                         <SettingsPanel 
                           showDebug={showDebug}

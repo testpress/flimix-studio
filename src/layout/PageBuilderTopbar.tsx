@@ -6,11 +6,11 @@ import { usePanelCoordinator } from '@context/PanelCoordinator';
 import { usePageSchema } from '@context/PageSchemaContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
-type TopBarProps = {
+type PageBuilderTopbarProps = {
   onSavePage?: (pageSlug: string, schema: PageSchema) => Promise<void>;
 };
 
-const TopBar = ({ onSavePage }: TopBarProps) => {
+const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
@@ -114,4 +114,4 @@ const TopBar = ({ onSavePage }: TopBarProps) => {
   );
 };
 
-export default TopBar; 
+export default PageBuilderTopbar; 

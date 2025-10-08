@@ -7,7 +7,7 @@ import { useSelection } from '@context/SelectionContext';
 import { usePageSchema } from '@context/PageSchemaContext';
 import { Search } from 'lucide-react';
 
-interface CanvasProps {
+interface PageBuilderCanvasProps {
   showDebug: boolean;
 }
 
@@ -16,7 +16,7 @@ const initialVisibilityContext: VisibilityContext = {
   isSubscribed: false,
 };
 
-const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
+const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
   const { 
     selectedBlockId, 
     setSelectedBlockId,
@@ -173,4 +173,4 @@ const Canvas: React.FC<CanvasProps> = ({ showDebug }) => {
   );
 };
 
-export default Canvas; 
+export default PageBuilderCanvas; 
