@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, EyeOff } from 'lucide-react';
-import HeaderSectionForm from '@editor/header/HeaderSectionForm';
-import FooterSectionForm from '@editor/footer/FooterSectionForm';
-import { PreviewCanvas } from '@editor/preview';
-import type { HeaderSchema } from '@editor/header/schema';
-import type { FooterSchema } from '@editor/footer/schema';
-import { defaultHeaderSchema, defaultFooterSchema } from '@defaultSchemas/index';
+import HeaderPanel from '@layout/HeaderPanel';
+import FooterPanel from '@layout/FooterPanel';
+import HeaderFooterCanvas from '@layout/HeaderFooterCanvas';
+import type { HeaderSchema } from '@header/schema';
+import type { FooterSchema } from '@footer/schema';
+import headerSchemaData from '@fixtures/headerSchema.json';
+import footerSchemaData from '@fixtures/footerSchema.json';
 import { Tabs, TabBar, TabButton, TabPanel } from '@components/tabs';
 
 const HeaderFooterEditor: React.FC = () => {
   // Initialize with default schemas
-  const [headerSchema, setHeaderSchema] = useState<HeaderSchema>(defaultHeaderSchema);
-  const [footerSchema, setFooterSchema] = useState<FooterSchema>(defaultFooterSchema);
+  const [headerSchema, setHeaderSchema] = useState<HeaderSchema>(headerSchemaData as HeaderSchema);
+  const [footerSchema, setFooterSchema] = useState<FooterSchema>(footerSchemaData as FooterSchema);
   
   // UI State
   const [activeTab, setActiveTab] = useState<string>('header');
@@ -122,7 +123,7 @@ const HeaderFooterEditor: React.FC = () => {
               
               <div className="px-4 pb-4">
                 <TabPanel value="header" className="mt-0 space-y-4">
-                  <HeaderSectionForm 
+                  <HeaderPanel 
                     headerSchema={headerSchema} 
                     updateHeaderSchema={updateHeaderSchema}
                     selectedItemId={selectedItemId}
@@ -131,7 +132,7 @@ const HeaderFooterEditor: React.FC = () => {
                 </TabPanel>
                 
                 <TabPanel value="footer" className="mt-0 space-y-4">
-                  <FooterSectionForm 
+                  <FooterPanel 
                     footerSchema={footerSchema} 
                     updateFooterSchema={updateFooterSchema}
                     selectedItemId={selectedItemId}
@@ -144,7 +145,7 @@ const HeaderFooterEditor: React.FC = () => {
         )}
         
         {/* Right panel - Live Preview */}
-        <PreviewCanvas
+        <HeaderFooterCanvas
           headerSchema={headerSchema}
           footerSchema={footerSchema}
           selectedItemId={selectedItemId}

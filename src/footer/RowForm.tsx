@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
-import type { FooterItem } from '@editor/footer/schema';
-import FooterItemForm from '@editor/footer/FooterItemForm';
+import type { FooterItem } from './schema';
+import FooterItemForm from './FooterItemForm';
 
 interface RowFormProps {
   rows: FooterItem[];
@@ -12,9 +12,9 @@ interface RowFormProps {
 
 const RowForm: React.FC<RowFormProps> = ({ 
   rows, 
-  updateRows,
-  selectedItemId,
-  onSelectItem
+  updateRows, 
+  selectedItemId, 
+  onSelectItem 
 }) => {
   const handleAddRowItem = (rowIndex: number) => {
     const newItem: FooterItem = {
@@ -32,7 +32,6 @@ const RowForm: React.FC<RowFormProps> = ({
     
     updateRows(updatedRows);
     
-    // Auto-select the new item
     if (onSelectItem) {
       onSelectItem(newItem.id || '');
     }
@@ -104,7 +103,6 @@ const RowForm: React.FC<RowFormProps> = ({
               {(selectedItemId === row.id || row.items?.some(item => item.id === selectedItemId)) && (
                 <div className="px-3 pb-3 pt-1 border-t border-gray-600">
                   <div className="space-y-3">
-                    {/* Row Items */}
                     {row.items && row.items.length > 0 ? (
                       <div className="space-y-2">
                         {row.items.map((item, itemIndex) => (
@@ -134,7 +132,6 @@ const RowForm: React.FC<RowFormProps> = ({
                       <p className="text-xs text-gray-400">No items added yet.</p>
                     )}
                     
-                    {/* Add Item Button */}
                     <button
                       onClick={() => handleAddRowItem(rowIndex)}
                       className="flex items-center text-xs text-blue-400 hover:text-blue-300 bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded"
@@ -159,3 +156,4 @@ const RowForm: React.FC<RowFormProps> = ({
 };
 
 export default RowForm;
+

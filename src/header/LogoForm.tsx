@@ -1,12 +1,12 @@
 import React from 'react';
-import type { HeaderItem } from '@editor/header/schema';
+import type { HeaderItem } from './schema';
 
-interface LogoEditorProps {
+interface LogoFormProps {
   logoItem: HeaderItem;
   updateLogo: (updatedItem: HeaderItem) => void;
 }
 
-const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, updateLogo }) => {
+const LogoForm: React.FC<LogoFormProps> = ({ logoItem, updateLogo }) => {
   const handleSrcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedItem = {
       ...logoItem,
@@ -57,3 +57,4 @@ const LogoForm: React.FC<LogoEditorProps> = ({ logoItem, updateLogo }) => {
 };
 
 export default LogoForm;
+

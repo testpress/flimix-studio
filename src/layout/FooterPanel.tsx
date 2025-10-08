@@ -1,27 +1,25 @@
 import React from 'react';
 import { Plus } from 'lucide-react';
-import type { FooterSchema, FooterItem } from '@editor/footer/schema';
-import ColumnForm from '@editor/footer/ColumnForm';
-import RowForm from '@editor/footer/RowForm';
+import type { FooterSchema, FooterItem } from '@footer/schema';
+import ColumnForm from '@footer/ColumnForm';
+import RowForm from '@footer/RowForm';
 
-interface FooterSectionEditorProps {
+interface FooterPanelProps {
   footerSchema: FooterSchema;
   updateFooterSchema: (updatedSchema: FooterSchema) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
-const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({ 
+const FooterPanel: React.FC<FooterPanelProps> = ({ 
   footerSchema, 
   updateFooterSchema,
   selectedItemId,
   onSelectItem
 }) => {
-  // Find columns and rows from the schema
   const columns = footerSchema.items.filter(item => item.type === 'column');
   const rows = footerSchema.items.filter(item => item.type === 'row');
 
-  // Handle background color change
   const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFooterSchema({
       ...footerSchema,
@@ -32,7 +30,6 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
     });
   };
 
-  // Handle text color change
   const handleTextColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFooterSchema({
       ...footerSchema,
@@ -43,7 +40,6 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
     });
   };
 
-  // Handle padding change
   const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFooterSchema({
       ...footerSchema,
@@ -54,7 +50,6 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
     });
   };
 
-  // Handle adding new column
   const handleAddColumn = () => {
     const newColumn: FooterItem = {
       id: `column-${Date.now()}`,
@@ -67,13 +62,11 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       items: [...footerSchema.items, newColumn]
     });
     
-    // Auto-select the new column
     if (onSelectItem) {
       onSelectItem(newColumn.id || '');
     }
   };
 
-  // Handle adding new row
   const handleAddRow = () => {
     const newRow: FooterItem = {
       id: `row-${Date.now()}`,
@@ -86,18 +79,13 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
       items: [...footerSchema.items, newRow]
     });
     
-    // Auto-select the new row
     if (onSelectItem) {
       onSelectItem(newRow.id || '');
     }
   };
 
-  // Handle updating columns
   const handleUpdateColumns = (updatedColumns: FooterItem[]) => {
-    // Get all non-column items
     const nonColumnItems = footerSchema.items.filter(item => item.type !== 'column');
-    
-    // Combine non-column items with updated columns
     const updatedItems = [...nonColumnItems, ...updatedColumns];
     
     updateFooterSchema({
@@ -106,12 +94,8 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
     });
   };
 
-  // Handle updating rows
   const handleUpdateRows = (updatedRows: FooterItem[]) => {
-    // Get all non-row items
     const nonRowItems = footerSchema.items.filter(item => item.type !== 'row');
-    
-    // Combine non-row items with updated rows
     const updatedItems = [...nonRowItems, ...updatedRows];
     
     updateFooterSchema({
@@ -214,7 +198,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
           </button>
         </div>
         
-          <ColumnForm
+        <ColumnForm
           columns={columns} 
           updateColumns={handleUpdateColumns}
           selectedItemId={selectedItemId}
@@ -235,7 +219,7 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
           </button>
         </div>
         
-          <RowForm
+        <RowForm
           rows={rows} 
           updateRows={handleUpdateRows}
           selectedItemId={selectedItemId}
@@ -246,4 +230,4 @@ const FooterSectionForm: React.FC<FooterSectionEditorProps> = ({
   );
 };
 
-export default FooterSectionForm;
+export default FooterPanel;

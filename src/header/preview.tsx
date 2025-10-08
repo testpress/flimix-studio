@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import type { HeaderSchema } from '@editor/header/schema';
+import type { HeaderSchema } from './schema';
 
 interface HeaderPreviewProps {
   headerSchema: HeaderSchema;
@@ -121,3 +121,4 @@ const HeaderPreview: React.FC<HeaderPreviewProps> = ({
 };
 
 export default HeaderPreview;
+

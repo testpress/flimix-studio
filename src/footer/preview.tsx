@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FooterSchema } from '@editor/footer/schema';
+import type { FooterSchema } from './schema';
 
 interface FooterPreviewProps {
   footerSchema: FooterSchema;
@@ -101,3 +101,4 @@ const FooterPreview: React.FC<FooterPreviewProps> = ({
 };
 
 export default FooterPreview;
+

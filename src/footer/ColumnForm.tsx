@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
-import type { FooterItem } from '@editor/footer/schema';
-import FooterItemForm from '@editor/footer/FooterItemForm';
+import type { FooterItem } from './schema';
+import FooterItemForm from './FooterItemForm';
 
 interface ColumnFormProps {
   columns: FooterItem[];
@@ -12,9 +12,9 @@ interface ColumnFormProps {
 
 const ColumnForm: React.FC<ColumnFormProps> = ({ 
   columns, 
-  updateColumns,
-  selectedItemId,
-  onSelectItem
+  updateColumns, 
+  selectedItemId, 
+  onSelectItem 
 }) => {
   const handleAddColumnItem = (columnIndex: number) => {
     const newItem: FooterItem = {
@@ -32,7 +32,6 @@ const ColumnForm: React.FC<ColumnFormProps> = ({
     
     updateColumns(updatedColumns);
     
-    // Auto-select the new item
     if (onSelectItem) {
       onSelectItem(newItem.id || '');
     }
@@ -104,7 +103,6 @@ const ColumnForm: React.FC<ColumnFormProps> = ({
               {(selectedItemId === column.id || column.items?.some(item => item.id === selectedItemId)) && (
                 <div className="px-3 pb-3 pt-1 border-t border-gray-600">
                   <div className="space-y-3">
-                    {/* Column Items */}
                     {column.items && column.items.length > 0 ? (
                       <div className="space-y-2">
                         {column.items.map((item, itemIndex) => (
@@ -135,7 +133,6 @@ const ColumnForm: React.FC<ColumnFormProps> = ({
                       <p className="text-xs text-gray-400">No items added yet.</p>
                     )}
                     
-                    {/* Add Item Button */}
                     <button
                       onClick={() => handleAddColumnItem(columnIndex)}
                       className="flex items-center text-xs text-blue-400 hover:text-blue-300 bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded"
@@ -160,3 +157,4 @@ const ColumnForm: React.FC<ColumnFormProps> = ({
 };
 
 export default ColumnForm;
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import type { HeaderItem } from '@editor/header/schema';
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
+import type { HeaderItem } from './schema';
 
 interface NavigationItemFormProps {
   item: HeaderItem;
@@ -18,7 +18,6 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = e.target.value as HeaderItem['type'];
     
-    // If changing to/from dropdown, handle items array
     if (newType === 'dropdown' && item.type !== 'dropdown') {
       updateNavigationItem({
         ...item,
@@ -26,7 +25,6 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
         items: item.items || []
       });
     } else if (newType !== 'dropdown' && item.type === 'dropdown') {
-      // Remove items when changing from dropdown to another type
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { items, ...rest } = item;
       updateNavigationItem({
@@ -68,9 +66,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       items: [...(item.items || []), newItem]
     });
     
-    // Ensure sub-items are expanded
     setExpandedSubItems(true);
-    
   };
 
   const handleUpdateSubItem = (index: number, updatedSubItem: HeaderItem) => {
@@ -201,7 +197,6 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                         </div>
                       </div>
                       
-                      {/* Type selector for dropdown items */}
                       <div className="mt-2">
                         <label className="text-xs text-gray-400 mb-0.5">Type</label>
                         <select
@@ -237,3 +232,4 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
 };
 
 export default NavigationItemForm;
+
