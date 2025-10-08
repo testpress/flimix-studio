@@ -1,16 +1,16 @@
 import React from 'react';
-import type { HeaderItem, HeaderSchema } from '@editor/header/schema';
-import LogoForm from '@editor/header/LogoForm';
-import NavigationForm from '@editor/header/NavigationForm';
+import type { HeaderItem, HeaderSchema } from '@header/schema';
+import LogoForm from '@header/LogoForm';
+import NavigationForm from '@header/NavigationForm';
 
-interface HeaderSectionEditorProps {
+interface HeaderPanelProps {
   headerSchema: HeaderSchema;
   updateHeaderSchema: (updatedSchema: HeaderSchema) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
-const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({ 
+const HeaderPanel: React.FC<HeaderPanelProps> = ({ 
   headerSchema, 
   updateHeaderSchema,
   selectedItemId,
@@ -45,7 +45,6 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
   };
 
   const handleUpdateNavigationItems = (updatedNavigationItems: HeaderItem[]) => {
-    // Preserve logo and title, replace all other items
     const nonNavigationItems = headerSchema.items.filter(item => 
       item.type === 'logo' || item.type === 'title'
     );
@@ -86,10 +85,8 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
     });
   };
 
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!titleItem) {
-      // Create new title item if it doesn't exist
       const newTitleItem: HeaderItem = {
         id: `title-${Date.now()}`,
         type: 'title',
@@ -102,7 +99,6 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
         items: [...headerSchema.items, newTitleItem]
       });
     } else {
-      // Update existing title
       const updatedTitle = {
         ...titleItem,
         label: e.target.value
@@ -139,7 +135,6 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
     
     handleUpdateTitle(updatedTitle);
   };
-
 
   return (
     <div className="space-y-4">
@@ -229,10 +224,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
           data-item-id={logoItem.id}
         >
           <h3 className="text-lg font-semibold text-white mb-3">Logo</h3>
-            <LogoForm
-            logoItem={logoItem} 
-            updateLogo={handleUpdateLogo} 
-          />
+          <LogoForm logoItem={logoItem} updateLogo={handleUpdateLogo} />
         </div>
       )}
       
@@ -291,7 +283,7 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
       {/* Navigation Editor */}
       <div className="p-4 bg-gray-800 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Navigation Items</h3>
-          <NavigationForm
+        <NavigationForm
           navigationItems={navigationItems} 
           updateNavigationItems={handleUpdateNavigationItems}
           selectedItemId={selectedItemId}
@@ -302,4 +294,4 @@ const HeaderSectionForm: React.FC<HeaderSectionEditorProps> = ({
   );
 };
 
-export default HeaderSectionForm;
+export default HeaderPanel;

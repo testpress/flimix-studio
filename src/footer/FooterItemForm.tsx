@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FooterItem } from '@editor/footer/schema';
+import type { FooterItem } from './schema';
 
 interface FooterItemFormProps {
   item: FooterItem;
@@ -40,8 +40,6 @@ const FooterItemForm: React.FC<FooterItemFormProps> = ({
       icon: e.target.value
     });
   };
-
-
 
   return (
     <div className="space-y-2">
@@ -90,24 +88,22 @@ const FooterItemForm: React.FC<FooterItemFormProps> = ({
         />
       </div>
 
-      {/* Icon and styling options - only for row items */}
+      {/* Icon - only for row items */}
       {!isColumnItem && (
-        <>
-          <div className="flex flex-col">
-            <label className="text-xs text-gray-400 mb-0.5">Icon URL</label>
-            <input
-              type="text"
-              value={item.icon || ''}
-              onChange={handleIconChange}
-              className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
-              placeholder="https://example.com/icon.svg"
-            />
-          </div>
-
-        </>
+        <div className="flex flex-col">
+          <label className="text-xs text-gray-400 mb-0.5">Icon URL</label>
+          <input
+            type="text"
+            value={item.icon || ''}
+            onChange={handleIconChange}
+            className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
+            placeholder="https://example.com/icon.svg"
+          />
+        </div>
       )}
     </div>
   );
 };
 
 export default FooterItemForm;
+

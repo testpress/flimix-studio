@@ -26,3 +26,4 @@ export interface FooterSchema {
     textColor?: string;
   };
 }
+

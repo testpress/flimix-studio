@@ -1,20 +1,20 @@
 import React from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
-import type { HeaderItem } from '@editor/header/schema';
-import NavigationItemForm from '@editor/header/NavigationItemForm';
+import type { HeaderItem } from './schema';
+import NavigationItemForm from './NavigationItemForm';
 
-interface NavigationEditorProps {
+interface NavigationFormProps {
   navigationItems: HeaderItem[];
   updateNavigationItems: (updatedItems: HeaderItem[]) => void;
   selectedItemId?: string | null;
   onSelectItem?: (id: string) => void;
 }
 
-const NavigationForm: React.FC<NavigationEditorProps> = ({ 
+const NavigationForm: React.FC<NavigationFormProps> = ({ 
   navigationItems, 
-  updateNavigationItems,
-  selectedItemId,
-  onSelectItem
+  updateNavigationItems, 
+  selectedItemId, 
+  onSelectItem 
 }) => {
   const handleAddNavigationItem = () => {
     const newItem: HeaderItem = {
@@ -40,7 +40,6 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
     const updatedItems = navigationItems.filter((_, i) => i !== index);
     updateNavigationItems(updatedItems);
     
-    // If the deleted item was selected, clear selection
     if (selectedItemId === navigationItems[index].id) {
       onSelectItem?.('');
     }
@@ -114,3 +113,4 @@ const NavigationForm: React.FC<NavigationEditorProps> = ({
 };
 
 export default NavigationForm;
+

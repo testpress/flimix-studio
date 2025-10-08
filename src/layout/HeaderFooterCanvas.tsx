@@ -1,10 +1,10 @@
 import React from 'react';
-import HeaderPreview from './HeaderPreview';
-import FooterPreview from './FooterPreview';
-import type { HeaderSchema } from '@editor/header/schema';
-import type { FooterSchema } from '@editor/footer/schema';
+import HeaderPreview from '@header/preview';
+import FooterPreview from '@footer/preview';
+import type { HeaderSchema } from '@header/schema';
+import type { FooterSchema } from '@footer/schema';
 
-interface PreviewCanvasProps {
+interface HeaderFooterCanvasProps {
   headerSchema: HeaderSchema;
   footerSchema: FooterSchema;
   selectedItemId: string | null;
@@ -13,7 +13,7 @@ interface PreviewCanvasProps {
   onToggleCustomizePanel: () => void;
 }
 
-const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
+const HeaderFooterCanvas: React.FC<HeaderFooterCanvasProps> = ({
   headerSchema,
   footerSchema,
   selectedItemId,
@@ -60,4 +60,4 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
   );
 };
 
-export default PreviewCanvas;
+export default HeaderFooterCanvas;
