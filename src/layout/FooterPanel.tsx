@@ -107,7 +107,7 @@ const FooterPanel: React.FC<FooterPanelProps> = ({
   return (
     <div className="space-y-4">
       {/* Footer Styles */}
-      <div className="p-4 bg-gray-800 rounded-lg">
+      <div className="p-4 bg-gray-700 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Footer Styles</h3>
         
         <div className="space-y-3">
@@ -186,7 +186,7 @@ const FooterPanel: React.FC<FooterPanelProps> = ({
       </div>
       
       {/* Columns */}
-      <div className="p-4 bg-gray-800 rounded-lg">
+      <div className="p-4 bg-gray-700 rounded-lg">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold text-white">Columns</h3>
           <button
@@ -207,7 +207,7 @@ const FooterPanel: React.FC<FooterPanelProps> = ({
       </div>
       
       {/* Rows */}
-      <div className="p-4 bg-gray-800 rounded-lg">
+      <div className="p-4 bg-gray-700 rounded-lg">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold text-white">Rows</h3>
           <button

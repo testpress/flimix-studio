@@ -139,7 +139,7 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
   return (
     <div className="space-y-4">
       {/* Header Styles */}
-      <div className="p-4 bg-gray-800 rounded-lg">
+      <div className="p-4 bg-gray-700 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Header Styles</h3>
         
         <div className="space-y-3">
@@ -220,7 +220,7 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
       {/* Logo Editor */}
       {logoItem && (
         <div 
-          className="p-4 bg-gray-800 rounded-lg"
+          className="p-4 bg-gray-700 rounded-lg"
           data-item-id={logoItem.id}
         >
           <h3 className="text-lg font-semibold text-white mb-3">Logo</h3>
@@ -230,7 +230,7 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
       
       {/* Title Settings */}
       <div 
-        className="p-4 bg-gray-800 rounded-lg"
+        className="p-4 bg-gray-700 rounded-lg"
         data-item-id={titleItem?.id}
       >
         <h3 className="text-lg font-semibold text-white mb-3">Title</h3>
@@ -281,7 +281,7 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
       </div>
       
       {/* Navigation Editor */}
-      <div className="p-4 bg-gray-800 rounded-lg">
+      <div className="p-4 bg-gray-700 rounded-lg">
         <h3 className="text-lg font-semibold text-white mb-3">Navigation Items</h3>
         <NavigationForm
           navigationItems={navigationItems} 

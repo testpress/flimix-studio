@@ -79,9 +79,9 @@ const HeaderFooterEditor: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-950 min-h-screen text-white">
+    <div className="bg-gray-800 min-h-screen text-white">
       {/* Header with controls */}
-      <header className="bg-gray-900 border-b border-gray-800 p-4">
+      <header className="bg-gray-800 border-b border-gray-700 p-4">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Header & Footer Builder</h1>
           
@@ -107,9 +107,19 @@ const HeaderFooterEditor: React.FC = () => {
       
       {/* Main content */}
       <div className="flex h-[calc(100vh-64px)]">
-        {/* Left panel - Editor (when customize panel is shown) */}
+        {/* Left panel - Live Preview */}
+        <HeaderFooterCanvas
+          headerSchema={headerSchema}
+          footerSchema={footerSchema}
+          selectedItemId={selectedItemId}
+          onItemSelect={handleItemSelect}
+          showCustomizePanel={showCustomizePanel}
+          onToggleCustomizePanel={toggleCustomizePanel}
+        />
+        
+        {/* Right panel - Editor (when customize panel is shown) */}
         {showCustomizePanel && (
-          <div className="w-96 bg-gray-900 border-r border-gray-800 overflow-y-auto">
+          <div className="w-96 bg-gray-800 border-l border-gray-700 overflow-y-auto">
             <Tabs 
               defaultValue="header" 
               value={activeTab}
@@ -143,16 +153,6 @@ const HeaderFooterEditor: React.FC = () => {
             </Tabs>
           </div>
         )}
-        
-        {/* Right panel - Live Preview */}
-        <HeaderFooterCanvas
-          headerSchema={headerSchema}
-          footerSchema={footerSchema}
-          selectedItemId={selectedItemId}
-          onItemSelect={handleItemSelect}
-          showCustomizePanel={showCustomizePanel}
-          onToggleCustomizePanel={toggleCustomizePanel}
-        />
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ const HeaderFooterCanvas: React.FC<HeaderFooterCanvasProps> = ({
   onToggleCustomizePanel
 }) => {
   return (
-    <div className={`${showCustomizePanel ? 'flex-1' : 'w-full'} bg-gray-950 flex flex-col`}>
+    <div className={`${showCustomizePanel ? 'flex-1' : 'w-full'} bg-gray-800 flex flex-col`}>
       {/* Header preview */}
       <HeaderPreview
         headerSchema={headerSchema}
@@ -31,8 +31,8 @@ const HeaderFooterCanvas: React.FC<HeaderFooterCanvasProps> = ({
       />
       
       {/* Main content area (placeholder) */}
-      <div className="flex-1 bg-gray-900 p-8 flex items-center justify-center">
-        <div className="text-center text-gray-500">
+      <div className="flex-1 bg-gray-800 p-8 flex items-center justify-center">
+        <div className="text-center text-gray-300">
           <h2 className="text-xl font-semibold mb-2">Page Content Area</h2>
           <p>Your page content would appear here.</p>
           {!showCustomizePanel && (
