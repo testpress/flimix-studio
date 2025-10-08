@@ -56,7 +56,7 @@ interface TabBarProps {
 
 export const TabBar: React.FC<TabBarProps> = ({ className = '', children }) => {
   return (
-    <div className={`flex bg-gray-800 rounded-lg p-1 ${className}`}>
+    <div className={`flex bg-gray-900 rounded-lg p-1 ${className}`}>
       {children}
     </div>
   );
