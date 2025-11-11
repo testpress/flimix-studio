@@ -4,7 +4,7 @@ import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
-import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, findBlockPositionById } from '@context/domain';
+import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, getChildrenBlocks } from '@context/domain';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 import type { TabsBlock, Tab } from '@blocks/tabs/schema';
@@ -465,63 +465,66 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
   const deleteSelectedBlock = () => {
     if (!selectedBlockId) return;
-    
-    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
-    if (!result) return;
 
-    const { container, index } = result;
-    
-    const newBlocks = updateBlockInContainer(
-      container as BlockType[],
-      (container) => {
-        const newContainer = [...container];
-        newContainer.splice(index, 1);
-        return newContainer;
-      },
-      result.parent ? result.parent as BlockType : undefined
+    const { block, parent, parentIndex } = findBlockAndParent(
+      selectedBlockId,
+      pageSchema.blocks,
     );
-    
+
+    if (!block) {
+      console.error(`[SelectionContext] deleteSelectedBlock: Block not found.`);
+      return;
+    }
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+    const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
+
+    if (!newChildren) {
+      console.error(`[SelectionContext] deleteSelectedBlock: Cloned children array not found.`);
+      return;
+    }
+
+    newChildren.splice(parentIndex, 1);
+
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
-    setSelectedBlockId(null);
     setSelectedBlock(null);
+    setSelectedBlockId(null);
     setSelectedBlockParentId(null);
   };
 
   const duplicateSelectedBlock = () => {
     if (!selectedBlockId) return;
-    
-    const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
-    if (!result) return;
 
-    const { container, index } = result;
-    
-    // Find the original block
-    const originalBlock = container[index];
-    if (!originalBlock) return;
-    
-    // Clone the block with new IDs
-    const duplicatedBlock = duplicateBlockWithNewIds(originalBlock as BlockType);
-    
-    const newBlocks = updateBlockInContainer(
-      container as BlockType[],
-      (container) => {
-        const newContainer = [...container];
-        newContainer.splice(index + 1, 0, duplicatedBlock);
-        return newContainer;
-      },
-      result.parent ? result.parent as BlockType : undefined
+    const { block, parent, parentIndex } = findBlockAndParent(
+      selectedBlockId,
+      pageSchema.blocks,
     );
-    
+
+    if (!block) {
+      console.error(`[SelectionContext] duplicateSelectedBlock: Block not found.`);
+      return;
+    }
+
+    const newBlock = duplicateBlockWithNewIds(block);
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+    const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
+
+    if (!newChildren) {
+      console.error(`[SelectionContext] duplicateSelectedBlock: Cloned children array not found.`);
+      return;
+    }
+
+    newChildren.splice(parentIndex + 1, 0, newBlock);
+
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     
-    // Clear any previously selected item when selecting a newly duplicated block
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
     
-    // Select the newly duplicated block
-    setSelectedBlockId(duplicatedBlock.id);
-    setSelectedBlock(duplicatedBlock);
-    setSelectedBlockParentId(result.parent?.id || null);
+    setSelectedBlock(newBlock);
+    setSelectedBlockId(newBlock.id);
+    setSelectedBlockParentId(parent?.id || null);
   };
 
   const modifyBlockItems = (
