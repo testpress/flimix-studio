@@ -84,8 +84,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    const { container, index } = result;
-    const newContainer = [...container] as BlockType[];
+    const { children, index } = result;
+    const newContainer = [...children] as BlockType[];
     const insertIndex = position === InsertPosition.AFTER ? index + 1 : index;
     newContainer.splice(insertIndex, 0, newBlock);
     

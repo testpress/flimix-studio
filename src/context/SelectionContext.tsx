@@ -4,7 +4,7 @@ import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
-import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent } from '@context/domain';
+import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, getChildrenBlocks } from '@context/domain';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 import type { TabsBlock, Tab } from '@blocks/tabs/schema';
@@ -466,28 +466,25 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const deleteSelectedBlock = () => {
     if (!selectedBlockId) return;
 
-    const { block, container, parentIndex } = findBlockAndParent(
+    const { block, parent, parentIndex } = findBlockAndParent(
       selectedBlockId,
       pageSchema.blocks,
     );
 
-    if (!block || !container) {
+    if (!block) {
       console.error(`[SelectionContext] deleteSelectedBlock: Block not found.`);
       return;
     }
 
     const newBlocks = structuredClone(pageSchema.blocks);
-    const { container: newContainer } = findBlockAndParent(
-      selectedBlockId,
-      newBlocks,
-    );
+    const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
 
-    if (!newContainer) {
-      console.error(`[SelectionContext] deleteSelectedBlock: Cloned container not found.`);
+    if (!newChildren) {
+      console.error(`[SelectionContext] deleteSelectedBlock: Cloned children array not found.`);
       return;
     }
 
-    newContainer.splice(parentIndex, 1);
+    newChildren.splice(parentIndex, 1);
 
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     setSelectedBlock(null);
@@ -498,12 +495,12 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const duplicateSelectedBlock = () => {
     if (!selectedBlockId) return;
 
-    const { block, parent, container, parentIndex } = findBlockAndParent(
+    const { block, parent, parentIndex } = findBlockAndParent(
       selectedBlockId,
       pageSchema.blocks,
     );
 
-    if (!block || !container) {
+    if (!block) {
       console.error(`[SelectionContext] duplicateSelectedBlock: Block not found.`);
       return;
     }
@@ -511,18 +508,14 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     const newBlock = duplicateBlockWithNewIds(block);
 
     const newBlocks = structuredClone(pageSchema.blocks);
+    const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
 
-    const { container: newContainer } = findBlockAndParent(
-      selectedBlockId,
-      newBlocks,
-    );
-
-    if (!newContainer) {
-      console.error(`[SelectionContext] duplicateSelectedBlock: Cloned container not found.`);
+    if (!newChildren) {
+      console.error(`[SelectionContext] duplicateSelectedBlock: Cloned children array not found.`);
       return;
     }
 
-    newContainer.splice(parentIndex + 1, 0, newBlock);
+    newChildren.splice(parentIndex + 1, 0, newBlock);
 
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
     
