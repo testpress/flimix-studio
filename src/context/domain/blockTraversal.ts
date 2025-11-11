@@ -11,143 +11,94 @@ export interface BlockPosition {
 export interface BlockAndParent {
   block: BlockType | null;
   parent: BlockType | null;
+  container: BlockType[] | null;
   parentIndex: number;
 }
 
 /**
- * Finds a block and its parent in the block tree
+ * Recursively searches for a block and its parent container.
  * @param blockId - The ID of the block to find
  * @param blocks - Array of blocks to search in
- * @returns Object containing the block, its parent, and parent index
+ * @param parent - The parent block (null for root, used internally for recursion)
+ * @returns Object containing the block, its parent, container array, and parent index
  */
 export function findBlockAndParent(
   blockId: string, 
-  blocks: BlockType[]
+  blocks: BlockType[],
+  parent: BlockType | null = null
 ): BlockAndParent {
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i];
     if (block.id === blockId) {
-      return { block, parent: null, parentIndex: i };
+      return { block, parent, container: blocks, parentIndex: i };
     }
-    if (block.children) {
-      for (let j = 0; j < block.children.length; j++) {
-        if (block.children[j].id === blockId) {
-          return { block: block.children[j], parent: block, parentIndex: j };
-        }
+    if (block.children && block.children.length > 0) {
+      const found = findBlockAndParent(blockId, block.children, block);
+      if (found.block) {
+        return found;
       }
     }
-    
-    // Check tabs blocks for nested children
+
     if (block.type === 'tabs') {
       const tabsBlock = block as TabsBlock;
       for (const tab of tabsBlock.props.tabs) {
-        if (tab.children) {
-          for (let j = 0; j < tab.children.length; j++) {
-            if (tab.children[j].id === blockId) {
-              return { block: tab.children[j], parent: block, parentIndex: j };
-            }
+        if (tab.children && tab.children.length > 0) {
+          const found = findBlockAndParent(blockId, tab.children, block);
+          if (found.block) {
+            // Special: container is the tab's children array
+            return { ...found, container: tab.children };
           }
         }
       }
     }
   }
-  return { block: null, parent: null, parentIndex: -1 };
+  return { block: null, parent: null, container: null, parentIndex: -1 };
 }
 
 /**
- * Finds a block's position in the block tree
+ * Finds the exact position of a block (parent, container array, and index).
+ * This implementation uses the recursive findBlockAndParent.
  * @param blocks - Array of blocks to search in
  * @param targetId - ID of the block to find
  * @returns BlockPosition object or null if not found
  */
 export function findBlockPositionById(
-  blocks: Block[],
+  blocks: BlockType[],
   targetId: string
 ): BlockPosition | null {
-  for (let i = 0; i < blocks.length; i++) {
-    const block = blocks[i];
-    if (block.id === targetId) {
-      return { parent: null, container: blocks, index: i };
-    }
-    if (block.children && Array.isArray(block.children)) {
-      for (let j = 0; j < block.children.length; j++) {
-        const child = block.children[j];
-        if (child.id === targetId) {
-          return { parent: block, container: block.children, index: j };
-        }
-      }
-    }
-    
-    // Check tabs blocks for nested children
-    if (block.type === 'tabs') {
-      const tabsBlock = block as TabsBlock;
-      for (const tab of tabsBlock.props.tabs) {
-        if (tab.children) {
-          for (let j = 0; j < tab.children.length; j++) {
-            const child = tab.children[j];
-            if (child.id === targetId) {
-              return { parent: block, container: tab.children, index: j };
-            }
-          }
-        }
-      }
-    }
+  const result = findBlockAndParent(targetId, blocks);
+
+  if (result.block && result.container) {
+    return {
+      parent: result.parent,
+      container: result.container as Block[],
+      index: result.parentIndex,
+    };
   }
+
   return null;
 }
 
 /**
  * Finds block position with additional metadata for UI display
+ * Uses the recursive findBlockAndParent to find blocks at any depth
  * @param blockId - ID of the block to find
  * @param blocks - Array of blocks to search in
  * @returns Object with position information for UI
  */
 export function findBlockPositionForUI(
   blockId: string, 
-  blocks: Block[]
+  blocks: BlockType[]
 ): { isTopLevel: boolean; parentId: string | null; index: number; totalSiblings: number } {
-  // Check top-level blocks first
-  const topLevelIndex = blocks.findIndex(block => block.id === blockId);
-  if (topLevelIndex !== -1) {
-    return {
-      isTopLevel: true,
-      parentId: null,
-      index: topLevelIndex,
-      totalSiblings: blocks.length
-    };
-  }
+  const result = findBlockAndParent(blockId, blocks);
 
-  // Check nested blocks
-  for (const block of blocks) {
-    if (block.children) {
-      const childIndex = block.children.findIndex((child: Block) => child.id === blockId);
-      if (childIndex !== -1) {
-        return {
-          isTopLevel: false,
-          parentId: block.id,
-          index: childIndex,
-          totalSiblings: block.children.length
-        };
-      }
-    }
-    
-    // Check tabs blocks for nested children
-    if (block.type === 'tabs') {
-      const tabsBlock = block as TabsBlock;
-      for (const tab of tabsBlock.props.tabs) {
-        if (tab.children) {
-          const childIndex = tab.children.findIndex((child: Block) => child.id === blockId);
-          if (childIndex !== -1) {
-            return {
-              isTopLevel: false,
-              parentId: block.id,
-              index: childIndex,
-              totalSiblings: tab.children.length
-            };
-          }
-        }
-      }
-    }
+  if (result.block && result.container) {
+    return {
+      isTopLevel: result.parent === null,
+      parentId: result.parent?.id || null,
+      index: result.parentIndex,
+      totalSiblings: result.container.length
+    };
   }
 
   return { isTopLevel: false, parentId: null, index: -1, totalSiblings: 0 };
