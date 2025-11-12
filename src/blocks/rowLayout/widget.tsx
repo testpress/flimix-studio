@@ -3,7 +3,14 @@ import BaseWidget, { type BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import BlockManager from '@domain/BlockManager';
 import type { RowLayoutBlock } from './schema';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
-import type { Block } from '@blocks/shared/Block';
+import type { Block, BlockType } from '@blocks/shared/Block';
+import LayoutSelector from './LayoutSelector';
+import { ROW_LAYOUT_PRESETS } from './constants';
+import { useHistory } from '@context/HistoryContext';
+import { createBlock } from '@context/domain/blockFactory';
+import type { SectionBlock } from '@blocks/section/schema';
+import { useSelection } from '@context/SelectionContext';
+import { findBlockPositionById } from '@context/domain/blockTraversal';
 
 
 interface RowLayoutWidgetProps extends Omit<BaseWidgetProps<RowLayoutBlock>, 'block' | 'onSelect'> {
@@ -23,16 +30,59 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   selectedBlockId,
   ...widgetControlProps
 }) => {
-  const columnCount = block.children.length;
-  
-  const gridColsClass = {
-    1: 'grid-cols-1',
-    2: 'grid-cols-2',
-    3: 'grid-cols-3',
-    4: 'grid-cols-4',
-  }[columnCount] || 'grid-cols-1';
+  const { pageSchema, updatePageWithHistory } = useHistory();
+  const { setSelectedBlock } = useSelection();
 
-  const layoutClass = `grid ${gridColsClass} gap-4`;
+  const handleLayoutSelect = (presetId: string, cols: number) => {
+    const newChildren = Array.from({ length: cols }).map(() => 
+      createBlock('section')
+    ) as SectionBlock[];
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+    const blockPosition = findBlockPositionById(newBlocks, block.id);
+
+    if (blockPosition && blockPosition.children) {
+      const updatedBlock = {
+        ...block,
+        props: { 
+          ...block.props, 
+          preset: presetId as RowLayoutBlock['props']['preset'], 
+          columnGap: 'md' as const 
+        },
+        children: newChildren
+      };
+      
+      blockPosition.children[blockPosition.index] = updatedBlock as BlockType;
+      
+      updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
+      setSelectedBlock(updatedBlock); 
+    }
+  };
+
+  const getColumnGapClass = (gap: string | undefined) => {
+    switch (gap) {
+      case 'none': return 'gap-x-0';
+      case 'sm': return 'gap-x-2';
+      case 'lg': return 'gap-x-8';
+      case 'md': 
+      default: return 'gap-x-4';
+    }
+  };
+
+  const gapClass = getColumnGapClass(block.props.columnGap);
+  const currentPreset = ROW_LAYOUT_PRESETS.find(p => p.id === block.props.preset);
+  const actualChildrenCount = block.children.length;
+  
+  const gridTemplateClass = (currentPreset && currentPreset.cols === actualChildrenCount)
+    ? currentPreset.class
+    : ({
+        1: 'grid-cols-1',
+        2: 'grid-cols-2',
+        3: 'grid-cols-3',
+        4: 'grid-cols-4',
+      }[actualChildrenCount] || 'grid-cols-1');
+
+  const layoutClass = `grid ${gridTemplateClass} ${gapClass}`;
 
   const { style } = block;
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
@@ -78,21 +128,25 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         }}
         {...widgetControlProps}
       >
-      <div className={layoutClass}>
-        {block.children.map((childSection) => (
-          <BlockManager
-            key={childSection.id}
-            block={childSection}
-            visibilityContext={visibilityContext}
-            showDebug={showDebug}
-            onSelect={onSelect}
-            isSelected={selectedBlockId === childSection.id}
-            selectedBlockId={selectedBlockId}
-            isColumn={true}
-            columnCount={block.children.length}
-          />
-        ))}
-      </div>
+        {block.children.length === 0 ? (
+          <LayoutSelector onLayoutSelect={handleLayoutSelect} />
+        ) : (
+          <div className={layoutClass}>
+            {block.children.map((childSection) => (
+              <BlockManager
+                key={childSection.id}
+                block={childSection}
+                visibilityContext={visibilityContext}
+                showDebug={showDebug}
+                onSelect={onSelect}
+                isSelected={selectedBlockId === childSection.id}
+                selectedBlockId={selectedBlockId}
+                isColumn={true}
+                columnCount={block.children.length}
+              />
+            ))}
+          </div>
+        )}
       </BaseWidget>
     </div>
   );
