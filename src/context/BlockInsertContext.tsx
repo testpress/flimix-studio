@@ -287,10 +287,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   };
 
   /**
-   * Inserts a new block as a child of a Section or Tabs block.
+   * Inserts a new block as a child of a Section.
    * This function is recursive and can find containers at any depth.
    * @param blockType - Type of block to create and insert
-   * @param sectionId - ID of the section or tabs block to insert into
+   * @param sectionId - ID of the section block to insert into
    */
   const insertBlockInsideSection = (blockType: BlockType['type'], sectionId: string) => {
     // Find the selected section and its parent

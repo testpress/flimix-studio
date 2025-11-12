@@ -51,7 +51,6 @@ interface SelectionContextType {
   moveBlockItemDown: (blockId: string, index: number) => void;
   selectArrayItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
-  modifyRowColumnCount: (direction: 'increase' | 'decrease') => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
