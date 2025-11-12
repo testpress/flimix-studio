@@ -3,12 +3,45 @@ import type { BlockFormProps, BlockProps } from '@blocks/shared/FormTypes';
 import { useSelection } from '@context/SelectionContext';
 import { useHistory } from '@context/HistoryContext';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { RowLayoutBlock, RowLayoutBlockProps, GapSize } from './schema';
+import type { RowLayoutBlock, RowLayoutPreset, GapSize } from './schema';
 import { MinColumns, MaxColumns } from './schema';
 import { ROW_LAYOUT_PRESETS } from './constants';
 import { createBlock } from '@context/domain/blockFactory';
 import { findBlockPositionById } from '@context/domain/blockTraversal';
 import type { SectionBlock } from '@blocks/section/schema';
+
+interface GutterControlProps {
+  label: string;
+  value?: GapSize;
+  onChange: (val: GapSize) => void;
+}
+
+const GutterControl: React.FC<GutterControlProps> = ({ 
+  label, 
+  value, 
+  onChange 
+}) => (
+  <div className="space-y-2">
+    <div className="flex justify-between items-center">
+      <label className="text-xs font-medium text-gray-600">{label}</label>
+    </div>
+    <div className="flex border border-gray-200 rounded-md overflow-hidden">
+      {(['none', 'sm', 'md', 'lg'] as const).map((size) => (
+        <button
+          key={size}
+          onClick={() => onChange(size)}
+          className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
+            (value || 'md') === size
+              ? 'bg-blue-50 text-blue-600'
+              : 'bg-white text-gray-600 hover:bg-gray-50'
+          } ${size !== 'lg' ? 'border-r border-gray-200' : ''}`}
+        >
+          {size.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  </div>
+);
 
 const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const { modifyRowColumnCount, selectedBlockId } = useSelection();
@@ -21,7 +54,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const canDecrease = columnCount > MinColumns;
   const canIncrease = columnCount < MaxColumns;
 
-  const handlePresetChange = (presetId: string, requiredCols: number) => {
+  const handlePresetChange = (presetId: RowLayoutPreset, requiredCols: number) => {
     if (!selectedBlockId) return;
 
     const newBlocks = structuredClone(pageSchema.blocks);
@@ -30,7 +63,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
     const targetBlock = blockPosition.children[blockPosition.index] as RowLayoutBlock;
 
-    targetBlock.props = { ...targetBlock.props, preset: presetId as RowLayoutBlockProps['preset'] };
+    targetBlock.props = { ...targetBlock.props, preset: presetId };
 
     const currentLen = targetBlock.children.length;
     const diff = requiredCols - currentLen;
@@ -47,37 +80,6 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
-
-  const GutterControl = ({ 
-    label, 
-    value, 
-    onChange 
-  }: { 
-    label: string; 
-    value?: GapSize; 
-    onChange: (val: GapSize) => void 
-  }) => (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <label className="text-xs font-medium text-gray-600">{label}</label>
-      </div>
-      <div className="flex border border-gray-200 rounded-md overflow-hidden">
-        {(['none', 'sm', 'md', 'lg'] as const).map((size) => (
-          <button
-            key={size}
-            onClick={() => onChange(size)}
-            className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
-              (value || 'md') === size
-                ? 'bg-blue-50 text-blue-600'
-                : 'bg-white text-gray-600 hover:bg-gray-50'
-            } ${size !== 'lg' ? 'border-r border-gray-200' : ''}`}
-          >
-            {size.toUpperCase()}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
 
   return (
     <div className="space-y-6">

@@ -1,7 +1,7 @@
 import React from 'react';
 import BaseWidget, { type BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import BlockManager from '@domain/BlockManager';
-import type { RowLayoutBlock } from './schema';
+import type { RowLayoutBlock, RowLayoutPreset } from './schema';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import LayoutSelector from './LayoutSelector';
@@ -33,7 +33,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   const { pageSchema, updatePageWithHistory } = useHistory();
   const { setSelectedBlock } = useSelection();
 
-  const handleLayoutSelect = (presetId: string, cols: number) => {
+  const handleLayoutSelect = (presetId: RowLayoutPreset, cols: number) => {
     const newChildren = Array.from({ length: cols }).map(() => 
       createBlock('section')
     ) as SectionBlock[];
@@ -46,7 +46,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         ...block,
         props: { 
           ...block.props, 
-          preset: presetId as RowLayoutBlock['props']['preset'], 
+          preset: presetId, 
           columnGap: 'md' as const 
         },
         children: newChildren
