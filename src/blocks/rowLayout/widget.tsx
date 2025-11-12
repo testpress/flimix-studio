@@ -65,7 +65,6 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
 
   const hasCustomBackground = !!style?.backgroundColor;
-  const backgroundClass = hasCustomBackground ? '' : '';
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
@@ -73,7 +72,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         block={block}
         onSelect={() => onSelect?.(block)}
         isSelected={isSelected}
-        className={`relative ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        className={`relative ${paddingClass} ${marginClass} ${borderRadiusClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
         }}
