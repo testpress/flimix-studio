@@ -49,11 +49,9 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
                            style?.borderRadius === 'md' ? 'rounded-md' : 
                            style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  const emptyColumnClasses = isColumn && !hasChildren
-    ? 'min-h-[100px] border-2 border-dashed border-gray-300'
-    : isColumn 
-      ? 'min-h-[100px]' 
-      : '';
+  const emptyColumnClasses = isColumn
+    ? `min-h-[100px] ${!hasChildren ? 'border-2 border-dashed border-gray-300' : ''}`
+    : '';
 
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {

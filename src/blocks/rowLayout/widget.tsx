@@ -3,14 +3,15 @@ import BaseWidget, { type BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import BlockManager from '@domain/BlockManager';
 import type { RowLayoutBlock } from './schema';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
+import type { Block } from '@blocks/shared/Block';
 
 
-interface RowLayoutWidgetProps extends Omit<BaseWidgetProps<RowLayoutBlock>, 'block'> {
+interface RowLayoutWidgetProps extends Omit<BaseWidgetProps<RowLayoutBlock>, 'block' | 'onSelect'> {
   block: RowLayoutBlock;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
   selectedBlockId?: string | null;
-  onSelect?: (block: RowLayoutBlock) => void;
+  onSelect?: (block: Block) => void;
 }
 
 const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
@@ -70,7 +71,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
     <div style={{ boxShadow: boxShadowStyle }}>
       <BaseWidget
         block={block}
-        onSelect={onSelect}
+        onSelect={() => onSelect?.(block)}
         isSelected={isSelected}
         className={`relative ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={{
@@ -85,7 +86,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
             block={childSection}
             visibilityContext={visibilityContext}
             showDebug={showDebug}
-            onSelect={(sectionBlock) => onSelect?.(sectionBlock as RowLayoutBlock)}
+            onSelect={onSelect}
             isSelected={selectedBlockId === childSection.id}
             selectedBlockId={selectedBlockId}
             isColumn={true}

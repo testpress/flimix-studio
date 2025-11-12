@@ -184,13 +184,7 @@ const BlockManager: React.FC<BlockManagerProps> = ({
     canMoveDown,
     onMoveUp: handleMoveUp,
     onMoveDown:handleMoveDown,
-    onDuplicate: (() => {
-      if (isColumn && columnCount && columnCount >= MaxColumns) {
-        return undefined;
-      }
-      
-      return handleDuplicate;
-    })(),
+    onDuplicate: (isColumn && columnCount && columnCount >= MaxColumns) ? undefined : handleDuplicate,
     onRemove: isColumn && columnCount === MinColumns
       ? undefined
       : handleRemove
