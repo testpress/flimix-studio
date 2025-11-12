@@ -304,6 +304,22 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
+    if (targetContainer.type === 'section') {
+      if (blockType === 'section') {
+        if (targetParent && targetParent.type === 'rowLayout') {
+          console.warn("[BlockInsertContext] Cannot insert a 'section' inside a 'section' that is acting as a column.");
+          return;
+        } else {
+          insertBlockRelative(blockType, InsertPosition.AFTER);
+          return;
+        }
+      }
+      if (blockType === 'tabs' && targetParent && targetParent.type === 'rowLayout') {
+        console.warn("[BlockInsertContext] Cannot insert 'tabs' inside a 'section' that is acting as a column.");
+        return;
+      }
+    }
+
     if (targetContainer.type !== 'section' && targetContainer.type !== 'tabs') {
       console.warn(`[BlockInsertContext] Target block is not a 'section' or 'tabs'. Got type: ${targetContainer.type}`);
       return;
@@ -357,7 +373,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     }
   ) => {
     // Validate block type
-    if (!isBlockTypeValid(blockType)) {
+    if (!isBlockTypeValid(blockType) || blockType === 'rowLayout') {
       return;
     }
     

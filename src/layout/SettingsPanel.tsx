@@ -32,6 +32,7 @@ import VideoForm from '@blocks/video/form';
 import TabsForm from '@blocks/tabs/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
+import RowLayoutForm from '@blocks/rowLayout/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -88,6 +89,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     video: VideoForm,
     tabs: TabsForm,
     'badge-strip': BadgeStripForm,
+    rowLayout: RowLayoutForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
