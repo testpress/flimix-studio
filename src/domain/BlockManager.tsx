@@ -34,7 +34,9 @@ import CTAButtonWidget from '@blocks/cta-button/widget';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 import BadgeStripWidget from '@blocks/badge-strip/widget';
 import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
-
+import RowLayoutWidget from '@blocks/rowLayout/widget';
+import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
+import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
 /**
  * Evaluate if a block should be visible based on visibility rules and context
  * @param visibility - The visibility rules for the block
@@ -91,6 +93,8 @@ interface BlockManagerProps {
   onSelect?: (block: Block) => void;
   isSelected?: boolean;
   selectedBlockId?: string | null;
+  isColumn?: boolean;
+  columnCount?: number;
 }
 
 const BlockManager: React.FC<BlockManagerProps> = ({ 
@@ -99,7 +103,9 @@ const BlockManager: React.FC<BlockManagerProps> = ({
   visibilityContext, 
   onSelect, 
   isSelected = false,
-  selectedBlockId
+  selectedBlockId,
+  isColumn = false,
+  columnCount
 }) => {
   const { 
     moveBlockUp, 
@@ -177,9 +183,17 @@ const BlockManager: React.FC<BlockManagerProps> = ({
     canMoveUp,
     canMoveDown,
     onMoveUp: handleMoveUp,
-    onMoveDown: handleMoveDown,
-    onDuplicate: handleDuplicate,
-    onRemove: handleRemove
+    onMoveDown:handleMoveDown,
+    onDuplicate: (() => {
+      if (isColumn && columnCount && columnCount >= MaxColumns) {
+        return undefined;
+      }
+      
+      return handleDuplicate;
+    })(),
+    onRemove: isColumn && columnCount === MinColumns
+      ? undefined
+      : handleRemove
   };
 
   const renderBlock = () => {
@@ -189,8 +203,18 @@ const BlockManager: React.FC<BlockManagerProps> = ({
       case 'text':
         return <TextWidget block={block as TextBlock} onSelect={(textBlock) => onSelect?.(textBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'section':
-        // Pass renderContext and showDebug to SectionWidget via a custom prop
-        return <SectionWidget block={block as SectionBlock} visibilityContext={visibilityContext} showDebug={showDebug} onSelect={(sectionBlock) => onSelect?.(sectionBlock as Block)} isSelected={isSelected} selectedBlockId={selectedBlockId} {...widgetControlProps} />;
+        return (
+          <SectionWidget
+            block={block as SectionBlock}
+            visibilityContext={visibilityContext}
+            showDebug={showDebug}
+            onSelect={(sectionBlock) => onSelect?.(sectionBlock as Block)}
+            isSelected={isSelected}
+            selectedBlockId={selectedBlockId}
+            isColumn={isColumn}
+            {...widgetControlProps}
+          />
+        );
       case 'posterGrid':
         return <PosterGridWidget block={block as PosterGridBlock} onSelect={(posterGridBlock) => onSelect?.(posterGridBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'carousel':
@@ -223,6 +247,18 @@ const BlockManager: React.FC<BlockManagerProps> = ({
         return <CTAButtonWidget block={block as CTAButtonBlock} onSelect={(ctaButtonBlock) => onSelect?.(ctaButtonBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
       case 'badge-strip':
         return <BadgeStripWidget block={block as BadgeStripBlock} onSelect={(badgeStripBlock) => onSelect?.(badgeStripBlock as Block)} isSelected={isSelected} {...widgetControlProps} />;
+      case 'rowLayout':
+        return (
+          <RowLayoutWidget
+            block={block as RowLayoutBlock}
+            visibilityContext={visibilityContext}
+            showDebug={showDebug}
+            selectedBlockId={selectedBlockId}
+            onSelect={(rowLayoutBlock) => onSelect?.(rowLayoutBlock as Block)}
+            isSelected={isSelected}
+            {...widgetControlProps}
+          />
+        );
       default:
         return (
           <div className="p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">

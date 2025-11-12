@@ -37,10 +37,12 @@ import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
+import { MaxColumns } from '@blocks/rowLayout/schema';
 
 interface BlockItemProps {
   block: Block;
   level: number;
+  parentType?: BlockType['type'];
   onSelect: (block: Block) => void;
   selectedBlockId: string | null;
   findTabContainingBlock: (blockId: string) => { tabsBlock: TabsBlock; tabId: string } | null;
@@ -48,8 +50,8 @@ interface BlockItemProps {
 
 interface BlockOptionsMenuProps {
   onClose: () => void;
-  onDuplicate: () => void;
-  onDelete: () => void;
+  onDuplicate?: () => void;
+  onDelete?: () => void;
   onMoveUp?: () => void;
   onMoveDown?: () => void;
   canMoveUp?: boolean;
@@ -114,6 +116,8 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
   };
 
   return (
+    <>
+    {(canMoveUp || canMoveDown || onDuplicate || onDelete) && (
     <div className={`${getPositionClasses()} z-50`} ref={menuRef}>
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
         {canMoveUp && onMoveUp && (
@@ -136,6 +140,7 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
           </button>
         )}
         
+        {onDuplicate && (
         <button
           onClick={(e) => handleAction(e, onDuplicate)}
           className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
@@ -143,7 +148,9 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
           <Copy size={14} />
           Duplicate
         </button>
+        )}
         
+        {onDelete && (
         <button
           onClick={(e) => handleAction(e, onDelete)}
           className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
@@ -151,12 +158,15 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
           <Trash2 size={14} />
           Delete
         </button>
+        )}
       </div>
     </div>
+    )}
+    </>
   );
 };
 
-const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedBlockId, findTabContainingBlock }) => {
+const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelect, selectedBlockId, findTabContainingBlock }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
   const { duplicateSelectedBlock, deleteSelectedBlock, moveBlockUp, moveBlockDown, pageSchema } = useSelection();
@@ -194,13 +204,27 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   const isSelected = selectedBlockId === block.id;
   
   // Determine if block can move up or down - memoized for performance
-  const { canMoveUp, canMoveDown } = useMemo(() => {
+  const { canMoveUp, canMoveDown, totalSiblings } = useMemo(() => {
     const position = findBlockPositionForUI(block.id, pageSchema.blocks);
     return {
       canMoveUp: position.index > 0,
       canMoveDown: position.index < position.totalSiblings - 1,
+      totalSiblings: position.totalSiblings,
     };
   }, [block.id, pageSchema.blocks]);
+
+  const isDuplicateAvailable = useMemo(() => {
+    if (parentType === 'section') {
+      return false;
+    }
+    if (block.type === 'section' && parentType === 'rowLayout' && totalSiblings >= MaxColumns) {
+      return false;
+    }
+    
+    return true;
+  }, [block.type, parentType, totalSiblings]);
+
+  const isDeleteAvailable = !(block.type === 'section' && parentType === 'rowLayout' && totalSiblings === 1);
   
   // Get level-based padding classes
   const getLevelClasses = (level: number) => {
@@ -234,6 +258,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
       tabs: <Columns3Cog size={iconSize} />,
       'cta-button': <Zap size={iconSize} />,
       'badge-strip': <Award size={iconSize} />,
+      'rowLayout': <LayoutIcon size={iconSize} />,
     };
     
     const icon = iconMap[block.type] ?? <RectangleEllipsis size={iconSize} />;
@@ -300,6 +325,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
               'tabs': `Tabs (${tabs.length})`,
               'cta-button': 'CTA Button',
               'badge-strip': 'Badge Strip',
+              'rowLayout': 'Row Layout',
             };
             
             const defaultDisplayName = displayNameMap[block.type] || 'Unknown Block';
@@ -340,8 +366,8 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
       {showOptionsMenu && (
         <BlockOptionsMenu
           onClose={() => setShowOptionsMenu(false)}
-          onDuplicate={duplicateSelectedBlock}
-          onDelete={deleteSelectedBlock}
+          onDuplicate={isDuplicateAvailable ? duplicateSelectedBlock : undefined}
+          onDelete={isDeleteAvailable ? deleteSelectedBlock : undefined}
           onMoveUp={moveBlockUp}
           onMoveDown={moveBlockDown}
           canMoveUp={canMoveUp}
@@ -374,6 +400,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
                       key={child.id} 
                       block={child} 
                       level={level + 2} 
+                      parentType={block.type}
                       onSelect={onSelect}
                       selectedBlockId={selectedBlockId}
                       findTabContainingBlock={findTabContainingBlock}
@@ -393,6 +420,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
               key={child.id} 
               block={child} 
               level={level + 1} 
+              parentType={block.type}
               onSelect={onSelect}
               selectedBlockId={selectedBlockId}
               findTabContainingBlock={findTabContainingBlock}
