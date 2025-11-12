@@ -5,11 +5,16 @@ import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
 import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks } from '@context/domain';
+import { createBlock } from '@context/domain/blockFactory';
+import { findBlockPositionById } from '@context/domain/blockTraversal';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 import type { TabsBlock, Tab } from '@blocks/tabs/schema';
+import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
+import type { SectionBlock } from '@blocks/section/schema';
 import { useHistory } from './HistoryContext';
 import { usePageSchema } from './PageSchemaContext';
+import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -51,6 +56,7 @@ interface SelectionContextType {
   moveBlockItemDown: (blockId: string, index: number) => void;
   selectArrayItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
+  modifyRowColumnCount: (direction: 'increase' | 'decrease') => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -384,7 +390,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
           const result = updateAndFindBlock(block.children);
           if (result.foundBlock) {
             foundBlock = result.foundBlock;
-            return { ...block, children: result.updatedBlocks };
+            return { ...block, children: result.updatedBlocks } as BlockType;
           }
         }
         
@@ -463,6 +469,19 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       console.error(`[SelectionContext] deleteSelectedBlock: Block not found.`);
       return;
     }
+    if (
+      block.type === 'section' &&
+      parent &&
+      parent.type === 'rowLayout'
+    ) {
+      const newBlocks = structuredClone(pageSchema.blocks);
+      const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
+      
+      if (newChildren && newChildren.length === MinColumns) {
+        console.warn('[SelectionContext] Cannot delete the last column in a RowLayout.');
+        return;
+      }
+    }
 
     const newBlocks = structuredClone(pageSchema.blocks);
     const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
@@ -515,6 +534,38 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     setSelectedBlockParentId(parent?.id || null);
   };
 
+ 
+  const modifyRowColumnCount = (direction: 'increase' | 'decrease') => {
+    if (!selectedBlockId) return;
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+    const pos = findBlockPositionById(newBlocks, selectedBlockId);
+
+    if (!pos) {
+      console.error(`[SelectionContext] modifyRowColumnCount: Block not found.`);
+      return;
+    }
+
+    const rowBlock = pos.children[pos.index] as RowLayoutBlock;
+    if (rowBlock.type !== 'rowLayout') {
+      console.warn(`[SelectionContext] modifyRowColumnCount: Not a RowLayoutBlock.`);
+      return;
+    }
+
+    const currentCount = rowBlock.children.length;
+    if (direction === 'increase' && currentCount < MaxColumns) {
+      const newColumn = createBlock('section');
+      rowBlock.children.push(newColumn as SectionBlock);
+    } else if (direction === 'decrease' && currentCount > MinColumns) {
+      rowBlock.children.pop();
+    } else {
+      console.log(`[SelectionContext] Row column limit reached (Min ${MinColumns}, Max ${MaxColumns}).`);
+      return;
+    }
+
+    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
+  };
+
   const modifyBlockItems = (
     blockId: string,
     modifyItems: (items: BlockItem[]) => BlockItem[]
@@ -539,7 +590,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
           return {
             ...b,
             children: updateBlockInSchema(b.children),
-          };
+          } as BlockType;
         }
         
         // Check tabs blocks for nested children
@@ -664,7 +715,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       moveBlockItemUp,
       moveBlockItemDown,
       selectArrayItem,
-      isItemSelected
+      isItemSelected,
+      modifyRowColumnCount
     }}>
       {children}
     </SelectionContext.Provider>

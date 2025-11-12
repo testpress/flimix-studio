@@ -375,6 +375,14 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
         renderTextAlignField(),
         renderTextColorField(),
       ];
+      case 'rowLayout':
+        return [
+          renderPaddingField(),
+          renderMarginField(),
+          renderBackgroundColorField(),
+          renderBorderRadiusField(),
+          renderBoxShadowField(),
+        ];
       case 'faq-accordion':
       case 'testimonial':
       case 'featureCallout':

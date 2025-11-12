@@ -32,7 +32,7 @@ const iconMap: Record<string, LucideIcon> = {
 
 const LibraryPanel: React.FC = () => {
   const { isLibraryOpen } = useLibraryPanel();
-  const { selectedBlockId } = useSelection();
+  const { selectedBlockId, selectedBlock } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
   const [searchQuery, setSearchQuery] = useState('');
@@ -191,23 +191,29 @@ const LibraryPanel: React.FC = () => {
   }, [activeTooltip]);
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
-    if (selectedBlockId) {
-      const selectedBlock = pageSchema.blocks.find(block => block.id === selectedBlockId);
-      
-      if (selectedBlock?.type === 'section') {
+    if (!selectedBlock) {
+      insertBlockAtEnd(blockType);
+      return;
+    }
+
+    switch (selectedBlock.type) {
+      case 'section':
         if (blockType === 'section' || blockType === 'tabs') {
           insertBlockAfter(blockType);
         } else {
-          insertBlockInsideSection(blockType, selectedBlockId);
+          insertBlockInsideSection(blockType, selectedBlock.id);
         }
-      } else if (selectedBlock?.type === 'tabs') {
+        break;
+
+      case 'tabs':
         if (blockType === 'section' || blockType === 'tabs') {
           insertBlockAfter(blockType);
         } else {
-          insertBlockIntoTabs(blockType, selectedBlockId);
+          insertBlockIntoTabs(blockType, selectedBlock.id);
         }
-      } else {
-        if (isChildBlock(selectedBlockId)) {
+        break;
+      default:
+        if (selectedBlockId && isChildBlock(selectedBlockId)) {
           const parentTab = findParentTab(selectedBlockId);
           if (parentTab) {
             if (blockType === 'section' || blockType === 'tabs') {
@@ -232,9 +238,7 @@ const LibraryPanel: React.FC = () => {
         } else {
           insertBlockAfter(blockType);
         }
-      }
-    } else {
-      insertBlockAtEnd(blockType);
+        break;
     }
   };
 

@@ -6,6 +6,8 @@ import type { SectionBlock } from './schema';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
+import { Plus } from 'lucide-react';
+import { useLibraryPanel } from '@context/LibraryPanelContext';
 
 interface SectionWidgetProps extends Omit<BaseWidgetProps<SectionBlock>, 'block'> {
   block: SectionBlock;
@@ -13,6 +15,7 @@ interface SectionWidgetProps extends Omit<BaseWidgetProps<SectionBlock>, 'block'
   showDebug?: boolean;
   selectedBlockId?: string | null;
   onSelect?: (block: Block) => void;
+  isColumn?: boolean;
 }
 
 const SectionWidget: React.FC<SectionWidgetProps> = ({ 
@@ -22,6 +25,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   onSelect, 
   isSelected = false,
   selectedBlockId,
+  isColumn = false,
   canMoveUp,
   canMoveDown,
   onMoveUp,
@@ -31,7 +35,9 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
 }) => {
   const { props, style, children } = block;
   const { title, description, backgroundImage } = props;
-  
+  const { openLibrary } = useLibraryPanel();
+  const hasChildren = children && children.length > 0;
+
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
                       style?.padding === 'sm' ? 'p-4' : 'p-6';
@@ -43,7 +49,10 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
                            style?.borderRadius === 'md' ? 'rounded-md' : 
                            style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  // Custom box shadow styles for better visibility on any background
+  const emptyColumnClasses = isColumn
+    ? `min-h-[100px] ${!hasChildren ? 'border-2 border-dashed border-gray-300' : ''}`
+    : '';
+
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
       case 'lg':
@@ -74,8 +83,14 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
     onSelect?.(sectionBlock as Block);
   };
 
+  const handleAddBlock = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleSelect(block);
+    openLibrary();
+  };
+
   return (
-    <div style={{ boxShadow: boxShadowStyle }}>
+    <div style={{ boxShadow: boxShadowStyle }} className="h-full">
       <BaseWidget 
         block={block} 
         onSelect={handleSelect}
@@ -86,7 +101,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`relative overflow-hidden ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        className={`relative overflow-hidden ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass} ${emptyColumnClasses} h-full flex flex-col`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
         }}
@@ -104,9 +119,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
           </>
         )}
 
-        {/* Content container with relative positioning for proper layering */}
-        <div className="relative z-10 w-full">
-          {/* Section header */}
+        <div className="relative z-10 w-full flex-1 flex flex-col">
           {(title || description) && (
             <div className={`mb-6 ${textAlignClass}`}>
               {title && (
@@ -122,8 +135,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
             </div>
           )}
           
-          {/* Render nested children */}
-          {children && children.length > 0 ? (
+          {hasChildren ? (
             <div className="space-y-0 w-full">
               {children.map((childBlock) => (
                 <div key={childBlock.id} className="w-full" data-block-id={childBlock.id}>
@@ -139,6 +151,16 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
                   <BlockInsertDropdown position="below" blockId={childBlock.id} visibilityContext={visibilityContext} />
                 </div>
               ))}
+            </div>
+          ) : isColumn ? (
+            <div className="flex-1 flex items-center justify-center">
+              <button
+                onClick={handleAddBlock}
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 hover:bg-blue-600 hover:text-white text-gray-400 transition-all duration-200 shadow-sm border border-gray-200"
+                title="Add block to this column"
+              >
+                <Plus size={20} />
+              </button>
             </div>
           ) : (
             <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">

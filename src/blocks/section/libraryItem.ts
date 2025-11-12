@@ -6,9 +6,5 @@ export const SectionLibraryItem = {
   name: 'Section Block',
   description: 'Container for organizing multiple blocks',
   icon: 'Square' as const,
-  defaultProps: {
-    title: 'Section Title',
-    description: 'Section description goes here...',
-    backgroundImage: ''
-  } as SectionBlockProps
+  defaultProps: {} as SectionBlockProps
 }; 

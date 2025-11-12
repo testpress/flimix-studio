@@ -14,6 +14,7 @@ import { VideoLibraryItem } from '@blocks/video/libraryItem';
 import { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
+import { RowLayoutLibraryItem } from '@blocks/rowLayout/libraryItem';
   import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
 
@@ -33,6 +34,7 @@ export { VideoLibraryItem } from '@blocks/video/libraryItem';
 export { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 export { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 export { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
+export { RowLayoutLibraryItem } from '@blocks/rowLayout/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
@@ -60,6 +62,7 @@ export const allLibraryItems: BlockLibraryItem[] = [
   TabsLibraryItem,
   CTAButtonLibraryItem,
   BadgeStripLibraryItem,
+  RowLayoutLibraryItem,
 ];
 
 // Helper function to get all available block types
