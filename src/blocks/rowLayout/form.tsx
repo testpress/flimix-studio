@@ -8,7 +8,7 @@ import { MinColumns, MaxColumns } from './schema';
 const RowLayoutForm: React.FC<BlockFormProps> = ({ block }) => {
   const { modifyRowColumnCount } = useSelection();
   const rowBlock = block as RowLayoutBlock;
-  const columnCount = rowBlock.children?.length || 0;
+  const columnCount = rowBlock.children.length;
 
   const canDecrease = columnCount > MinColumns;
   const canIncrease = columnCount < MaxColumns;
