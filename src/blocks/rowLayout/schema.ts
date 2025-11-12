@@ -2,9 +2,10 @@ import type { Block } from '@blocks/shared/Block';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { SectionBlock } from '@blocks/section/schema';
 
-export const MaxColumns = 4
-export const MinColumns = 1
+export const MaxColumns = 4;
+export const MinColumns = 1;
 
+export type GapSize = 'none' | 'sm' | 'md' | 'lg';
 export interface RowLayoutBlock extends Omit<Block, 'props' | 'children'> {
   type: 'rowLayout';
   children: SectionBlock[];
@@ -12,5 +13,16 @@ export interface RowLayoutBlock extends Omit<Block, 'props' | 'children'> {
   props: RowLayoutBlockProps;
 }
 
-//for now, we don't need any props for the RowLayoutBlock while integrating layout presets we can add props here
-export type RowLayoutBlockProps = Record<string, never>;
+export type RowLayoutPreset = 
+  | '1-col'
+  | '2-col'
+  | '2-col-heavy-left'  // 66/33 or 70/30
+  | '2-col-heavy-right' // 33/66 or 30/70
+  | '3-col'
+  | '3-col-wide-center' // 25/50/25
+  | '4-col';
+
+export interface RowLayoutBlockProps {
+  preset?: RowLayoutPreset;
+  columnGap?: GapSize;
+}
