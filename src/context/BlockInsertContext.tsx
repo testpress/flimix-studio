@@ -1,6 +1,7 @@
 import React, { createContext, useContext, type ReactNode } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
-import { createBlock, updateBlockChildren, findBlockPositionById } from '@context/domain';
+import { createBlock, findBlockPositionById } from '@context/domain';
+import { findBlockAndParent } from '@context/domain/blockTraversal';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
@@ -51,6 +52,101 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   };
 
   /**
+   * Recursively finds a container block and adds a new block to its children.
+   * Handles section, tabs, and column containers at any depth in the block tree.
+   * @param blocks - The block tree to search and update
+   * @param containerId - ID of the container block to add the block to
+   * @param newBlock - The block to insert
+   * @param getActiveTabId - Optional function to determine which tab to use for tabs blocks
+   * @param insertIndex - Optional index to insert at. If not provided, appends to the end
+   * @returns Updated block tree with the new block added to the container
+   */
+  const addBlockToChildren = (
+    blocks: BlockType[],
+    containerId: string,
+    newBlock: BlockType,
+    getActiveTabId?: (tabsBlock: TabsBlock) => string | null,
+    insertIndex?: number
+  ): BlockType[] => {
+    return blocks.map(block => {
+      if (block.id === containerId) {
+
+        if (block.type === 'section') {
+          const children = block.children || [];
+          const newChildren = insertIndex !== undefined
+            ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
+            : [...children, newBlock];
+          
+          return {
+            ...block,
+            children: newChildren
+          } as BlockType;
+        } 
+
+        else if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          const targetTabId = getActiveTabId 
+            ? getActiveTabId(tabsBlock)
+            : (activeTabId || tabsBlock.props.tabs[0]?.id);
+          
+          if (!targetTabId) {
+            console.warn(`[BlockInsertContext] No active tab found for tabs block ${containerId}`);
+            return block;
+          }
+
+          const updatedTabs = tabsBlock.props.tabs.map(tab => {
+            if (tab.id === targetTabId) {
+              const children = tab.children || [];
+              const newChildren = insertIndex !== undefined
+                ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
+                : [...children, newBlock];
+              
+              return {
+                ...tab,
+                children: newChildren
+              };
+            }
+            return tab;
+          });
+
+          return {
+            ...block,
+            props: { ...block.props, tabs: updatedTabs }
+          } as BlockType;
+        }
+      }
+
+      // Recursively search in children
+      if (block.children && block.children.length > 0) {
+        return {
+          ...block,
+          children: addBlockToChildren(block.children, containerId, newBlock, getActiveTabId, insertIndex)
+        } as BlockType;
+      }
+
+      // Recursively search in tabs
+      if (block.type === 'tabs') {
+        const tabsBlock = block as TabsBlock;
+        const updatedTabs = tabsBlock.props.tabs.map(tab => {
+          if (tab.children && tab.children.length > 0) {
+            return {
+              ...tab,
+              children: addBlockToChildren(tab.children, containerId, newBlock, getActiveTabId, insertIndex)
+            };
+          }
+          return tab;
+        });
+        return {
+          ...block,
+          props: { ...block.props, tabs: updatedTabs }
+        } as BlockType;
+      }
+
+      return block;
+    });
+  };
+
+  /**
    * Private helper function to insert a block at a specific position relative to the selected block
    * @param blockType - Type of block to create and insert
    * @param position - Position relative to the selected block (BEFORE or AFTER)
@@ -58,12 +154,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   const insertBlockRelative = (blockType: BlockType['type'], position: InsertPositionType) => {
     if (!selectedBlockId) return;
     
-    // Validate block type
     if (!isBlockTypeValid(blockType)) {
       return;
     }
     
-    // Create new block using the factory function
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -72,69 +166,65 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
     
-    // Ensure Section blocks have children initialized
     if (newBlock.type === 'section' && !newBlock.children) {
-      newBlock.children = []; // Initialize children array for Section blocks
+      newBlock.children = [];
     }
     
-    // Find the position of the selected block
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) {
       console.error(`Target block with ID ${selectedBlockId} not found`);
       return;
     }
 
-    const { children, index } = result;
-    const newContainer = [...children] as BlockType[];
+    const { index } = result;
     const insertIndex = position === InsertPosition.AFTER ? index + 1 : index;
-    newContainer.splice(insertIndex, 0, newBlock);
     
     let updatedBlocks: BlockType[];
     
     if (result.parent) {
-      // Check if parent is a tabs block
+      const newBlocks = structuredClone(pageSchema.blocks);
       if (result.parent.type === 'tabs') {
-        const tabsBlock = result.parent as TabsBlock;
-        // Find which tab contains the selected block
-        const updatedTabs = tabsBlock.props.tabs.map(tab => {
-          if (tab.children && tab.children.some(child => child.id === selectedBlockId)) {
-            // This tab contains the selected block, update its children
-            return { ...tab, children: newContainer };
-          }
-          return tab;
-        });
+        // For tabs, we need to find which tab contains the selected block
+        const getActiveTabId = (tabs: TabsBlock) => {
+          const tab = tabs.props.tabs.find(t => 
+            t.children && t.children.some(child => child.id === selectedBlockId)
+          );
+          return tab?.id || null;
+        };
         
-        updatedBlocks = pageSchema.blocks.map(b => 
-          b.id === result.parent!.id 
-            ? { ...b, props: { ...b.props, tabs: updatedTabs } } as BlockType
-            : b
+        updatedBlocks = addBlockToChildren(
+          newBlocks,
+          result.parent.id,
+          newBlock,
+          getActiveTabId,
+          insertIndex
         );
       } else {
-        // Regular block with children
-        updatedBlocks = updateBlockChildren(pageSchema.blocks, result.parent.id, newContainer);
+        updatedBlocks = addBlockToChildren(
+          newBlocks,
+          result.parent.id,
+          newBlock,
+          undefined,
+          insertIndex
+        );
       }
     } else {
-      // Top-level block
-      updatedBlocks = newContainer;
+      // Top-level block - insert directly into root array
+      const newBlocks = [...pageSchema.blocks];
+      newBlocks.splice(insertIndex, 0, newBlock);
+      updatedBlocks = newBlocks;
     }
     
-    // Update the schema
     const updatedSchema = {
       ...pageSchema,
       blocks: updatedBlocks
     };
     
     updatePageWithHistory(updatedSchema);
-    
-    // Clear any previously selected item when selecting a newly inserted block
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
-    
-    // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock);
-    
-    // The parent of the new block is the same as the selected block's parent
     setSelectedBlockParentId(result.parent?.id || null);
   };
 
@@ -197,24 +287,31 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
   };
 
   /**
-   * Inserts a new block as a child of a Section block
+   * Inserts a new block as a child of a Section or Tabs block.
+   * This function is recursive and can find containers at any depth.
    * @param blockType - Type of block to create and insert
-   * @param sectionId - ID of the section block to insert into
+   * @param sectionId - ID of the section or tabs block to insert into
    */
   const insertBlockInsideSection = (blockType: BlockType['type'], sectionId: string) => {
-    // If trying to insert a Section inside a Section, insert it after the Section instead
-    if (blockType === 'section') {
-      // Section is selected - use insertBlockRelative to insert after the selected Section
-      insertBlockRelative(blockType, InsertPosition.AFTER);
+    // Find the selected section and its parent
+    const { block: targetContainer, parent: targetParent } = findBlockAndParent(
+      sectionId,
+      pageSchema.blocks,
+    );
+
+    if (!targetContainer) {
+      console.error(`[BlockInsertContext] insertBlockInsideSection: Container not found with id ${sectionId}`);
       return;
     }
 
-    // Validate block type
+    if (targetContainer.type !== 'section' && targetContainer.type !== 'tabs') {
+      console.warn(`[BlockInsertContext] Target block is not a 'section' or 'tabs'. Got type: ${targetContainer.type}`);
+      return;
+    }
+
     if (!isBlockTypeValid(blockType)) {
       return;
     }
-    
-    // Create new block using the factory function
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -222,32 +319,23 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       console.error('Failed to create block:', error);
       return;
     }
-    
-    // Simple find and update (no recursion needed since Section blocks are only at top level)
-    const updatedBlocks = pageSchema.blocks.map(block => {
-      if (block.id === sectionId) {
-        return {
-          ...block,
-          children: [...(block.children || []), newBlock]
-        };
-      }
-      return block;
-    });
-    
-    // Update the schema with the new blocks array
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+
+    // 5. Recursively add the new block to the container
+    const updatedBlocks = addBlockToChildren(
+      newBlocks,
+      sectionId,
+      newBlock
+    );
+
     const updatedSchema = {
       ...pageSchema,
       blocks: updatedBlocks
     };
-    
-    // Record state for undo
     updatePageWithHistory(updatedSchema);
-    
-    // Clear any previously selected item when selecting a newly inserted block
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
-    
-    // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock as BlockType);
     setSelectedBlockParentId(sectionId);

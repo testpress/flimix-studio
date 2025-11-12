@@ -4,7 +4,7 @@ import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
-import { duplicateBlockWithNewIds, updateBlockChildren, findBlockAndParent, getChildrenBlocks } from '@context/domain';
+import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks } from '@context/domain';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 import type { TabsBlock, Tab } from '@blocks/tabs/schema';
@@ -51,6 +51,7 @@ interface SelectionContextType {
   moveBlockItemDown: (blockId: string, index: number) => void;
   selectArrayItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
+  modifyRowColumnCount: (direction: 'increase' | 'decrease') => void;
 }
 
 const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
@@ -406,61 +407,49 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     }
   };
 
-  const moveBlockUp = () => {
+
+  const moveSelectedBlockVertical = (direction: 'up' | 'down') => {
     if (!selectedBlockId) return;
 
-    const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
-    if (!block) return;
+    const { block, children: container, parentIndex } = findBlockAndParent(
+      selectedBlockId,
+      pageSchema.blocks,
+    );
 
-    // Handle top-level blocks
-    if (!parent) {
-      const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (currentIndex <= 0) return; // Already at the top
-
-      const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex - 1);
-      updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
+    if (!block || !container) {
+      console.error(`[SelectionContext] moveSelectedBlockVertical: Block not found.`);
       return;
     }
 
-    // Handle nested blocks (both regular and tabs)
-    if (parentIndex <= 0) return; // Already at the top of children
+    const newIndex = direction === 'up' ? parentIndex - 1 : parentIndex + 1;
 
-    const newBlocks = updateBlockInContainer(
-      parent.type === 'tabs' ? findTabContainingBlock(parent as TabsBlock, selectedBlockId)?.tab.children || [] : parent.children || [],
-      (container) => swap(container, parentIndex, parentIndex - 1),
-      parent
+    if (newIndex < 0 || newIndex >= container.length) {
+      return;
+    }
+
+    const newBlocks = structuredClone(pageSchema.blocks);
+
+    const { children: newContainer } = findBlockAndParent(
+      selectedBlockId,
+      newBlocks,
     );
 
+    if (!newContainer) {
+      console.error(`[SelectionContext] moveSelectedBlockVertical: Cloned container not found.`);
+      return;
+    }
+
+    const blockToMove = newContainer.splice(parentIndex, 1)[0];
+    newContainer.splice(newIndex, 0, blockToMove);
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
 
+  const moveBlockUp = () => {
+    moveSelectedBlockVertical('up');
+  };
+
   const moveBlockDown = () => {
-    if (!selectedBlockId) return;
-
-    const { block, parent, parentIndex } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
-    if (!block) return;
-
-    // Handle top-level blocks
-    if (!parent) {
-      const currentIndex = pageSchema.blocks.findIndex(b => b.id === selectedBlockId);
-      if (currentIndex === -1 || currentIndex >= pageSchema.blocks.length - 1) return; // Already at the bottom
-
-      const newBlocks = swap(pageSchema.blocks, currentIndex, currentIndex + 1);
-      updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
-      return;
-    }
-
-    // Handle nested blocks (both regular and tabs)
-    const container = parent.type === 'tabs' ? findTabContainingBlock(parent as TabsBlock, selectedBlockId)?.tab.children || [] : parent.children || [];
-    if (parentIndex >= container.length - 1) return; // Already at the bottom of children
-
-    const newBlocks = updateBlockInContainer(
-      container,
-      (container) => swap(container, parentIndex, parentIndex + 1),
-      parent
-    );
-
-    updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
+    moveSelectedBlockVertical('down');
   };
 
   const deleteSelectedBlock = () => {
@@ -645,50 +634,6 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     return selectedItemBlockId === blockId && selectedItemId === itemId;
   };
 
-  // Generic helper functions to eliminate duplication between tabs and regular blocks
-  const updateTabsBlockChildren = (tabsBlock: TabsBlock, targetTabId: string, newChildren: BlockType[]): BlockType[] => {
-    const updatedTabs = tabsBlock.props.tabs.map(tab => 
-      tab.id === targetTabId ? { ...tab, children: newChildren } : tab
-    );
-    
-    return pageSchema.blocks.map(b => 
-      b.id === tabsBlock.id 
-        ? { ...b, props: { ...b.props, tabs: updatedTabs } } as BlockType
-        : b
-    );
-  };
-
-  const findTabContainingBlock = (tabsBlock: TabsBlock, blockId: string): { tab: Tab; childIndex: number } | null => {
-    for (const tab of tabsBlock.props.tabs) {
-      if (tab.children) {
-        const childIndex = tab.children.findIndex(child => child.id === blockId);
-        if (childIndex !== -1) {
-          return { tab, childIndex };
-        }
-      }
-    }
-    return null;
-  };
-
-  const updateBlockInContainer = (container: BlockType[], operation: (container: BlockType[]) => BlockType[], parent?: BlockType): BlockType[] => {
-    const newContainer = operation([...container]);
-    
-    if (!parent) {
-      return newContainer;
-    }
-    
-    if (parent.type === 'tabs') {
-      const tabsBlock = parent as TabsBlock;
-      const tabInfo = findTabContainingBlock(tabsBlock, selectedBlockId!);
-      if (tabInfo) {
-        return updateTabsBlockChildren(tabsBlock, tabInfo.tab.id, newContainer);
-      }
-    } else {
-      return updateBlockChildren(pageSchema.blocks, parent.id, newContainer);
-    }
-    
-    return pageSchema.blocks;
-  };
 
   return (
     <SelectionContext.Provider value={{
