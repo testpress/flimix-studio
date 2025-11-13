@@ -75,12 +75,36 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
     });
   };
 
-  const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vertical' | 'horizontal') => {
+    const currentPadding = headerSchema.style?.padding || '10px 20px';
+    const parts = currentPadding.trim().split(/\s+/);
+    
+    const currentVertical = parts[0] || '10px';
+    const currentHorizontal = parts[1] || '20px';
+    
+    let val = parseInt(e.target.value) || 0;
+
+    // Enforce Limits (same as Footer: max 50 vertical, max 400 horizontal)
+    if (type === 'vertical') {
+      if (val > 50) val = 50; // Max Vertical
+      if (val < 0) val = 0;
+    } else {
+      if (val > 400) val = 400; // Max Horizontal
+      if (val < 0) val = 0;
+    }
+    
+    let newPadding = '';
+    if (type === 'vertical') {
+      newPadding = `${val}px ${currentHorizontal}`;
+    } else {
+      newPadding = `${currentVertical} ${val}px`;
+    }
+    
     updateHeaderSchema({
       ...headerSchema,
       style: {
         ...headerSchema.style,
-        padding: e.target.value
+        padding: newPadding
       }
     });
   };
@@ -186,12 +210,9 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
                 <label className="text-xs text-gray-400 mb-1 block">Vertical</label>
                 <input
                   type="number"
-                  value={parseInt(headerSchema.style?.padding?.split(' ')[0] || '10px')}
-                  onChange={(e) => {
-                    const horizontal = headerSchema.style?.padding?.split(' ')[1] || '20px';
-                    handlePaddingChange({ target: { value: `${e.target.value}px ${horizontal}` } } as React.ChangeEvent<HTMLInputElement>);
-                  }}
-                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  value={parseInt(headerSchema.style?.padding?.split(' ')[0] || '10')}
+                  onChange={(e) => handlePaddingChange(e, 'vertical')}
+                  className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
                   min="0"
                   max="50"
                   step="1"
@@ -201,14 +222,11 @@ const HeaderPanel: React.FC<HeaderPanelProps> = ({
                 <label className="text-xs text-gray-400 mb-1 block">Horizontal</label>
                 <input
                   type="number"
-                  value={parseInt(headerSchema.style?.padding?.split(' ')[1] || '20px')}
-                  onChange={(e) => {
-                    const vertical = headerSchema.style?.padding?.split(' ')[0] || '10px';
-                    handlePaddingChange({ target: { value: `${vertical} ${e.target.value}px` } } as React.ChangeEvent<HTMLInputElement>);
-                  }}
-                  className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white w-full"
+                  value={parseInt(headerSchema.style?.padding?.split(' ')[1] || '20')}
+                  onChange={(e) => handlePaddingChange(e, 'horizontal')}
+                  className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
                   min="0"
-                  max="50"
+                  max="400"
                   step="1"
                 />
               </div>

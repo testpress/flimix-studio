@@ -1,25 +1,52 @@
-export type FooterItemType = 'column' | 'row' | 'internal' | 'external' | 'anchor';
+export type FooterLayoutPreset = 
+  | '1-col'
+  | '2-col'
+  | '2-col-heavy-left'
+  | '2-col-heavy-right'
+  | '3-col'
+  | '3-col-wide-center'
+  | '4-col';
+
+export type LinkOrientation = 'vertical' | 'horizontal';
+export type IconSize = 'sm' | 'md' | 'lg' | 'xl';
+export type ItemAlignment = 'start' | 'center' | 'end';
 
 export interface FooterItem {
-  id?: string;
-  type: FooterItemType;
+  id: string;
+  type: 'item';
   label?: string;
-  link?: string;
-  items?: FooterItem[];
+  url?: string;
   icon?: string;
-  attrs?: {
-    id?: string;
-    target?: string;
+  linkType?: 'internal' | 'external' | 'anchor';
+  style?: {
+    color?: string;
+    size?: IconSize;
   };
+}
+
+export interface FooterColumn {
+  id: string;
+  type: 'column';
+  items: FooterItem[];
+  orientation: LinkOrientation;
+  alignment?: ItemAlignment;
+}
+
+export interface FooterRow {
+  id: string;
+  type: 'row-layout';
+  preset: FooterLayoutPreset;
+  columns: FooterColumn[];
   style?: {
     padding?: string;
-    margin?: string;
+    backgroundColor?: string;
+    borderTop?: string;
   };
 }
 
 export interface FooterSchema {
   type: 'footer';
-  items: FooterItem[];
+  rows: FooterRow[];
   style?: {
     padding?: string;
     backgroundColor?: string;

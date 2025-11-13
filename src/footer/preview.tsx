@@ -1,5 +1,8 @@
+// src/footer/preview.tsx
 import React from 'react';
-import type { FooterSchema } from './schema';
+import type { FooterSchema, FooterItem, ItemAlignment, LinkOrientation, IconSize } from './schema';
+import { FOOTER_LAYOUT_PRESETS } from './constants';
+import { FOOTER_ROOT_ID } from '@/footer/constants';
 
 interface FooterPreviewProps {
   footerSchema: FooterSchema;
@@ -7,98 +10,157 @@ interface FooterPreviewProps {
   onItemSelect: (id: string) => void;
 }
 
+const ICON_SIZE_MAP: Record<IconSize, string> = {
+  sm: '16px',
+  md: '24px',
+  lg: '32px',
+  xl: '48px'
+};
+
+// Helper for visual selection feedback
+const getSelectionClass = (isSelected: boolean) => 
+  isSelected ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black relative z-10' : '';
+
+const renderFooterItem = (item: FooterItem, isSelected: boolean, onSelect: (id: string) => void) => {
+  const selectionClass = getSelectionClass(isSelected);
+  const isExternal = item.linkType === 'external';
+  
+  const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
+
+  const anchorProps = {
+    href: item.url || '#',
+    target: isExternal ? '_blank' : undefined,
+    rel: isExternal ? 'noopener noreferrer' : undefined,
+    onClick: (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation(); // Stop bubbling to column
+      onSelect(item.id);
+    },
+    className: `transition-opacity hover:opacity-80 inline-flex items-center gap-2 ${selectionClass}`,
+    style: { color: item.style?.color }
+  };
+
+  return (
+    <a {...anchorProps}>
+      {item.icon && (
+        <img 
+          src={item.icon} 
+          alt={item.label || 'icon'}
+          className="block object-contain shrink-0"
+          style={{ 
+            width: iconSize, 
+            height: 'auto',
+            maxWidth: '100%'
+          }} 
+        />
+      )}
+      
+      {item.label && (
+        <span className="text-sm leading-none">
+          {item.label}
+        </span>
+      )}
+    </a>
+  );
+};
+
 const FooterPreview: React.FC<FooterPreviewProps> = ({
   footerSchema,
   selectedItemId,
   onItemSelect
 }) => {
+  
+  const getAlignmentClass = (orientation: LinkOrientation, alignment?: ItemAlignment) => {
+    const align = alignment || 'start';
+    if (orientation === 'vertical') {
+      if (align === 'center') return 'items-center text-center';
+      if (align === 'end') return 'items-end text-right';
+      return 'items-start text-left';
+    } else {
+      if (align === 'center') return 'justify-center';
+      if (align === 'end') return 'justify-end';
+      return 'justify-start';
+    }
+  };
+
+  const paddingString = footerSchema.style?.padding || '40px 20px';
+  const [verticalPadding, horizontalPadding] = paddingString.split(' ');
+
   return (
-    <div 
-      className="border-t border-gray-800"
+    <footer 
+      className={`w-full transition-all duration-200 cursor-pointer ${getSelectionClass(selectedItemId === FOOTER_ROOT_ID)}`}
       style={{
         backgroundColor: footerSchema.style?.backgroundColor || '#111111',
         color: footerSchema.style?.textColor || '#cccccc',
-        padding: footerSchema.style?.padding || '40px 20px'
+        paddingTop: verticalPadding || '40px',
+        paddingBottom: verticalPadding || '40px',
+      }}
+      onClick={() => {
+        onItemSelect(FOOTER_ROOT_ID);
       }}
     >
-      <div className="px-4">
-        <div className="flex">
-          {/* Columns */}
-          {footerSchema.items
-            .filter(item => item.type === 'column')
-            .map((column, index) => (
-              <div 
-                key={column.id || index} 
-                className={`flex-1 px-4 mb-6 cursor-pointer ${selectedItemId === column.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
-                onClick={() => onItemSelect(column.id || '')}
+      <div 
+        className="max-w-7xl mx-auto flex flex-col gap-8"
+        style={{
+          paddingLeft: horizontalPadding || '20px',
+          paddingRight: horizontalPadding || '20px',
+        }}
               >
-                {column.label && (
-                  <h4 className="font-medium mb-3">{column.label}</h4>
-                )}
-                <ul className="space-y-2">
-                  {column.items?.map((link, linkIndex) => (
-                    <li 
-                      key={link.id || linkIndex}
-                      className={`cursor-pointer ${selectedItemId === link.id ? 'ring-2 ring-blue-500 rounded px-2' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onItemSelect(link.id || '');
-                      }}
-                    >
-                      <a href="#" className="hover:underline" onClick={(e) => e.preventDefault()}>
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
-        
-        {/* Row Items */}
-        {footerSchema.items
-          .filter(item => item.type === 'row')
-          .map((row, index) => (
+        {footerSchema.rows?.map((row) => {
+           const presetConfig = FOOTER_LAYOUT_PRESETS.find(p => p.id === row.preset);
+           const gridClass = presetConfig ? presetConfig.class : 'grid-cols-1';
+
+           return (
+             <div 
+               key={row.id} 
+               className={`
+                 grid ${gridClass} gap-8 w-full p-2 rounded transition-all 
+                 ${getSelectionClass(selectedItemId === row.id)}
+               `}
+              onClick={(e) => {
+                 e.stopPropagation();
+                 onItemSelect(row.id);
+               }}
+             >
+               {row.columns.map((col) => (
             <div 
-              key={row.id || index} 
-              className={`flex justify-center space-x-4 mt-6 pt-6 border-t border-gray-700 cursor-pointer ${selectedItemId === row.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
-              onClick={() => onItemSelect(row.id || '')}
-            >
-              {row.items?.map((item, itemIndex) => (
-                <div 
-                  key={item.id || itemIndex} 
-                  className={`${item.icon ? 'w-10 h-10 rounded-full overflow-hidden' : 'px-3 py-1'} flex items-center justify-center cursor-pointer ${selectedItemId === item.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
+                   key={col.id} 
+                   className={`
+                     flex ${col.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
+                     ${getAlignmentClass(col.orientation, col.alignment)}
+                     p-2 rounded transition-all
+                     ${getSelectionClass(selectedItemId === col.id)}
+                   `}
                   onClick={(e) => {
-                    e.stopPropagation();
-                    onItemSelect(item.id || '');
+                     e.stopPropagation(); // 3. Select Column (Stop bubbling to Row)
+                     onItemSelect(col.id);
                   }}
                 >
-                  {item.icon ? (
-                    <img 
-                      src={item.icon}
-                      alt={item.label || 'Item'}
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7r0TBgU8-SuHKlgfTmNzdQoMrk3nU5tFarg&s';
-                      }}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover'
-                      }}
-                    />
-                  ) : (
-                    <span className="text-white text-sm whitespace-nowrap">{item.label}</span>
+                   {col.items.length > 0 ? (
+                     col.items.map((item) => (
+                       <div key={item.id}>
+                         {renderFooterItem(item, selectedItemId === item.id, onItemSelect)}
+                       </div>
+                     ))
+                   ) : (
+                     <div className="w-full h-full min-h-[50px] border border-dashed border-gray-700 rounded flex items-center justify-center opacity-30">
+                       <span className="text-xs">Empty</span>
+                     </div>
                   )}
                 </div>
               ))}
             </div>
-          ))
-        }
+           );
+        })}
+        
+        {(!footerSchema.rows || footerSchema.rows.length === 0) && (
+          <div className="text-center py-10 text-gray-600 border-2 border-dashed border-gray-800 rounded-lg">
+            Footer Content Area (Click to select Footer)
+          </div>
+        )}
       </div>
-    </div>
+    </footer>
   );
 };
 
 export default FooterPreview;
-

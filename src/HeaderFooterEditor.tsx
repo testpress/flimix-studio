@@ -8,6 +8,24 @@ import type { FooterSchema } from '@footer/schema';
 import headerSchemaData from '@fixtures/headerSchema.json';
 import footerSchemaData from '@fixtures/footerSchema.json';
 import { Tabs, TabBar, TabButton, TabPanel } from '@components/tabs';
+import { HEADER_ROOT_ID, FOOTER_ROOT_ID } from '@footer/constants';
+
+
+type NestedItem = {
+  id?: string;
+  items?: NestedItem[];
+  rows?: NestedItem[];
+  columns?: NestedItem[];
+};
+
+// Helper function to recursively search for an ID in nested children
+const findIdInChildren = (nestedItem: NestedItem | null | undefined, targetId: string): boolean => {
+  if (!nestedItem) return false;
+  
+  if (nestedItem.id === targetId) return true;
+  const children = nestedItem.items || nestedItem.rows || nestedItem.columns || [];
+  return children.some((child) => findIdInChildren(child, targetId));
+};
 
 const HeaderFooterEditor: React.FC = () => {
   // Initialize with default schemas
@@ -32,22 +50,16 @@ const HeaderFooterEditor: React.FC = () => {
   const handleItemSelect = (id: string) => {
     if (!showCustomizePanel) return;
     
-    // Find which tab the item belongs to
-    const headerItem = headerSchema.items.find(item => 
-      item.id === id || (item.items && item.items.some(subItem => subItem.id === id))
-    );
-    const footerItem = footerSchema.items.find(item => 
-      item.id === id || (item.items && item.items.some(subItem => subItem.id === id))
-    );
-    
-    // Switch to the appropriate tab
-    if (headerItem) {
+    const isHeader = id === HEADER_ROOT_ID || findIdInChildren({ items: headerSchema.items }, id);
+    const isFooter = id === FOOTER_ROOT_ID || findIdInChildren({ rows: footerSchema.rows }, id);
+
+    if (isHeader) {
       setActiveTab('header');
-    } else if (footerItem) {
+    } else if (isFooter) {
       setActiveTab('footer');
     }
     
-    setSelectedItemId(id === selectedItemId ? null : id);
+    setSelectedItemId(id);
   };
 
   // Auto-scroll to selected item editor

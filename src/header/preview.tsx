@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import type { HeaderSchema } from './schema';
+import { HEADER_ROOT_ID } from '@footer/constants';
 
 interface HeaderPreviewProps {
   headerSchema: HeaderSchema;
@@ -15,21 +16,28 @@ const HeaderPreview: React.FC<HeaderPreviewProps> = ({
 }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
+  const getSelectionClass = (id: string) => 
+    selectedItemId === id ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black relative z-10' : '';
+
   return (
     <div 
-      className="border-b border-gray-800"
+      className={`border-b border-gray-800 transition-all duration-200 ${getSelectionClass(HEADER_ROOT_ID)}`}
       style={{
         backgroundColor: headerSchema.style?.backgroundColor || '#111111',
         color: headerSchema.style?.textColor || '#ffffff',
         padding: headerSchema.style?.padding || '10px 20px'
       }}
+      onClick={() => onItemSelect(HEADER_ROOT_ID)}
     >
       <div className="flex items-center space-x-6 px-4">
         {/* Logo */}
         {headerSchema.items.find(item => item.type === 'logo')?.attrs?.src && (
           <div 
             className={`cursor-pointer ${selectedItemId === headerSchema.items.find(item => item.type === 'logo')?.id ? 'ring-2 ring-blue-500' : ''}`}
-            onClick={() => onItemSelect(headerSchema.items.find(item => item.type === 'logo')?.id || '')}
+            onClick={(e) => {
+              e.stopPropagation();
+              onItemSelect(headerSchema.items.find(item => item.type === 'logo')?.id || '');
+            }}
           >
             <img 
               src={headerSchema.items.find(item => item.type === 'logo')?.attrs?.src}
@@ -46,7 +54,10 @@ const HeaderPreview: React.FC<HeaderPreviewProps> = ({
         {headerSchema.items.find(item => item.type === 'title')?.label && (
           <div 
             className={`cursor-pointer ${selectedItemId === headerSchema.items.find(item => item.type === 'title')?.id ? 'ring-2 ring-blue-500' : ''}`}
-            onClick={() => onItemSelect(headerSchema.items.find(item => item.type === 'title')?.id || '')}
+            onClick={(e) => {
+              e.stopPropagation();
+              onItemSelect(headerSchema.items.find(item => item.type === 'title')?.id || '');
+            }}
           >
             <span 
               style={{
@@ -67,7 +78,10 @@ const HeaderPreview: React.FC<HeaderPreviewProps> = ({
               <div 
                 key={item.id || index} 
                 className={`relative cursor-pointer ${selectedItemId === item.id ? 'ring-2 ring-blue-500 rounded px-2' : ''}`}
-                onClick={() => onItemSelect(item.id || '')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onItemSelect(item.id || '');
+                }}
               >
                 {item.type === 'dropdown' ? (
                   <div className="relative">
