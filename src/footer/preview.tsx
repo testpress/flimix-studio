@@ -143,8 +143,8 @@ const FooterPreview: React.FC<FooterPreviewProps> = ({
                        </div>
                      ))
                    ) : (
-                     <div className="w-full h-full min-h-[50px] border border-dashed border-gray-700 rounded flex items-center justify-center opacity-30">
-                       <span className="text-xs">Empty</span>
+                     <div className="w-full h-full min-h-[50px] border-2 border-dashed border-gray-500 rounded flex items-center justify-center bg-gray-800/20">
+                       <span className="text-xs text-gray-400">Empty Column</span>
                      </div>
                   )}
                 </div>
