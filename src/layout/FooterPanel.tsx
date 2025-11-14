@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import { Plus, Trash2, Layout, ChevronDown, ChevronRight } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { FooterRow, FooterColumn, FooterLayoutPreset } from '@footer/schema';
+import { MAX_FOOTER_ROWS } from '@footer/schema';
 import RowLayoutSelector from '@footer/RowLayoutSelector';
 import ColumnForm from '@footer/forms/ColumnForm';
 import RowForm from '@footer/forms/RowForm';
 import { FOOTER_LAYOUT_PRESETS } from '@footer/constants';
 import { FOOTER_ROOT_ID } from '@footer/constants';
+import { generateUniqueId } from '@utils/id';
 
 const FooterPanel: React.FC = () => {
   const { footerSchema, updateFooterSchema, selectedId, expandedPath, selectItem } = useHeaderFooter();
   const [isAddingRow, setIsAddingRow] = useState(false);
 
+  const currentRowCount = footerSchema.rows?.length || 0;
+  const canAddRow = currentRowCount < MAX_FOOTER_ROWS;
+
   const handleAddRow = (presetId: FooterLayoutPreset, colCount: number) => {
-    const newColumns: FooterColumn[] = Array.from({ length: colCount }).map((_, i) => ({
-      id: `col-${Date.now()}-${i}`,
+    if (currentRowCount >= MAX_FOOTER_ROWS) {
+      setIsAddingRow(false);
+      return;
+    }
+
+    const newColumns: FooterColumn[] = Array.from({ length: colCount }).map(() => ({
+      id: generateUniqueId(),
       type: 'column',
       items: [],
       orientation: 'vertical',
@@ -22,7 +32,7 @@ const FooterPanel: React.FC = () => {
     }));
 
     const newRow: FooterRow = {
-      id: `row-${Date.now()}`,
+      id: generateUniqueId(),
       type: 'row-layout',
       preset: presetId,
       columns: newColumns
@@ -74,22 +84,19 @@ const FooterPanel: React.FC = () => {
     const currentVertical = parts[0] || '40px';
     const currentHorizontal = parts[1] || '20px';
     
-    let val = parseInt(e.target.value) || 0;
-
-    // Enforce Limits (max 100 vertical, max 400 horizontal)
-    if (type === 'vertical') {
-      if (val > 100) val = 100;
-      if (val < 0) val = 0;
-    } else {
-      if (val > 400) val = 400;
-      if (val < 0) val = 0;
-    }
+    if (e.target.value === '') return;
+    
+    const numValue = parseInt(e.target.value, 10);
+    if (isNaN(numValue)) return;
+    
+    // Allow 0-100, clamp values > 100 to 100
+    const clampedValue = numValue > 100 ? 100 : numValue;
     
     let newPadding = '';
     if (type === 'vertical') {
-      newPadding = `${val}px ${currentHorizontal}`;
+      newPadding = `${clampedValue}px ${currentHorizontal}`;
     } else {
-      newPadding = `${currentVertical} ${val}px`;
+      newPadding = `${currentVertical} ${clampedValue}px`;
     }
     
     updateStyle('padding', newPadding);
@@ -165,7 +172,7 @@ const FooterPanel: React.FC = () => {
                   onChange={(e) => handlePaddingChange(e, 'horizontal')}
                   className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
                   min="0"
-                  max="400"
+                  max="100"
                   step="1"
                 />
               </div>
@@ -185,12 +192,25 @@ const FooterPanel: React.FC = () => {
             onCancel={() => setIsAddingRow(false)} 
           />
         ) : (
-          <button
-            onClick={() => setIsAddingRow(true)}
-            className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded mb-4 flex items-center justify-center gap-2 transition-colors"
-          >
-            <Plus size={14} /> Add Row Layout
-          </button>
+          <>
+            <button
+              onClick={() => setIsAddingRow(true)}
+              disabled={!canAddRow}
+              className={`w-full py-2 text-white text-xs font-medium rounded mb-4 flex items-center justify-center gap-2 transition-colors ${
+                canAddRow
+                  ? 'bg-blue-600 hover:bg-blue-500 cursor-pointer'
+                  : 'bg-gray-600 cursor-not-allowed opacity-50'
+              }`}
+              title={!canAddRow ? `Maximum ${MAX_FOOTER_ROWS} rows allowed` : ''}
+            >
+              <Plus size={14} /> Add Row Layout
+            </button>
+            {!canAddRow && (
+              <div className="text-xs text-gray-400 text-center mb-4">
+                Maximum {MAX_FOOTER_ROWS} rows allowed ({currentRowCount}/{MAX_FOOTER_ROWS})
+              </div>
+            )}
+          </>
         )}
 
         {/* Row List */}

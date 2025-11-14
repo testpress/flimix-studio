@@ -11,6 +11,9 @@ export type LinkOrientation = 'vertical' | 'horizontal';
 export type IconSize = 'sm' | 'md' | 'lg' | 'xl';
 export type ItemAlignment = 'start' | 'center' | 'end';
 
+export const MAX_FOOTER_ROWS = 3;
+export const MAX_COLUMN_ITEMS = 5;
+
 export interface FooterItem {
   id: string;
   type: 'item';

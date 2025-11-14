@@ -2,7 +2,9 @@ import React from 'react';
 import { Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem } from '../schema';
+import { MAX_NAVIGATION_ITEMS } from '../schema';
 import NavigationItemForm from './NavigationItemForm';
+import { generateUniqueId } from '@utils/id';
 
 interface NavigationFormProps {
   navigationItems: HeaderItem[];
@@ -19,18 +21,23 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
 }) => {
   const { selectItem, expandedPath } = useHeaderFooter();
   
+  const currentItemCount = navigationItems.length;
+  const canAddItem = currentItemCount < MAX_NAVIGATION_ITEMS;
+  
   const handleAddNavigationItem = () => {
+    if (currentItemCount >= MAX_NAVIGATION_ITEMS) {
+      return;
+    }
+
     const newItem: HeaderItem = {
-      id: `nav-item-${Date.now()}`,
+      id: generateUniqueId(),
       type: 'internal',
       label: 'Navigation Item',
       link: '/'
     };
     
     updateNavigationItems([...navigationItems, newItem]);
-    if (newItem.id) {
-      selectItem(newItem.id, 'header', []);
-    }
+    selectItem(newItem.id, 'header', []);
   };
 
   const handleUpdateNavigationItem = (index: number, updatedItem: HeaderItem) => {
@@ -54,11 +61,11 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
         <div className="space-y-3">
           {navigationItems.map((item, index) => {
             const isSelected = selectedItemId === item.id;
-            const isExpanded = isSelected || (item.type === 'dropdown' && item.id && (expandedPath as readonly string[]).includes(item.id));
+            const isExpanded = isSelected || (item.type === 'dropdown' && (expandedPath as readonly string[]).includes(item.id));
             
             return (
               <div 
-                key={item.id || index}
+                key={item.id}
                 id={`panel-item-${item.id}`} 
                 className={`rounded-lg border transition-all overflow-hidden ${
                   isSelected 
@@ -71,9 +78,7 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
                   className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-600/50 transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (item.id) {
-                      selectItem(item.id, 'header', []);
-                    }
+                    selectItem(item.id, 'header', []);
                   }}
                 >
                   <div className="flex items-center gap-3">
@@ -125,9 +130,21 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
         </div>
       )}
       
+      {!canAddItem && (
+        <div className="text-xs text-gray-400 text-center mb-2">
+          Maximum {MAX_NAVIGATION_ITEMS} navigation items allowed ({currentItemCount}/{MAX_NAVIGATION_ITEMS})
+        </div>
+      )}
+      
       <button
         onClick={handleAddNavigationItem}
-        className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center text-sm"
+        disabled={!canAddItem}
+        className={`w-full px-3 py-2 text-white rounded flex items-center justify-center text-sm transition-colors ${
+          canAddItem
+            ? 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
+            : 'bg-gray-600 cursor-not-allowed opacity-50'
+        }`}
+        title={!canAddItem ? `Maximum ${MAX_NAVIGATION_ITEMS} navigation items allowed` : ''}
       >
         <Plus size={16} className="mr-1" />
         Add Navigation Item

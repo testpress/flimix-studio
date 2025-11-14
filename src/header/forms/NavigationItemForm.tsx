@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem } from '../schema';
+import { MAX_DROPDOWN_ITEMS } from '../schema';
+import { generateUniqueId } from '@utils/id';
 
 interface NavigationItemFormProps {
   item: HeaderItem;
@@ -69,8 +71,13 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
   };
 
   const handleAddSubItem = () => {
+    const currentSubItemCount = item.items?.length || 0;
+    if (currentSubItemCount >= MAX_DROPDOWN_ITEMS) {
+      return;
+    }
+
     const newItem: HeaderItem = {
-      id: `sub-item-${Date.now()}`,
+      id: generateUniqueId(),
       type: 'internal',
       label: 'New Item',
       link: '/'
@@ -84,11 +91,12 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     setExpandedSubItems(true);
   };
 
-  const handleUpdateSubItem = (index: number, updatedSubItem: HeaderItem) => {
+  const handleUpdateSubItem = (subItemId: string, updatedSubItem: HeaderItem) => {
     if (!item.items) return;
     
-    const updatedItems = [...item.items];
-    updatedItems[index] = updatedSubItem;
+    const updatedItems = item.items.map(subItem => 
+      subItem.id === subItemId ? updatedSubItem : subItem
+    );
     
     updateNavigationItem({
       ...item,
@@ -96,10 +104,10 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     });
   };
 
-  const handleDeleteSubItem = (index: number) => {
+  const handleDeleteSubItem = (subItemId: string) => {
     if (!item.items) return;
     
-    const updatedItems = item.items.filter((_, i) => i !== index);
+    const updatedItems = item.items.filter(subItem => subItem.id !== subItemId);
     
     updateNavigationItem({
       ...item,
@@ -172,15 +180,25 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
           
           {expandedSubItems && (
             <>
-              {item.items && item.items.length > 0 ? (
-                <div className="space-y-2 mb-3">
-                  {item.items.map((subItem, index) => {
+              {(() => {
+                const currentSubItemCount = item.items?.length || 0;
+                const canAddSubItem = currentSubItemCount < MAX_DROPDOWN_ITEMS;
+                return (
+                  <>
+                    {!canAddSubItem && (
+                      <div className="text-xs text-gray-400 text-center mb-2">
+                        Maximum {MAX_DROPDOWN_ITEMS} dropdown items allowed ({currentSubItemCount}/{MAX_DROPDOWN_ITEMS})
+                      </div>
+                    )}
+                    {item.items && item.items.length > 0 ? (
+                      <div className="space-y-2 mb-3">
+                        {item.items.map((subItem) => {
                     const isSubItemSelected = selectedItemId === subItem.id;
                     
                     return (
                       <div 
-                        key={subItem.id || index}
-                        id={subItem.id ? `panel-item-${subItem.id}` : undefined}
+                        key={subItem.id}
+                        id={`panel-item-${subItem.id}`}
                         className={`bg-gray-600 rounded border p-2 transition-all ${
                           isSubItemSelected 
                             ? 'border-blue-500 ring-1 ring-blue-500' 
@@ -191,7 +209,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm text-white">{subItem.label || 'Sub Item'}</span>
                           <button 
-                            onClick={() => handleDeleteSubItem(index)}
+                            onClick={() => handleDeleteSubItem(subItem.id)}
                             className="p-0.5 rounded text-gray-300 hover:text-red-400 hover:bg-gray-500"
                           >
                             <Trash2 size={14} />
@@ -204,7 +222,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                             <input
                               type="text"
                               value={subItem.label || ''}
-                              onChange={(e) => handleUpdateSubItem(index, { ...subItem, label: e.target.value })}
+                              onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, label: e.target.value })}
                               className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
                             />
                           </div>
@@ -214,7 +232,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                             <input
                               type="text"
                               value={subItem.link || ''}
-                              onChange={(e) => handleUpdateSubItem(index, { ...subItem, link: e.target.value })}
+                              onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, link: e.target.value })}
                               className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
                             />
                           </div>
@@ -224,7 +242,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                           <label className="text-xs text-gray-400 mb-0.5">Type</label>
                           <select
                             value={subItem.type}
-                            onChange={(e) => handleUpdateSubItem(index, { ...subItem, type: e.target.value as HeaderItem['type'] })}
+                            onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, type: e.target.value as HeaderItem['type'] })}
                             className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs w-full"
                           >
                             <option value="internal">Internal Link</option>
@@ -236,17 +254,26 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                     );
                   })}
                 </div>
-              ) : (
-                <p className="text-xs text-gray-400 mb-3">No items added yet.</p>
-              )}
-              
-              <button
-                onClick={handleAddSubItem}
-                className="flex items-center text-xs text-blue-400 hover:text-blue-300 bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded"
-              >
-                <Plus size={12} className="mr-1" />
-                Add Dropdown Item
-              </button>
+                      ) : (
+                        <p className="text-xs text-gray-400 mb-3">No items added yet.</p>
+                      )}
+                      
+                      <button
+                        onClick={handleAddSubItem}
+                        disabled={!canAddSubItem}
+                        className={`flex items-center text-xs px-2 py-1 rounded transition-colors ${
+                          canAddSubItem
+                            ? 'text-blue-400 hover:text-blue-300 bg-gray-600 hover:bg-gray-500 cursor-pointer'
+                            : 'text-gray-500 bg-gray-700 cursor-not-allowed opacity-50'
+                        }`}
+                        title={!canAddSubItem ? `Maximum ${MAX_DROPDOWN_ITEMS} dropdown items allowed` : ''}
+                      >
+                        <Plus size={12} className="mr-1" />
+                        Add Dropdown Item
+                      </button>
+                    </>
+                  );
+                })()}
             </>
           )}
         </div>

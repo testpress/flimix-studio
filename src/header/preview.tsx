@@ -66,7 +66,7 @@ const HeaderPreview: React.FC = () => {
         {/* Logo */}
         {logoItem?.attrs?.src && (
           renderSelectableItem(
-            logoItem.id || '',
+            logoItem.id,
             'header',
             [],
             'cursor-pointer',
@@ -84,7 +84,7 @@ const HeaderPreview: React.FC = () => {
         {/* Title */}
         {titleItem?.label && (
           renderSelectableItem(
-            titleItem.id || '',
+            titleItem.id,
             'header',
             [],
             'cursor-pointer',
@@ -101,10 +101,10 @@ const HeaderPreview: React.FC = () => {
         
         {/* Menu Items */}
         <div className="flex items-center space-x-4 ml-auto">
-          {navigationItems.map((item, index) => (
-            <React.Fragment key={item.id || index}>
+          {navigationItems.map((item) => (
+            <React.Fragment key={item.id}>
               {renderSelectableItem(
-                item.id || '',
+                item.id,
                 'header',
                 [],
                 'relative cursor-pointer',
@@ -129,11 +129,11 @@ const HeaderPreview: React.FC = () => {
                     {openDropdown === item.label && item.items && (
                       <div className="absolute top-full left-0 mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-10 min-w-[150px]">
                         {item.items.map((subItem) => (
-                          <React.Fragment key={subItem.id || subItem.label}>
+                          <React.Fragment key={subItem.id}>
                             {renderSelectableItem(
-                              subItem.id || '',
+                              subItem.id,
                               'header',
-                              [item.id || ''],
+                              [item.id],
                               'block',
                               <div className="px-4 py-2 text-sm hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg cursor-pointer">
                                 {subItem.label}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart } from 'lucide-react';
 import type { FooterColumn, FooterItem, ItemAlignment } from '../schema';
+import { MAX_COLUMN_ITEMS } from '../schema';
 import ColumnItemEditor from './ColumnItemEditor';
+import { generateUniqueId } from '@utils/id';
 
 interface ColumnFormProps {
   column: FooterColumn;
@@ -21,9 +23,16 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
     }
   }, [selectedItemId, column.items, expandedLinkId]);
 
+  const currentItemCount = column.items.length;
+  const canAddItem = currentItemCount < MAX_COLUMN_ITEMS;
+
   const addItem = () => {
+    if (currentItemCount >= MAX_COLUMN_ITEMS) {
+      return;
+    }
+
     const newItem: FooterItem = {
-      id: `item-${Date.now()}`,
+      id: generateUniqueId(),
       type: 'item',
       label: 'New Link',
       url: '',
@@ -102,8 +111,13 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
           {/* Add Item */}
           <button 
             onClick={addItem}
-            className="p-1.5 bg-blue-600 text-white hover:bg-blue-500 rounded shadow-sm"
-            title="Add Item"
+            disabled={!canAddItem}
+            className={`p-1.5 rounded shadow-sm ${
+              canAddItem
+                ? 'bg-blue-600 text-white hover:bg-blue-500 cursor-pointer'
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'
+            }`}
+            title={!canAddItem ? `Maximum ${MAX_COLUMN_ITEMS} items allowed` : 'Add Item'}
           >
             <Plus size={14} />
           </button>
@@ -112,6 +126,11 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
 
       {/* Items List */}
       <div className="space-y-1">
+        {!canAddItem && (
+          <div className="text-[10px] text-gray-400 text-center mb-2">
+            Maximum {MAX_COLUMN_ITEMS} items allowed ({currentItemCount}/{MAX_COLUMN_ITEMS})
+          </div>
+        )}
         {column.items.length === 0 && (
            <div className="text-center py-3 border border-dashed border-gray-700 rounded bg-gray-800/30">
              <span className="text-[10px] text-gray-500">No items</span>
