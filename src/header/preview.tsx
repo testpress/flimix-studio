@@ -7,12 +7,54 @@ import { HEADER_ROOT_ID } from '@footer/constants';
 const HeaderPreview: React.FC = () => {
   const { headerSchema, selectItem, selectedId } = useHeaderFooter();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
 
   const logoItem = headerSchema.items.find(item => item.type === 'logo');
   const titleItem = headerSchema.items.find(item => item.type === 'title');
   const navigationItems = headerSchema.items.filter(item => 
     item.type !== 'logo' && item.type !== 'title'
   );
+
+  const getNavAlignmentClass = () => {
+    const align = headerSchema.style?.navigationAlignment || 'right';
+    switch (align) {
+      case 'left': return 'justify-start pl-8';
+      case 'center': return 'justify-center';
+      default: return 'justify-end';
+    }
+  };
+
+  const getActiveStyle = (itemId: string, baseTextColor: string = '#ffffff') => {
+    const activeColor = headerSchema.style?.hoverColor || '#3b82f6';
+    const hoverEffect = headerSchema.style?.hoverEffect || 'text';
+    const isDisabled = headerSchema.style?.disableHover;
+
+    const isSelected = selectedId === itemId;
+    const isHovered = hoveredItemId === itemId && !isDisabled;
+    const isActive = isSelected || isHovered;
+
+    const style: React.CSSProperties = {
+      color: baseTextColor,
+      transition: 'all 0.2s ease',
+    };
+
+    if (isActive) {
+      if (hoverEffect === 'background') {
+        style.backgroundColor = activeColor;
+        style.color = '#ffffff';
+        style.borderRadius = '6px';
+      } else {
+        style.color = activeColor;
+        style.backgroundColor = 'transparent';
+      }
+    }
+
+    return style;
+  };
+
+  const getItemPaddingClass = () => {
+    return headerSchema.style?.hoverEffect === 'background' ? 'px-3 py-1.5' : 'px-0 py-0';
+  };
 
   const renderSelectableItem = (
     id: string,
@@ -34,124 +76,180 @@ const HeaderPreview: React.FC = () => {
         id={`canvas-item-${id}`}
         className={`relative group transition-all duration-200 p-1.5 ${className}
           ${isSelected 
-            ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-transparent z-10' 
-            : 'hover:ring-1 hover:ring-blue-500/30'}
+            ? 'ring-2 ring-blue-500 z-10 rounded' 
+            : 'hover:ring-1 hover:ring-blue-500/30 rounded'}
         `}
         onClick={handleClick}
+        onMouseEnter={() => setHoveredItemId(id)}
+        onMouseLeave={() => setHoveredItemId(null)}
         data-selection-id={id}
       >
-        {/* Selection Label (Visible on Hover or Selection) */}
-        <div className={`absolute -top-3 left-0 px-1.5 rounded-t text-[9px] font-bold uppercase tracking-wider z-20 transition-opacity
-          ${isSelected 
-            ? 'bg-blue-600 text-white opacity-100' 
-            : 'bg-gray-700 text-gray-300 opacity-0 group-hover:opacity-100'}
-        `}>
-        </div>
         {children}
       </div>
     );
   };
 
+  const navFontSize = headerSchema.style?.navigationFontSize || '14px';
+
+  const renderIcon = (url?: string) => {
+    if (headerSchema.style?.hideNavIcons || !url) return null;
+    return (
+      <img 
+        src={url} 
+        className="object-contain mr-1.5 inline-block"
+        style={{ width: '1.1em', height: '1.1em' }} 
+        alt="icon"
+      />
+    );
+  };
+
   return (
     <div 
-      className="border-b border-gray-800 transition-all duration-200"
+      className="transition-all duration-200 border-b border-gray-800"
       style={{
         backgroundColor: headerSchema.style?.backgroundColor || '#111111',
         color: headerSchema.style?.textColor || '#ffffff',
-        padding: headerSchema.style?.padding || '10px 20px'
+        padding: headerSchema.style?.padding || '10px 20px',
+        margin: headerSchema.style?.margin || '0px',
+        borderRadius: headerSchema.style?.borderRadius
       }}
       onClick={() => selectItem(HEADER_ROOT_ID, 'header', [])}
     >
-      <div className="flex items-center space-x-6 px-4">
-        {/* Logo */}
-        {logoItem?.attrs?.src && (
-          renderSelectableItem(
-            logoItem.id,
-            'header',
-            [],
-            'cursor-pointer',
-            <img 
-              src={logoItem.attrs.src}
-              alt={logoItem.attrs.alt || 'Logo'}
-              style={{
-                objectFit: 'contain',
-                maxHeight: '40px'
-              }}
-            />
-          )
-        )}
-        
-        {/* Title */}
-        {titleItem?.label && (
-          renderSelectableItem(
-            titleItem.id,
-            'header',
-            [],
-            'cursor-pointer',
-            <span 
-              style={{
-                fontSize: titleItem.style?.fontSize || '24px',
-                color: titleItem.style?.color || '#ffffff'
-              }}
-            >
-              {titleItem.label}
-            </span>
-          )
-        )}
-        
-        {/* Menu Items */}
-        <div className="flex items-center space-x-4 ml-auto">
-          {navigationItems.map((item) => (
-            <React.Fragment key={item.id}>
-              {renderSelectableItem(
-                item.id,
-                'header',
-                [],
-                'relative cursor-pointer',
-                item.type === 'dropdown' ? (
+      <div className="flex items-center px-4 w-full relative">
+        <div className="flex items-center gap-4 shrink-0 z-10 relative">
+          {logoItem?.attrs?.src && logoItem.isVisible !== false && (
+            renderSelectableItem(
+              logoItem.id,
+              'header',
+              [],
+              'cursor-pointer',
+              <img 
+                src={logoItem.attrs.src}
+                alt={logoItem.attrs.alt || 'Logo'}
+                style={{
+                  objectFit: 'contain',
+                  maxHeight: '40px'
+                }}
+              />
+            )
+          )}
+          
+          {/* Title - Check Visibility */}
+          {titleItem?.label && titleItem.isVisible !== false && (
+            renderSelectableItem(
+              titleItem.id,
+              'header',
+              [],
+              'cursor-pointer',
+              <span 
+                style={{
+                  fontSize: titleItem.style?.fontSize || '24px',
+                  color: titleItem.style?.color || '#ffffff'
+                }}
+              >
+                {titleItem.label}
+              </span>
+            )
+          )}
+        </div>
+
+        <div className={`flex-1 flex items-center ${getNavAlignmentClass()}`}>
+          <div className="flex items-center gap-4">
+            {navigationItems.map((item, index) => {
+              if (item.isVisible === false) return null;
+
+              if (item.type === 'button') {
+                return renderSelectableItem(item.id, 'header', [], '', (
+                  <a 
+                    href={item.link || '#'} 
+                    className="px-4 py-2 font-medium transition-all duration-200 flex items-center gap-2"
+                    style={{
+                      backgroundColor: item.style?.backgroundColor || '#3b82f6',
+                      color: item.style?.color || '#ffffff',
+                      borderRadius: item.style?.borderRadius || '4px',
+                      fontSize: navFontSize,
+                      opacity: (!headerSchema.style?.disableHover && hoveredItemId === item.id) ? 0.9 : 1
+                    }}
+                  >
+                    {renderIcon(item.icon)}
+                    {item.label}
+                  </a>
+                ));
+              }
+
+              // Dropdown Rendering
+              if (item.type === 'dropdown') {
+                const subItems = item.items || [];
+                const hasSubItems = subItems.length > 0;
+                const isMultiColumn = subItems.length > 4;
+                const threshold = Math.floor(navigationItems.length / 2) - 1;
+                const isRightSide = index > threshold;
+
+                return renderSelectableItem(item.id, 'header', [], 'relative', (
                   <div className="relative">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenDropdown(openDropdown === item.label ? null : item.label || '');
+                    <button 
+                      className={`flex items-center gap-1 font-medium ${getItemPaddingClass()}`}
+                      style={{
+                        ...getActiveStyle(item.id, headerSchema.style?.textColor),
+                        fontSize: navFontSize
                       }}
-                      className="flex items-center space-x-1 cursor-pointer hover:text-blue-400 transition-colors"
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        if (hasSubItems) {
+                          setOpenDropdown(openDropdown === item.label ? null : item.label || ''); 
+                        }
+                      }}
                     >
-                      <span>{item.label}</span>
-                      <ChevronDown 
-                        className={`w-4 h-4 transition-transform ${
-                          openDropdown === item.label ? 'rotate-180' : ''
-                        }`} 
-                      />
+                      {renderIcon(item.icon)}
+                      {item.label}
+                      
+                      {/* Only show Chevron if sub-items exist */}
+                      {hasSubItems && (
+                        <ChevronDown size={14} style={{ width: '1em', height: '1em' }} />
+                      )}
                     </button>
                     
-                    {/* Dropdown Menu */}
-                    {openDropdown === item.label && item.items && (
-                      <div className="absolute top-full left-0 mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-10 min-w-[150px]">
-                        {item.items.map((subItem) => (
-                          <React.Fragment key={subItem.id}>
-                            {renderSelectableItem(
-                              subItem.id,
-                              'header',
-                              [item.id],
-                              'block',
-                              <div className="px-4 py-2 text-sm hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg cursor-pointer">
-                                {subItem.label}
-                              </div>
+                    {/* Dropdown Menu (Only if items exist) */}
+                    {hasSubItems && openDropdown === item.label && (
+                      <div 
+                        className={`absolute top-full mt-6 bg-gray-800 border border-gray-600 rounded shadow-xl z-50 py-2 max-w-[90vw]
+                          ${isRightSide ? 'right-0 origin-top-right' : 'left-0 origin-top-left'}
+                          ${isMultiColumn ? 'grid grid-cols-2 gap-x-4 min-w-[340px]' : 'flex flex-col min-w-[180px]'}
+                        `}
+                      >
+                        {subItems.map(sub => (
+                          <div 
+                            key={sub.id} 
+                            className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-200 flex items-center gap-2 transition-colors"
+                            style={{ fontSize: '0.9em' }}
+                          >
+                            {/* SUB ITEM ICON */}
+                            {sub.icon && (
+                              <img src={sub.icon} style={{ width: '1.1em', height: '1.1em' }} className="object-contain" alt="" />
                             )}
-                          </React.Fragment>
+                            {sub.label}
+                          </div>
                         ))}
                       </div>
                     )}
                   </div>
-                ) : (
-                  <span className="cursor-pointer hover:text-blue-400 transition-colors">
-                    {item.label}
-                  </span>
-                )
-              )}
-            </React.Fragment>
-          ))}
+                ));
+              }
+              return renderSelectableItem(item.id, 'header', [], '', (
+                <a 
+                  href={item.link || '#'} 
+                  className={`font-medium flex items-center gap-2 ${getItemPaddingClass()}`}
+                  style={{
+                    ...getActiveStyle(item.id, headerSchema.style?.textColor),
+                    fontSize: navFontSize
+                  }}
+                >
+                  {renderIcon(item.icon)}
+                  {item.label}
+                </a>
+              ));
+            })}
+          </div>
         </div>
       </div>
     </div>

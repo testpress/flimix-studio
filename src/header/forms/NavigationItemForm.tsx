@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem } from '../schema';
 import { MAX_DROPDOWN_ITEMS } from '../schema';
@@ -54,6 +54,13 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
         type: newType
       });
     }
+  };
+
+  const updateStyle = (key: string, value: string) => {
+    updateNavigationItem({
+      ...item,
+      style: { ...item.style, [key]: value }
+    });
   };
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,65 +123,135 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col">
-          <label className="text-xs text-gray-300 mb-1">Type</label>
+          <label className="text-xs text-gray-300 mb-1.5">Type</label>
           <select
             value={item.type}
             onChange={handleTypeChange}
-            className="bg-gray-600 border border-gray-500 rounded px-2 py-1.5 text-white text-sm"
+            className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none"
           >
             <option value="internal">Internal Link</option>
             <option value="external">External Link</option>
             <option value="anchor">Anchor Link</option>
+            <option value="button">CTA Button</option>
             {!isDropdownItem && <option value="dropdown">Dropdown</option>}
           </select>
         </div>
-
         <div className="flex flex-col">
-          <label className="text-xs text-gray-300 mb-1">Label</label>
-          <input
-            type="text"
-            value={item.label || ''}
-            onChange={handleLabelChange}
-            className="bg-gray-600 border border-gray-500 rounded px-2 py-1.5 text-white text-sm"
-            placeholder="Navigation item label"
+          <label className="text-xs text-gray-300 mb-1.5">Label</label>
+          <input 
+            type="text" 
+            value={item.label || ''} 
+            onChange={handleLabelChange} 
+            className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none" 
           />
         </div>
       </div>
 
       {item.type !== 'dropdown' && (
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-300 mb-1">
-            {item.type === 'external' ? 'URL' : item.type === 'anchor' ? 'Anchor' : 'Path'}
-          </label>
-          <input
-            type="text"
-            value={item.link || ''}
-            onChange={handleLinkChange}
-            className="bg-gray-600 border border-gray-500 rounded px-2 py-1.5 text-white text-sm"
-            placeholder={
-              item.type === 'external' 
-                ? 'https://example.com' 
-                : item.type === 'anchor' 
-                  ? '#section-id' 
-                  : '/page-path'
-            }
-          />
+         <div className="flex flex-col">
+            <label className="text-xs text-gray-300 mb-1.5">
+                {item.type === 'button' ? 'Button Link' : 'Link Path/URL'}
+            </label>
+            <input
+                type="text"
+                value={item.link || ''}
+                onChange={handleLinkChange}
+                className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none" 
+            />
+         </div>
+      )}
+
+      {/* Icon Input */}
+      <div className="flex flex-col">
+         <label className="text-xs text-gray-300 mb-1.5 flex items-center gap-1">
+            <ImageIcon size={12} className="text-gray-400"/> Icon URL <span className="text-gray-500">(Optional)</span>
+         </label>
+         <input 
+            type="text" 
+            value={item.icon || ''} 
+            onChange={(e) => updateNavigationItem({...item, icon: e.target.value})} 
+            className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs font-mono focus:border-blue-500 outline-none" 
+            placeholder="https://..."
+         />
+      </div>
+
+      {item.type === 'button' && (
+        <div className="mt-4 p-4 bg-gray-800/50 rounded-lg border border-blue-500/30 space-y-4">
+           <div className="flex items-center gap-2 pb-2 border-b border-blue-500/20">
+              <span className="text-xs font-semibold text-blue-100 tracking-wide">Button Styling</span>
+           </div>
+           
+           <div className="grid grid-cols-2 gap-4">
+              {/* Background Color */}
+              <div className="flex flex-col space-y-1.5">
+                 <label className="text-xs text-gray-400">Background</label>
+                 <div className="flex items-center bg-gray-700 rounded border border-gray-600 px-2 py-1.5">
+                    <input 
+                        type="color" 
+                        value={item.style?.backgroundColor || '#3b82f6'} 
+                        onChange={(e) => updateStyle('backgroundColor', e.target.value)} 
+                        className="w-5 h-5 rounded cursor-pointer border-0 p-0 mr-2 shrink-0" 
+                    />
+                    <input 
+                        type="text" 
+                        value={item.style?.backgroundColor || '#3b82f6'} 
+                        onChange={(e) => updateStyle('backgroundColor', e.target.value)} 
+                        className="bg-transparent text-xs text-white w-full focus:outline-none uppercase font-mono" 
+                    />
+                 </div>
+              </div>
+
+              {/* Text Color */}
+              <div className="flex flex-col space-y-1.5">
+                 <label className="text-xs text-gray-400">Text Color</label>
+                 <div className="flex items-center bg-gray-700 rounded border border-gray-600 px-2 py-1.5">
+                    <input 
+                        type="color" 
+                        value={item.style?.color || '#ffffff'} 
+                        onChange={(e) => updateStyle('color', e.target.value)} 
+                        className="w-5 h-5 rounded cursor-pointer border-0 p-0 mr-2 shrink-0" 
+                    />
+                    <input 
+                        type="text" 
+                        value={item.style?.color || '#ffffff'} 
+                        onChange={(e) => updateStyle('color', e.target.value)} 
+                        className="bg-transparent text-xs text-white w-full focus:outline-none uppercase font-mono" 
+                    />
+                 </div>
+              </div>
+           </div>
+           
+           {/* Radius Slider */}
+           <div className="flex flex-col space-y-2">
+              <div className="flex justify-between items-center">
+                  <label className="text-xs text-gray-400">Border Radius</label>
+                  <span className="text-xs text-gray-500 bg-gray-700 px-1.5 rounded border border-gray-600">
+                      {parseInt(item.style?.borderRadius || '4')}px
+                  </span>
+              </div>
+              <input 
+                 type="range" min="0" max="30" step="1"
+                 value={parseInt(item.style?.borderRadius || '4')} 
+                 onChange={(e) => updateStyle('borderRadius', `${e.target.value}px`)}
+                 className="w-full accent-blue-500 h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+              />
+           </div>
         </div>
       )}
 
       {/* Dropdown sub-items */}
       {item.type === 'dropdown' && (
         <div className="mt-3 border-t border-gray-600 pt-3">
-          <div className="flex items-center justify-between mb-2">
-            <h5 className="text-sm font-medium text-gray-300">Dropdown Items</h5>
+          <div className="flex items-center justify-between mb-3">
+            <h5 className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Dropdown Menu Items</h5>
             <button 
               onClick={() => setExpandedSubItems(!expandedSubItems)}
-              className="p-1 rounded hover:bg-gray-600 text-gray-300"
+              className="p-1 rounded hover:bg-gray-600 text-gray-400 hover:text-white transition-colors"
             >
-              {expandedSubItems ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              {expandedSubItems ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
           </div>
           
@@ -185,92 +262,44 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                 const canAddSubItem = currentSubItemCount < MAX_DROPDOWN_ITEMS;
                 return (
                   <>
-                    {!canAddSubItem && (
-                      <div className="text-xs text-gray-400 text-center mb-2">
-                        Maximum {MAX_DROPDOWN_ITEMS} dropdown items allowed ({currentSubItemCount}/{MAX_DROPDOWN_ITEMS})
-                      </div>
-                    )}
+                    {!canAddSubItem && <div className="text-xs text-gray-500 text-center mb-2">Max {MAX_DROPDOWN_ITEMS} items reached</div>}
                     {item.items && item.items.length > 0 ? (
-                      <div className="space-y-2 mb-3">
-                        {item.items.map((subItem) => {
-                    const isSubItemSelected = selectedItemId === subItem.id;
+                        <div className="space-y-2 mb-3">
+                            {item.items.map(subItem => (
+                                <div key={subItem.id} className="bg-gray-700/50 rounded border border-gray-600 p-3">
+                                    <div className="flex justify-between mb-2">
+                                        <span className="text-xs font-medium text-gray-300">Sub Item</span>
+                                        <button onClick={() => handleDeleteSubItem(subItem.id)} className="text-gray-500 hover:text-red-400"><Trash2 size={12}/></button>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2 mb-2">
+                                        <div className="col-span-1">
+                                            <label className="text-[10px] text-gray-400 block mb-1">Label</label>
+                                            <input type="text" value={subItem.label} onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, label: e.target.value})} className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white" placeholder="Label"/>
+                                        </div>
+                                        <div className="col-span-1">
+                                            <label className="text-[10px] text-gray-400 block mb-1">Link</label>
+                                            <input type="text" value={subItem.link} onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, link: e.target.value})} className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white" placeholder="Link"/>
+                                        </div>
+                                    </div>
+                                    {/* SUB ITEM ICON INPUT */}
+                                    <div>
+                                        <label className="text-[10px] text-gray-400 block mb-1">Icon URL (Optional)</label>
+                                        <input 
+                                            type="text" 
+                                            value={subItem.icon || ''} 
+                                            onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, icon: e.target.value})} 
+                                            className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white font-mono" 
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : <p className="text-xs text-gray-500 italic text-center py-2">No sub-items yet.</p>}
                     
-                    return (
-                      <div 
-                        key={subItem.id}
-                        id={`panel-item-${subItem.id}`}
-                        className={`bg-gray-600 rounded border p-2 transition-all ${
-                          isSubItemSelected 
-                            ? 'border-blue-500 ring-1 ring-blue-500' 
-                            : 'border-gray-500'
-                        }`}
-                        data-item-id={subItem.id}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-white">{subItem.label || 'Sub Item'}</span>
-                          <button 
-                            onClick={() => handleDeleteSubItem(subItem.id)}
-                            className="p-0.5 rounded text-gray-300 hover:text-red-400 hover:bg-gray-500"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="flex flex-col">
-                            <label className="text-xs text-gray-400 mb-0.5">Label</label>
-                            <input
-                              type="text"
-                              value={subItem.label || ''}
-                              onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, label: e.target.value })}
-                              className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
-                            />
-                          </div>
-                          
-                          <div className="flex flex-col">
-                            <label className="text-xs text-gray-400 mb-0.5">Link</label>
-                            <input
-                              type="text"
-                              value={subItem.link || ''}
-                              onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, link: e.target.value })}
-                              className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="mt-2">
-                          <label className="text-xs text-gray-400 mb-0.5">Type</label>
-                          <select
-                            value={subItem.type}
-                            onChange={(e) => handleUpdateSubItem(subItem.id, { ...subItem, type: e.target.value as HeaderItem['type'] })}
-                            className="bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-xs w-full"
-                          >
-                            <option value="internal">Internal Link</option>
-                            <option value="external">External Link</option>
-                            <option value="anchor">Anchor Link</option>
-                          </select>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                      ) : (
-                        <p className="text-xs text-gray-400 mb-3">No items added yet.</p>
-                      )}
-                      
-                      <button
-                        onClick={handleAddSubItem}
-                        disabled={!canAddSubItem}
-                        className={`flex items-center text-xs px-2 py-1 rounded transition-colors ${
-                          canAddSubItem
-                            ? 'text-blue-400 hover:text-blue-300 bg-gray-600 hover:bg-gray-500 cursor-pointer'
-                            : 'text-gray-500 bg-gray-700 cursor-not-allowed opacity-50'
-                        }`}
-                        title={!canAddSubItem ? `Maximum ${MAX_DROPDOWN_ITEMS} dropdown items allowed` : ''}
-                      >
-                        <Plus size={12} className="mr-1" />
-                        Add Dropdown Item
-                      </button>
+                    <button onClick={handleAddSubItem} disabled={!canAddSubItem} className={`w-full flex items-center justify-center text-xs py-2 rounded border border-dashed transition-colors ${canAddSubItem ? 'border-gray-600 text-blue-400 hover:bg-blue-900/20 hover:border-blue-500/50' : 'border-gray-700 text-gray-600 cursor-not-allowed'}`}>
+                        <Plus size={12} className="mr-1"/> Add Dropdown Item
+                    </button>
                     </>
                   );
                 })()}
