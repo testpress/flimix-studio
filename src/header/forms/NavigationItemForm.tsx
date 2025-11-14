@@ -266,10 +266,44 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                     {item.items && item.items.length > 0 ? (
                         <div className="space-y-2 mb-3">
                             {item.items.map(subItem => (
-                                <div key={subItem.id} className="bg-gray-700/50 rounded border border-gray-600 p-3">
+                                <div key={subItem.id} className={`bg-gray-700/50 rounded border p-3 transition-all ${selectedItemId === subItem.id ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-600'}`}>
                                     <div className="flex justify-between mb-2">
                                         <span className="text-xs font-medium text-gray-300">Sub Item</span>
                                         <button onClick={() => handleDeleteSubItem(subItem.id)} className="text-gray-500 hover:text-red-400"><Trash2 size={12}/></button>
+                                    </div>
+                                    <div className="mb-2">
+                                        <label className="text-[10px] text-gray-400 block mb-1">Type</label>
+                                        <select
+                                            value={subItem.type}
+                                            onChange={(e) => {
+                                                const newType = e.target.value as HeaderItem['type'];
+                                                // Handle type change - remove items if changing from dropdown
+                                                if (newType === 'dropdown' && subItem.type !== 'dropdown') {
+                                                    handleUpdateSubItem(subItem.id, {
+                                                        ...subItem,
+                                                        type: newType,
+                                                        items: []
+                                                    });
+                                                } else if (newType !== 'dropdown' && subItem.type === 'dropdown') {
+                                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                                    const { items, ...rest } = subItem;
+                                                    handleUpdateSubItem(subItem.id, {
+                                                        ...rest,
+                                                        type: newType
+                                                    });
+                                                } else {
+                                                    handleUpdateSubItem(subItem.id, {
+                                                        ...subItem,
+                                                        type: newType
+                                                    });
+                                                }
+                                            }}
+                                            className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white focus:border-blue-500 outline-none"
+                                        >
+                                            <option value="internal">Internal Link</option>
+                                            <option value="external">External Link</option>
+                                            <option value="anchor">Anchor Link</option>
+                                        </select>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2 mb-2">
                                         <div className="col-span-1">
@@ -277,8 +311,16 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                                             <input type="text" value={subItem.label} onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, label: e.target.value})} className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white" placeholder="Label"/>
                                         </div>
                                         <div className="col-span-1">
-                                            <label className="text-[10px] text-gray-400 block mb-1">Link</label>
-                                            <input type="text" value={subItem.link} onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, link: e.target.value})} className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white" placeholder="Link"/>
+                                            <label className="text-[10px] text-gray-400 block mb-1">
+                                                {subItem.type === 'button' ? 'Button Link' : 'Link Path/URL'}
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                                value={subItem.link || ''} 
+                                                onChange={(e) => handleUpdateSubItem(subItem.id, {...subItem, link: e.target.value})} 
+                                                className="w-full bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white" 
+                                                placeholder={subItem.type === 'button' ? 'Button Link' : 'Link'}
+                                            />
                                         </div>
                                     </div>
                                     {/* SUB ITEM ICON INPUT */}

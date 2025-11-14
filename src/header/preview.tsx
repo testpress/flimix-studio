@@ -76,8 +76,8 @@ const HeaderPreview: React.FC = () => {
         id={`canvas-item-${id}`}
         className={`relative group transition-all duration-200 p-1.5 ${className}
           ${isSelected 
-            ? 'ring-2 ring-blue-500 z-10 rounded' 
-            : 'hover:ring-1 hover:ring-blue-500/30 rounded'}
+            ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-transparent z-10' 
+            : 'hover:ring-1 hover:ring-blue-500/30'}
         `}
         onClick={handleClick}
         onMouseEnter={() => setHoveredItemId(id)}
@@ -98,14 +98,14 @@ const HeaderPreview: React.FC = () => {
         src={url} 
         className="object-contain mr-1.5 inline-block"
         style={{ width: '1.1em', height: '1.1em' }} 
-        alt="icon"
+        alt=""
       />
     );
   };
 
   return (
     <div 
-      className="transition-all duration-200 border-b border-gray-800"
+      className="border-b border-gray-800 transition-all duration-200"
       style={{
         backgroundColor: headerSchema.style?.backgroundColor || '#111111',
         color: headerSchema.style?.textColor || '#ffffff',

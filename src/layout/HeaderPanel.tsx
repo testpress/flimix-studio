@@ -264,6 +264,31 @@ const HeaderPanel: React.FC = () => {
                       className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
                    />
                </div>
+
+               {/* Title Color */}
+               <div className="flex flex-col">
+                   <label className="text-xs text-gray-400 mb-1">Text Color</label>
+                   <div className="flex items-center gap-2">
+                      <input 
+                         type="color" 
+                         value={titleItem?.style?.color || '#ffffff'} 
+                         onChange={(e) => titleItem && handleUpdateTitle({
+                             ...titleItem, 
+                             style: { ...titleItem.style, color: e.target.value }
+                         })} 
+                         className="w-6 h-6 rounded cursor-pointer border-0 p-0"
+                      />
+                      <input 
+                         type="text" 
+                         value={titleItem?.style?.color || '#ffffff'} 
+                         onChange={(e) => titleItem && handleUpdateTitle({
+                             ...titleItem, 
+                             style: { ...titleItem.style, color: e.target.value }
+                         })} 
+                         className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-xs text-white w-full border" 
+                      />
+                   </div>
+               </div>
            </div>
         )}
       </div>
