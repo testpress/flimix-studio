@@ -1,0 +1,113 @@
+{
+  "type": "footer",
+  "rows": [
+    {
+      "id": "row-main",
+      "type": "row-layout",
+      "preset": "4-col",
+      "columns": [
+        {
+          "id": "col-brand",
+          "type": "column",
+          "orientation": "vertical",
+          "alignment": "start",
+          "items": [
+            { 
+              "id": "brand-logo", 
+              "type": "item", 
+              "linkType": "internal", 
+              "url": "/",
+              "icon": "https://img.hotstar.com/image/upload/v1737554969/web-assets/prod/images/rebrand/logo.png",
+              "style": { "size": "xl" }
+            },
+            { 
+              "id": "brand-desc", 
+              "type": "item", 
+              "linkType": "internal", 
+              "label": "The best streaming experience.", 
+              "url": "#",
+              "style": { "color": "#666666" }
+            }
+          ]
+        },
+        {
+          "id": "col-links-1",
+          "type": "column",
+          "orientation": "vertical",
+          "alignment": "center",
+          "items": [
+            { "id": "l1", "type": "item", "linkType": "internal", "label": "Home", "url": "/" },
+            { "id": "l2", "type": "item", "linkType": "internal", "label": "Movies", "url": "/movies" }
+          ]
+        },
+        {
+          "id": "col-links-2",
+          "type": "column",
+          "orientation": "vertical",
+          "alignment": "end",
+          "items": [
+            { "id": "l4", "type": "item", "linkType": "internal", "label": "Help", "url": "/help" },
+            { "id": "l5", "type": "item", "linkType": "internal", "label": "Terms", "url": "/terms" }
+          ]
+        },
+        {
+          "id": "col-social",
+          "type": "column",
+          "orientation": "horizontal",
+          "alignment": "end",
+          "items": [
+            { 
+              "id": "icon-1", 
+              "type": "item", 
+              "linkType": "external", 
+              "url": "https://instagram.com",
+              "icon": "https://cdn-icons-png.flaticon.com/512/733/733558.png",
+              "style": { "size": "md" }
+            },
+            { 
+              "id": "icon-2", 
+              "type": "item", 
+              "linkType": "external", 
+              "url": "https://youtube.com",
+              "icon": "https://cdn-icons-png.flaticon.com/512/1384/1384060.png",
+              "style": { "size": "md" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-copy",
+      "type": "row-layout",
+      "preset": "1-col",
+      "style": {
+        "padding": "20px 0px 0px 0px",
+        "borderTop": "1px solid #333"
+      },
+      "columns": [
+        {
+          "id": "col-copy",
+          "type": "column",
+          "orientation": "horizontal",
+          "alignment": "center",
+          "items": [
+            { 
+              "id": "copy-txt", 
+              "type": "item", 
+              "linkType": "internal", 
+              "label": "© 2025 Flimix Studio. All Rights Reserved.", 
+              "url": "#",
+              "style": { "color": "#555555" }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "style": {
+    "padding": "60px 20px",
+    "backgroundColor": "#000000",
+    "textColor": "#999999"
+  }
+}
+
