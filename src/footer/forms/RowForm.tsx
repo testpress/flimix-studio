@@ -1,6 +1,7 @@
 import React from 'react';
 import type { FooterRow, FooterLayoutPreset } from '../schema';
 import { FOOTER_LAYOUT_PRESETS } from '../constants';
+import { generateUniqueId } from '@utils/id';
 
 interface RowFormProps {
   row: FooterRow;
@@ -21,7 +22,7 @@ const RowForm: React.FC<RowFormProps> = ({ row, onUpdate }) => {
       const colsToAdd = targetColCount - newColumns.length;
       for (let i = 0; i < colsToAdd; i++) {
         newColumns.push({
-          id: `col-${Date.now()}-${i}`,
+          id: generateUniqueId(),
           type: 'column',
           items: [],
           orientation: 'vertical',

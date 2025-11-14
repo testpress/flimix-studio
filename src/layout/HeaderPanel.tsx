@@ -3,6 +3,7 @@ import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem } from '@header/schema';
 import LogoForm from '@header/forms/LogoForm';
 import NavigationForm from '@header/forms/NavigationForm';
+import { generateUniqueId } from '@utils/id';
 
 const HeaderPanel: React.FC = () => {
   const { headerSchema, updateHeaderSchema, selectedId } = useHeaderFooter();
@@ -73,22 +74,19 @@ const HeaderPanel: React.FC = () => {
     const currentVertical = parts[0] || '10px';
     const currentHorizontal = parts[1] || '20px';
     
-    let val = parseInt(e.target.value) || 0;
-
-    // Enforce Limits (same as Footer: max 50 vertical, max 400 horizontal)
-    if (type === 'vertical') {
-      if (val > 50) val = 50;
-      if (val < 0) val = 0;
-    } else {
-      if (val > 400) val = 400;
-      if (val < 0) val = 0;
-    }
+    if (e.target.value === '') return;
+    
+    const numValue = parseInt(e.target.value, 10);
+    if (isNaN(numValue)) return;
+    
+    // Allow 0-100, clamp values > 100 to 100
+    const clampedValue = numValue > 100 ? 100 : numValue;
     
     let newPadding = '';
     if (type === 'vertical') {
-      newPadding = `${val}px ${currentHorizontal}`;
+      newPadding = `${clampedValue}px ${currentHorizontal}`;
     } else {
-      newPadding = `${currentVertical} ${val}px`;
+      newPadding = `${currentVertical} ${clampedValue}px`;
     }
     
     updateHeaderSchema({
@@ -103,7 +101,7 @@ const HeaderPanel: React.FC = () => {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!titleItem) {
       const newTitleItem: HeaderItem = {
-        id: `title-${Date.now()}`,
+        id: generateUniqueId(),
         type: 'title',
         label: e.target.value,
         style: { fontSize: '24px', color: '#ffffff' }
@@ -123,14 +121,20 @@ const HeaderPanel: React.FC = () => {
     }
   };
 
-  const handleTitleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleFontSizeChange = (value: string) => {
     if (!titleItem) return;
+    
+    if (value === '') return;
+    
+    const numValue = parseInt(value, 10);
+    if (isNaN(numValue)) return;
+    const clampedValue = numValue > 50 ? 50 : numValue;
     
     const updatedTitle = {
       ...titleItem,
       style: {
         ...titleItem.style,
-        fontSize: e.target.value
+        fontSize: `${clampedValue}px`
       }
     };
     
@@ -205,7 +209,7 @@ const HeaderPanel: React.FC = () => {
                   onChange={(e) => handlePaddingChange(e, 'vertical')}
                   className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
                   min="0"
-                  max="50"
+                  max="100"
                   step="1"
                 />
               </div>
@@ -217,7 +221,7 @@ const HeaderPanel: React.FC = () => {
                   onChange={(e) => handlePaddingChange(e, 'horizontal')}
                   className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
                   min="0"
-                  max="400"
+                  max="100"
                   step="1"
                 />
               </div>
@@ -229,7 +233,7 @@ const HeaderPanel: React.FC = () => {
       {/* Logo Editor */}
       {logoItem && (
         <div 
-          id={logoItem.id ? `panel-item-${logoItem.id}` : undefined}
+          id={`panel-item-${logoItem.id}`}
           className="p-4 bg-gray-700 rounded-lg"
           data-item-id={logoItem.id}
         >
@@ -240,7 +244,7 @@ const HeaderPanel: React.FC = () => {
       
       {/* Title Settings */}
       <div 
-        id={titleItem?.id ? `panel-item-${titleItem.id}` : undefined}
+        id={titleItem ? `panel-item-${titleItem.id}` : undefined}
         className="p-4 bg-gray-700 rounded-lg"
         data-item-id={titleItem?.id}
       >
@@ -263,10 +267,10 @@ const HeaderPanel: React.FC = () => {
             <input
               type="number"
               value={parseInt(titleItem?.style?.fontSize || '24px')}
-              onChange={(e) => handleTitleFontSizeChange({ target: { value: e.target.value + 'px' } } as React.ChangeEvent<HTMLInputElement>)}
+              onChange={(e) => handleTitleFontSizeChange(e.target.value)}
               className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-              min="8"
-              max="72"
+              min="0"
+              max="50"
               step="1"
             />
           </div>
