@@ -15,7 +15,7 @@
       "id": "title-1",
       "type": "title",
       "label": "Flimix",
-      "style": { "fontSize": "24px", "color": "#ffffff" }
+      "style": { "fontSize": "base", "color": "#ffffff" }
     },
     {
       "id": "menu-1",
@@ -58,7 +58,7 @@
     }
   ],
   "style": {
-    "padding": "10px 20px",
+    "padding": "base",
     "backgroundColor": "#111111",
     "textColor": "#ffffff"
   }
