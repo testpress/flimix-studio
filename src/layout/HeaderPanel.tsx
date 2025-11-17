@@ -4,9 +4,59 @@ import {
   Layers,
 } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
-import type { HeaderItem, NavigationAlignment } from '@header/schema';
+import type { HeaderItem, NavigationAlignment, Size } from '@header/schema';
 import LogoForm from '@header/forms/LogoForm';
 import NavigationForm from '@header/forms/NavigationForm';
+
+interface StyleSelectProps {
+  label: string;
+  value?: string;
+  onChange: (value: string) => void;
+  options: Array<{ label: string; value: string }>;
+}
+
+const StyleSelect: React.FC<StyleSelectProps> = ({ label, value, onChange, options }) => (
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-300 mb-1.5 font-medium">{label}</label>
+    <select
+      value={value || options[0].value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none"
+    >
+      {options.map(option => (
+        <option key={option.value} value={option.value}>{option.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const sizeOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
+
+const fontSizeOptions = [
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+  { label: '2XL', value: '2xl' },
+  { label: '3XL', value: '3xl' },
+];
+
+const navigationFontSizeOptions = [
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
 
 const HeaderPanel: React.FC = () => {
   const { headerSchema, updateHeaderSchema, selectedId } = useHeaderFooter();
@@ -15,20 +65,11 @@ const HeaderPanel: React.FC = () => {
   const titleItem = headerSchema.items.find(item => item.type === 'title');
   const navigationItems = headerSchema.items.filter(item => item.type !== 'logo' && item.type !== 'title');
 
-  const updateGlobalStyle = (key: string, value: string | boolean | undefined) => {
+  const updateGlobalStyle = (key: string, value: string | boolean | Size | undefined) => {
     updateHeaderSchema({
       ...headerSchema,
       style: { ...headerSchema.style, [key]: value }
     });
-  };
-
-  const handlePixelChange = (key: string, value: string) => {
-    if (value === '') return;
-    updateGlobalStyle(key, `${value}px`);
-  };
-
-  const getPixelValue = (val?: string) => {
-    return val ? parseInt(val, 10) : 0;
   };
 
   const handleUpdateLogo = (updated: HeaderItem) => {
@@ -80,54 +121,26 @@ const HeaderPanel: React.FC = () => {
 
         {/* 2. LAYOUT & SPACING */}
         <div className="space-y-5 pt-4 border-t border-gray-600 mb-5">
-            
-            {/* Padding Slider */}
-            <div className="flex flex-col">
-               <div className="flex justify-between mb-2">
-                  <label className="text-xs text-gray-300 flex items-center gap-1 font-medium">Padding</label>
-                  <div className="flex items-center bg-gray-800 rounded border border-gray-600 px-2 py-1 w-8">
-                     <span className="text-[12px] text-gray-500">{getPixelValue(headerSchema.style?.padding)}</span>
-                  </div>
-               </div>
-               <input 
-                  type="range" min="0" max="20" step="1"
-                  value={getPixelValue(headerSchema.style?.padding)} 
-                  onChange={(e) => handlePixelChange('padding', e.target.value)}
-                  className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-               />
-            </div>
+            <StyleSelect
+              label="Padding"
+              value={headerSchema.style?.padding}
+              onChange={(value) => updateGlobalStyle('padding', value as Size)}
+              options={sizeOptions}
+            />
 
-            {/* Margin Slider */}
-            <div className="flex flex-col">
-               <div className="flex justify-between mb-2">
-                  <label className="text-xs text-gray-300 flex items-center gap-1 font-medium">Margin</label>
-                  <div className="flex items-center bg-gray-800 rounded border border-gray-600 px-2 py-1 w-8">
-                     <span className="text-[12px] text-gray-500">{getPixelValue(headerSchema.style?.margin)}</span>
-                  </div>
-               </div>
-               <input 
-                  type="range" min="0" max="20" step="1"
-                  value={getPixelValue(headerSchema.style?.margin)} 
-                  onChange={(e) => handlePixelChange('margin', e.target.value)}
-                  className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-               />
-            </div>
+            <StyleSelect
+              label="Margin"
+              value={headerSchema.style?.margin}
+              onChange={(value) => updateGlobalStyle('margin', value as Size)}
+              options={sizeOptions}
+            />
 
-            {/* Corner Radius Slider */}
-            <div className="flex flex-col">
-               <div className="flex justify-between mb-2">
-                  <label className="text-xs text-gray-300 flex items-center gap-1 font-medium">Border Radius</label>
-                  <div className="flex items-center bg-gray-800 rounded border border-gray-600 px-2 py-1 w-8">
-                     <span className="text-[12px] text-gray-500">{getPixelValue(headerSchema.style?.borderRadius)}</span>
-                  </div>
-               </div>
-               <input 
-                  type="range" min="0" max="40" step="1"
-                  value={getPixelValue(headerSchema.style?.borderRadius)} 
-                  onChange={(e) => handlePixelChange('borderRadius', e.target.value)}
-                  className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-               />
-            </div>
+            <StyleSelect
+              label="Border Radius"
+              value={headerSchema.style?.borderRadius}
+              onChange={(value) => updateGlobalStyle('borderRadius', value as Size)}
+              options={sizeOptions}
+            />
         </div>
         
         <div className="pt-4 border-t border-gray-600">
@@ -142,19 +155,13 @@ const HeaderPanel: React.FC = () => {
             </div>
 
             {/* Nav Font Size */}
-            <div className="flex flex-col mb-5">
-                <div className="flex justify-between mb-2">
-                   <label className="text-xs text-gray-300 font-medium flex items-center gap-1">Font Size</label>
-                   <div className="flex items-center bg-gray-800 rounded border border-gray-600 px-2 py-1 w-8">
-                       <span className="text-[12px] text-gray-500">{getPixelValue(headerSchema.style?.navigationFontSize || '14')}</span>
-                   </div>
-                </div>
-                <input 
-                   type="range" min="10" max="24"
-                   value={getPixelValue(headerSchema.style?.navigationFontSize || '14')}
-                   onChange={(e) => handlePixelChange('navigationFontSize', e.target.value)}
-                   className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-                />
+            <div className="mb-5">
+              <StyleSelect
+                label="Navigation Font Size"
+                value={headerSchema.style?.navigationFontSize}
+                onChange={(value) => updateGlobalStyle('navigationFontSize', value as Size)}
+                options={navigationFontSizeOptions}
+              />
             </div>
                
             {/* HOVER CONTAINER */}
@@ -247,23 +254,15 @@ const HeaderPanel: React.FC = () => {
                </div>
 
                {/* Title Font Size */}
-               <div className="flex flex-col">
-                   <div className="flex justify-between mb-2">
-                      <label className="text-xs text-gray-300 font-medium flex items-center gap-1">Font Size</label>
-                      <div className="flex items-center bg-gray-800 rounded border border-gray-600 px-2 py-1 w-8">
-                          <span className="text-[12px] text-gray-500">{getPixelValue(titleItem?.style?.fontSize || '24')}</span>
-                      </div>
-                   </div>
-                   <input 
-                      type="range" min="12" max="48"
-                      value={getPixelValue(titleItem?.style?.fontSize || '24')}
-                      onChange={(e) => titleItem && handleUpdateTitle({
-                          ...titleItem, 
-                          style: { ...titleItem.style, fontSize: `${e.target.value}px` }
-                      })}
-                      className="w-full accent-blue-500 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-                   />
-               </div>
+               <StyleSelect
+                  label="Title Font Size"
+                  value={titleItem?.style?.fontSize}
+                  onChange={(value) => titleItem && handleUpdateTitle({
+                    ...titleItem,
+                    style: { ...titleItem.style, fontSize: value as Size }
+                  })}
+                  options={fontSizeOptions}
+                />
 
                {/* Title Color */}
                <div className="flex flex-col">

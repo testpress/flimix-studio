@@ -3,6 +3,23 @@ import { ChevronDown } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { ExpansionPath } from '@context/HeaderFooterContext';
 import { HEADER_ROOT_ID } from '@footer/constants';
+import type { Size } from '@header/schema';
+
+const PADDING_MAP: Record<Size, string> = {
+  none: 'p-0', xs: 'p-1', sm: 'p-2', base: 'p-3', md: 'p-4', lg: 'p-6', xl: 'p-8', '2xl': 'p-10', '3xl': 'p-12',
+};
+
+const MARGIN_MAP: Record<Size, string> = {
+  none: 'm-0', xs: 'm-1', sm: 'm-2', base: 'm-3', md: 'm-4', lg: 'm-6', xl: 'm-8', '2xl': 'm-10', '3xl': 'm-12',
+};
+
+const RADIUS_MAP: Record<Size, string> = {
+  none: 'rounded-none', xs: 'rounded-sm', sm: 'rounded', base: 'rounded-md', md: 'rounded-lg', lg: 'rounded-xl', xl: 'rounded-2xl', '2xl': 'rounded-3xl', '3xl': 'rounded-[2rem]',
+};
+
+const FONT_SIZE_MAP: Partial<Record<Size, string>> = {
+  xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg', xl: 'text-xl', '2xl': 'text-2xl', '3xl': 'text-3xl',
+};
 
 const HeaderPreview: React.FC = () => {
   const { headerSchema, selectItem, selectedId } = useHeaderFooter();
@@ -89,7 +106,10 @@ const HeaderPreview: React.FC = () => {
     );
   };
 
-  const navFontSize = headerSchema.style?.navigationFontSize || '14px';
+  const navFontSizeClass = FONT_SIZE_MAP[headerSchema.style?.navigationFontSize || 'base'];
+  const paddingClass = PADDING_MAP[headerSchema.style?.padding || 'base'];
+  const marginClass = MARGIN_MAP[headerSchema.style?.margin || 'none'];
+  const radiusClass = RADIUS_MAP[headerSchema.style?.borderRadius || 'none'];
 
   const renderIcon = (url?: string) => {
     if (headerSchema.style?.hideNavIcons || !url) return null;
@@ -105,13 +125,10 @@ const HeaderPreview: React.FC = () => {
 
   return (
     <div 
-      className="border-b border-gray-800 transition-all duration-200"
+      className={`border-b border-gray-800 transition-all duration-200 ${paddingClass} ${marginClass} ${radiusClass}`}
       style={{
         backgroundColor: headerSchema.style?.backgroundColor || '#111111',
         color: headerSchema.style?.textColor || '#ffffff',
-        padding: headerSchema.style?.padding || '10px 20px',
-        margin: headerSchema.style?.margin || '0px',
-        borderRadius: headerSchema.style?.borderRadius
       }}
       onClick={() => selectItem(HEADER_ROOT_ID, 'header', [])}
     >
@@ -142,8 +159,8 @@ const HeaderPreview: React.FC = () => {
               [],
               'cursor-pointer',
               <span 
+                className={FONT_SIZE_MAP[titleItem.style?.fontSize || '2xl'] || 'text-2xl'}
                 style={{
-                  fontSize: titleItem.style?.fontSize || '24px',
                   color: titleItem.style?.color || '#ffffff'
                 }}
               >
@@ -162,12 +179,11 @@ const HeaderPreview: React.FC = () => {
                 return renderSelectableItem(item.id, 'header', [], '', (
                   <a 
                     href={item.link || '#'} 
-                    className="px-4 py-2 font-medium transition-all duration-200 flex items-center gap-2"
+                    className={`px-4 py-2 font-medium transition-all duration-200 flex items-center gap-2 ${navFontSizeClass}`}
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#3b82f6',
                       color: item.style?.color || '#ffffff',
                       borderRadius: item.style?.borderRadius || '4px',
-                      fontSize: navFontSize,
                       opacity: (!headerSchema.style?.disableHover && hoveredItemId === item.id) ? 0.9 : 1
                     }}
                   >
@@ -188,10 +204,9 @@ const HeaderPreview: React.FC = () => {
                 return renderSelectableItem(item.id, 'header', [], 'relative', (
                   <div className="relative">
                     <button 
-                      className={`flex items-center gap-1 font-medium ${getItemPaddingClass()}`}
+                      className={`flex items-center gap-1 font-medium ${getItemPaddingClass()} ${navFontSizeClass}`}
                       style={{
                         ...getActiveStyle(item.id, headerSchema.style?.textColor),
-                        fontSize: navFontSize
                       }}
                       onClick={(e) => { 
                         e.stopPropagation(); 
@@ -238,10 +253,9 @@ const HeaderPreview: React.FC = () => {
               return renderSelectableItem(item.id, 'header', [], '', (
                 <a 
                   href={item.link || '#'} 
-                  className={`font-medium flex items-center gap-2 ${getItemPaddingClass()}`}
+                  className={`font-medium flex items-center gap-2 ${getItemPaddingClass()} ${navFontSizeClass}`}
                   style={{
                     ...getActiveStyle(item.id, headerSchema.style?.textColor),
-                    fontSize: navFontSize
                   }}
                 >
                   {renderIcon(item.icon)}

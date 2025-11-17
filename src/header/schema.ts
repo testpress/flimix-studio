@@ -1,3 +1,5 @@
+export type Size = 'none' | 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+
 export type HeaderItemType = 'logo' | 'title' | 'internal' | 'external' | 'anchor' | 'dropdown' | 'button';
 
 export const MAX_NAVIGATION_ITEMS = 10;
@@ -21,12 +23,12 @@ export interface HeaderItem {
     target?: string;
   };
   style?: {
-    fontSize?: string;
+    fontSize?: Size;
+    borderRadius?: Size;
     color?: string;
     padding?: string;
     margin?: string;
     backgroundColor?: string;
-    borderRadius?: string;
     border?: string;
   };
 }
@@ -35,13 +37,13 @@ export interface HeaderSchema {
   type: 'header';
   items: HeaderItem[];
   style?: {
-    padding?: string;
-    margin?: string;
+    padding?: Size;
+    margin?: Size;
+    borderRadius?: Size;
+    navigationFontSize?: Size;
     backgroundColor?: string;
     textColor?: string;
-    borderRadius?: string;
     navigationAlignment?: NavigationAlignment;
-    navigationFontSize?: string;
     hoverColor?: string;
     disableHover?: boolean;
     hoverEffect?: HoverEffect;
