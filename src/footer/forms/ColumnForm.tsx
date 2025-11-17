@@ -28,12 +28,17 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
   const [expandedLinkId, setExpandedLinkId] = useState<string | null>(null);
   
   // Auto-expand item if it's selected
-  React.useEffect(() => {
+  const selectedChildId = React.useMemo(() => {
+    if (!selectedItemId) return null;
     const selectedChild = column.items.find(child => child.id === selectedItemId);
-    if (selectedChild) {
-      setExpandedLinkId(selectedChild.id);
-    }
+    return selectedChild ? selectedChild.id : null;
   }, [selectedItemId, column.items]);
+
+  React.useEffect(() => {
+    if (selectedChildId) {
+      setExpandedLinkId(selectedChildId);
+    }
+  }, [selectedChildId]);
 
   const currentItemCount = column.items.length;
   const maxItems = isNested ? MAX_NESTED_COLUMN_ITEMS : MAX_COLUMN_ITEMS;

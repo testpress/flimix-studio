@@ -93,9 +93,11 @@ const FooterPreview: React.FC = () => {
     );
   };
 
-  const renderColumnChildren = (items: ColumnChild[], path: ExpansionPath): React.ReactNode[] => {
-    const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
-
+  const renderColumnChildren = (
+    items: ColumnChild[],
+    path: ExpansionPath,
+    fontSizeClass: string
+  ): React.ReactNode[] => {
     return items.map((child): React.ReactNode => {
       
       if (child.type === 'column') {
@@ -110,7 +112,7 @@ const FooterPreview: React.FC = () => {
            ${getAlignmentClass(nestedCol.orientation, nestedCol.alignment)}`,
           
           nestedCol.items.length > 0 
-            ? renderColumnChildren(nestedCol.items, newPath)
+            ? renderColumnChildren(nestedCol.items, newPath, fontSizeClass)
             : <div className="text-[10px] text-gray-600 text-center">Empty Nested Column</div>
         );
       }
@@ -162,6 +164,7 @@ const FooterPreview: React.FC = () => {
   const marginClass = MARGIN_MAP[footerSchema.style?.margin || 'none'];
   const maxWidthClass = MAX_WIDTH_MAP[footerSchema.style?.maxWidth || 'lg'];
   const rowGapClass = GAP_MAP[footerSchema.style?.rowGap || 'xl'];
+  const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
 
   return (
     <footer 
@@ -198,7 +201,7 @@ const FooterPreview: React.FC = () => {
                       min-h-[30px] p-1
                     `,
                     col.items.length > 0 ? (
-                      renderColumnChildren(col.items, [row.id, col.id])
+                      renderColumnChildren(col.items, [row.id, col.id], fontSizeClass)
                     ) : (
                       <div className="text-[10px] text-gray-600 border border-dashed border-gray-700 p-2 w-full text-center rounded">
                         Empty Col
