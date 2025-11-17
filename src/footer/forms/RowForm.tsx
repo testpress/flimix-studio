@@ -1,7 +1,39 @@
 import React from 'react';
-import type { FooterRow, FooterLayoutPreset } from '../schema';
+import type { FooterRow, FooterLayoutPreset, Size } from '../schema';
 import { FOOTER_LAYOUT_PRESETS } from '../constants';
 import { generateUniqueId } from '@utils/id';
+
+interface StyleSelectProps {
+  label: string;
+  value?: string;
+  onChange: (value: string) => void;
+  options: Array<{ label: string; value: string }>;
+}
+
+const StyleSelect: React.FC<StyleSelectProps> = ({ label, value, onChange, options }) => (
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-300 mb-1.5 font-medium">{label}</label>
+    <select
+      value={value || options[0].value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none"
+    >
+      {options.map(option => (
+        <option key={option.value} value={option.value}>{option.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const sizeOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
 
 interface RowFormProps {
   row: FooterRow;
@@ -63,6 +95,18 @@ const RowForm: React.FC<RowFormProps> = ({ row, onUpdate }) => {
             </div>
           </button>
         ))}
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-700">
+        <StyleSelect
+          label="Column Gap"
+          value={row.style?.columnGap}
+          onChange={(value) => onUpdate({
+            ...row,
+            style: { ...row.style, columnGap: value as Size }
+          })}
+          options={sizeOptions}
+        />
       </div>
     </div>
   );

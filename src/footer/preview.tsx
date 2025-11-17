@@ -1,9 +1,24 @@
-// src/footer/preview.tsx
 import React from 'react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { ExpansionPath } from '@context/HeaderFooterContext';
-import type { ItemAlignment, LinkOrientation, IconSize } from './schema';
+import type { ItemAlignment, LinkOrientation, IconSize, Size } from './schema';
 import { FOOTER_LAYOUT_PRESETS } from './constants';
+
+const PADDING_MAP: Record<Size, string> = {
+  none: 'p-0', xs: 'p-1', sm: 'p-2', base: 'p-3', md: 'p-4', lg: 'p-6', xl: 'p-8', '2xl': 'p-10', '3xl': 'p-12',
+};
+
+const MARGIN_MAP: Record<Size, string> = {
+  none: 'm-0', xs: 'm-1', sm: 'm-2', base: 'm-3', md: 'm-4', lg: 'm-6', xl: 'm-8', '2xl': 'm-10', '3xl': 'm-12',
+};
+
+const FONT_SIZE_MAP: Partial<Record<Size, string>> = {
+  xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg', xl: 'text-xl',
+};
+
+const GAP_MAP: Record<Size, string> = {
+  none: 'gap-0', xs: 'gap-1', sm: 'gap-2', base: 'gap-3', md: 'gap-4', lg: 'gap-6', xl: 'gap-8', '2xl': 'gap-10', '3xl': 'gap-12',
+};
 
 const ICON_SIZE_MAP: Record<IconSize, string> = {
   sm: '16px',
@@ -66,94 +81,94 @@ const FooterPreview: React.FC = () => {
     );
   };
 
-  const paddingString = footerSchema.style?.padding || '40px 20px';
-  const [verticalPadding, horizontalPadding] = paddingString.split(' ');
+  const paddingClass = PADDING_MAP[footerSchema.style?.padding || 'lg'];
+  const marginClass = MARGIN_MAP[footerSchema.style?.margin || 'none'];
+  const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
 
   return (
     <footer 
-      className="w-full transition-all duration-200"
+      className={`transition-all duration-200 ${paddingClass} ${marginClass}`}
       style={{
         backgroundColor: footerSchema.style?.backgroundColor || '#111111',
         color: footerSchema.style?.textColor || '#cccccc',
-        paddingTop: verticalPadding || '40px',
-        paddingBottom: verticalPadding || '40px',
       }}
     >
-      <div 
-        className="max-w-7xl mx-auto flex flex-col gap-8"
-        style={{
-          paddingLeft: horizontalPadding || '20px',
-          paddingRight: horizontalPadding || '20px',
-        }}
-      >
+      <div className="flex flex-col mx-auto">
         {footerSchema.rows?.map((row) => {
           const presetConfig = FOOTER_LAYOUT_PRESETS.find(p => p.id === row.preset);
           const gridClass = presetConfig ? presetConfig.class : 'grid-cols-1';
+          const gapClass = GAP_MAP[row.style?.columnGap || 'none'];
 
           return (
             renderSelectableItem(
               row.id,
               'footer',
               [],
-              `grid ${gridClass} gap-8 w-full min-h-[50px]`,
-              row.columns.map((col) => (
-                renderSelectableItem(
-                  col.id,
-                  'footer',
-                  [row.id],
-                  `flex ${col.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
-                    ${getAlignmentClass(col.orientation, col.alignment)}
-                    min-h-[30px] p-1
-                  `,
-                  col.items.length > 0 ? (
-                    col.items.map((item) => {
-                      const isExternal = item.linkType === 'external';
-                      const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
-                      
-                      return (
-                        renderSelectableItem(
-                          item.id,
-                          'footer',
-                          [row.id, col.id],
-                          'inline-block',
-                          <a 
-                            href={item.url || '#'} 
-                            className="hover:opacity-80 transition-opacity block"
-                            style={{ color: item.style?.color }}
-                            target={isExternal ? '_blank' : undefined}
-                            rel={isExternal ? 'noopener noreferrer' : undefined}
-                            onClick={(e) => {
-                              e.preventDefault(); 
-                            }}
-                          >
-                            {item.icon && (
-                              <img 
-                                src={item.icon} 
-                                alt={item.label || 'icon'}
-                                className="block object-contain shrink-0 inline-block mr-2"
-                                style={{ 
-                                  width: iconSize, 
-                                  height: 'auto',
-                                  maxWidth: '100%'
-                                }} 
-                              />
-                            )}
-                            {item.label && (
-                              <span className="text-sm leading-none">
-                                {item.label}
-                              </span>
-                            )}
-                          </a>
-                        )
-                      );
-                    })
-                  ) : (
-                    <div className="text-[10px] text-gray-600 border border-dashed border-gray-700 p-2 w-full text-center rounded">
-                      Empty Col
-                    </div>
+              `w-full min-h-[50px]`,
+              <div
+                className={`grid ${gridClass} w-full ${gapClass}`}
+              >
+                {row.columns.map((col) => (
+                  renderSelectableItem(
+                    col.id,
+                    'footer',
+                    [row.id],
+                    `flex ${col.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
+                      ${getAlignmentClass(col.orientation, col.alignment)}
+                      min-h-[30px] p-1
+                    `,
+                    col.items.length > 0 ? (
+                      col.items.map((item) => {
+                        const isExternal = item.linkType === 'external';
+                        const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
+                        
+                        return (
+                          renderSelectableItem(
+                            item.id,
+                            'footer',
+                            [row.id, col.id],
+                            'inline-block',
+                            <a 
+                              href={item.url || '#'} 
+                              className="hover:opacity-80 transition-opacity block"
+                              style={{ color: item.style?.color }}
+                              target={isExternal ? '_blank' : undefined}
+                              rel={isExternal ? 'noopener noreferrer' : undefined}
+                              onClick={(e) => {
+                                e.preventDefault(); 
+                              }}
+                            >
+                              {item.icon && (
+                                <img 
+                                  src={item.icon} 
+                                  alt={item.label || 'icon'}
+                                  className="block object-contain shrink-0 inline-block mr-2"
+                                  style={{ 
+                                    width: iconSize, 
+                                    height: 'auto',
+                                    maxWidth: '100%'
+                                  }} 
+                                />
+                              )}
+                              {item.label && (
+                                <span 
+                                  className={`leading-none ${fontSizeClass}`}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            </a>
+                          )
+                        );
+                      })
+                    ) : (
+                      <div className="text-[10px] text-gray-600 border border-dashed border-gray-700 p-2 w-full text-center rounded">
+                        Empty Col
+                      </div>
+                    )
                   )
-                )
-              ))
+                ))}
+              </div>
             )
           );
         })}
