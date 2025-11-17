@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart } from 'lucide-react';
-import type { FooterColumn, FooterItem, ItemAlignment, Size } from '../schema';
-import { MAX_COLUMN_ITEMS } from '../schema';
+import { Plus, Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart, Grid2x2Plus } from 'lucide-react';
+import type { FooterColumn, FooterItem, ItemAlignment, Size, ColumnChild } from '../schema';
+import { MAX_COLUMN_ITEMS, MAX_NESTED_COLUMN_ITEMS } from '../schema';
 import ColumnItemEditor from './ColumnItemEditor';
 import { generateUniqueId } from '@utils/id';
 
@@ -19,27 +19,28 @@ interface ColumnFormProps {
   column: FooterColumn;
   index: number;
   onUpdate: (updatedColumn: FooterColumn) => void;
+  onRemove?: () => void;
   selectedItemId?: string | null;
+  isNested?: boolean;
 }
 
-const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, selectedItemId }) => {
+const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemove, selectedItemId, isNested = false }) => {
   const [expandedLinkId, setExpandedLinkId] = useState<string | null>(null);
   
   // Auto-expand item if it's selected
   React.useEffect(() => {
-    const selectedItem = column.items.find(item => item.id === selectedItemId);
-    if (selectedItem && expandedLinkId !== selectedItem.id) {
-      setExpandedLinkId(selectedItem.id);
+    const selectedChild = column.items.find(child => child.id === selectedItemId);
+    if (selectedChild) {
+      setExpandedLinkId(selectedChild.id);
     }
-  }, [selectedItemId, column.items, expandedLinkId]);
+  }, [selectedItemId, column.items]);
 
   const currentItemCount = column.items.length;
-  const canAddItem = currentItemCount < MAX_COLUMN_ITEMS;
+  const maxItems = isNested ? MAX_NESTED_COLUMN_ITEMS : MAX_COLUMN_ITEMS;
+  const canAddItem = currentItemCount < maxItems;
 
-  const addItem = () => {
-    if (currentItemCount >= MAX_COLUMN_ITEMS) {
-      return;
-    }
+  const addFooterItem = () => {
+    if (currentItemCount >= maxItems) return;
 
     const newItem: FooterItem = {
       id: generateUniqueId(),
@@ -55,13 +56,31 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
     setExpandedLinkId(newItem.id);
   };
 
-  const updateItem = (itemIndex: number, updatedItem: FooterItem) => {
+  const addNestedColumn = () => {
+    if (isNested || !canAddItem) return;
+
+    const newColumn: FooterColumn = {
+      id: generateUniqueId(),
+      type: 'column',
+      items: [],
+      orientation: 'vertical',
+      alignment: 'start',
+      isNested: true
+    };
+    onUpdate({
+      ...column,
+      items: [...column.items, newColumn]
+    });
+    setExpandedLinkId(newColumn.id);
+  };
+
+  const updateChildItem = (itemIndex: number, updatedItem: ColumnChild) => {
     const newItems = [...column.items];
     newItems[itemIndex] = updatedItem;
     onUpdate({ ...column, items: newItems });
   };
 
-  const removeItem = (itemIndex: number) => {
+  const removeChildItem = (itemIndex: number) => {
     const newItems = column.items.filter((_, i) => i !== itemIndex);
     onUpdate({ ...column, items: newItems });
   };
@@ -78,10 +97,12 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
   };
 
   return (
-    <div className="bg-gray-800/50 rounded border border-gray-600/50 p-2">
+    <div className={`bg-gray-800/50 rounded border ${isNested ? 'border-gray-600/50 p-2' : 'border-transparent p-0'}`}>
       {/* Column Header / Toolbar */}
-      <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-700/50">
-        <span className="text-xs font-medium text-gray-300">Column {index + 1}</span>
+      <div className={`flex items-center justify-between mb-3 pb-2 ${isNested ? 'border-b border-gray-700/50' : ''}`}>
+        <span className="text-xs font-medium text-gray-300">
+          {isNested ? 'Nested Column' : `Column ${index + 1}`}
+        </span>
         
         <div className="flex items-center gap-2">
           {/* Alignment Controls */}
@@ -118,19 +139,45 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
             {column.orientation === 'vertical' ? <AlignVerticalJustifyStart size={14} /> : <AlignHorizontalJustifyStart size={14} />}
           </button>
           
-          {/* Add Item */}
+          {/* Add Item Button */}
           <button 
-            onClick={addItem}
+            onClick={addFooterItem}
             disabled={!canAddItem}
             className={`p-1.5 rounded shadow-sm ${
               canAddItem
                 ? 'bg-blue-600 text-white hover:bg-blue-500 cursor-pointer'
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'
             }`}
-            title={!canAddItem ? `Maximum ${MAX_COLUMN_ITEMS} items allowed` : 'Add Item'}
+            title={!canAddItem ? `Maximum ${maxItems} items allowed` : (isNested ? 'Add Item' : 'Add Link/Item')}
           >
             <Plus size={14} />
           </button>
+          
+          {!isNested && (
+            <button 
+              onClick={addNestedColumn}
+              disabled={!canAddItem}
+              className={`p-1.5 rounded shadow-sm ${
+                canAddItem
+                  ? 'bg-gray-600 text-white hover:bg-gray-500 cursor-pointer'
+                  : 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'
+              }`}
+              title={!canAddItem ? `Maximum ${maxItems} items allowed` : 'Add Nested Column'}
+            >
+              <Grid2x2Plus size={14} />
+            </button>
+          )}
+
+          {/* Remove button for nested columns */}
+          {isNested && onRemove && (
+            <button 
+              onClick={onRemove}
+              className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-600 rounded"
+              title="Remove Nested Column"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -154,7 +201,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
       <div className="space-y-1">
         {!canAddItem && (
           <div className="text-[10px] text-gray-400 text-center mb-2">
-            Maximum {MAX_COLUMN_ITEMS} items allowed ({currentItemCount}/{MAX_COLUMN_ITEMS})
+            Maximum {maxItems} items allowed ({currentItemCount}/{maxItems})
           </div>
         )}
         {column.items.length === 0 && (
@@ -163,7 +210,53 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
            </div>
         )}
         
-        {column.items.map((item, i) => {
+        {column.items.map((child, i) => {
+          
+          if (child.type === 'column') {
+            const nestedColumn = child as FooterColumn;
+            const isSelected = selectedItemId === nestedColumn.id;
+            const isExpanded = isSelected || expandedLinkId === nestedColumn.id;
+            
+            return (
+              <div 
+                key={nestedColumn.id}
+                id={`panel-item-${nestedColumn.id}`}
+                className={`bg-gray-700 rounded border overflow-hidden transition-all ${isSelected ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-600'}`}
+              >
+                <div 
+                  className="flex items-center justify-between p-2 cursor-pointer hover:bg-gray-600 transition-colors"
+                  onClick={() => setExpandedLinkId(isExpanded ? null : nestedColumn.id)}
+                >
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    {isExpanded ? <ChevronDown size={12} className="text-gray-400"/> : <ChevronRight size={12} className="text-gray-400"/>}
+                    <Grid2x2Plus size={12} className="text-blue-300" />
+                    <span className="text-xs text-white truncate">Nested Column</span>
+                  </div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); removeChildItem(i); }}
+                    className="text-gray-400 hover:text-red-400"
+                  >
+                    <Trash2 size={12} />
+                  </button>
+                </div>
+                
+                {isExpanded && (
+                  <div className="p-2 bg-gray-700/50 border-t border-gray-600">
+                    <ColumnForm
+                      column={nestedColumn}
+                      index={i}
+                      onUpdate={(updatedCol) => updateChildItem(i, updatedCol)}
+                      onRemove={() => removeChildItem(i)}
+                      selectedItemId={selectedItemId}
+                      isNested={true}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          const item = child as FooterItem;
           const isSelected = selectedItemId === item.id;
           const shouldExpand = isSelected || expandedLinkId === item.id;
           
@@ -190,7 +283,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
                  )}
               </div>
               <button 
-                onClick={(e) => { e.stopPropagation(); removeItem(i); }}
+                onClick={(e) => { e.stopPropagation(); removeChildItem(i); }}
                 className="text-gray-400 hover:text-red-400"
               >
                 <Trash2 size={12} />
@@ -199,7 +292,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
             
             {shouldExpand && (
               <div className="p-2 bg-gray-700/50 border-t border-gray-600">
-                <ColumnItemEditor item={item} onChange={(updated) => updateItem(i, updated)} />
+                <ColumnItemEditor item={item} onChange={(updated) => updateChildItem(i, updated)} />
               </div>
             )}
           </div>
