@@ -17,6 +17,18 @@ const RADIUS_MAP: Record<Size, string> = {
   none: 'rounded-none', xs: 'rounded-sm', sm: 'rounded', base: 'rounded-md', md: 'rounded-lg', lg: 'rounded-xl', xl: 'rounded-2xl', '2xl': 'rounded-3xl', '3xl': 'rounded-[2rem]',
 };
 
+const BORDER_RADIUS_PX_MAP: Record<Size, string> = {
+  none: '0px',
+  xs: '2px',
+  sm: '4px',
+  base: '6px',
+  md: '8px',
+  lg: '12px',
+  xl: '16px',
+  '2xl': '24px',
+  '3xl': '32px',
+};
+
 const FONT_SIZE_MAP: Partial<Record<Size, string>> = {
   xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg', xl: 'text-xl', '2xl': 'text-2xl', '3xl': 'text-3xl',
 };
@@ -184,7 +196,9 @@ const HeaderPreview: React.FC = () => {
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#3b82f6',
                       color: item.style?.color || '#ffffff',
-                      borderRadius: item.style?.borderRadius || '4px',
+                      borderRadius: item.style?.borderRadius 
+                        ? BORDER_RADIUS_PX_MAP[item.style.borderRadius] || '4px'
+                        : '4px',
                       opacity: (!headerSchema.style?.disableHover && hoveredItemId === item.id) ? 0.9 : 1
                     }}
                   >
