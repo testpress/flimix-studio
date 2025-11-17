@@ -44,7 +44,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
   const maxItems = isNested ? MAX_NESTED_COLUMN_ITEMS : MAX_COLUMN_ITEMS;
   const canAddItem = currentItemCount < maxItems;
 
-  const addFooterItem = () => {
+  const addItem = () => {
     if (currentItemCount >= maxItems) return;
 
     const newItem: FooterItem = {
@@ -79,13 +79,13 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
     setExpandedLinkId(newColumn.id);
   };
 
-  const updateChildItem = (itemIndex: number, updatedItem: ColumnChild) => {
+  const updateItem = (itemIndex: number, updatedItem: ColumnChild) => {
     const newItems = [...column.items];
     newItems[itemIndex] = updatedItem;
     onUpdate({ ...column, items: newItems });
   };
 
-  const removeChildItem = (itemIndex: number) => {
+  const removeItem = (itemIndex: number) => {
     const newItems = column.items.filter((_, i) => i !== itemIndex);
     onUpdate({ ...column, items: newItems });
   };
@@ -144,9 +144,9 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
             {column.orientation === 'vertical' ? <AlignVerticalJustifyStart size={14} /> : <AlignHorizontalJustifyStart size={14} />}
           </button>
           
-          {/* Add Item Button */}
+          {/* Add Item */}
           <button 
-            onClick={addFooterItem}
+            onClick={addItem}
             disabled={!canAddItem}
             className={`p-1.5 rounded shadow-sm ${
               canAddItem
@@ -238,7 +238,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
                     <span className="text-xs text-white truncate">Nested Column</span>
                   </div>
                   <button 
-                    onClick={(e) => { e.stopPropagation(); removeChildItem(i); }}
+                    onClick={(e) => { e.stopPropagation(); removeItem(i); }}
                     className="text-gray-400 hover:text-red-400"
                   >
                     <Trash2 size={12} />
@@ -250,8 +250,8 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
                     <ColumnForm
                       column={nestedColumn}
                       index={i}
-                      onUpdate={(updatedCol) => updateChildItem(i, updatedCol)}
-                      onRemove={() => removeChildItem(i)}
+                      onUpdate={(updatedCol) => updateItem(i, updatedCol)}
+                      onRemove={() => removeItem(i)}
                       selectedItemId={selectedItemId}
                       isNested={true}
                     />
@@ -288,7 +288,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
                  )}
               </div>
               <button 
-                onClick={(e) => { e.stopPropagation(); removeChildItem(i); }}
+                onClick={(e) => { e.stopPropagation(); removeItem(i); }}
                 className="text-gray-400 hover:text-red-400"
               >
                 <Trash2 size={12} />
@@ -297,7 +297,7 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
             
             {shouldExpand && (
               <div className="p-2 bg-gray-700/50 border-t border-gray-600">
-                <ColumnItemEditor item={item} onChange={(updated) => updateChildItem(i, updated)} />
+                <ColumnItemEditor item={item} onChange={(updated) => updateItem(i, updated)} />
               </div>
             )}
           </div>
