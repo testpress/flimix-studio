@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
-import type { HeaderItem } from '../schema';
+import type { HeaderItem, Size } from '../schema';
 import { MAX_DROPDOWN_ITEMS } from '../schema';
 import { generateUniqueId } from '@utils/id';
+
+const borderRadiusOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
 
 interface NavigationItemFormProps {
   item: HeaderItem;
@@ -56,7 +66,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     }
   };
 
-  const updateStyle = (key: string, value: string) => {
+  const updateStyle = (key: string, value: string | Size) => {
     updateNavigationItem({
       ...item,
       style: { ...item.style, [key]: value }
@@ -224,20 +234,17 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
               </div>
            </div>
            
-           {/* Radius Slider */}
-           <div className="flex flex-col space-y-2">
-              <div className="flex justify-between items-center">
-                  <label className="text-xs text-gray-400">Border Radius</label>
-                  <span className="text-xs text-gray-500 bg-gray-700 px-1.5 rounded border border-gray-600">
-                      {parseInt(item.style?.borderRadius || '4')}px
-                  </span>
-              </div>
-              <input 
-                 type="range" min="0" max="30" step="1"
-                 value={parseInt(item.style?.borderRadius || '4')} 
-                 onChange={(e) => updateStyle('borderRadius', `${e.target.value}px`)}
-                 className="w-full accent-blue-500 h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-              />
+           <div className="flex flex-col">
+             <label className="text-xs text-gray-400 mb-1.5">Border Radius</label>
+             <select
+               value={item.style?.borderRadius || 'sm'}
+               onChange={(e) => updateStyle('borderRadius', e.target.value as Size)}
+               className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none"
+             >
+               {borderRadiusOptions.map(option => (
+                 <option key={option.value} value={option.value}>{option.label}</option>
+               ))}
+             </select>
            </div>
         </div>
       )}
