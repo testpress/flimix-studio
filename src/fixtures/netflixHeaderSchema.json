@@ -1,0 +1,136 @@
+{
+    "type": "header",
+    "items": [
+      {
+        "id": "logo-netflix",
+        "type": "logo",
+        "isVisible": true,
+        "attrs": {
+          "src": "https://help.nflxext.com/helpcenter/OneTrust/oneTrust_production_2025-08-26/consent/87b6a5c0-0104-4e96-a291-092c11350111/0198e689-25fa-7d64-bb49-0f7e75f898d2/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+        }
+      },
+      {
+        "id": "title-1",
+        "type": "title",
+        "isVisible": false,
+        "label": "Netflix",
+        "style": { "fontSize": "base", "color": "#ffffff" }
+      },
+      {
+        "id": "nav-home",
+        "type": "internal",
+        "isVisible": true,
+        "label": "Home",
+        "link": "/home"
+      },
+      {
+        "id": "nav-shows",
+        "type": "internal",
+        "isVisible": true,
+        "label": "Shows",
+        "link": "/shows"
+      },
+      {
+        "id": "nav-movies",
+        "type": "internal",
+        "isVisible": true,
+        "label": "Movies",
+        "link": "/movies"
+      },
+      {
+        "id": "nav-new",
+        "type": "internal",
+        "isVisible": true,
+        "label": "New & Popular",
+        "link": "/new"
+      },
+      {
+        "id": "nav-mylist",
+        "type": "internal",
+        "isVisible": true,
+        "label": "My List",
+        "link": "/my-list"
+      },
+      {
+        "id": "nav-children",
+        "type": "internal",
+        "isVisible": true,
+        "label": "Children",
+        "link": "/children"
+      },
+      {
+        "id": "nav-notify",
+        "type": "dropdown",
+        "isVisible": true,
+        "label": "",
+        "icon": "https://www.citypng.com/public/uploads/preview/free-notifications-bell-outline-icon-png-701751694974381h7wblk6fpx.png",
+        "items": [
+          {
+            "id": "sub-notify-1",
+            "type": "internal",
+            "label": "No recent notifications",
+            "link": "#"
+          }
+        ]
+      },
+      {
+        "id": "nav-profile",
+        "type": "dropdown",
+        "isVisible": true,
+        "label": "",
+        "icon": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png?r=229",
+        "items": [
+          {
+            "id": "sub-profile-1",
+            "type": "internal",
+            "label": "Home",
+            "icon": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABXz4LMjJFidX8MxhZ6qro8PBTjmHbxlaLAbk45W1DXbKsAIOwyHQPiMAuUnF1G24CLi7InJHK4Ge4jkXul1xIW49Dr5S7fc.png?r=e6e",
+            "link": "/home"
+          },
+          {
+            "id": "sub-profile-2",
+            "type": "internal",
+            "label": "Guest",
+            "icon": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABeuqjuQsRgqEDlibtJTI5BMf8IxhLlLOeIT6xI4TL57mqv7XHja43gx02S8pZVe8JNGRQXjnrUk1VcsTXqi83tFKPI6OR3k.png?r=bd7",
+            "link": "/guest"
+          },
+          {
+            "id": "sub-profile-3",
+            "type": "internal",
+            "label": "Children",
+            "icon": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABZHGvGso7Ju34l91G3R3IEDBQ6EBNSqP1yYoXEQPp12U7NgE037YbJLjtjQS-KIqTPkAbsnDG0vKEoWSp66TSJ0eKhB2ZHI.png?r=6fb",
+            "link": "/children"
+          },
+          {
+            "id": "sub-profile-4",
+            "type": "internal",
+            "label": "Manage Profiles",
+            "link": "/profiles"
+          },
+          {
+            "id": "sub-profile-5",
+            "type": "internal",
+            "label": "Account",
+            "link": "/account"
+          },
+          {
+            "id": "sub-profile-6",
+            "type": "internal",
+            "label": "Sign out of Netflix",
+            "link": "/logout"
+          }
+        ]
+      }
+    ],
+    "style": {
+      "layout": "horizontal",
+      "padding": "base",
+      "backgroundColor": "transparent",
+      "textColor": "#E5E5E5",
+      "navigationAlignment": "start",
+      "navigationFontSize": "sm",
+      "hoverColor": "#FFFFFF",
+      "disableHover": false,
+      "hoverEffect": "text"
+    }
+  }
