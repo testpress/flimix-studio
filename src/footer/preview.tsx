@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { ExpansionPath } from '@context/HeaderFooterContext';
-import type { ItemAlignment, LinkOrientation, IconSize, Size } from './schema';
+import type { ItemAlignment, LinkOrientation, IconSize, Size, FooterItem, ColumnChild, FooterColumn } from './schema';
 import { FOOTER_LAYOUT_PRESETS } from './constants';
 
 const PADDING_MAP: Record<Size, string> = {
@@ -93,9 +93,73 @@ const FooterPreview: React.FC = () => {
     );
   };
 
+  const renderColumnChildren = (items: ColumnChild[], path: ExpansionPath): React.ReactNode[] => {
+    const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
+
+    return items.map((child): React.ReactNode => {
+      
+      if (child.type === 'column') {
+        const nestedCol = child as FooterColumn;
+        const newPath = [...path, nestedCol.id] as ExpansionPath;
+        
+        return renderSelectableItem(
+          nestedCol.id,
+          'footer',
+          path,
+          `flex ${nestedCol.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
+           ${getAlignmentClass(nestedCol.orientation, nestedCol.alignment)}`,
+          
+          nestedCol.items.length > 0 
+            ? renderColumnChildren(nestedCol.items, newPath)
+            : <div className="text-[10px] text-gray-600 text-center">Empty Nested Column</div>
+        );
+      }
+
+      const item = child as FooterItem;
+      const isExternal = item.linkType === 'external';
+      const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
+      
+      return (
+        renderSelectableItem(
+          item.id,
+          'footer',
+          path,
+          'inline-block',
+          <a 
+            href={item.url || '#'} 
+            className="hover:opacity-80 transition-opacity block"
+            style={{ color: item.style?.color }}
+            target={isExternal ? '_blank' : undefined}
+            rel={isExternal ? 'noopener noreferrer' : undefined}
+            onClick={(e) => { e.preventDefault(); }}
+          >
+            {item.icon && (
+              <img 
+                src={item.icon} 
+                alt={item.label || 'icon'}
+                className="block object-contain shrink-0 inline-block mr-2"
+                style={{ 
+                  width: iconSize, 
+                  height: 'auto',
+                  maxWidth: '100%'
+                }} 
+              />
+            )}
+            {item.label && (
+              <span 
+                className={`leading-none ${fontSizeClass}`}
+              >
+                {item.label}
+              </span>
+            )}
+          </a>
+        )
+      );
+    });
+  };
+
   const paddingClass = PADDING_MAP[footerSchema.style?.padding || 'lg'];
   const marginClass = MARGIN_MAP[footerSchema.style?.margin || 'none'];
-  const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
   const maxWidthClass = MAX_WIDTH_MAP[footerSchema.style?.maxWidth || 'lg'];
   const rowGapClass = GAP_MAP[footerSchema.style?.rowGap || 'xl'];
 
@@ -134,49 +198,7 @@ const FooterPreview: React.FC = () => {
                       min-h-[30px] p-1
                     `,
                     col.items.length > 0 ? (
-                      col.items.map((item) => {
-                        const isExternal = item.linkType === 'external';
-                        const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
-                        
-                        return (
-                          renderSelectableItem(
-                            item.id,
-                            'footer',
-                            [row.id, col.id],
-                            'inline-block',
-                            <a 
-                              href={item.url || '#'} 
-                              className="hover:opacity-80 transition-opacity block"
-                              style={{ color: item.style?.color }}
-                              target={isExternal ? '_blank' : undefined}
-                              rel={isExternal ? 'noopener noreferrer' : undefined}
-                              onClick={(e) => {
-                                e.preventDefault(); 
-                              }}
-                            >
-                              {item.icon && (
-                                <img 
-                                  src={item.icon} 
-                                  alt={item.label || 'icon'}
-                                  className="block object-contain shrink-0 inline-block mr-2"
-                                  style={{ 
-                                    width: iconSize, 
-                                    height: 'auto',
-                                    maxWidth: '100%'
-                                  }} 
-                                />
-                              )}
-                              {item.label && (
-                                <span 
-                                  className={`leading-none ${fontSizeClass}`}
-                                >
-                                  {item.label}
-                                </span>
-                              )}
-                            </a>
-                          )
-                        );
-                      })
+                      renderColumnChildren(col.items, [row.id, col.id])
                     ) : (
                       <div className="text-[10px] text-gray-600 border border-dashed border-gray-700 p-2 w-full text-center rounded">
                         Empty Col
