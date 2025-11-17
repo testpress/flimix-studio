@@ -1,3 +1,5 @@
+export type Size = 'none' | 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+
 export type FooterLayoutPreset = 
   | '1-col'
   | '2-col'
@@ -44,6 +46,7 @@ export interface FooterRow {
     padding?: string;
     backgroundColor?: string;
     borderTop?: string;
+    columnGap?: Size;
   };
 }
 
@@ -51,7 +54,9 @@ export interface FooterSchema {
   type: 'footer';
   rows: FooterRow[];
   style?: {
-    padding?: string;
+    padding?: Size;
+    margin?: Size;
+    fontSize?: Size;
     backgroundColor?: string;
     textColor?: string;
   };

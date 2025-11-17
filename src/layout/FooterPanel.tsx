@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, Layout, ChevronDown, ChevronRight } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
-import type { FooterRow, FooterColumn, FooterLayoutPreset } from '@footer/schema';
+import type { FooterRow, FooterColumn, FooterLayoutPreset, Size } from '@footer/schema';
 import { MAX_FOOTER_ROWS } from '@footer/schema';
 import RowLayoutSelector from '@footer/RowLayoutSelector';
 import ColumnForm from '@footer/forms/ColumnForm';
@@ -9,6 +9,46 @@ import RowForm from '@footer/forms/RowForm';
 import { FOOTER_LAYOUT_PRESETS } from '@footer/constants';
 import { FOOTER_ROOT_ID } from '@footer/constants';
 import { generateUniqueId } from '@utils/id';
+
+interface StyleSelectProps {
+  label: string;
+  value?: string;
+  onChange: (value: string) => void;
+  options: Array<{ label: string; value: string }>;
+}
+
+const StyleSelect: React.FC<StyleSelectProps> = ({ label, value, onChange, options }) => (
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-300 mb-1.5 font-medium">{label}</label>
+    <select
+      value={value || options[0].value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-gray-700 border border-gray-600 rounded px-2.5 py-2 text-white text-xs focus:border-blue-500 outline-none"
+    >
+      {options.map(option => (
+        <option key={option.value} value={option.value}>{option.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const sizeOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
+
+const fontSizeOptions = [
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
 
 const FooterPanel: React.FC = () => {
   const { footerSchema, updateFooterSchema, selectedId, expandedPath, selectItem } = useHeaderFooter();
@@ -70,36 +110,11 @@ const FooterPanel: React.FC = () => {
     handleUpdateRow(rowId, { ...row, columns: newColumns });
   };
 
-  const updateStyle = (key: string, value: string) => {
+  const updateStyle = (key: string, value: string | Size) => {
     updateFooterSchema({
       ...footerSchema,
       style: { ...footerSchema.style, [key]: value }
     });
-  };
-
-  const handlePaddingChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vertical' | 'horizontal') => {
-    const currentPadding = footerSchema.style?.padding || '40px 20px';
-    const parts = currentPadding.trim().split(/\s+/);
-    
-    const currentVertical = parts[0] || '40px';
-    const currentHorizontal = parts[1] || '20px';
-    
-    if (e.target.value === '') return;
-    
-    const numValue = parseInt(e.target.value, 10);
-    if (isNaN(numValue)) return;
-    
-    // Allow 0-100, clamp values > 100 to 100
-    const clampedValue = numValue > 100 ? 100 : numValue;
-    
-    let newPadding = '';
-    if (type === 'vertical') {
-      newPadding = `${clampedValue}px ${currentHorizontal}`;
-    } else {
-      newPadding = `${currentVertical} ${clampedValue}px`;
-    }
-    
-    updateStyle('padding', newPadding);
   };
 
   return (
@@ -149,35 +164,29 @@ const FooterPanel: React.FC = () => {
             </div>
           </div>
           
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm text-gray-300">Padding</label>
-            <div className="flex space-x-2">
-              <div className="flex-1">
-                <label className="text-xs text-gray-400 mb-1 block">Vertical</label>
-                <input
-                  type="number"
-                  value={parseInt(footerSchema.style?.padding?.split(' ')[0] || '40')}
-                  onChange={(e) => handlePaddingChange(e, 'vertical')}
-                  className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
-                  min="0"
-                  max="100"
-                  step="1"
-                />
-              </div>
-              <div className="flex-1">
-                <label className="text-xs text-gray-400 mb-1 block">Horizontal</label>
-                <input
-                  type="number"
-                  value={parseInt(footerSchema.style?.padding?.split(' ')[1] || '20')}
-                  onChange={(e) => handlePaddingChange(e, 'horizontal')}
-                  className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white w-full text-sm focus:border-blue-500 outline-none"
-                  min="0"
-                  max="100"
-                  step="1"
-                />
-              </div>
-            </div>
-          </div>
+          {/* Padding Select */}
+          <StyleSelect
+            label="Padding"
+            value={footerSchema.style?.padding}
+            onChange={(value) => updateStyle('padding', value as Size)}
+            options={sizeOptions}
+          />
+
+          {/* Margin Select */}
+          <StyleSelect
+            label="Margin"
+            value={footerSchema.style?.margin}
+            onChange={(value) => updateStyle('margin', value as Size)}
+            options={sizeOptions}
+          />
+
+          {/* Font Size Select */}
+          <StyleSelect
+            label="Global Font Size"
+            value={footerSchema.style?.fontSize}
+            onChange={(value) => updateStyle('fontSize', value as Size)}
+            options={fontSizeOptions}
+          />
         </div>
       </div>
       
