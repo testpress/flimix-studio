@@ -43,6 +43,7 @@ const HeaderPreview: React.FC = () => {
 
   const getActiveStyle = (itemId: string, baseTextColor: string = '#ffffff') => {
     const activeColor = headerSchema.style?.hoverColor || '#3b82f6';
+    const hoverTextColor = headerSchema.style?.hoverTextColor || '#ffffff';
     const hoverEffect = headerSchema.style?.hoverEffect || 'text';
     const isDisabled = headerSchema.style?.disableHover;
 
@@ -58,7 +59,7 @@ const HeaderPreview: React.FC = () => {
     if (isActive) {
       if (hoverEffect === 'background') {
         style.backgroundColor = activeColor;
-        style.color = '#ffffff';
+        style.color = hoverTextColor;
         style.borderRadius = '6px';
       } else {
         style.color = activeColor;
