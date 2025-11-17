@@ -1,10 +1,11 @@
 import React from 'react';
 import { 
   Eye, EyeOff, AlignLeft, AlignCenter, AlignRight, 
-  Layers,
+  Layers, PanelTop, PanelLeft,
+  AlignVerticalJustifyStart, AlignVerticalJustifyCenter, AlignVerticalJustifyEnd,
 } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
-import type { HeaderItem, NavigationAlignment, Size } from '@header/schema';
+import type { HeaderItem, Size, HeaderLayout, Alignment } from '@header/schema';
 import LogoForm from '@header/forms/LogoForm';
 import NavigationForm from '@header/forms/NavigationForm';
 
@@ -38,6 +39,17 @@ const sizeOptions = [
   { label: 'Medium', value: 'md' },
   { label: 'Large', value: 'lg' },
   { label: 'X-Large', value: 'xl' },
+];
+const borderRadiusOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+  { label: '2XL', value: '2xl' },
+  { label: '3XL', value: '3xl' },
 ];
 
 const fontSizeOptions = [
@@ -74,7 +86,9 @@ const HeaderPanel: React.FC = () => {
   const titleItem = headerSchema.items.find(item => item.type === 'title');
   const navigationItems = headerSchema.items.filter(item => item.type !== 'logo' && item.type !== 'title');
 
-  const updateGlobalStyle = (key: string, value: string | boolean | Size | undefined) => {
+  const isVerticalLayout = headerSchema.style?.layout === 'vertical';
+
+  const updateGlobalStyle = (key: string, value: string | boolean | Size | HeaderLayout | undefined) => {
     updateHeaderSchema({
       ...headerSchema,
       style: { ...headerSchema.style, [key]: value }
@@ -99,8 +113,12 @@ const HeaderPanel: React.FC = () => {
     const nonNavigationItems = headerSchema.items.filter(item => item.type === 'logo' || item.type === 'title');
     updateHeaderSchema({ ...headerSchema, items: [...nonNavigationItems, ...items] });
   };
-  const setNavAlignment = (align: NavigationAlignment) => {
+  const setNavAlignment = (align: Alignment) => {
     updateGlobalStyle('navigationAlignment', align);
+  };
+
+  const setVerticalItemAlignment = (align: Alignment) => {
+    updateGlobalStyle('verticalItemAlignment', align);
   };
 
   return (
@@ -111,12 +129,35 @@ const HeaderPanel: React.FC = () => {
            <Layers size={16}/> Header Styles
         </h3>
 
+        {/* Layout Mode Toggle */}
+        <div className="mb-5">
+          <label className="text-xs text-gray-300 font-semibold mb-2 block">Layout Mode</label>
+          <div className="flex bg-gray-900 rounded-lg p-1 border border-gray-600">
+            <button 
+              onClick={() => updateGlobalStyle('layout', 'horizontal')}
+              className={`flex-1 text-xs py-1.5 rounded-md flex items-center justify-center gap-2 transition-all ${
+                !isVerticalLayout ? 'bg-gray-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              <PanelTop size={14} /> Horizontal (Top)
+            </button>
+            <button 
+              onClick={() => updateGlobalStyle('layout', 'vertical')}
+              className={`flex-1 text-xs py-1.5 rounded-md flex items-center justify-center gap-2 transition-all ${
+                isVerticalLayout ? 'bg-gray-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              <PanelLeft size={14} /> Vertical (Left)
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-3 mb-5">
              <div className="flex flex-col">
                <label className="text-xs text-gray-400 mb-1">Background</label>
                <div className="flex items-center gap-2">
                   <input type="color" value={headerSchema.style?.backgroundColor || '#111111'} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="w-6 h-6 cursor-pointer"/>
-                  <input type="text" value={headerSchema.style?.backgroundColor || '#111111'} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-xs text-white w-full border" />
+                  <input type="text" value={headerSchema.style?.backgroundColor || ''} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-xs text-white w-full border" />
                </div>
              </div>
              <div className="flex flex-col">
@@ -148,20 +189,76 @@ const HeaderPanel: React.FC = () => {
               label="Border Radius"
               value={headerSchema.style?.borderRadius}
               onChange={(value) => updateGlobalStyle('borderRadius', value as Size)}
-              options={sizeOptions}
+              options={borderRadiusOptions}
             />
         </div>
         
         <div className="pt-4 border-t border-gray-600">
-            {/* Alignment */}
-            <div className="flex justify-between items-center mb-4">
-               <label className="text-xs text-gray-300 font-semibold">Navigation Alignment</label>
+            {/* Alignment - Conditionally Disabled */}
+            <div className={`flex justify-between items-center mb-4 transition-opacity ${isVerticalLayout ? 'opacity-40' : 'opacity-100'}`}>
+               <label className="text-xs text-gray-300 font-semibold">
+                 Navigation Alignment
+                 {isVerticalLayout && <span className="block text-gray-400 font-normal italic">(Horizontal Only)</span>}
+               </label>
                <div className="flex bg-gray-900 rounded border border-gray-600 p-0.5">
-                  <button onClick={() => setNavAlignment('left')} className={`p-1.5 rounded ${headerSchema.style?.navigationAlignment === 'left' ? 'bg-blue-600 text-white' : 'text-gray-400'}`} title="Left"><AlignLeft size={14}/></button>
-                  <button onClick={() => setNavAlignment('center')} className={`p-1.5 rounded ${headerSchema.style?.navigationAlignment === 'center' ? 'bg-blue-600 text-white' : 'text-gray-400'}`} title="Center"><AlignCenter size={14}/></button>
-                  <button onClick={() => setNavAlignment('right')} className={`p-1.5 rounded ${(!headerSchema.style?.navigationAlignment || headerSchema.style?.navigationAlignment === 'right') ? 'bg-blue-600 text-white' : 'text-gray-400'}`} title="Right"><AlignRight size={14}/></button>
+                  <button 
+                    onClick={() => setNavAlignment('start')} 
+                    disabled={isVerticalLayout}
+                    className={`p-1.5 rounded ${headerSchema.style?.navigationAlignment === 'start' ? 'bg-blue-600 text-white' : 'text-gray-400'} disabled:opacity-50`} 
+                    title="Left"
+                  >
+                    <AlignLeft size={14}/>
+                  </button>
+                  <button 
+                    onClick={() => setNavAlignment('center')} 
+                    disabled={isVerticalLayout}
+                    className={`p-1.5 rounded ${headerSchema.style?.navigationAlignment === 'center' ? 'bg-blue-600 text-white' : 'text-gray-400'} disabled:opacity-50`} 
+                    title="Center"
+                  >
+                    <AlignCenter size={14}/>
+                  </button>
+                  <button 
+                    onClick={() => setNavAlignment('end')} 
+                    disabled={isVerticalLayout}
+                    className={`p-1.5 rounded ${(!headerSchema.style?.navigationAlignment || headerSchema.style?.navigationAlignment === 'end') ? 'bg-blue-600 text-white' : 'text-gray-400'} disabled:opacity-50`} 
+                    title="Right"
+                  >
+                    <AlignRight size={14}/>
+                  </button>
                </div>
             </div>
+
+            {/* Vertical Alignment - Only visible when vertical layout is active */}
+            {isVerticalLayout && (
+              <div className="flex justify-between items-center mb-4">
+                <label className="text-xs text-gray-300 font-semibold">
+                  Vertical Alignment
+                </label>
+                <div className="flex bg-gray-900 rounded border border-gray-600 p-0.5">
+                  <button 
+                    onClick={() => setVerticalItemAlignment('start')} 
+                    className={`p-1.5 rounded ${(!headerSchema.style?.verticalItemAlignment || headerSchema.style?.verticalItemAlignment === 'start') ? 'bg-blue-600 text-white' : 'text-gray-400'}`} 
+                    title="Start"
+                  >
+                    <AlignVerticalJustifyStart size={14}/>
+                  </button>
+                  <button 
+                    onClick={() => setVerticalItemAlignment('center')} 
+                    className={`p-1.5 rounded ${headerSchema.style?.verticalItemAlignment === 'center' ? 'bg-blue-600 text-white' : 'text-gray-400'}`} 
+                    title="Center"
+                  >
+                    <AlignVerticalJustifyCenter size={14}/>
+                  </button>
+                  <button 
+                    onClick={() => setVerticalItemAlignment('end')} 
+                    className={`p-1.5 rounded ${headerSchema.style?.verticalItemAlignment === 'end' ? 'bg-blue-600 text-white' : 'text-gray-400'}`} 
+                    title="End"
+                  >
+                    <AlignVerticalJustifyEnd size={14}/>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Nav Font Size */}
             <div className="mb-5">

@@ -1,11 +1,12 @@
 export type Size = 'none' | 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+export type HeaderLayout = 'horizontal' | 'vertical';
 
 export type HeaderItemType = 'logo' | 'title' | 'internal' | 'external' | 'anchor' | 'dropdown' | 'button';
 
 export const MAX_NAVIGATION_ITEMS = 10;
 export const MAX_DROPDOWN_ITEMS = 8;
 
-export type NavigationAlignment = 'left' | 'center' | 'right';
+export type Alignment = 'start' | 'center' | 'end';
 export type HoverEffect = 'text' | 'background';
 
 export interface HeaderItem {
@@ -37,6 +38,7 @@ export interface HeaderSchema {
   type: 'header';
   items: HeaderItem[];
   style?: {
+    layout?: HeaderLayout;
     padding?: Size;
     margin?: Size;
     borderRadius?: Size;
@@ -45,7 +47,8 @@ export interface HeaderSchema {
     navigationIconSize?: Size;
     backgroundColor?: string;
     textColor?: string;
-    navigationAlignment?: NavigationAlignment;
+    navigationAlignment?: Alignment;
+    verticalItemAlignment?: Alignment;
     hoverColor?: string;
     hoverTextColor?: string;
     disableHover?: boolean;
