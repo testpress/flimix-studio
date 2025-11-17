@@ -192,6 +192,16 @@ const HeaderPanel: React.FC = () => {
                             </div>
                         </div>
                         
+                        {headerSchema.style?.hoverEffect === 'background' && (
+                            <div className="flex items-center justify-between">
+                                <label className="text-xs text-gray-400">Hover Text Color</label>
+                                <div className="flex items-center gap-2">
+                                    <input type="color" value={headerSchema.style?.hoverTextColor || '#ffffff'} onChange={(e) => updateGlobalStyle('hoverTextColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 p-0"/>
+                                    <span className="text-xs text-gray-400 font-mono">{headerSchema.style?.hoverTextColor || '#ffffff'}</span>
+                                </div>
+                            </div>
+                        )}
+                        
                         <div className="flex bg-gray-900 rounded-lg p-1 border border-gray-700">
                             <button 
                                 onClick={() => updateGlobalStyle('hoverEffect', 'text')} 

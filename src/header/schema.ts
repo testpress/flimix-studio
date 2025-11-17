@@ -45,6 +45,7 @@ export interface HeaderSchema {
     textColor?: string;
     navigationAlignment?: NavigationAlignment;
     hoverColor?: string;
+    hoverTextColor?: string;
     disableHover?: boolean;
     hoverEffect?: HoverEffect;
     hideNavIcons?: boolean;
