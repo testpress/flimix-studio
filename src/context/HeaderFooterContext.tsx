@@ -10,6 +10,13 @@ export type ExpansionPath =
   | [string]                              // Single parent (footer row, header dropdown parent)
   | [string, string];                     // Two parents (footer column/item: [rowId, colId])
 
+const HISTORY_LIMIT = 50;
+
+interface HistorySnapshot {
+  header: HeaderSchema;
+  footer: FooterSchema;
+}
+
 interface HeaderFooterContextType {
   headerSchema: HeaderSchema;
   footerSchema: FooterSchema;
@@ -25,6 +32,10 @@ interface HeaderFooterContextType {
   moveFooterRow: (rowId: string, direction: 'up' | 'down') => void;
   moveFooterColumn: (rowId: string, columnId: string, direction: 'up' | 'down') => void;
   moveFooterItem: (rowId: string, columnId: string, itemId: string, direction: 'up' | 'down') => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 const HeaderFooterContext = createContext<HeaderFooterContextType | undefined>(undefined);
@@ -63,10 +74,59 @@ const updateColumnRecursive = (column: FooterColumn, targetColumnId: string, ite
 export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [headerSchema, setHeaderSchema] = useState<HeaderSchema>(headerData as HeaderSchema);
   const [footerSchema, setFooterSchema] = useState<FooterSchema>(footerData as FooterSchema);
+  const [undoStack, setUndoStack] = useState<HistorySnapshot[]>([]);
+  const [redoStack, setRedoStack] = useState<HistorySnapshot[]>([]);
   
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'header' | 'footer'>('header');
   const [expandedPath, setExpandedPath] = useState<ExpansionPath>([]);
+
+  // Helper to record state before a change
+  const recordState = useCallback(() => {
+    setUndoStack(prev => {
+      const newUndoStack = [...prev, { header: headerSchema, footer: footerSchema }];
+      if (newUndoStack.length > HISTORY_LIMIT) return newUndoStack.slice(newUndoStack.length - HISTORY_LIMIT);
+      return newUndoStack;
+    });
+    setRedoStack([]); // Clear redo stack on new change
+  }, [headerSchema, footerSchema]);
+
+  // Undo Action
+  const undo = useCallback(() => {
+    if (undoStack.length === 0) return;
+
+    const previous = undoStack[undoStack.length - 1];
+    const newUndoStack = undoStack.slice(0, -1);
+
+    setRedoStack(prev => [{ header: headerSchema, footer: footerSchema }, ...prev]);
+    setHeaderSchema(previous.header);
+    setFooterSchema(previous.footer);
+    setUndoStack(newUndoStack);
+  }, [undoStack, headerSchema, footerSchema]);
+
+  // Redo Action
+  const redo = useCallback(() => {
+    if (redoStack.length === 0) return;
+
+    const next = redoStack[0];
+    const newRedoStack = redoStack.slice(1);
+
+    setUndoStack(prev => [...prev, { header: headerSchema, footer: footerSchema }]);
+    setHeaderSchema(next.header);
+    setFooterSchema(next.footer);
+    setRedoStack(newRedoStack);
+  }, [redoStack, headerSchema, footerSchema]);
+
+  // Wrapped setters to record history
+  const updateHeaderSchema = useCallback((newSchema: HeaderSchema) => {
+    recordState();
+    setHeaderSchema(newSchema);
+  }, [recordState]);
+
+  const updateFooterSchema = useCallback((newSchema: FooterSchema) => {
+    recordState();
+    setFooterSchema(newSchema);
+  }, [recordState]);
 
   const selectItem = useCallback((id: string, tab: 'header' | 'footer', path: ExpansionPath = []) => {
     setSelectedId(prevSelectedId => {
@@ -84,6 +144,7 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   // Move functions
   const moveHeaderItem = useCallback((itemId: string, direction: 'up' | 'down') => {
+    recordState(); // Record before change
     setHeaderSchema(prev => {
       const items = prev.items.filter(i => i.type !== 'logo' && i.type !== 'title');
       const nonNavItems = prev.items.filter(i => i.type === 'logo' || i.type === 'title');
@@ -96,9 +157,10 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       
       return { ...prev, items: [...nonNavItems, ...newItems] };
     });
-  }, []);
+  }, [recordState]);
 
   const moveDropdownItem = useCallback((parentId: string, itemId: string, direction: 'up' | 'down') => {
+    recordState();
     setHeaderSchema(prev => {
       const parentIndex = prev.items.findIndex(item => item.id === parentId);
       if (parentIndex === -1 || !prev.items[parentIndex].items) return prev;
@@ -116,9 +178,10 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       
       return { ...prev, items: newItems };
     });
-  }, []);
+  }, [recordState]);
 
   const moveFooterRow = useCallback((rowId: string, direction: 'up' | 'down') => {
+    recordState();
     setFooterSchema(prev => {
       const index = prev.rows.findIndex(row => row.id === rowId);
       if (index === -1) return prev;
@@ -128,9 +191,10 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       
       return { ...prev, rows: newRows };
     });
-  }, []);
+  }, [recordState]);
 
   const moveFooterColumn = useCallback((rowId: string, columnId: string, direction: 'up' | 'down') => {
+    recordState();
     setFooterSchema(prev => {
       const rowIndex = prev.rows.findIndex(row => row.id === rowId);
       if (rowIndex === -1) return prev;
@@ -147,9 +211,10 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       
       return { ...prev, rows: newRows };
     });
-  }, []);
+  }, [recordState]);
 
   const moveFooterItem = useCallback((rowId: string, columnId: string, itemId: string, direction: 'up' | 'down') => {
+    recordState();
     setFooterSchema(prev => {
       const rowIndex = prev.rows.findIndex(row => row.id === rowId);
       if (rowIndex === -1) return prev;
@@ -174,14 +239,14 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       
       return { ...prev, rows: newRows };
     });
-  }, []);
+  }, [recordState]);
 
   return (
     <HeaderFooterContext.Provider value={{
       headerSchema,
       footerSchema,
-      updateHeaderSchema: setHeaderSchema,
-      updateFooterSchema: setFooterSchema,
+      updateHeaderSchema: updateHeaderSchema,
+      updateFooterSchema: updateFooterSchema,
       selectedId,
       activeTab,
       setActiveTab,
@@ -191,7 +256,11 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       moveDropdownItem,
       moveFooterRow,
       moveFooterColumn,
-      moveFooterItem
+      moveFooterItem,
+      undo,
+      redo,
+      canUndo: undoStack.length > 0,
+      canRedo: redoStack.length > 0,
     }}>
       {children}
     </HeaderFooterContext.Provider>
