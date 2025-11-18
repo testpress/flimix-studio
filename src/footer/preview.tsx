@@ -103,6 +103,7 @@ const FooterPreview: React.FC = () => {
       if (child.type === 'column') {
         const nestedCol = child as FooterColumn;
         const newPath = [...path, nestedCol.id] as ExpansionPath;
+        const nestedItemGapClass = GAP_MAP[nestedCol.itemGap || (nestedCol.orientation === 'vertical' ? 'sm' : 'md')];
         
         return (
           <React.Fragment key={nestedCol.id}>
@@ -110,7 +111,7 @@ const FooterPreview: React.FC = () => {
               nestedCol.id,
               'footer',
               path,
-              `flex ${nestedCol.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
+              `flex ${nestedCol.orientation === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col'} ${nestedItemGapClass}
                ${getAlignmentClass(nestedCol.orientation, nestedCol.alignment)}`,
               
               nestedCol.items.length > 0 
