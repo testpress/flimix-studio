@@ -70,6 +70,7 @@
     "layout": "vertical",
     "padding": "md",
     "textColor": "#AAAAAA",
+    "navigationIconSize":"2xl",
     "verticalItemAlignment": "center",
     "navigationFontSize": "base",
     "hoverColor": "#FFFFFF",
