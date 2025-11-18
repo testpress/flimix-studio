@@ -1,10 +1,11 @@
 import React from 'react';
-import { Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { Plus, ChevronDown, ChevronRight } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem } from '../schema';
 import { MAX_NAVIGATION_ITEMS } from '../schema';
 import NavigationItemForm from './NavigationItemForm';
 import { generateUniqueId } from '@utils/id';
+import { HeaderFooterControls } from '@layout/HeaderFooterControls';
 
 interface NavigationFormProps {
   navigationItems: HeaderItem[];
@@ -19,7 +20,7 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
   selectedItemId, 
   onSelectItem 
 }) => {
-  const { selectItem, expandedPath } = useHeaderFooter();
+  const { selectItem, expandedPath, moveHeaderItem } = useHeaderFooter();
   
   const currentItemCount = navigationItems.length;
   const canAddItem = currentItemCount < MAX_NAVIGATION_ITEMS;
@@ -97,15 +98,13 @@ const NavigationForm: React.FC<NavigationFormProps> = ({
                     )}
                   </div>
 
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteNavigationItem(index);
-                    }}
-                    className="text-gray-400 hover:text-red-400 p-1 rounded transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  <HeaderFooterControls
+                    canMoveUp={index > 0}
+                    canMoveDown={index < navigationItems.length - 1}
+                    onMoveUp={() => moveHeaderItem(item.id, 'up')}
+                    onMoveDown={() => moveHeaderItem(item.id, 'down')}
+                    onRemove={() => handleDeleteNavigationItem(index)}
+                  />
                 </div>
 
                 {/* 2. EXPANDABLE FORM AREA */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Layout, ChevronDown, ChevronRight } from 'lucide-react';
+import { Plus, Layout, ChevronDown, ChevronRight } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { FooterRow, FooterColumn, FooterLayoutPreset, Size } from '@footer/schema';
 import { MAX_FOOTER_ROWS } from '@footer/schema';
@@ -9,6 +9,7 @@ import RowForm from '@footer/forms/RowForm';
 import { FOOTER_LAYOUT_PRESETS } from '@footer/constants';
 import { FOOTER_ROOT_ID } from '@footer/constants';
 import { generateUniqueId } from '@utils/id';
+import { HeaderFooterControls } from './HeaderFooterControls';
 
 interface StyleSelectProps {
   label: string;
@@ -58,7 +59,10 @@ const maxWidthOptions = [
 ];
 
 const FooterPanel: React.FC = () => {
-  const { footerSchema, updateFooterSchema, selectedId, expandedPath, selectItem } = useHeaderFooter();
+  const { 
+    footerSchema, updateFooterSchema, selectedId, expandedPath, selectItem,
+    moveFooterRow, moveFooterColumn 
+  } = useHeaderFooter();
   const [isAddingRow, setIsAddingRow] = useState(false);
 
   const currentRowCount = footerSchema.rows?.length || 0;
@@ -114,6 +118,16 @@ const FooterPanel: React.FC = () => {
     const newColumns = [...row.columns];
     newColumns[colIndex] = updatedColumn;
 
+    handleUpdateRow(rowId, { ...row, columns: newColumns });
+  };
+
+  const handleRemoveColumn = (rowId: string, colIndex: number) => {
+    const row = footerSchema.rows.find(r => r.id === rowId);
+    if (!row) return;
+
+    if (row.columns.length <= 1) return;
+
+    const newColumns = row.columns.filter((_, i) => i !== colIndex);
     handleUpdateRow(rowId, { ...row, columns: newColumns });
   };
 
@@ -286,15 +300,13 @@ const FooterPanel: React.FC = () => {
                     </span>
                   </div>
                   
-                  <button 
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      handleRemoveRow(row.id);
-                    }}
-                    className="text-gray-500 hover:text-red-400 p-1 transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  <HeaderFooterControls
+                    canMoveUp={rowIndex > 0}
+                    canMoveDown={rowIndex < footerSchema.rows.length - 1}
+                    onMoveUp={() => moveFooterRow(row.id, 'up')}
+                    onMoveDown={() => moveFooterRow(row.id, 'down')}
+                    onRemove={() => handleRemoveRow(row.id)}
+                  />
                 </div>
 
                 {/* Row Content - Accordion Body */}
@@ -323,7 +335,18 @@ const FooterPanel: React.FC = () => {
                                 data-item-id={col.id}
                                 className={`transition-all ${selectedId === col.id ? 'ring-2 ring-blue-500 rounded' : ''}`}
                               >
+                                <div className="absolute top-2 right-2 z-10">
+                                  <HeaderFooterControls
+                                    canMoveUp={colIndex > 0}
+                                    canMoveDown={colIndex < row.columns.length - 1}
+                                    onMoveUp={() => moveFooterColumn(row.id, col.id, 'up')}
+                                    onMoveDown={() => moveFooterColumn(row.id, col.id, 'down')}
+                                    onRemove={() => handleRemoveColumn(row.id, colIndex)}
+                                    canRemove={row.columns.length > 1}
+                                  />
+                                </div>
                                 <ColumnForm
+                                  rowId={row.id}
                                   column={col}
                                   index={colIndex}
                                   onUpdate={(updatedCol) => handleUpdateColumnInRow(row.id, colIndex, updatedCol)}
@@ -334,14 +357,24 @@ const FooterPanel: React.FC = () => {
                               /* Collapsed Column State (Optional: just a clickable bar) */
                               <div 
                                 id={`panel-item-${col.id}`} // Unique ID for Scrolling
-                                className="p-2 bg-gray-800 border border-gray-700 rounded cursor-pointer hover:border-gray-500 flex items-center gap-2"
+                                className="p-2 bg-gray-800 border border-gray-700 rounded cursor-pointer hover:border-gray-500 flex items-center justify-between gap-2"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   selectItem(col.id, 'footer', [row.id, col.id]);
                                 }}
                               >
-                                <Layout size={12} className="text-gray-500"/>
-                                <span className="text-xs text-gray-400">Column {colIndex + 1}</span>
+                                <div className="flex items-center gap-2">
+                                  <Layout size={12} className="text-gray-500"/>
+                                  <span className="text-xs text-gray-400">Column {colIndex + 1}</span>
+                                </div>
+                                <HeaderFooterControls
+                                  canMoveUp={colIndex > 0}
+                                  canMoveDown={colIndex < row.columns.length - 1}
+                                  onMoveUp={() => moveFooterColumn(row.id, col.id, 'up')}
+                                  onMoveDown={() => moveFooterColumn(row.id, col.id, 'down')}
+                                  onRemove={() => handleRemoveColumn(row.id, colIndex)}
+                                  canRemove={row.columns.length > 1}
+                                />
                               </div>
                             )}
                           </div>

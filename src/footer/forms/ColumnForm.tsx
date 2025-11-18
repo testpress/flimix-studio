@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart, Grid2x2Plus } from 'lucide-react';
+import { Plus,Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart, Grid2x2Plus } from 'lucide-react';
 import type { FooterColumn, FooterItem, ItemAlignment, Size, ColumnChild } from '../schema';
 import { MAX_COLUMN_ITEMS, MAX_NESTED_COLUMN_ITEMS } from '../schema';
 import ColumnItemEditor from './ColumnItemEditor';
 import { generateUniqueId } from '@utils/id';
+import { useHeaderFooter } from '@context/HeaderFooterContext';
+import { HeaderFooterControls } from '@layout/HeaderFooterControls';
 
 const sizeOptions = [
   { label: 'None', value: 'none' },
@@ -16,6 +18,7 @@ const sizeOptions = [
 ];
 
 interface ColumnFormProps {
+  rowId: string;
   column: FooterColumn;
   index: number;
   onUpdate: (updatedColumn: FooterColumn) => void;
@@ -24,8 +27,9 @@ interface ColumnFormProps {
   isNested?: boolean;
 }
 
-const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemove, selectedItemId, isNested = false }) => {
+const ColumnForm: React.FC<ColumnFormProps> = ({ rowId, column, index, onUpdate, onRemove, selectedItemId, isNested = false }) => {
   const [expandedLinkId, setExpandedLinkId] = useState<string | null>(null);
+  const { moveFooterItem } = useHeaderFooter();
   
   // Auto-expand item if it's selected
   const selectedChildId = React.useMemo(() => {
@@ -237,17 +241,19 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
                     <Grid2x2Plus size={12} className="text-blue-300" />
                     <span className="text-xs text-white truncate">Nested Column</span>
                   </div>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); removeItem(i); }}
-                    className="text-gray-400 hover:text-red-400"
-                  >
-                    <Trash2 size={12} />
-                  </button>
+                  <HeaderFooterControls
+                    canMoveUp={i > 0}
+                    canMoveDown={i < column.items.length - 1}
+                    onMoveUp={() => moveFooterItem(rowId, column.id, nestedColumn.id, 'up')}
+                    onMoveDown={() => moveFooterItem(rowId, column.id, nestedColumn.id, 'down')}
+                    onRemove={() => removeItem(i)}
+                  />
                 </div>
                 
                 {isExpanded && (
                   <div className="p-2 bg-gray-700/50 border-t border-gray-600">
                     <ColumnForm
+                      rowId={rowId}
                       column={nestedColumn}
                       index={i}
                       onUpdate={(updatedCol) => updateItem(i, updatedCol)}
@@ -287,12 +293,13 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, onRemo
                    <span className="text-[10px] text-gray-500 bg-gray-800 px-1 rounded">ICON</span>
                  )}
               </div>
-              <button 
-                onClick={(e) => { e.stopPropagation(); removeItem(i); }}
-                className="text-gray-400 hover:text-red-400"
-              >
-                <Trash2 size={12} />
-              </button>
+              <HeaderFooterControls
+                canMoveUp={i > 0}
+                canMoveDown={i < column.items.length - 1}
+                onMoveUp={() => moveFooterItem(rowId, column.id, item.id, 'up')}
+                onMoveDown={() => moveFooterItem(rowId, column.id, item.id, 'down')}
+                onRemove={() => removeItem(i)}
+              />
             </div>
             
             {shouldExpand && (
