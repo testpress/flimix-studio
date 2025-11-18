@@ -1,0 +1,234 @@
+{
+    "type": "footer",
+    "rows": [
+      {
+        "id": "row-links",
+        "type": "row-layout",
+        "preset": "4-col",
+        "style": {
+          "columnGap": "xl"
+        },
+        "columns": [
+          {
+            "id": "col-1",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-1-1",
+                "type": "item",
+                "label": "Company",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-1-2",
+                "type": "item",
+                "label": "About us",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-1-3",
+                "type": "item",
+                "label": "Careers",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-2",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-2-1",
+                "type": "item",
+                "label": "View Website in",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-2-2",
+                "type": "item",
+                "label": "Engilsh",
+                "linkType": "internal",
+                "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAeCAYAAABTwyyaAAABnElEQVR4AeyVT0vCcBjHv4gHzVpqwwp6AyERVMdeRrfIQ38ICbpYlzp0CrpodRDqkBJqQtDb6FaHikAsU+dSya459VB7BuuSYG2/rRYbfHf47fc8z2efjc0x6OXfrRgHLHrY4GY/ONu4VuP+oQCcTuePy3/V+HhwCmuRXUxOz1oHnKDn5sMoF/O4ub60BrgKLZQecJY8QKfT/vvgKnSl9KgZmu6S2TsenJjB6voOOM5HfbtGhRbLBWSS+2i3W133fWeRGXi9VoHXxyO0sglPP/dl9ie0UEA6EdMFTc2ZgTdeagrQAOdFaHkD7j4P9VeiQj9Xisgk9JlWGsonZuByL4jCE7Knh/DzASwsReByuaFCV8US0icxtFoSbdUdpuBEUyzkcJ6KY3hkDIvhLdAnryaWZeioDN2kLUzCHJyo8rlbXGSPwQdGUa8KSCWikCR20DTDEHBqfH93hXh0G8mjPUjNN1piGsPAifK1Udf0c6HaXjEUvNdwPddtcD32tNT+Q+NaNJhYYxs3UbYyyjauaDDxZBs3UbYyyrLGPwAAAP//Na+ZpAAAAAZJREFUAwDEmbI5NHnVcgAAAABJRU5ErkJggg==",
+                "style": {
+                  "size": "lg"
+                }
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-3",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-3-1",
+                "type": "item",
+                "label": "Need Help?",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-3-2",
+                "type": "item",
+                "label": "Visit Help Center",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-3-3",
+                "type": "item",
+                "label": "Share Feedback",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-4",
+            "type": "column",
+            "items": [
+              {
+                "id": "a634d3b4-12aa-4b28-993f-8ae1013e4892",
+                "type": "item",
+                "label": "Connect with Us",
+                "url": "",
+                "linkType": "internal"
+              },
+              {
+                "id": "e911689e-a490-40d4-b33f-479dbaafe03d",
+                "type": "column",
+                "items": [
+                  {
+                    "id": "b5190692-b57d-41a2-9a1f-e82570b31439",
+                    "type": "item",
+                    "label": "",
+                    "url": "",
+                    "linkType": "internal",
+                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAA3CAYAAAC4u5yaAAADGElEQVR4AeyYy08TURTGPwoIhIVNbMtD0AjdWGkpa3mJyIbEx05woXGJxLAxyJ4YjSJEoysjGF0ZIJEETEAXVB4mkigFNZGd0EIL+A9AqXNPT3c1StI7U8lpeu/X3Hsz557fnM58M7bDdkdcmiNug3yIgIAgDICAEBBMgEUqQkAwARapCAHBBFikIgQEE2CRihAQTIBFKkJAMAEWyyqC42eMCAg+FaaBaGo6g8HBZ1hY+IitzQ1sbyXaUvAziouKeDvWiXYQ+fl5ePrkMUZHXuPSxQtwV1YiJycb2dmJVl5eBp/Pax0Bjmxj1SY9Pd1ob7+M3d0YHvT1o7auEaVHj6Ok9BhmZma1xd3vgbWC8Hg86LzRgXg8jra2K+jtvYPl5a/Y24vtd5/a12sF0dzcRH+B4eERTL17j4qKExh7M4r18KrRfqK29rT2BP81gFYQXm8V7WM68IG0s7MD9fV1VCGxWAyqra6uIRhconkrO60gXE4n5RaNREn91dWkra3nccRRTM3rq8FGJELjVnZaQViZ2H5jpx1EV9dNbEbD5BMaGupT7md8fIzmlZdY+DSPwsLClOvMHEw7CHUNyM3NpYukSiRilP2XxUX1E5OTU3R9sNlsNK+8hNvtht1up3kru7SDSCZz9dp18gonPT5Eo5s0fPfefRSXlNF4Q+NZGguHwwiFQvTbyk4biL8lVVPjpyWzc/OkVnfaQLwYek5e4fu3IFyuxN3jdvctbKyv0fhAfx/lPndQQQQMz7Czs0MeQWVaZDxQJW+bLS3nkJWVZTjLPZpXHmJi4q1aZl77Q6S0V8TAwCM4XaXkEaanAynDJn2E8hAR9hgpF5o4mHYQJu49raEEBOMUEAKCCbCYUhGH8vJQUFAA5Sg5bsaJKSBevRwi7+D3J54+M46CsSGtIAKBGeMV3S55BvXuQbVQKIwfKytG6Mz6agXR97AfDmcJeYrk+4dTVdXY3v6VWRSM3WgFYRz/v/kKCD5VAkJAMAEWqQgBwQRY9FcEB8p0ERB8hgSEgGACLFIRAoIJsEhFCAgmwCIVwSB+AwAA//9S+uo9AAAABklEQVQDAOPVIWLWyWf0AAAAAElFTkSuQmCC",
+                    "style": {
+                      "size": "xl"
+                    }
+                  },
+                  {
+                    "id": "eb10be4a-7e3f-4484-8a55-d9af9099acd1",
+                    "type": "item",
+                    "label": "",
+                    "url": "",
+                    "linkType": "internal",
+                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAA4CAYAAABNGP5yAAAEvUlEQVR4AexYbUxbVRh+Wj7CZ4bO8RGMS0AYIDA1MXGJ3/rXwAqMlm9hSpapSIFWohLNBhtbN0A2Y5wrLWNQuo3o/Kn+mJl/nJvJAGnrYCy2c0N+QPgqEIb3PQbC1qaj271l6b1Nz+nped9z7nmf9znvOe+Vb4p6YlnMRQ6RfyQARE4ASAyQGCByBKQtIHICSEFQ2gLSFhA5AtIWEDkBxHcK3OtwQbZAYGAggoODV0tQUNC9z31k/vMOQHFxIW798zfGbjtWy+1bdjQ0fLouowMCAvDV8Xb8ceUSIiMj1zXmYZR4B+DJ+HgQA9YuSi6XQ11dhfxdeWu7XdoymQxftrWgoECJ6OgtoHEuSjx38A5Aa1s7LBYrW+ZJfQeiHtuC9z+oYv9bWnRITUlhbXdVU+M+FBaq4HQ6ka8sxOTkpDs1Xvt4B2Bubg6lpeWYnZ1FRfk7UCiy0dXVDZPJjLCwMHR26hEeHu5ihFZTiz17KrG4uIji4jJcvPiri44QHXIhJrXabKip0bCpidKJiQlQ19TBarUhKSkJ7e2tTLZSVb73LurrtVhaWkLF7kr8+NPPKyLBfwUBgFbdY+rF6dM9iIiIgNGgx507SygrqwAxRLEzG2Q06amU+Th4sBHLy8vYu/dDnD//A3X7rAgGAFlQW6dl8SA9/RnOyCYMWSyrzNi//wsQ7Y8da4NMJkNNrQamXjMN82kRFADy9ko8KCstQV5uDrp7TIwZdDcg2tOx91nD59DrDdiIj6AAkEFr40Fr6xEuBjwNYsbQkIXEuHq1n4sJx1l7IyrBASCjVuIBRX+KB7TfS8vK2UmRmZmB3RXlpLYhxScAkGXkdbofpKWlQne4GTbbX6iuriURmpr2ISMjnbV9XfkMgJiYaERFbWL2FRUVQJm/C73mM9y9oIvlDAbDSXZiMAUfVnJfPCsuLg7ff9eH2NhYdhegZx49ehjbkpOh0dZjcPBPJCYkgGIEyXxZBAdg8+bHOePPYuvWp3Dhwi945dXXYeY8T7dCo1HPjkCKBzMzM8jNUaCkpMiX9gv7PoCyub5zZ5DMefrS75ehKijG/PwCPuL2vo27LaakbMMR3SFcuzaMqio1M/xQ8wGkpaWxNh/V/eYQjAGhoaEw93Zj+/ZMRvG8PCWL+rQgyhNKSv4/BSjzowTo7Lk+dBiMCAkJgaHjBMsbSFfoIggA9DLk1CkDdux4EcMjI9ipyMXExMRdtlisVqjVdayPToXU1FQuH/gE/f0DjDHEDCYUuOIdALrZnfjma7z15htwOG4iKysHY2P/ujWDrr6dnV0gthgN33L5fwAoHkxNTUGlykeBSul2HJ+dvANA9/usrLcxPj6OrGwF7Ha7x/VqtB9jYGCQef2m4wauXP5t9U2QTtfsNnX2OKGXQt4BkHFvf+x2B0f7PBbc7rcep3OeeX109IaL6vXro+yUcBHw2ME7AI2NB5Ce8Szby+td5/DwCJ57/gVEx8TfVV56+TVMT0+vd5oH0uMdgAdaBTeI8oOFhQWsLdTHiQT9PjIACGqlh8klADyAIwqRxABRuNmDkRIDPIAjCpHEAH9zs7f2SAzwFjF/05cY4G8e9dYeiQHeIuZv+hID/M2j3trzHwAAAP//gemzygAAAAZJREFUAwAfAcoAjs95VAAAAABJRU5ErkJggg==",
+                    "style": {
+                      "size": "xl"
+                    }
+                  }
+                ],
+                "orientation": "horizontal",
+                "alignment": "start",
+                "isNested": true,
+                "itemGap": "none"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          }
+        ]
+      },
+      {
+        "id": "row-copy",
+        "type": "row-layout",
+        "preset": "2-col-heavy-left",
+        "columns": [
+          {
+            "id": "col-copy",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-copy",
+                "type": "item",
+                "label": "© 1991-2025 Netflix, Inc.",
+                "linkType": "internal"
+              },
+              {
+                "id": "48496855-f3ce-46fc-91d1-99f6e1bf17ee",
+                "type": "column",
+                "items": [
+                  {
+                    "id": "760167cb-1347-4c18-8760-897abc152966",
+                    "type": "item",
+                    "label": "Term of Use",
+                    "url": "",
+                    "linkType": "internal"
+                  },
+                  {
+                    "id": "ea1458e3-72c7-4d8f-946e-1a3c044b9e5c",
+                    "type": "item",
+                    "label": "Privacy Policy",
+                    "url": "",
+                    "linkType": "internal"
+                  },
+                  {
+                    "id": "4a93ad1c-eff4-4c42-8a9d-c42dac6eae83",
+                    "type": "item",
+                    "label": "FAQ",
+                    "url": "",
+                    "linkType": "internal"
+                  }
+                ],
+                "orientation": "horizontal",
+                "alignment": "start",
+                "isNested": true,
+                "itemGap": "none"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "c23a6b47-abc1-4f64-9142-6b08dab5ec9a",
+            "type": "column",
+            "items": [
+              {
+                "id": "e83080f8-89f2-43fc-8bbf-a32d2cec9544",
+                "type": "item",
+                "label": "",
+                "url": "",
+                "linkType": "internal",
+                "icon": "https://img10.hotstar.com/image/upload/f_auto,q_90/v1661346101/google-playstore",
+                "style": {
+                  "size": "xl"
+                }
+              },
+              {
+                "id": "a4c073bc-8693-48de-aef0-9a30496af002",
+                "type": "item",
+                "label": "",
+                "url": "",
+                "linkType": "internal",
+                "icon": "https://img10.hotstar.com/image/upload/f_auto,q_90/v1661346071/ios-appstore",
+                "style": {
+                  "size": "xl"
+                }
+              }
+            ],
+            "orientation": "horizontal",
+            "alignment": "center",
+            "itemGap": "sm"
+          }
+        ]
+      }
+    ],
+    "style": {
+      "padding": "lg",
+      "backgroundColor": "transparent",
+      "textColor": "#808080",
+      "fontSize": "sm",
+      "maxWidth": "none",
+      "rowGap": "none"
+    }
+  }
