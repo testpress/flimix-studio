@@ -1,0 +1,147 @@
+{
+    "type": "footer",
+    "rows": [
+      {
+        "id": "row-links",
+        "type": "row-layout",
+        "preset": "4-col",
+        "style": {
+          "columnGap": "xl"
+        },
+        "columns": [
+          {
+            "id": "col-1",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-1-1",
+                "type": "item",
+                "label": "Audio Description",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-1-2",
+                "type": "item",
+                "label": "Jobs",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-1-3",
+                "type": "item",
+                "label": "Cookie Preferences",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-2",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-2-1",
+                "type": "item",
+                "label": "Gift Cards",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-2-2",
+                "type": "item",
+                "label": "Terms of Use",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-2-3",
+                "type": "item",
+                "label": "Corporate Information",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-3",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-3-1",
+                "type": "item",
+                "label": "Media Centre",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-3-2",
+                "type": "item",
+                "label": "Privacy",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-3-3",
+                "type": "item",
+                "label": "Contact Us",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          },
+          {
+            "id": "col-4",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-4-1",
+                "type": "item",
+                "label": "Investor Relations",
+                "linkType": "internal"
+              },
+              {
+                "id": "item-4-2",
+                "type": "item",
+                "label": "Legal Notices",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "none"
+          }
+        ]
+      },
+      {
+        "id": "row-copy",
+        "type": "row-layout",
+        "preset": "1-col",
+        "columns": [
+          {
+            "id": "col-copy",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-copy",
+                "type": "item",
+                "label": "© 1991-2025 Netflix, Inc.",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "start",
+            "itemGap": "sm"
+          }
+        ]
+      }
+    ],
+    "style": {
+      "padding": "lg",
+      "backgroundColor": "transparent",
+      "textColor": "#808080",
+      "fontSize": "sm",
+      "maxWidth": "md",
+      "rowGap": "none"
+    }
+  }
