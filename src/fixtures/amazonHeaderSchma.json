@@ -89,6 +89,8 @@
   "style": {
     "layout": "horizontal",
     "padding": "base",
+    "navigationIconSize":"lg",
+    "logoSize":"xs",
     "backgroundColor": "#0F171E",
     "textColor": "#feffff",
     "navigationAlignment": "start",
