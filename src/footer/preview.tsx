@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { ExpansionPath } from '@context/HeaderFooterContext';
-import type { ItemAlignment, LinkOrientation, IconSize, Size } from './schema';
+import type { ItemAlignment, LinkOrientation, IconSize, Size, FooterItem, ColumnChild, FooterColumn } from './schema';
 import { FOOTER_LAYOUT_PRESETS } from './constants';
 
 const PADDING_MAP: Record<Size, string> = {
@@ -93,11 +93,85 @@ const FooterPreview: React.FC = () => {
     );
   };
 
+  const renderColumnChildren = (
+    items: ColumnChild[],
+    path: ExpansionPath,
+    fontSizeClass: string
+  ): React.ReactNode[] => {
+    return items.map((child): React.ReactNode => {
+      
+      if (child.type === 'column') {
+        const nestedCol = child as FooterColumn;
+        const newPath = [...path, nestedCol.id] as ExpansionPath;
+        const nestedItemGapClass = GAP_MAP[nestedCol.itemGap || (nestedCol.orientation === 'vertical' ? 'sm' : 'md')];
+        
+        return (
+          <React.Fragment key={nestedCol.id}>
+            {renderSelectableItem(
+              nestedCol.id,
+              'footer',
+              path,
+              `flex ${nestedCol.orientation === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col'} ${nestedItemGapClass}
+               ${getAlignmentClass(nestedCol.orientation, nestedCol.alignment)}`,
+              
+              nestedCol.items.length > 0 
+                ? renderColumnChildren(nestedCol.items, newPath, fontSizeClass)
+                : <div className="text-[10px] text-gray-600 text-center">Empty Nested Column</div>
+            )}
+          </React.Fragment>
+        );
+      }
+
+      const item = child as FooterItem;
+      const isExternal = item.linkType === 'external';
+      const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
+      
+      return (
+        <React.Fragment key={item.id}>
+          {renderSelectableItem(
+            item.id,
+            'footer',
+            path,
+            'inline-block',
+            <a 
+              href={item.url || '#'} 
+              className="hover:opacity-80 transition-opacity block"
+              style={{ color: item.style?.color }}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              onClick={(e) => { e.preventDefault(); }}
+            >
+              {item.icon && (
+                <img 
+                  src={item.icon} 
+                  alt={item.label || 'icon'}
+                  className="block object-contain shrink-0 inline-block mr-2"
+                  style={{ 
+                    width: iconSize, 
+                    height: 'auto',
+                    maxWidth: '100%'
+                  }} 
+                />
+              )}
+              {item.label && (
+                <span 
+                  className={`leading-none ${fontSizeClass}`}
+                >
+                  {item.label}
+                </span>
+              )}
+            </a>
+          )}
+        </React.Fragment>
+      );
+    });
+  };
+
   const paddingClass = PADDING_MAP[footerSchema.style?.padding || 'lg'];
   const marginClass = MARGIN_MAP[footerSchema.style?.margin || 'none'];
-  const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
   const maxWidthClass = MAX_WIDTH_MAP[footerSchema.style?.maxWidth || 'lg'];
   const rowGapClass = GAP_MAP[footerSchema.style?.rowGap || 'xl'];
+  const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
 
   return (
     <footer 
@@ -134,49 +208,7 @@ const FooterPreview: React.FC = () => {
                       min-h-[30px] p-1
                     `,
                     col.items.length > 0 ? (
-                      col.items.map((item) => {
-                        const isExternal = item.linkType === 'external';
-                        const iconSize = ICON_SIZE_MAP[item.style?.size || 'md'];
-                        
-                        return (
-                          renderSelectableItem(
-                            item.id,
-                            'footer',
-                            [row.id, col.id],
-                            'inline-block',
-                            <a 
-                              href={item.url || '#'} 
-                              className="hover:opacity-80 transition-opacity block"
-                              style={{ color: item.style?.color }}
-                              target={isExternal ? '_blank' : undefined}
-                              rel={isExternal ? 'noopener noreferrer' : undefined}
-                              onClick={(e) => {
-                                e.preventDefault(); 
-                              }}
-                            >
-                              {item.icon && (
-                                <img 
-                                  src={item.icon} 
-                                  alt={item.label || 'icon'}
-                                  className="block object-contain shrink-0 inline-block mr-2"
-                                  style={{ 
-                                    width: iconSize, 
-                                    height: 'auto',
-                                    maxWidth: '100%'
-                                  }} 
-                                />
-                              )}
-                              {item.label && (
-                                <span 
-                                  className={`leading-none ${fontSizeClass}`}
-                                >
-                                  {item.label}
-                                </span>
-                              )}
-                            </a>
-                          )
-                        );
-                      })
+                      renderColumnChildren(col.items, [row.id, col.id], fontSizeClass)
                     ) : (
                       <div className="text-[10px] text-gray-600 border border-dashed border-gray-700 p-2 w-full text-center rounded">
                         Empty Col

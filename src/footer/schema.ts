@@ -15,6 +15,7 @@ export type ItemAlignment = 'start' | 'center' | 'end';
 
 export const MAX_FOOTER_ROWS = 3;
 export const MAX_COLUMN_ITEMS = 5;
+export const MAX_NESTED_COLUMN_ITEMS = 3;
 
 export interface FooterItem {
   id: string;
@@ -29,12 +30,15 @@ export interface FooterItem {
   };
 }
 
+export type ColumnChild = FooterItem | FooterColumn;
+
 export interface FooterColumn {
   id: string;
   type: 'column';
-  items: FooterItem[];
+  items: ColumnChild[];
   orientation: LinkOrientation;
   alignment?: ItemAlignment;
+  isNested?: boolean;
   itemGap?: Size;
 }
 
