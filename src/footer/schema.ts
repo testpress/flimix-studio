@@ -35,6 +35,7 @@ export interface FooterColumn {
   items: FooterItem[];
   orientation: LinkOrientation;
   alignment?: ItemAlignment;
+  itemGap?: Size;
 }
 
 export interface FooterRow {
@@ -59,6 +60,8 @@ export interface FooterSchema {
     fontSize?: Size;
     backgroundColor?: string;
     textColor?: string;
+    maxWidth?: Size;
+    rowGap?: Size;
   };
 }
 

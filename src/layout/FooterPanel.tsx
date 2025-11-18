@@ -50,6 +50,13 @@ const fontSizeOptions = [
   { label: 'X-Large', value: 'xl' },
 ];
 
+const maxWidthOptions = [
+  { label: 'Large (Default)', value: 'lg' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Full Width', value: 'none' },
+];
+
 const FooterPanel: React.FC = () => {
   const { footerSchema, updateFooterSchema, selectedId, expandedPath, selectItem } = useHeaderFooter();
   const [isAddingRow, setIsAddingRow] = useState(false);
@@ -186,6 +193,22 @@ const FooterPanel: React.FC = () => {
             value={footerSchema.style?.fontSize}
             onChange={(value) => updateStyle('fontSize', value as Size)}
             options={fontSizeOptions}
+          />
+
+          {/* Content Max Width Select */}
+          <StyleSelect
+            label="Content Max Width"
+            value={footerSchema.style?.maxWidth || 'lg'}
+            onChange={(value) => updateStyle('maxWidth', value as Size)}
+            options={maxWidthOptions}
+          />
+
+          {/* Row Gap Select */}
+          <StyleSelect
+            label="Row Gap"
+            value={footerSchema.style?.rowGap || 'xl'}
+            onChange={(value) => updateStyle('rowGap', value as Size)}
+            options={sizeOptions}
           />
         </div>
       </div>

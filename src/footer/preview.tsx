@@ -27,6 +27,18 @@ const ICON_SIZE_MAP: Record<IconSize, string> = {
   xl: '48px'
 };
 
+const MAX_WIDTH_MAP: Record<Size, string> = {
+  none: 'max-w-none',
+  xs: 'max-w-2xl',
+  sm: 'max-w-2xl',
+  base: 'max-w-4xl',
+  md: 'max-w-4xl',
+  lg: 'max-w-7xl',
+  xl: 'max-w-screen-2xl',
+  '2xl': 'max-w-screen-2xl',
+  '3xl': 'max-w-screen-2xl',
+};
+
 const FooterPreview: React.FC = () => {
   const { footerSchema, selectedId, selectItem } = useHeaderFooter();
 
@@ -84,20 +96,22 @@ const FooterPreview: React.FC = () => {
   const paddingClass = PADDING_MAP[footerSchema.style?.padding || 'lg'];
   const marginClass = MARGIN_MAP[footerSchema.style?.margin || 'none'];
   const fontSizeClass = FONT_SIZE_MAP[footerSchema.style?.fontSize || 'sm'] || 'text-sm';
+  const maxWidthClass = MAX_WIDTH_MAP[footerSchema.style?.maxWidth || 'lg'];
+  const rowGapClass = GAP_MAP[footerSchema.style?.rowGap || 'xl'];
 
   return (
     <footer 
-      className={`transition-all duration-200 ${paddingClass} ${marginClass}`}
+      className={`w-full transition-all duration-200 ${paddingClass} ${marginClass}`}
       style={{
         backgroundColor: footerSchema.style?.backgroundColor || '#111111',
         color: footerSchema.style?.textColor || '#cccccc',
       }}
     >
-      <div className="flex flex-col mx-auto">
+      <div className={`${maxWidthClass} mx-auto flex flex-col ${rowGapClass} w-full`}>
         {footerSchema.rows?.map((row) => {
           const presetConfig = FOOTER_LAYOUT_PRESETS.find(p => p.id === row.preset);
           const gridClass = presetConfig ? presetConfig.class : 'grid-cols-1';
-          const gapClass = GAP_MAP[row.style?.columnGap || 'none'];
+          const columnGapClass = GAP_MAP[row.style?.columnGap || 'none'];
 
           return (
             renderSelectableItem(
@@ -106,14 +120,16 @@ const FooterPreview: React.FC = () => {
               [],
               `w-full min-h-[50px]`,
               <div
-                className={`grid ${gridClass} w-full ${gapClass}`}
+                className={`grid ${gridClass} w-full ${columnGapClass}`}
               >
-                {row.columns.map((col) => (
-                  renderSelectableItem(
+                {row.columns.map((col) => {
+                  const itemGapClass = GAP_MAP[col.itemGap || (col.orientation === 'vertical' ? 'sm' : 'md')];
+
+                  return renderSelectableItem(
                     col.id,
                     'footer',
                     [row.id],
-                    `flex ${col.orientation === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'}
+                    `flex ${col.orientation === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col'} ${itemGapClass}
                       ${getAlignmentClass(col.orientation, col.alignment)}
                       min-h-[30px] p-1
                     `,
@@ -167,7 +183,7 @@ const FooterPreview: React.FC = () => {
                       </div>
                     )
                   )
-                ))}
+                })}
               </div>
             )
           );
