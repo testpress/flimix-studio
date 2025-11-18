@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import type { HeaderSchema } from '@header/schema';
-import type { FooterSchema } from '@footer/schema';
+import type { FooterSchema, FooterColumn } from '@footer/schema';
 import headerData from '@fixtures/headerSchema.json';
 import footerData from '@fixtures/footerSchema.json';
+import { swap } from '@utils/array';  
 
 export type ExpansionPath = 
   | []                                    // No parents (header items, root selections)
@@ -18,10 +19,46 @@ interface HeaderFooterContextType {
   activeTab: 'header' | 'footer';
   setActiveTab: (tab: 'header' | 'footer') => void;
   selectItem: (id: string, tab: 'header' | 'footer', path?: ExpansionPath) => void;
-  expandedPath: ExpansionPath; 
+  expandedPath: ExpansionPath;
+  moveHeaderItem: (itemId: string, direction: 'up' | 'down') => void;
+  moveDropdownItem: (parentId: string, itemId: string, direction: 'up' | 'down') => void;
+  moveFooterRow: (rowId: string, direction: 'up' | 'down') => void;
+  moveFooterColumn: (rowId: string, columnId: string, direction: 'up' | 'down') => void;
+  moveFooterItem: (rowId: string, columnId: string, itemId: string, direction: 'up' | 'down') => void;
 }
 
 const HeaderFooterContext = createContext<HeaderFooterContextType | undefined>(undefined);
+
+// Recursive helper to find and update item in any nested column
+const updateColumnRecursive = (column: FooterColumn, targetColumnId: string, itemId: string, direction: 'up' | 'down'): FooterColumn | null => {
+  // If this is the target column, update its items
+  if (column.id === targetColumnId) {
+    const itemIndex = column.items.findIndex(item => item.id === itemId);
+    if (itemIndex === -1) return null;
+    
+    const newItemIndex = direction === 'up' ? itemIndex - 1 : itemIndex + 1;
+    return {
+      ...column,
+      items: swap(column.items, itemIndex, newItemIndex)
+    };
+  }
+  
+  // Otherwise, recursively search nested columns
+  let hasUpdate = false;
+  const updatedItems = column.items.map(item => {
+    if (item.type === 'column') {
+      const updatedNested = updateColumnRecursive(item, targetColumnId, itemId, direction);
+      if (updatedNested) {
+        hasUpdate = true;
+        return updatedNested;
+      }
+    }
+    return item;
+  });
+  
+  // If any nested column was updated, return updated column
+  return hasUpdate ? { ...column, items: updatedItems } : null;
+};
 
 export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [headerSchema, setHeaderSchema] = useState<HeaderSchema>(headerData as HeaderSchema);
@@ -45,6 +82,100 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
     });
   }, []);
 
+  // Move functions
+  const moveHeaderItem = useCallback((itemId: string, direction: 'up' | 'down') => {
+    setHeaderSchema(prev => {
+      const items = prev.items.filter(i => i.type !== 'logo' && i.type !== 'title');
+      const nonNavItems = prev.items.filter(i => i.type === 'logo' || i.type === 'title');
+      
+      const index = items.findIndex(item => item.id === itemId);
+      if (index === -1) return prev;
+      
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      const newItems = swap(items, index, newIndex);
+      
+      return { ...prev, items: [...nonNavItems, ...newItems] };
+    });
+  }, []);
+
+  const moveDropdownItem = useCallback((parentId: string, itemId: string, direction: 'up' | 'down') => {
+    setHeaderSchema(prev => {
+      const parentIndex = prev.items.findIndex(item => item.id === parentId);
+      if (parentIndex === -1 || !prev.items[parentIndex].items) return prev;
+
+      const parentItem = { ...prev.items[parentIndex] }; // Copy the parent item
+      const subItems = parentItem.items || [];
+      const itemIndex = subItems.findIndex(sub => sub.id === itemId);
+      if (itemIndex === -1) return prev;
+
+      const newItemIndex = direction === 'up' ? itemIndex - 1 : itemIndex + 1;
+      parentItem.items = swap(subItems, itemIndex, newItemIndex);
+      
+      const newItems = [...prev.items]; 
+      newItems[parentIndex] = parentItem; // Update the parent item with the new items array
+      
+      return { ...prev, items: newItems };
+    });
+  }, []);
+
+  const moveFooterRow = useCallback((rowId: string, direction: 'up' | 'down') => {
+    setFooterSchema(prev => {
+      const index = prev.rows.findIndex(row => row.id === rowId);
+      if (index === -1) return prev;
+      
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      const newRows = swap(prev.rows, index, newIndex);
+      
+      return { ...prev, rows: newRows };
+    });
+  }, []);
+
+  const moveFooterColumn = useCallback((rowId: string, columnId: string, direction: 'up' | 'down') => {
+    setFooterSchema(prev => {
+      const rowIndex = prev.rows.findIndex(row => row.id === rowId);
+      if (rowIndex === -1) return prev;
+
+      const row = { ...prev.rows[rowIndex] }; // Copy the row
+      const colIndex = row.columns.findIndex(col => col.id === columnId);
+      if (colIndex === -1) return prev;
+      
+      const newColIndex = direction === 'up' ? colIndex - 1 : colIndex + 1;
+      row.columns = swap(row.columns, colIndex, newColIndex);
+      
+      const newRows = [...prev.rows];
+      newRows[rowIndex] = row; // Update the row with the new columns array
+      
+      return { ...prev, rows: newRows };
+    });
+  }, []);
+
+  const moveFooterItem = useCallback((rowId: string, columnId: string, itemId: string, direction: 'up' | 'down') => {
+    setFooterSchema(prev => {
+      const rowIndex = prev.rows.findIndex(row => row.id === rowId);
+      if (rowIndex === -1) return prev;
+      
+      const row = { ...prev.rows[rowIndex] };
+      
+      // Try to find and update the column (could be top-level or nested)
+      let updated = false;
+      const updatedColumns = row.columns.map(col => {
+        const updatedCol = updateColumnRecursive(col, columnId, itemId, direction);
+        if (updatedCol) {
+          updated = true;
+          return updatedCol;
+        }
+        return col;
+      });
+      
+      if (!updated) return prev;
+      
+      const newRows = [...prev.rows];
+      newRows[rowIndex] = { ...row, columns: updatedColumns };
+      
+      return { ...prev, rows: newRows };
+    });
+  }, []);
+
   return (
     <HeaderFooterContext.Provider value={{
       headerSchema,
@@ -55,7 +186,12 @@ export const HeaderFooterProvider: React.FC<{ children: React.ReactNode }> = ({ 
       activeTab,
       setActiveTab,
       selectItem,
-      expandedPath
+      expandedPath,
+      moveHeaderItem,
+      moveDropdownItem,
+      moveFooterRow,
+      moveFooterColumn,
+      moveFooterItem
     }}>
       {children}
     </HeaderFooterContext.Provider>

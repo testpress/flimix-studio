@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import { ChevronDown, ChevronUp, Plus, Image as ImageIcon } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { HeaderItem, Size } from '../schema';
 import { MAX_DROPDOWN_ITEMS } from '../schema';
 import { generateUniqueId } from '@utils/id';
+import { HeaderFooterControls } from '@layout/HeaderFooterControls';
 
 const borderRadiusOptions = [
   { label: 'None', value: 'none' },
@@ -28,7 +29,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
   isDropdownItem = false,
   selectedItemId
 }) => {
-  const { expandedPath } = useHeaderFooter();
+  const { expandedPath, moveDropdownItem } = useHeaderFooter();
   const [expandedSubItems, setExpandedSubItems] = useState<boolean>(true);
   
   useEffect(() => {
@@ -272,11 +273,17 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                     {!canAddSubItem && <div className="text-xs text-gray-500 text-center mb-2">Max {MAX_DROPDOWN_ITEMS} items reached</div>}
                     {item.items && item.items.length > 0 ? (
                         <div className="space-y-2 mb-3">
-                            {item.items.map(subItem => (
+                            {item.items.map((subItem, subIndex) => (
                                 <div key={subItem.id} className={`bg-gray-700/50 rounded border p-3 transition-all ${selectedItemId === subItem.id ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-600'}`}>
                                     <div className="flex justify-between mb-2">
                                         <span className="text-xs font-medium text-gray-300">Sub Item</span>
-                                        <button onClick={() => handleDeleteSubItem(subItem.id)} className="text-gray-500 hover:text-red-400"><Trash2 size={12}/></button>
+                                        <HeaderFooterControls
+                                          canMoveUp={subIndex > 0}
+                                          canMoveDown={!!item.items && subIndex < item.items.length - 1}
+                                          onMoveUp={() => moveDropdownItem(item.id, subItem.id, 'up')}
+                                          onMoveDown={() => moveDropdownItem(item.id, subItem.id, 'down')}
+                                          onRemove={() => handleDeleteSubItem(subItem.id)}
+                                        />
                                     </div>
                                     <div className="mb-2">
                                         <label className="text-[10px] text-gray-400 block mb-1">Type</label>
