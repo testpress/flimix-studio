@@ -41,6 +41,8 @@ export interface HeaderSchema {
     margin?: Size;
     borderRadius?: Size;
     navigationFontSize?: Size;
+    logoSize?: Size;
+    navigationIconSize?: Size;
     backgroundColor?: string;
     textColor?: string;
     navigationAlignment?: NavigationAlignment;

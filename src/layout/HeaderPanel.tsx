@@ -58,6 +58,15 @@ const navigationFontSizeOptions = [
   { label: 'X-Large', value: 'xl' },
 ];
 
+const iconSizeOptions = [
+  { label: 'Small', value: 'xs' },
+  { label: 'Base', value: 'sm' },
+  { label: 'Large', value: 'md' },
+  { label: 'X-Large', value: 'lg' },
+  { label: '2XL', value: '2xl' },
+  { label: '3XL', value: '3xl' },
+];
+
 const HeaderPanel: React.FC = () => {
   const { headerSchema, updateHeaderSchema, selectedId } = useHeaderFooter();
   
@@ -163,6 +172,15 @@ const HeaderPanel: React.FC = () => {
                 options={navigationFontSizeOptions}
               />
             </div>
+            
+            <div className="mb-5">
+              <StyleSelect
+                label="Navigation Icon Size"
+                value={headerSchema.style?.navigationIconSize}
+                onChange={(value) => updateGlobalStyle('navigationIconSize', value as Size)}
+                options={iconSizeOptions}
+              />
+            </div>
                
             {/* HOVER CONTAINER */}
             <div className="bg-gray-800/50 rounded-lg border border-gray-600/50 p-4">
@@ -242,7 +260,17 @@ const HeaderPanel: React.FC = () => {
               {logoItem.isVisible === false ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-          {logoItem.isVisible !== false && <LogoForm logoItem={logoItem} updateLogo={handleUpdateLogo} />}
+          {logoItem.isVisible !== false && (
+            <div className="space-y-4">
+              <StyleSelect
+                label="Logo Size (Max Height)"
+                value={headerSchema.style?.logoSize}
+                onChange={(value) => updateGlobalStyle('logoSize', value as Size)}
+                options={iconSizeOptions}
+              />
+              <LogoForm logoItem={logoItem} updateLogo={handleUpdateLogo} />
+            </div>
+          )}
         </div>
       )}
       

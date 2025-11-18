@@ -33,6 +33,30 @@ const FONT_SIZE_MAP: Partial<Record<Size, string>> = {
   xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg', xl: 'text-xl', '2xl': 'text-2xl', '3xl': 'text-3xl',
 };
 
+const LOGO_SIZE_MAP: Record<Size, string> = {
+  none: 'h-auto',
+  xs: 'max-h-6',
+  sm: 'max-h-8',
+  base: 'max-h-10',
+  md: 'max-h-10',
+  lg: 'max-h-12',
+  xl: 'max-h-16',
+  '2xl': 'max-h-20',
+  '3xl': 'max-h-24',
+};
+
+const ICON_SIZE_MAP: Record<Size, string> = {
+  none: 'w-0 h-0',
+  xs: 'w-3.5 h-3.5',
+  sm: 'w-4 h-4',
+  base: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
+  xl: 'w-7 h-7',
+  '2xl': 'w-8 h-8',
+  '3xl': 'w-10 h-10',
+};
+
 const HeaderPreview: React.FC = () => {
   const { headerSchema, selectItem, selectedId } = useHeaderFooter();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -123,14 +147,15 @@ const HeaderPreview: React.FC = () => {
   const paddingClass = PADDING_MAP[headerSchema.style?.padding || 'base'];
   const marginClass = MARGIN_MAP[headerSchema.style?.margin || 'none'];
   const radiusClass = RADIUS_MAP[headerSchema.style?.borderRadius || 'none'];
+  const iconSizeClass = ICON_SIZE_MAP[headerSchema.style?.navigationIconSize || 'sm'];
+  const logoSizeClass = LOGO_SIZE_MAP[headerSchema.style?.logoSize || 'md'];
 
   const renderIcon = (url?: string) => {
     if (headerSchema.style?.hideNavIcons || !url) return null;
     return (
       <img 
         src={url} 
-        className="object-contain mr-1.5 inline-block"
-        style={{ width: '1.1em', height: '1.1em' }} 
+        className={`object-contain mr-1.5 inline-block ${iconSizeClass}`}
         alt=""
       />
     );
@@ -156,10 +181,7 @@ const HeaderPreview: React.FC = () => {
               <img 
                 src={logoItem.attrs.src}
                 alt={logoItem.attrs.alt || 'Logo'}
-                style={{
-                  objectFit: 'contain',
-                  maxHeight: '40px'
-                }}
+                className={`object-contain ${logoSizeClass}`}
               />
             )
           )}
