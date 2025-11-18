@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import { useHeaderFooter } from '@context/HeaderFooterContext';
 import type { ExpansionPath } from '@context/HeaderFooterContext';
 import { HEADER_ROOT_ID } from '@footer/constants';
-import type { Size } from '@header/schema';
+import type { Size, HeaderItem } from '@header/schema';
 
 const PADDING_MAP: Record<Size, string> = {
   none: 'p-0', xs: 'p-1', sm: 'p-2', base: 'p-3', md: 'p-4', lg: 'p-6', xl: 'p-8', '2xl': 'p-10', '3xl': 'p-12',
@@ -67,13 +67,24 @@ const HeaderPreview: React.FC = () => {
   const navigationItems = headerSchema.items.filter(item => 
     item.type !== 'logo' && item.type !== 'title'
   );
+  const isVerticalLayout = headerSchema.style?.layout === 'vertical';
 
   const getNavAlignmentClass = () => {
-    const align = headerSchema.style?.navigationAlignment || 'right';
+    const align = headerSchema.style?.navigationAlignment || 'end';
     switch (align) {
-      case 'left': return 'justify-start pl-8';
+      case 'start': return 'justify-start pl-8';
       case 'center': return 'justify-center';
       default: return 'justify-end';
+    }
+  };
+
+  const getVerticalItemAlignmentClass = () => {
+    const align = headerSchema.style?.verticalItemAlignment || 'start';
+    switch (align) {
+      case 'start': return 'justify-start';
+      case 'center': return 'justify-center';
+      case 'end': return 'justify-end';
+      default: return 'justify-start';
     }
   };
 
@@ -143,12 +154,13 @@ const HeaderPreview: React.FC = () => {
     );
   };
 
-  const navFontSizeClass = FONT_SIZE_MAP[headerSchema.style?.navigationFontSize || 'base'];
-  const paddingClass = PADDING_MAP[headerSchema.style?.padding || 'base'];
+  const navFontSizeClass = FONT_SIZE_MAP[headerSchema.style?.navigationFontSize || 'base'] || 'text-base';
+  const paddingClass = PADDING_MAP[headerSchema.style?.padding || (isVerticalLayout ? 'md' : 'base')];
   const marginClass = MARGIN_MAP[headerSchema.style?.margin || 'none'];
   const radiusClass = RADIUS_MAP[headerSchema.style?.borderRadius || 'none'];
   const iconSizeClass = ICON_SIZE_MAP[headerSchema.style?.navigationIconSize || 'sm'];
   const logoSizeClass = LOGO_SIZE_MAP[headerSchema.style?.logoSize || 'md'];
+  const titleFontSizeClass = FONT_SIZE_MAP[titleItem?.style?.fontSize || '2xl'] || 'text-2xl';
 
   const renderIcon = (url?: string) => {
     if (headerSchema.style?.hideNavIcons || !url) return null;
@@ -161,49 +173,184 @@ const HeaderPreview: React.FC = () => {
     );
   };
 
+  const renderButtonItem = (item: HeaderItem, wrapperClass: string) => {
+    return renderSelectableItem(item.id, 'header', [], wrapperClass, (
+      <a 
+        href={item.link || '#'} 
+        className={`px-4 py-2 font-medium transition-all duration-200 flex items-center justify-center gap-2 ${navFontSizeClass}`}
+        style={{
+          backgroundColor: item.style?.backgroundColor || '#3b82f6',
+          color: item.style?.color || '#ffffff',
+          borderRadius: item.style?.borderRadius 
+            ? BORDER_RADIUS_PX_MAP[item.style.borderRadius] || '4px'
+            : '4px',
+          opacity: (!headerSchema.style?.disableHover && hoveredItemId === item.id) ? 0.9 : 1
+        }}
+      >
+        {renderIcon(item.icon)}
+        {item.label}
+      </a>
+    ));
+  };
+
+  const renderDropdownItem = (
+    item: HeaderItem, 
+    wrapperClass: string, 
+    dropdownPosition: 'left' | 'right' | 'vertical',
+    isRightSide?: boolean,
+    isMultiColumn?: boolean
+  ) => {
+    const subItems = item.items || [];
+    const hasSubItems = subItems.length > 0;
+    const isOpen = openDropdown === item.id;
+
+    const getDropdownClasses = () => {
+      if (dropdownPosition === 'vertical') {
+        return 'absolute left-full ml-2 top-0 bg-gray-800 border border-gray-600 rounded shadow-xl z-50 py-2 min-w-[180px]';
+      }
+      return `absolute top-full mt-6 bg-gray-800 border border-gray-600 rounded shadow-xl z-50 py-2 max-w-[90vw]
+        ${isRightSide ? 'right-0 origin-top-right' : 'left-0 origin-top-left'}
+        ${isMultiColumn ? 'grid grid-cols-2 gap-x-4 min-w-[340px]' : 'flex flex-col min-w-[180px]'}`;
+    };
+
+    const buttonClass = dropdownPosition === 'vertical' 
+      ? `w-full flex items-center gap-1 font-medium ${getItemPaddingClass()} ${navFontSizeClass}`
+      : `flex items-center gap-1 font-medium ${getItemPaddingClass()} ${navFontSizeClass}`;
+
+    const containerClass = dropdownPosition === 'vertical' ? 'relative w-full' : 'relative';
+
+    return renderSelectableItem(item.id, 'header', [], wrapperClass, (
+      <div className={containerClass}>
+        <button 
+          className={buttonClass}
+          style={{
+            ...getActiveStyle(item.id, headerSchema.style?.textColor),
+          }}
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            if (hasSubItems) {
+              setOpenDropdown(isOpen ? null : item.id); 
+            }
+          }}
+        >
+          {renderIcon(item.icon)}
+          {item.label}
+          {hasSubItems && (
+            <ChevronDown size={14} style={{ width: '1em', height: '1em' }} />
+          )}
+        </button>
+        
+        {hasSubItems && isOpen && (
+          <div className={getDropdownClasses()}>
+            {subItems.map(sub => (
+              <div 
+                key={sub.id} 
+                className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-200 flex items-center gap-2 transition-colors"
+                style={{ fontSize: '0.9em' }}
+              >
+                {sub.icon && (
+                  <img src={sub.icon} style={{ width: '1.1em', height: '1.1em' }} className="object-contain" alt="" />
+                )}
+                {sub.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
+  const renderLinkItem = (item: HeaderItem, wrapperClass: string) => {
+    return renderSelectableItem(item.id, 'header', [], wrapperClass, (
+      <a 
+        href={item.link || '#'} 
+        className={`font-medium flex items-center gap-2 ${getItemPaddingClass()} ${navFontSizeClass}`}
+        style={{
+          ...getActiveStyle(item.id, headerSchema.style?.textColor),
+        }}
+      >
+        {renderIcon(item.icon)}
+        {item.label}
+      </a>
+    ));
+  };
+
+  const renderLogoAndTitle = (isVertical: boolean) => {
+    const containerClass = isVertical 
+      ? 'flex flex-col items-start gap-4 shrink-0 z-10 relative'
+      : 'flex items-center gap-4 shrink-0 z-10 relative';
+
+    return (
+      <div className={containerClass}>
+        {logoItem?.attrs?.src && logoItem.isVisible !== false && (
+          renderSelectableItem(
+            logoItem.id, 'header', [], 'cursor-pointer',
+            <img 
+              src={logoItem.attrs.src}
+              alt={logoItem.attrs.alt || 'Logo'}
+              className={`object-contain ${logoSizeClass}`}
+            />
+          )
+        )}
+        {titleItem?.label && titleItem.isVisible !== false && (
+          renderSelectableItem(
+            titleItem.id, 'header', [], 'cursor-pointer',
+            <span 
+              className={titleFontSizeClass}
+              style={{ color: titleItem.style?.color || '#ffffff' }}
+            >
+              {titleItem.label}
+            </span>
+          )
+        )}
+      </div>
+    );
+  };
+
+  if (isVerticalLayout) {
+    return (
+      <div 
+        className={`h-full transition-all duration-200 ${paddingClass} ${radiusClass} flex flex-col w-48 ${getVerticalItemAlignmentClass()}`}
+        style={{
+          backgroundColor: headerSchema.style?.backgroundColor || 'transparent',
+          color: headerSchema.style?.textColor || '#ffffff',
+        }}
+        onClick={() => selectItem(HEADER_ROOT_ID, 'header', [])}
+      >
+        {renderLogoAndTitle(true)}
+
+        <div className="flex flex-col mt-8">
+          <div className="flex flex-col gap-4">
+            {navigationItems.map((item) => {
+              if (item.isVisible === false) return null;
+
+              if (item.type === 'button') {
+                return renderButtonItem(item, 'w-full');
+              }
+
+              if (item.type === 'dropdown') {
+                return renderDropdownItem(item, 'relative w-full', 'vertical');
+              }
+
+              return renderLinkItem(item, 'w-full');
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
-      className={`border-b border-gray-800 transition-all duration-200 ${paddingClass} ${marginClass} ${radiusClass}`}
+      className={`transition-all duration-200 ${paddingClass} ${marginClass} ${radiusClass}`}
       style={{
-        backgroundColor: headerSchema.style?.backgroundColor || '#111111',
+        backgroundColor: headerSchema.style?.backgroundColor || 'transparent',
         color: headerSchema.style?.textColor || '#ffffff',
       }}
       onClick={() => selectItem(HEADER_ROOT_ID, 'header', [])}
     >
       <div className="flex items-center px-4 w-full relative">
-        <div className="flex items-center gap-4 shrink-0 z-10 relative">
-          {logoItem?.attrs?.src && logoItem.isVisible !== false && (
-            renderSelectableItem(
-              logoItem.id,
-              'header',
-              [],
-              'cursor-pointer',
-              <img 
-                src={logoItem.attrs.src}
-                alt={logoItem.attrs.alt || 'Logo'}
-                className={`object-contain ${logoSizeClass}`}
-              />
-            )
-          )}
-          
-          {/* Title - Check Visibility */}
-          {titleItem?.label && titleItem.isVisible !== false && (
-            renderSelectableItem(
-              titleItem.id,
-              'header',
-              [],
-              'cursor-pointer',
-              <span 
-                className={FONT_SIZE_MAP[titleItem.style?.fontSize || '2xl'] || 'text-2xl'}
-                style={{
-                  color: titleItem.style?.color || '#ffffff'
-                }}
-              >
-                {titleItem.label}
-              </span>
-            )
-          )}
-        </div>
+        {renderLogoAndTitle(false)}
 
         <div className={`flex-1 flex items-center ${getNavAlignmentClass()}`}>
           <div className="flex items-center gap-4">
@@ -233,72 +380,14 @@ const HeaderPreview: React.FC = () => {
               // Dropdown Rendering
               if (item.type === 'dropdown') {
                 const subItems = item.items || [];
-                const hasSubItems = subItems.length > 0;
                 const isMultiColumn = subItems.length > 4;
                 const threshold = Math.floor(navigationItems.length / 2) - 1;
                 const isRightSide = index > threshold;
 
-                return renderSelectableItem(item.id, 'header', [], 'relative', (
-                  <div className="relative">
-                    <button 
-                      className={`flex items-center gap-1 font-medium ${getItemPaddingClass()} ${navFontSizeClass}`}
-                      style={{
-                        ...getActiveStyle(item.id, headerSchema.style?.textColor),
-                      }}
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        if (hasSubItems) {
-                          setOpenDropdown(openDropdown === item.label ? null : item.label || ''); 
-                        }
-                      }}
-                    >
-                      {renderIcon(item.icon)}
-                      {item.label}
-                      
-                      {/* Only show Chevron if sub-items exist */}
-                      {hasSubItems && (
-                        <ChevronDown size={14} style={{ width: '1em', height: '1em' }} />
-                      )}
-                    </button>
-                    
-                    {/* Dropdown Menu (Only if items exist) */}
-                    {hasSubItems && openDropdown === item.label && (
-                      <div 
-                        className={`absolute top-full mt-6 bg-gray-800 border border-gray-600 rounded shadow-xl z-50 py-2 max-w-[90vw]
-                          ${isRightSide ? 'right-0 origin-top-right' : 'left-0 origin-top-left'}
-                          ${isMultiColumn ? 'grid grid-cols-2 gap-x-4 min-w-[340px]' : 'flex flex-col min-w-[180px]'}
-                        `}
-                      >
-                        {subItems.map(sub => (
-                          <div 
-                            key={sub.id} 
-                            className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-200 flex items-center gap-2 transition-colors"
-                            style={{ fontSize: '0.9em' }}
-                          >
-                            {/* SUB ITEM ICON */}
-                            {sub.icon && (
-                              <img src={sub.icon} style={{ width: '1.1em', height: '1.1em' }} className="object-contain" alt="" />
-                            )}
-                            {sub.label}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ));
+                return renderDropdownItem(item, 'relative', isRightSide ? 'right' : 'left', isRightSide, isMultiColumn);
               }
-              return renderSelectableItem(item.id, 'header', [], '', (
-                <a 
-                  href={item.link || '#'} 
-                  className={`font-medium flex items-center gap-2 ${getItemPaddingClass()} ${navFontSizeClass}`}
-                  style={{
-                    ...getActiveStyle(item.id, headerSchema.style?.textColor),
-                  }}
-                >
-                  {renderIcon(item.icon)}
-                  {item.label}
-                </a>
-              ));
+
+              return renderLinkItem(item, '');
             })}
           </div>
         </div>

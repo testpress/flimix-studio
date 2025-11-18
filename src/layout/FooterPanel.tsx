@@ -147,7 +147,7 @@ const FooterPanel: React.FC = () => {
               <input
                 type="text"
                 className="bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white flex-1 text-sm focus:border-blue-500 outline-none"
-                value={footerSchema.style?.backgroundColor || '#111111'}
+                value={footerSchema.style?.backgroundColor || ''}
                 onChange={(e) => updateStyle('backgroundColor', e.target.value)}
               />
             </div>
