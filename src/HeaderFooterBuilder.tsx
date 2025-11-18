@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Settings, EyeOff } from 'lucide-react';
+import { Settings, EyeOff, Undo2, Redo2 } from 'lucide-react';
 import HeaderPanel from '@layout/HeaderPanel';
 import FooterPanel from '@layout/FooterPanel';
 import HeaderFooterCanvas from '@layout/HeaderFooterCanvas';
@@ -42,8 +42,24 @@ const AutoScroller = () => {
 };
 
 const BuilderLayout = () => {
-  const { activeTab, setActiveTab } = useHeaderFooter();
+  const { activeTab, setActiveTab, undo, redo, canUndo, canRedo } = useHeaderFooter();
   const [showCustomizePanel, setShowCustomizePanel] = React.useState(true);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) {
+          if (canRedo) redo();
+        } else {
+          if (canUndo) undo();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [undo, redo, canUndo, canRedo]);
 
   return (
     <div className="bg-gray-900 h-screen text-white flex flex-col overflow-hidden">
@@ -51,12 +67,34 @@ const BuilderLayout = () => {
       <header className="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0 h-16 z-30 relative">
         <h1 className="font-bold text-lg">Header & Footer Builder</h1>
         
-        <button 
-          onClick={() => setShowCustomizePanel(!showCustomizePanel)}
-          className="px-4 py-2 bg-blue-600 rounded text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors"
-        >
-          {showCustomizePanel ? <><EyeOff size={14}/> Preview</> : <><Settings size={14}/> Customize</>}
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center bg-gray-700 rounded-lg p-1 mr-2 border border-gray-600">
+            <button 
+              onClick={undo}
+              disabled={!canUndo}
+              className="p-1.5 rounded hover:bg-gray-600 text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              title="Undo (Ctrl+Z)"
+            >
+              <Undo2 size={16} />
+            </button>
+            <div className="w-px h-4 bg-gray-600 mx-1" />
+            <button 
+              onClick={redo}
+              disabled={!canRedo}
+              className="p-1.5 rounded hover:bg-gray-600 text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              title="Redo (Ctrl+Shift+Z)"
+            >
+              <Redo2 size={16} />
+            </button>
+          </div>
+
+          <button 
+            onClick={() => setShowCustomizePanel(!showCustomizePanel)}
+            className="px-4 py-2 bg-blue-600 rounded text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors"
+          >
+            {showCustomizePanel ? <><EyeOff size={14}/> Preview</> : <><Settings size={14}/> Customize</>}
+          </button>
+        </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden relative">
