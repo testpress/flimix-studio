@@ -48,13 +48,15 @@ const BuilderLayout = () => {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+      const isUndo = (e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey;
+      const isRedo = ((e.metaKey || e.ctrlKey) && e.key === 'z' && e.shiftKey) || (e.ctrlKey && e.key === 'y' && !e.shiftKey);
+
+      if (isUndo) {
         e.preventDefault();
-        if (e.shiftKey) {
-          if (canRedo) redo();
-        } else {
-          if (canUndo) undo();
-        }
+        if (canUndo) undo();
+      } else if (isRedo) {
+        e.preventDefault();
+        if (canRedo) redo();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
