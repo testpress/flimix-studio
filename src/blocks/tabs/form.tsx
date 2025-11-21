@@ -79,15 +79,15 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-medium text-gray-900">Tabs</h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="text-lg font-medium text-neutral-900">Tabs</h3>
+            <p className="text-sm text-neutral-500">
               {(tabsBlock.props.tabs?.length || 0)}/{TABS_ITEM_LIMIT} tabs
             </p>
           </div>
           <button
             onClick={handleAddTab}
             disabled={(tabsBlock.props.tabs?.length || 0) >= TABS_ITEM_LIMIT}
-            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo600 hover:bg-indigo700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Tab
@@ -105,19 +105,19 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         <div className="space-y-3">
           {tabsBlock.props.tabs?.map((tab) => (
-            <div key={tab.id} className="border border-gray-200 rounded-lg p-4">
+            <div key={tab.id} className="border border-neutral-700 rounded-lg p-4">
               {editingTab?.id === tab.id ? (
                 // Edit mode
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-300 mb-1">
                       Tab Label
                     </label>
                     <input
                       type="text"
                       value={editingTab.label || ''}
                       onChange={(e) => handleTabLabelChange(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded text-sm"
+                      className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       placeholder="Enter tab label"
                     />
                   </div>
@@ -131,7 +131,7 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     </button>
                     <button
                       onClick={handleCancelEdit}
-                      className="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
+                      className="px-3 py-1 text-sm bg-neutral-600 text-white rounded hover:bg-neutral-900"
                     >
                       Cancel
                     </button>
@@ -141,16 +141,16 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 // View mode
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-medium text-gray-900">{tab.label}</h4>
-                    <p className="text-sm text-gray-500">ID: {tab.id}</p>
-                    <p className="text-sm text-gray-500">
+                    <h4 className="font-medium text-neutral-900">{tab.label}</h4>
+                    <p className="text-sm text-neutral-500">ID: {tab.id}</p>
+                    <p className="text-sm text-neutral-500">
                       {tab.children?.length || 0} content blocks
                     </p>
                   </div>
                   <div className="flex space-x-2">
                     <button
                       onClick={() => handleEditTab(tab)}
-                      className="p-2 text-gray-400 hover:text-gray-600"
+                      className="p-2 text-neutral-400 hover:text-neutral-600"
                       title="Edit tab"
                     >
                       <Edit3 className="w-4 h-4" />
@@ -169,7 +169,7 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           ))}
 
           {(!tabsBlock.props.tabs || tabsBlock.props.tabs.length === 0) && (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-neutral-500">
               <p>No tabs configured</p>
               <p className="text-sm">Click "Add Tab" to create your first tab (max {TABS_ITEM_LIMIT} tabs)</p>
             </div>

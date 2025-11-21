@@ -52,11 +52,11 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
             </h2>
             
             {/* Render Context Controls */}
-            <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-800 rounded-lg">
+            <div className="flex flex-wrap items-center gap-4 p-4 bg-neutral-800 rounded-lg">
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-300 font-medium">Platform:</label>
+                <label className="text-sm text-neutral-300 font-medium">Platform:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="border border-neutral-600 bg-neutral-900 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.platform || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -71,9 +71,9 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-300 font-medium">Region:</label>
+                <label className="text-sm text-neutral-300 font-medium">Region:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="border border-neutral-600 bg-neutral-900 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.region || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -90,9 +90,9 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-300 font-medium">Tier:</label>
+                <label className="text-sm text-neutral-300 font-medium">Tier:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="border border-neutral-600 bg-neutral-900 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.subscriptionTier || 'all'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -107,9 +107,9 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-300 font-medium">Login Status:</label>
+                <label className="text-sm text-neutral-300 font-medium">Login Status:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="border border-neutral-600 bg-neutral-900 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.isLoggedIn?.toString() || 'true'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -122,9 +122,9 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-300 font-medium">Subscription:</label>
+                <label className="text-sm text-neutral-300 font-medium">Subscription:</label>
                 <select
-                  className="border border-gray-600 bg-gray-700 text-white rounded px-2 py-1 text-sm"
+                  className="border border-neutral-600 bg-neutral-900 text-white rounded px-2 py-1 text-sm"
                   value={visibilityContext.isSubscribed?.toString() || 'false'}
                   onChange={e => setVisibilityContext(ctx => ({ 
                     ...ctx, 
@@ -137,14 +137,14 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
               </div>
             </div>
             
-            <p className="text-gray-400">Rendering {currentPage.blocks.length} blocks</p>
+            <p className="text-neutral-400">Rendering {currentPage.blocks.length} blocks</p>
             {showDebug && (
               <>
-                <p className="text-xs text-yellow-400 mt-2 bg-gray-700 p-2 rounded flex items-center gap-2">
+                <p className="text-xs text-yellow-400 mt-2 bg-neutral-900 p-2 rounded flex items-center gap-2">
                   <Search className="w-4 h-4" />
                   Debug mode enabled - hidden blocks will show debug messages
                 </p>
-                <pre className="text-xs text-gray-300 bg-gray-700 rounded p-2 mt-2 overflow-x-auto">
+                <pre className="text-xs text-neutral-300 bg-neutral-900 rounded p-2 mt-2 overflow-x-auto">
                   {JSON.stringify(visibilityContext, null, 2)}
                 </pre>
               </>

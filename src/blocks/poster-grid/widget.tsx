@@ -160,7 +160,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                 {title}
               </h2>
             )}
-            <p className="text-gray-500 text-center">No posters added</p>
+            <p className="text-neutral-500 text-center">No posters added</p>
           </div>
         </BaseWidget>
       </div>
@@ -249,7 +249,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                   handleItemClick(item.id);
                 }}
                 className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
-                  isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                  isItemSelected(block.id, item.id) ? 'ring-2 ring-indigo500 ring-offset-1' : ''
                 }`}
               >
                 <div className={`${getAspectRatioClass()} overflow-hidden ${
@@ -290,17 +290,17 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                      (showDuration && item.meta?.duration) ? (
                       <div className="flex items-center gap-2 flex-wrap">
                         {showRating && item.meta?.rating && (
-                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-neutral-800 text-white">
                             {item.meta.rating}
                           </span>
                         )}
                         {showBadge && item.meta?.badge && (
-                          <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
+                          <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-neutral-800 text-white`}>
                             {item.meta.badge}
                           </span>
                         )}
                         {showDuration && item.meta?.duration && (
-                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-neutral-800 text-white">
                             {item.meta.duration}
                           </span>
                         )}
@@ -310,7 +310,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                     {/* Progress Bar - only render if enabled */}
                     {progressBar?.enabled && (
                       <div className="mt-2 mb-2">
-                        <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
                           <div 
                             className="h-full" 
                             style={{ 

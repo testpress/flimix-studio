@@ -132,7 +132,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   const BADGE_COLORS: Record<string, string> = {
     'new': 'bg-green-100 text-green-800',
     'popular': 'bg-red-100 text-red-800',
-    'featured': 'bg-blue-100 text-blue-800',
+    'featured': 'bg-indigo100 text-indigo800',
     'trending': 'bg-orange-100 text-orange-800',
     'hot': 'bg-pink-100 text-pink-800',
     'exclusive': 'bg-purple-100 text-purple-800',
@@ -141,7 +141,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
   const getBadgeColor = (badge: string) => {
-    return BADGE_COLORS[badge.toLowerCase()] || 'bg-gray-100 text-gray-800';
+    return BADGE_COLORS[badge.toLowerCase()] || 'bg-neutral-100 text-neutral-800';
   };
 
   // Calculate dynamic scroll amount based on item width and gap
@@ -403,7 +403,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                 {title}
               </h2>
             )}
-            <p className="text-gray-500 text-center">No carousel items added</p>
+            <p className="text-neutral-500 text-center">No carousel items added</p>
           </div>
         </BaseWidget>
       </div>
@@ -493,7 +493,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                   e.stopPropagation();
                   handleScrollLeft();
                 }}
-                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-2 mr-2 z-10"
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 ml-2 mr-2 z-10"
               >
                 <ArrowLeft size={20} />
               </button>
@@ -521,7 +521,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                         handleItemClick(item.id);
                       }}
                       className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
-                        isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                        isItemSelected(block.id, item.id) ? 'ring-2 ring-indigo500 ring-offset-1' : ''
                       }`}
                     >
                       <div className={`${getItemShapeClass()} overflow-hidden ${
@@ -565,7 +565,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           {/* Progress Bar - only render if enabled */}
                         {props.progressBar?.enabled && (
                           <div className="mt-2 mb-2">
-                            <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                            <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
                               <div 
                                 className="h-full" 
                                 style={{ 
@@ -588,12 +588,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                                 </span>
                               )}
                               {props.showRating && item.meta?.rating && (
-                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-700">
                                   {item.meta.rating}
                                 </span>
                               )}
                               {props.showDuration && item.meta?.duration && (
-                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-700">
                                   {item.meta.duration}
                                 </span>
                               )}
@@ -622,7 +622,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                   e.stopPropagation();
                   handleScrollRight();
                 }}
-                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-2 ml-2 z-10"
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 mr-2 ml-2 z-10"
               >
                 <ArrowRight size={20} />
               </button>

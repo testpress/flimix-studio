@@ -354,7 +354,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
     
     return createPortal(
       <div 
-        className="fixed z-[9999] bg-white border border-gray-200 rounded-lg p-4 shadow-lg"
+        className="fixed z-[9999] bg-neutral-800 border border-neutral-700 rounded-lg p-4 shadow-lg"
         style={{
           width: '250px',
           top: tooltipPosition.top,
@@ -366,18 +366,18 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       >
         <div className="flex items-center space-x-2 mb-2">
           <IconComponent size={18} />
-          <h3 className="font-medium text-gray-900">{tooltipContent.name}</h3>
+          <h3 className="font-medium text-white">{tooltipContent.name}</h3>
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-neutral-300">
           {tooltipContent.description}
         </p>
         {/* Arrow pointing to the block - position depends on which side the tooltip is on */}
         {tooltipPosition.left > window.innerWidth / 2 ? (
           /* Arrow pointing right when tooltip is on the left side */
-          <div className="absolute top-4 right-0 transform translate-x-1/2 rotate-45 w-3 h-3 bg-white border-t border-r border-gray-200"></div>
+          <div className="absolute top-4 right-0 transform translate-x-1/2 rotate-45 w-3 h-3 bg-neutral-800 border-t border-r border-neutral-700"></div>
         ) : (
           /* Arrow pointing left when tooltip is on the right side */
-          <div className="absolute top-4 left-0 transform -translate-x-1/2 rotate-45 w-3 h-3 bg-white border-l border-b border-gray-200"></div>
+          <div className="absolute top-4 left-0 transform -translate-x-1/2 rotate-45 w-3 h-3 bg-neutral-800 border-l border-b border-neutral-700"></div>
         )}
       </div>,
       document.body
@@ -392,9 +392,10 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       <button 
         className={`
           w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
-          ${isOpen 
-            ? 'bg-blue-500 text-white shadow-lg scale-110' 
-            : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+          ${
+            isOpen 
+            ? 'bg-indigo-600 text-white shadow-lg scale-110' 
+            : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-600'
           }
         `}
         title={`Insert block ${position} this block`}
@@ -419,12 +420,12 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
       {/* Dropdown panel - positioned above the plus button */}
       {isOpen && (
         <div 
-          className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white border border-gray-200 rounded-lg p-3 shadow-lg min-w-[260px] max-w-[400px] z-50"
+          className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-neutral-800 border border-neutral-700 rounded-lg p-3 shadow-lg min-w-[260px] max-w-[400px] z-50"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center space-x-2 mb-3">
-            <Plus size={16} className="text-blue-500" />
-            <h3 className="text-sm font-medium text-gray-900">
+            <Plus size={16} className="text-indigo-500" />
+            <h3 className="text-sm font-medium text-white">
               Insert block {position} this block
             </h3>
           </div>
@@ -432,14 +433,14 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
           {/* Search bar */}
           <div className="mb-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
               <input
                 type="text"
                 placeholder="Search blocks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full pl-10 pr-4 py-2 border border-neutral-700 bg-neutral-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
               />
             </div>
           </div>
@@ -448,7 +449,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
           <div className="grid gap-2 grid-cols-4">
             {searchFilteredTemplates.length === 0 ? (
               <div 
-                className="col-span-4 flex flex-col items-center justify-center py-4 text-gray-500"
+                className="col-span-4 flex flex-col items-center justify-center py-4 text-neutral-400"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Search size={20} className="mb-2" />
@@ -471,17 +472,17 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({ position, blo
                         setTooltipVisible(false);
                       }}
                       data-template-type={template.type}
-                      className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
+                      className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-neutral-900 border border-neutral-700 rounded-lg hover:border-indigo-500 hover:shadow-md transition-all duration-200"
                     >
                       {/* Icon */}
-                      <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-1">
+                      <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-neutral-800 text-neutral-300 mb-1">
                         <IconComponent 
                           size={14} 
                         />
                       </div>
                       
                       {/* Name */}
-                      <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
+                      <span className="text-xs font-medium text-white text-center leading-tight w-full px-1 whitespace-normal">
                         {template.name}
                       </span>
                     </button>

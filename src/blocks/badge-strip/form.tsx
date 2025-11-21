@@ -17,10 +17,10 @@ const BadgeStripForm: React.FC<BlockFormProps> = ({ block }) => {
   return (
     <div className="space-y-4">
       {/* Item Count and Limit Warning */}
-      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="p-4 bg-indigo50 border border-indigo200 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-blue-800">
+            <span className="text-sm font-medium text-indigo800">
               Badges: {itemCount}/{BADGE_STRIP_ITEM_LIMIT}
             </span>
           </div>
@@ -37,7 +37,7 @@ const BadgeStripForm: React.FC<BlockFormProps> = ({ block }) => {
           </p>
         )}
         {!isAtLimit && (
-          <p className="text-xs text-blue-700 mt-1">
+          <p className="text-xs text-indigo700 mt-1">
             You can add up to {BADGE_STRIP_ITEM_LIMIT - itemCount} more badges.
           </p>
         )}

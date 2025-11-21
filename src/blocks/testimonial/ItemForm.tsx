@@ -80,7 +80,7 @@ const TestimonialItemForm: React.FC<TestimonialItemFormProps> = ({
 
   return (
     <div className="space-y-4">
-      <h3 className="font-medium text-gray-700">{title}</h3>
+      <h3 className="font-medium text-neutral-700">{title}</h3>
       
       {/* Use BaseItemForm for all fields including rating */}
       <BaseItemForm<TestimonialItem>

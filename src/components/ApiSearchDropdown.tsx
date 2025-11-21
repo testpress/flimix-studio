@@ -151,7 +151,7 @@ export function ApiSearchDropdown<T>({
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-neutral-300 mb-1">
           {label}
         </label>
       )}
@@ -165,9 +165,9 @@ export function ApiSearchDropdown<T>({
           onFocus={() => setIsOpen(true)}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+          className={`w-full pl-10 pr-4 py-2 border border-neutral-700 bg-neutral-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm ${disabled ? 'bg-neutral-600 cursor-not-allowed' : ''}`}
         />
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">
           <Search size={16} />
         </div>
         {query && (
@@ -177,7 +177,7 @@ export function ApiSearchDropdown<T>({
                 setQuery('');
                 searchInputRef.current?.focus();
               }}
-              className="p-1 hover:text-gray-600"
+              className="p-1 hover:text-neutral-300"
             >
               <X size={16} />
             </button>
@@ -187,15 +187,15 @@ export function ApiSearchDropdown<T>({
       
       {isOpen && (
         <div 
-          className="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-72 overflow-y-auto"
+          className="absolute z-50 mt-1 w-full bg-neutral-800 border border-neutral-700 rounded-md shadow-lg max-h-72 overflow-y-auto"
           onScroll={handleDropdownScroll}
         >
           {loading && items.length === 0 ? (
-            <div className="p-4 text-center text-sm text-gray-500">Loading...</div>
+            <div className="p-4 text-center text-sm text-neutral-400">Loading...</div>
           ) : error ? (
             <div className="p-4 text-center text-sm text-red-500">{error}</div>
           ) : items.length === 0 ? (
-            <div className="p-4 text-center text-sm text-gray-500">
+            <div className="p-4 text-center text-sm text-neutral-500">
               {debouncedQuery ? noResultsMessage : 'Start typing to search...'}
             </div>
           ) : (
@@ -210,7 +210,7 @@ export function ApiSearchDropdown<T>({
               
               {/* Loading indicator for more items */}
               {isLoadingMore && (
-                <div className="p-3 text-center text-sm text-gray-500 border-t">
+                <div className="p-3 text-center text-sm text-neutral-500 border-t">
                   Loading more...
                 </div>
               )}
@@ -238,7 +238,7 @@ export function ApiSearchDropdown<T>({
               
               {/* End of results indicator */}
               {!hasMore && items.length > 0 && !loadMoreError && (
-                <div className="p-3 text-center text-xs text-gray-400 border-t">
+                <div className="p-3 text-center text-xs text-neutral-400 border-t">
                   End of results
                 </div>
               )}

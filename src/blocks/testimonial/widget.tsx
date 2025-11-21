@@ -380,7 +380,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           <Star
             key={i}
             size={14}
-            className={`sm:w-4 sm:h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+            className={`sm:w-4 sm:h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-neutral-300'}`}
           />
         ))}
       </div>
@@ -391,8 +391,8 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const renderTestimonialItem = (item: TestimonialItem, index: number) => (
     <div key={item.id} className="relative group">
       <div 
-        className={`bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
-          isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''
+        className={`bg-neutral-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
+          isItemSelected(block.id, item.id) ? 'ring-2 ring-indigo500 ring-offset-2 ring-offset-black' : ''
         }`}
         onClick={() => handleItemClick(item.id)}
       >
@@ -431,7 +431,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
               <p className="font-semibold text-white text-sm sm:text-base truncate">{item.name}</p>
             )}
             {item.designation && (
-              <p className="text-xs sm:text-sm text-gray-300 truncate">{item.designation}</p>
+              <p className="text-xs sm:text-sm text-neutral-300 truncate">{item.designation}</p>
             )}
           </div>
         </div>
@@ -459,7 +459,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
               e.stopPropagation();
               handleScrollLeft();
             }}
-            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 mr-2 sm:mr-4 z-10"
+            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 mr-2 sm:mr-4 z-10"
           >
             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
           </button>
@@ -495,7 +495,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
               e.stopPropagation();
               handleScrollRight();
             }}
-            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 ml-2 sm:ml-4 z-10"
+            className="hidden sm:flex flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 ml-2 sm:ml-4 z-10"
           >
             <ArrowRight size={16} className="sm:w-5 sm:h-5" />
           </button>
@@ -508,7 +508,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           {canScrollLeft && (
             <button 
               onClick={handleScrollLeft}
-              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
+              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900"
             >
               <ArrowLeft size={14} />
             </button>
@@ -516,7 +516,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           {canScrollRight && (
             <button 
               onClick={handleScrollRight}
-              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
+              className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900"
             >
               <ArrowRight size={14} />
             </button>
@@ -595,7 +595,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
                   {title}
                 </h2>
               )}
-              <p className="text-gray-500 text-center text-sm sm:text-base">No testimonials added</p>
+              <p className="text-neutral-500 text-center text-sm sm:text-base">No testimonials added</p>
             </div>
           </BaseWidget>
         </div>

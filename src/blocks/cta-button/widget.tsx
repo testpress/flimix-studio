@@ -75,7 +75,7 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
       <div className={`flex ${getAlignmentClass()}`}>
         <a
           href={link}
-          className={`inline-block ${getSizeClasses()} ${getVariantClasses()} font-medium ${borderRadiusClass} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+          className={`inline-block ${getSizeClasses()} ${getVariantClasses()} font-medium ${borderRadiusClass} focus:outline-none focus:ring-2 focus:ring-indigo500 focus:ring-offset-2`}
           style={{
             backgroundColor: (variant === 'solid' && !style?.backgroundColor) ? '#1f2937' : style?.backgroundColor,
             color: (variant === 'solid' && !style?.textColor) ? '#ffffff' : style?.textColor,

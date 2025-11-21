@@ -97,7 +97,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required={field.required}
           />
         );
@@ -123,7 +123,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             placeholder={field.placeholder}
             min={field.min}
             max={field.max}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required={field.required}
           />
         );
@@ -134,7 +134,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full p-2 border border-gray-300 rounded text-sm h-20 resize-none"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm h-20 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required={field.required}
           />
         );
@@ -146,7 +146,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         );
         
@@ -156,7 +156,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             type="color"
             value={String(value) || '#000000'}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
-            className="w-full h-10 border border-gray-300 rounded text-sm"
+            className="w-full h-10 border border-neutral-700 bg-neutral-900 rounded text-sm"
           />
         );
         
@@ -166,7 +166,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             type="checkbox"
             checked={Boolean(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.checked)}
-            className="rounded"
+            className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0"
           />
         );
         
@@ -175,7 +175,7 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
           <select
             value={String(value) || ''}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required={field.required}
           >
             {!value && <option value="">Select an option...</option>}
@@ -194,21 +194,21 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
             value={String(value)}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         );
     }
   };
 
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
-      <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
+    <div className="p-4 bg-neutral-800 rounded-lg">
+      <h3 className="font-medium text-white mb-2">Properties</h3>
       <div className="space-y-3">
         {fieldDefinitions.map((field) => (
           <div key={field.key}>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label className="block text-sm text-neutral-300 mb-1">
               {field.label}
-              {field.required && <span className="text-red-500 ml-1">*</span>}
+              {field.required && <span className="text-red-400 ml-1">*</span>}
             </label>
             {renderField(field)}
           </div>

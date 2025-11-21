@@ -39,8 +39,8 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
     dotted: 'border-dotted',
   };
 
-  // Use default gray border class, color will be applied via inline styles
-  const colorClass = 'border-gray-300';
+  // Use default neutral border class, color will be applied via inline styles
+  const colorClass = 'border-neutral-300';
 
   // Handle length styling
   const getLengthStyle = () => {

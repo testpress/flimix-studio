@@ -144,27 +144,29 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   }, [duplicateWarning]);
   
   return (
-    <div>
+    <div className="space-y-4">
       
       {/* Carousel Controls */}
+      <div>
       <CarouselControls
         heroBlock={heroBlock}
         updateProps={updateProps}
       />
+      </div>
       
       {/* Movie Picker Section */}
-      <div className="p-4 bg-gray-50 rounded-lg mb-4">
-        <h3 className="font-medium text-gray-700 mb-4">Movie Picker</h3>
-        <p className="text-sm text-gray-600 mb-3">
+      <div className="p-4 bg-neutral-800 rounded-lg mb-4">
+        <h3 className="font-medium text-white mb-4">Movie Picker</h3>
+        <p className="text-sm text-neutral-400 mb-3">
           Search for movies and add them to your hero. Movies will be added to the end of your hero items list.
         </p>
         
         {/* Duplicate item warning */}
         {duplicateWarning && (
-          <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="mb-3 p-3 bg-yellow-900 border border-yellow-700 rounded-lg">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-yellow-600" />
-              <span className="text-sm font-medium text-yellow-700">
+              <AlertCircle className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm font-medium text-yellow-300">
                 {duplicateWarning}
               </span>
             </div>
@@ -179,7 +181,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           getItemId={(movie) => movie.id}
           renderItem={(movie, onSelect) => (
             <div 
-              className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"
+              className="px-4 py-2 cursor-pointer hover:bg-neutral-900 flex items-center gap-3"
               onClick={() => onSelect(movie)}
             >
               {movie.image && (
@@ -194,9 +196,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 />
               )}
               <div>
-                <div className="font-medium text-sm">{movie.title}</div>
+                <div className="font-medium text-sm text-white">{movie.title}</div>
                 {movie.subtitle && (
-                  <div className="text-xs text-gray-500">{movie.subtitle}</div>
+                  <div className="text-xs text-neutral-400">{movie.subtitle}</div>
                 )}
               </div>
             </div>
@@ -208,15 +210,15 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       {/* Consolidated Content Section */}
       <div className="space-y-4">
         {/* Block Configuration Section */}
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium text-gray-700 mb-4">Block Configuration</h3>
+        <div className="p-4 bg-neutral-800 rounded-lg">
+          <h3 className="font-medium text-white mb-4">Block Configuration</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Variant</label>
+              <label className="block text-sm font-medium text-neutral-300 mb-1">Hero Variant</label>
               <select
                 value={heroBlock.props.variant || 'single'}
                 onChange={(e) => updateProps({ ...heroBlock.props, variant: e.target.value as 'single' | 'carousel' })}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="single">Single</option>
                 <option value="carousel">Carousel</option>
@@ -224,11 +226,11 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
+              <label className="block text-sm font-medium text-neutral-300 mb-1">Aspect Ratio</label>
               <select
                 value={heroBlock.props.aspectRatio || '16:9'}
                 onChange={(e) => updateProps({ ...heroBlock.props, aspectRatio: e.target.value as '16:9' | 'auto' | 'custom' })}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="16:9">16:9</option>
                 <option value="auto">Auto</option>
@@ -239,7 +241,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           
           {heroBlock.props.aspectRatio === 'custom' && (
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Custom Height</label>
+              <label className="block text-sm font-medium text-neutral-300 mb-1">Custom Height</label>
               <div className="flex items-center">
                 <input
                   type="number"
@@ -256,13 +258,13 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                       updateProps({ ...heroBlock.props, customHeight: '600px' });
                     }
                   }}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Enter height in pixels"
                   min="600"
                   max="1000"
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-neutral-400 mt-1">
                 Enter a custom height value in pixels (min: 600px, max: 1000px)
               </p>
             </div>
@@ -273,15 +275,15 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         {heroBlock.props.items && heroBlock.props.items.length > 0 ? (
           <>
             {/* Current Item Preview */}
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div className="p-4 bg-neutral-800 rounded-lg">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-medium text-gray-700">Current Item Preview</h3>
+                <h3 className="font-medium text-white">Current Item Preview</h3>
                 {selectedItemId && selectedItemBlockId === heroBlock.id ? (
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-indigo-900 text-indigo-300 px-2 py-1 rounded-full">
                     Editing Item {editingItemIndex + 1}
                   </span>
                 ) : (
-                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-neutral-900 text-neutral-300 px-2 py-1 rounded-full">
                     Carousel Item {editingItemIndex + 1}
                   </span>
                 )}
@@ -290,8 +292,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
               <div className="space-y-4">
                 {/* Title Preview */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                  <div className="p-3 bg-gray-100 rounded">
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Title</label>
+                  <div className="p-3 bg-neutral-900 rounded">
                     {currentItem.titleType === 'image' && currentItem.titleImage ? (
                       <div className="flex justify-center">
                         <img 
@@ -305,33 +307,33 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                         />
                       </div>
                     ) : (
-                      <div className="font-bold text-lg">{currentItem.title || 'No title'}</div>
+                      <div className="font-bold text-lg text-white">{currentItem.title || 'No title'}</div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-neutral-400 mt-1">
                     Title is automatically populated from the Movie API
                   </p>
                 </div>
                 
                 {/* Subtitle Preview */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-                  <div className="p-3 bg-gray-100 rounded">
-                    <div className="text-sm">{currentItem.subtitle || 'No subtitle'}</div>
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Subtitle</label>
+                  <div className="p-3 bg-neutral-900 rounded">
+                    <div className="text-sm text-white">{currentItem.subtitle || 'No subtitle'}</div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-neutral-400 mt-1">
                     Subtitle is automatically populated from the Movie API
                   </p>
                 </div>
                 
                 {/* Background Preview */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Background</label>
-                  <div className="p-3 bg-gray-100 rounded">
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Background</label>
+                  <div className="p-3 bg-neutral-900 rounded">
                     {currentItem.videoBackground ? (
-                      <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
+                      <div className="text-sm text-white">Video Background: {currentItem.videoBackground}</div>
                     ) : currentItem.backgroundImage ? (
-                      <div className="aspect-video bg-gray-200 relative overflow-hidden">
+                      <div className="aspect-video bg-neutral-800 relative overflow-hidden">
                         <img 
                           src={currentItem.backgroundImage} 
                           alt="Background" 
@@ -343,25 +345,25 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                         />
                       </div>
                     ) : (
-                      <div className="text-sm">No background</div>
+                      <div className="text-sm text-white">No background</div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-neutral-400 mt-1">
                     Background is automatically populated from the Movie API
                   </p>
                 </div>
                 
                 {/* Metadata Preview */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Metadata</label>
-                  <div className="p-3 bg-gray-100 rounded">
-                    <div className="text-sm">
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Metadata</label>
+                  <div className="p-3 bg-neutral-900 rounded">
+                    <div className="text-sm text-white">
                       {currentItem.metadata?.year && <span className="mr-2">Year: {currentItem.metadata.year}</span>}
                       {currentItem.metadata?.language && <span>Language: {currentItem.metadata.language}</span>}
                       {!currentItem.metadata?.year && !currentItem.metadata?.language && <span>No metadata</span>}
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-neutral-400 mt-1">
                     Metadata is automatically populated from the Movie API
                   </p>
                 </div>
@@ -369,9 +371,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             </div>
             
             {/* Item Display Options */}
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
-              <p className="text-sm text-gray-600 mb-3">
+            <div className="p-4 bg-neutral-800 rounded-lg">
+              <h3 className="font-medium text-white mb-4">Display Options</h3>
+              <p className="text-sm text-neutral-400 mb-3">
                 Control which elements are displayed for the current hero item.
               </p>
               
@@ -382,9 +384,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     id="showTitle"
                     checked={currentItem.showTitle !== false}
                     onChange={e => updateCurrentHeroItem({ showTitle: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showTitle" className="text-sm text-gray-700">
+                  <label htmlFor="showTitle" className="text-sm text-neutral-300">
                     Show Title
                   </label>
                 </div>
@@ -395,9 +397,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     id="showSubtitle"
                     checked={currentItem.showSubtitle !== false}
                     onChange={e => updateCurrentHeroItem({ showSubtitle: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showSubtitle" className="text-sm text-gray-700">
+                  <label htmlFor="showSubtitle" className="text-sm text-neutral-300">
                     Show Subtitle
                   </label>
                 </div>
@@ -408,9 +410,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     id="showBadges"
                     checked={currentItem.showBadges !== false}
                     onChange={e => updateCurrentHeroItem({ showBadges: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showBadges" className="text-sm text-gray-700">
+                  <label htmlFor="showBadges" className="text-sm text-neutral-300">
                     Show Badges
                   </label>
                 </div>
@@ -421,9 +423,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     id="showMeta"
                     checked={currentItem.showMeta !== false}
                     onChange={e => updateCurrentHeroItem({ showMeta: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showMeta" className="text-sm text-gray-700">
+                  <label htmlFor="showMeta" className="text-sm text-neutral-300">
                     Show Metadata (Year, Language)
                   </label>
                 </div>
@@ -434,9 +436,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     id="showHashtag"
                     checked={currentItem.showHashtag !== false}
                     onChange={e => updateCurrentHeroItem({ showHashtag: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showHashtag" className="text-sm text-gray-700">
+                  <label htmlFor="showHashtag" className="text-sm text-neutral-300">
                     Show Hashtag
                   </label>
                 </div>
@@ -445,16 +447,16 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             
             {/* Hashtag Customization Section */}
             {currentItem.hashtag && (
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-medium text-gray-700 mb-4">Hashtag Customization</h3>
-                <p className="text-sm text-gray-600 mb-3">
+              <div className="p-4 bg-neutral-800 rounded-lg">
+                <h3 className="font-medium text-white mb-4">Hashtag Customization</h3>
+                <p className="text-sm text-neutral-400 mb-3">
                   Customize the appearance of your hashtag. The hashtag text comes from the API.
                 </p>
                 
                 <div className="grid grid-cols-2 gap-4">
                   {/* Hashtag Color */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Color</label>
+                    <label className="block text-sm font-medium text-neutral-300 mb-1">Hashtag Color</label>
                     <input
                       type="color"
                       value={currentItem.hashtag.color || '#dc2626'}
@@ -468,13 +470,13 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                           });
                         }
                       }}
-                      className="w-full h-10 border border-gray-300 rounded cursor-pointer"
+                      className="w-full h-10 border border-neutral-700 rounded cursor-pointer"
                     />
                   </div>
                   
                   {/* Hashtag Size */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
+                    <label className="block text-sm font-medium text-neutral-300 mb-1">Hashtag Size</label>
                     <select
                       value={currentItem.hashtag.size || 'medium'}
                       onChange={(e) => {
@@ -487,7 +489,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                           });
                         }
                       }}
-                      className="w-full p-2 border border-gray-300 rounded"
+                      className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="small">Small</option>
                       <option value="medium">Medium</option>
@@ -498,8 +500,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 </div>
                 
                 {/* Hashtag Preview */}
-                <div className="mt-4 p-3 bg-gray-100 rounded">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                <div className="mt-4 p-3 bg-neutral-900 rounded">
+                  <label className="block text-sm font-medium text-neutral-300 mb-2">Preview</label>
                   <span 
                     className={`font-bold ${getHashtagSizeClass(currentItem.hashtag.size)}`}
                     style={{ color: currentItem.hashtag.color || '#dc2626' }}
@@ -511,8 +513,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             )}
             
             {/* CTAs Section */}
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <h3 className="font-medium text-gray-700 mb-4">Call-to-Action Buttons</h3>
+            <div className="p-4 bg-neutral-800 rounded-lg">
+              <h3 className="font-medium text-white mb-4">Call-to-Action Buttons</h3>
               <CTAsTab
                 currentItem={currentItem}
                 updateHeroItemPrimaryCTA={updateHeroItemPrimaryCTA}
@@ -523,10 +525,10 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           </>
         ) : (
           /* Message when no hero items exist */
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="p-4 bg-indigo900 border border-indigo700 rounded-lg">
             <div className="text-center">
-              <h3 className="font-medium text-blue-700 mb-2">No Hero Items Added Yet</h3>
-              <p className="text-sm text-blue-600 mb-3">
+              <h3 className="font-medium text-indigo300 mb-2">No Hero Items Added Yet</h3>
+              <p className="text-sm text-indigo200 mb-3">
                 Use the Movie Picker above to search for and add movies to your hero. Once you add items, you'll be able to configure their display options, customize hashtags, and set up call-to-action buttons.
               </p>
             </div>

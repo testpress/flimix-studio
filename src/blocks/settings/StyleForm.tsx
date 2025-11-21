@@ -52,11 +52,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Padding field
   const renderPaddingField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Padding</label>
+      <label className="block text-sm text-neutral-300 mb-1">Padding</label>
       <select
         value={style.padding || 'md'}
         onChange={(e) => handleStyleChange('padding', e.target.value as Padding)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="none">None</option>
         <option value="sm">Small</option>
@@ -69,11 +69,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Margin field
   const renderMarginField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Margin</label>
+      <label className="block text-sm text-neutral-300 mb-1">Margin</label>
       <select
         value={style.margin || 'none'}
         onChange={(e) => handleStyleChange('margin', e.target.value as Padding)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="none">None</option>
         <option value="sm">Small</option>
@@ -86,13 +86,13 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Text Alignment field
   const renderTextAlignField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">
+      <label className="block text-sm text-neutral-300 mb-1">
         {blockType === 'cta-button' || blockType === 'badge-strip' || blockType === 'hero' ? 'Alignment' : 'Text Alignment'}
       </label>
       <select
         value={style.textAlign || 'left'}
         onChange={(e) => handleStyleChange('textAlign', e.target.value as TextAlign)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="left">Left</option>
         <option value="center">Center</option>
@@ -111,34 +111,25 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     
     return (
       <div>
-        <label className="block text-sm text-gray-700 mb-1">Background Color</label>
+        <label className="block text-sm text-neutral-300 mb-1">Background Color</label>
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
               onChange={(e) => handleColorChange(e.target.value, opacity)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-700 bg-neutral-900 rounded text-sm"
             />
-            <div 
-              className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
-              onClick={() => handleColorChange('#ffffff', 0)} // Set transparent on click
-              title="Set transparent"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </div>
           </div>
           <div className="col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <label className="block text-sm text-neutral-300 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
               min="0"
               max="100"
               value={opacity}
               onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-indigo-600"
             />
           </div>
         </div>
@@ -156,34 +147,25 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     
     return (
       <div>
-        <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+        <label className="block text-sm text-neutral-300 mb-1">Text Color</label>
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
               onChange={(e) => handleColorChange(e.target.value, opacity)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-700 bg-neutral-900 rounded text-sm"
             />
-            <div 
-              className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
-              onClick={() => handleColorChange('#000000', 0)} // Set transparent on click
-              title="Set transparent"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </div>
           </div>
           <div className="col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <label className="block text-sm text-neutral-300 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
               min="0"
               max="100"
               value={opacity}
               onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-indigo-600"
             />
           </div>
         </div>
@@ -201,14 +183,14 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     
     return (
       <div>
-        <label className="block text-sm text-gray-700 mb-1">Color</label>
+        <label className="block text-sm text-neutral-300 mb-1">Color</label>
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-1 relative">
             <input
               type="color"
               value={color}
               onChange={(e) => handleColorChange(e.target.value, opacity)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-300 rounded text-sm"
             />
             <div 
               className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
@@ -221,14 +203,14 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
             </div>
           </div>
           <div className="col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Opacity: {opacity}%</label>
+            <label className="block text-sm text-neutral-300 mb-1">Opacity: {opacity}%</label>
             <input
               type="range"
               min="0"
               max="100"
               value={opacity}
               onChange={(e) => handleColorChange(color, parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-indigo-600"
             />
           </div>
         </div>
@@ -240,11 +222,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Border Radius field
   const renderBorderRadiusField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Border Radius</label>
+      <label className="block text-sm text-neutral-300 mb-1">Border Radius</label>
       <select
         value={style.borderRadius || 'none'}
         onChange={(e) => handleStyleChange('borderRadius', e.target.value as BorderRadius)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="none">None</option>
         <option value="sm">Small</option>
@@ -257,11 +239,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Box Shadow field
   const renderBoxShadowField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Box Shadow</label>
+      <label className="block text-sm text-neutral-300 mb-1">Box Shadow</label>
       <select
         value={style.boxShadow || 'none'}
         onChange={(e) => handleStyleChange('boxShadow', e.target.value as BoxShadow)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="none">None</option>
         <option value="sm">Small</option>
@@ -274,11 +256,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Tab Alignment field
   const renderTabAlignmentField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Tab Alignment</label>
+      <label className="block text-sm text-neutral-300 mb-1">Tab Alignment</label>
       <select
         value={style.tabAlignment || 'center'}
         onChange={(e) => handleStyleChange('tabAlignment', e.target.value as TabAlignment)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="left">Left</option>
         <option value="center">Center</option>
@@ -290,11 +272,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Tab Style field
   const renderTabStyleField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Tab Style</label>
+      <label className="block text-sm text-neutral-300 mb-1">Tab Style</label>
       <select
         value={style.tabStyle || 'pill'}
         onChange={(e) => handleStyleChange('tabStyle', e.target.value as TabStyle)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
+        className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         <option value="underline">Underline</option>
         <option value="pill">Pill</option>
@@ -394,8 +376,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   const fieldsToRender = getFieldsToRender(blockType);
 
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
-      <h3 className="font-medium text-gray-700 mb-4">Style Settings</h3>
+    <div className="p-4 bg-neutral-800 rounded-lg">
+      <h3 className="font-medium text-white mb-4">Style Settings</h3>
       
       <div className="space-y-6">
         {fieldsToRender.map((field, index) => (

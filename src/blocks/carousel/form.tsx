@@ -152,9 +152,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       
       {/* Carousel Layout Settings */}
       {/* Movie Picker Section */}
-      <div className="p-4 bg-gray-50 rounded-lg mb-4">
-        <h3 className="font-medium text-gray-700 mb-4">Movie Picker</h3>
-        <p className="text-sm text-gray-600 mb-3">
+      <div className="p-4 bg-neutral-800 rounded-lg mb-4">
+        <h3 className="font-medium text-white mb-4">Movie Picker</h3>
+        <p className="text-sm text-neutral-400 mb-3">
           Search for movies and add them to your carousel. Movies will be added to the end of your carousel.
         </p>
         
@@ -191,7 +191,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           getItemId={(movie) => movie.id}
           renderItem={(movie, onSelect) => (
             <div 
-              className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"
+              className="px-4 py-2 cursor-pointer hover:bg-indigo50 flex items-center gap-3"
               onClick={() => onSelect(movie)}
             >
               {movie.image && (
@@ -208,7 +208,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               <div>
                 <div className="font-medium text-sm">{movie.title}</div>
                 {movie.subtitle && (
-                  <div className="text-xs text-gray-500">{movie.subtitle}</div>
+                  <div className="text-xs text-neutral-400">{movie.subtitle}</div>
                 )}
               </div>
             </div>
@@ -218,9 +218,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       </div>
       
       {/* Display Options Section */}
-      <div className="p-4 bg-gray-50 rounded-lg mb-4">
-        <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
-        <p className="text-sm text-gray-600 mb-3">
+      <div className="p-4 bg-neutral-800 rounded-lg mb-4">
+        <h3 className="font-medium text-white mb-4">Display Options</h3>
+        <p className="text-sm text-neutral-400 mb-3">
           Control which elements are displayed for carousel items. These settings apply to all items.
         </p>
         
@@ -231,9 +231,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               id="showTitle"
               checked={carouselProps.showTitle !== false}
               onChange={e => updateProps({ ...carouselProps, showTitle: e.target.checked })}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showTitle" className="text-sm text-gray-700">
+            <label htmlFor="showTitle" className="text-sm text-neutral-300">
               Show Title
             </label>
           </div>
@@ -244,9 +244,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               id="showSubtitle"
               checked={carouselProps.showSubtitle === true}
               onChange={e => updateProps({ ...carouselProps, showSubtitle: e.target.checked })}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showSubtitle" className="text-sm text-gray-700">
+            <label htmlFor="showSubtitle" className="text-sm text-neutral-300">
               Show Subtitle
             </label>
           </div>
@@ -257,9 +257,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               id="showRating"
               checked={carouselProps.showRating === true}
               onChange={e => updateProps({ ...carouselProps, showRating: e.target.checked })}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showRating" className="text-sm text-gray-700">
+            <label htmlFor="showRating" className="text-sm text-neutral-300">
               Show Rating
             </label>
           </div>
@@ -270,9 +270,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               id="showBadge"
               checked={carouselProps.showBadge === true}
               onChange={e => updateProps({ ...carouselProps, showBadge: e.target.checked })}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showBadge" className="text-sm text-gray-700">
+            <label htmlFor="showBadge" className="text-sm text-neutral-300">
               Show Badge
             </label>
           </div>
@@ -283,9 +283,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               id="showDuration"
               checked={carouselProps.showDuration === true}
               onChange={e => updateProps({ ...carouselProps, showDuration: e.target.checked })}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showDuration" className="text-sm text-gray-700">
+            <label htmlFor="showDuration" className="text-sm text-neutral-300">
               Show Duration
             </label>
           </div>
@@ -302,9 +302,9 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                   handleProgressBarChange('enabled', e.target.checked);
                 }
               }}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showProgress" className="text-sm text-gray-700">
+            <label htmlFor="showProgress" className="text-sm text-neutral-300">
               Show Progress Bar
             </label>
           </div>
@@ -321,17 +321,17 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                   handleButtonChange('enabled', e.target.checked);
                 }
               }}
-              className="rounded"
+              className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="showButton" className="text-sm text-gray-700">
+            <label htmlFor="showButton" className="text-sm text-neutral-300">
               Show Button
             </label>
           </div>
           
           {/* Progress Bar Color */}
           {carouselProps.progressBar?.enabled && (
-            <div className="mt-4 p-3 bg-gray-100 rounded-lg">
-              <label className="block text-sm text-gray-700 mb-2">Progress Bar Color</label>
+            <div className="mt-4 p-3 bg-neutral-900 rounded-lg">
+              <label className="block text-sm text-neutral-300 mb-2">Progress Bar Color</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -343,7 +343,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                   type="text"
                   value={carouselProps.progressBar?.color || '#ff0000'}
                   onChange={e => handleProgressBarChange('color', e.target.value)}
-                  className="flex-1 p-2 border border-gray-300 rounded text-sm"
+                  className="flex-1 p-2 border border-neutral-700 rounded text-sm"
                   placeholder="#ff0000"
                 />
               </div>
@@ -352,40 +352,40 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           
           {/* Button Configuration */}
           {carouselProps.button?.enabled && (
-            <div className="mt-4 p-3 bg-gray-100 rounded-lg space-y-3">
-              <h4 className="font-medium text-sm text-gray-700">Button Configuration</h4>
+            <div className="mt-4 p-3 bg-neutral-900 rounded-lg space-y-3">
+              <h4 className="font-medium text-sm text-neutral-300">Button Configuration</h4>
               
               {/* Button Text */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Button Text</label>
+                <label className="block text-sm text-neutral-300 mb-1">Button Text</label>
                 <input
                   type="text"
                   value={carouselProps.button?.text || 'View All'}
                   onChange={e => handleButtonChange('text', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="View All"
                 />
               </div>
 
               {/* Button Link */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Button Link</label>
+                <label className="block text-sm text-neutral-300 mb-1">Button Link</label>
                 <input
                   type="text"
                   value={carouselProps.button?.link || ''}
                   onChange={e => handleButtonChange('link', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="https://example.com"
                 />
               </div>
 
               {/* Button Alignment */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Button Alignment</label>
+                <label className="block text-sm text-neutral-300 mb-1">Button Alignment</label>
                 <select
                   value={carouselProps.button?.alignment || 'right'}
                   onChange={e => handleButtonChange('alignment', e.target.value as ButtonAlignment)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="left">Left</option>
                   <option value="right">Right</option>
@@ -394,18 +394,18 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
               {/* Button Icon */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Button Icon</label>
+                <label className="block text-sm text-neutral-300 mb-1">Button Icon</label>
                 <select
                   value={carouselProps.button?.icon || 'ArrowRight'}
                   onChange={e => handleButtonChange('icon', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="ArrowRight">Arrow Right</option>
                   <option value="ArrowLeft">Arrow Left</option>
                   <option value="ChevronRight">Chevron Right</option>
                   <option value="ChevronLeft">Chevron Left</option>
                 </select>
-                <div className="mt-2 flex items-center gap-4 p-2 bg-gray-100 rounded">
+                <div className="mt-2 flex items-center gap-4 p-2 bg-neutral-900 rounded">
                   <div className="flex items-center gap-2">
                     <ArrowRight size={16} /> <span className="text-xs">Arrow Right</span>
                   </div>
@@ -423,11 +423,11 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
               {/* Icon Position */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Icon Position</label>
+                <label className="block text-sm text-neutral-300 mb-1">Icon Position</label>
                 <select
                   value={carouselProps.button?.iconPosition || 'right'}
                   onChange={e => handleButtonChange('iconPosition', e.target.value as ButtonIconPosition)}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="left">Left</option>
                   <option value="right">Right</option>
@@ -437,7 +437,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
               {/* Button Text Color */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+                <label className="block text-sm text-neutral-300 mb-1">Text Color</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -449,7 +449,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                     type="text"
                     value={carouselProps.button?.textColor || '#ffffff'}
                     onChange={e => handleButtonChange('textColor', e.target.value)}
-                    className="flex-1 p-2 border border-gray-300 rounded text-sm"
+                    className="flex-1 p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     placeholder="#ffffff"
                   />
                 </div>
@@ -459,26 +459,26 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         </div>
       </div>
       
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-medium text-gray-700 mb-4">Carousel Layout Settings</h3>
+      <div className="p-4 bg-neutral-800 rounded-lg">
+        <h3 className="font-medium text-white mb-4">Carousel Layout Settings</h3>
         
         {/* Item Count and Limit Warning */}
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-3 bg-indigo900 border border-indigo700 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-blue-800">
+              <span className="text-sm font-medium text-indigo200">
                 Items: {itemCount}/{CAROUSEL_ITEM_LIMIT}
               </span>
             </div>
             {isAtLimit && (
               <div className="flex items-center gap-1">
-                <AlertCircle className="w-4 h-4 text-yellow-600" />
-                <span className="text-xs text-yellow-700 font-medium">Limit Reached</span>
+                <AlertCircle className="w-4 h-4 text-yellow-400" />
+                <span className="text-xs text-yellow-300 font-medium">Limit Reached</span>
               </div>
             )}
           </div>
           {isAtLimit && (
-            <p className="text-xs text-yellow-700 mt-1">
+            <p className="text-xs text-yellow-300 mt-1">
               Maximum of {CAROUSEL_ITEM_LIMIT} items allowed. Remove some items before adding more.
             </p>
           )}
@@ -487,11 +487,11 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         <div className="space-y-4">
           {/* Item Size */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Size</label>
+            <label className="block text-sm text-neutral-300 mb-1">Item Size</label>
             <select
-              value={carouselProps.itemSize || 'large'}
+              value={carouselProps.itemSize || 'medium'}
               onChange={e => updateProps({ ...carouselProps, itemSize: e.target.value as ItemSize })}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="small">Small</option>
               <option value="medium">Medium</option>
@@ -502,11 +502,11 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
           {/* Carousel Gap */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Gap</label>
+            <label className="block text-sm text-neutral-300 mb-1">Item Gap</label>
             <select
               value={style?.gridGap || 'md'}
               onChange={e => handleStyleChange('gridGap', e.target.value as GridGap)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="sm">Small</option>
               <option value="md">Medium</option>
@@ -516,11 +516,11 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
           {/* Item Shape */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Shape</label>
+            <label className="block text-sm text-neutral-300 mb-1">Item Shape</label>
             <select
               value={carouselProps.itemShape || 'rectangle-landscape'}
               onChange={e => updateProps({ ...carouselProps, itemShape: e.target.value as ItemShape })}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="rectangle-landscape">Landscape</option>
               <option value="rectangle-portrait">Portrait</option>
@@ -531,40 +531,40 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
           {/* Show Navigation Arrows */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Navigation</label>
+            <label className="block text-sm text-neutral-300 mb-1">Navigation</label>
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id="showArrows"
                 checked={carouselProps.showArrows !== false}
                 onChange={e => updateProps({ ...carouselProps, showArrows: e.target.checked })}
-                className="rounded"
+                className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
               />
-              <label htmlFor="showArrows" className="text-sm text-gray-700">
+              <label htmlFor="showArrows" className="text-sm text-neutral-300">
                 Show Navigation Arrows
               </label>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-neutral-400 mt-1">
               Display left/right arrow buttons for carousel navigation
             </p>
           </div>
 
           {/* Autoplay Settings */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Autoplay</label>
+            <label className="block text-sm text-neutral-300 mb-1">Autoplay</label>
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id="autoplay"
                 checked={carouselProps.autoplay || false}
                 onChange={e => updateProps({ ...carouselProps, autoplay: e.target.checked })}
-                className="rounded"
+                className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
               />
-              <label htmlFor="autoplay" className="text-sm text-gray-700">
+              <label htmlFor="autoplay" className="text-sm text-neutral-300">
                 Enable Autoplay
               </label>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-neutral-400 mt-1">
               Automatically scroll through carousel items
             </p>
           </div>
@@ -572,7 +572,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           {/* Scroll Speed */}
           {carouselProps.autoplay && (
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Scroll Speed (ms)</label>
+              <label className="block text-sm text-neutral-300 mb-1">Scroll Speed (ms)</label>
               <input
                 type="number"
                 min={1000}
@@ -583,11 +583,11 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                   ...carouselProps, 
                   scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 1000))
                 })}
-                className="w-full p-2 border border-gray-300 rounded text-sm"
+                className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="3000"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Time between scroll actions in milliseconds (1000-10000ms)
+              <p className="text-xs text-neutral-400 mt-1">
+                Time between automatic slide transitions (1000-10000ms)
               </p>
             </div>
           )}

@@ -160,7 +160,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
             </h3>
           )}
           
-          <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+          <div className="text-center py-8 text-neutral-500 border-2 border-dashed border-neutral-300 rounded-lg">
             <p className="mb-2">No FAQ items yet</p>
             <p className="text-sm">Click the + button to add your first FAQ (max {FAQ_ACCORDION_ITEM_LIMIT} items)</p>
           </div>
@@ -213,8 +213,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
               <div 
                 key={item.id} 
                 className={`
-                  border border-gray-700 overflow-hidden relative group
-                  ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''}
+                  border border-neutral-700 overflow-hidden relative group
+                  ${isSelected ? 'ring-2 ring-indigo500 ring-offset-2 ring-offset-black' : ''}
                   cursor-pointer
                 `}
                 style={{
@@ -236,15 +236,15 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <HelpCircle size={18} className="text-gray-300 flex-shrink-0" />
+                    <HelpCircle size={18} className="text-neutral-300 flex-shrink-0" />
                     <span className="text-lg">{item.question}</span>
                   </div>
                   
                   <div className="flex-shrink-0">
                     {openIndex === index ? (
-                      <ChevronDown size={20} className="text-gray-300 flex-shrink-0" />
+                      <ChevronDown size={20} className="text-neutral-300 flex-shrink-0" />
                     ) : (
-                      <ChevronRight size={20} className="text-gray-300 flex-shrink-0" />
+                      <ChevronRight size={20} className="text-neutral-300 flex-shrink-0" />
                     )}
                   </div>
                 </div>

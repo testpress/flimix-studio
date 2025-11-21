@@ -195,9 +195,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
   const renderBlockPropsEditor = () => {
     if (!selectedBlock) {
       return (
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
-          <p className="text-sm text-gray-500">Select a block to edit properties</p>
+        <div className="p-4 bg-neutral-800 rounded-lg">
+          <h3 className="font-medium text-white mb-2">Properties</h3>
+          <p className="text-sm text-neutral-400">Select a block to edit properties</p>
         </div>
       );
     }
@@ -215,58 +215,48 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     }
 
     return (
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-medium text-gray-700 mb-2">Properties</h3>
-        <p className="text-sm text-gray-500">No editable props available for this block type</p>
+      <div className="p-4 bg-neutral-800 rounded-lg">
+        <h3 className="font-medium text-white mb-2">Properties</h3>
+        <p className="text-sm text-neutral-400">No editable props available for this block type</p>
       </div>
     );
   };
 
   return (
-    <div className={`${isSettingsOpen ? 'w-[28rem] bg-white border-l border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 transition-all duration-300 ease-in-out overflow-hidden`}>
+    <div className={`${isSettingsOpen ? 'w-[28rem] bg-neutral-900 border-l border-neutral-700' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 transition-all duration-300 ease-in-out overflow-hidden`}>
       <div className={`${isSettingsOpen ? 'p-8' : 'p-0'} min-w-0 h-full min-h-0 flex flex-col`}>
         <div className="mb-6 flex-shrink-0">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">Block Settings</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">Block Settings</h2>
             <button 
               onClick={handleCloseSettings}
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200"
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-neutral-800 text-neutral-300 hover:bg-neutral-900 transition-all duration-200"
               title="Close settings"
             >
               <X size={16} />
             </button>
           </div>
-          <div className="flex items-center justify-between mb-4">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={showDebug}
-                onChange={onToggleShowDebug}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">Debug</span>
-            </label>
-          </div>
+
         </div>
-        <div className="space-y-6 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-2">Selected Block</h3>
+        <div className="space-y-6 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-800">
+          <div className="p-4 bg-neutral-800 rounded-lg">
+            <h3 className="font-medium text-white mb-2">Selected Block</h3>
             {selectedBlock ? (
               <div className="text-sm">
-                <p className="text-gray-700">
+                <p className="text-neutral-300">
                   <span className="font-medium">Type:</span> {selectedBlock.type}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-neutral-300">
                   <span className="font-medium">ID:</span> {selectedBlock.id}
                 </p>
                 {selectedItemId && (
-                  <p className="text-gray-700">
+                  <p className="text-neutral-300">
                     <span className="font-medium">Selected Item:</span> {selectedItemId}
                   </p>
                 )}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No block selected</p>
+              <p className="text-sm text-neutral-400">No block selected</p>
             )}
           </div>
           

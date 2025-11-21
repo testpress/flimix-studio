@@ -28,10 +28,10 @@ const BadgeDisplay: React.FC<BadgeDisplayProps> = ({
       
       {/* Tailwind CSS Tooltip - positioned below the item */}
       {item.tooltip && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-neutral-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
           {item.tooltip}
           {/* Tooltip arrow pointing up */}
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900"></div>
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-neutral-900"></div>
         </div>
       )}
     </div>
@@ -97,7 +97,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
       return <IconComponent className="w-5 h-5" />;
     }
     // Fallback for custom icon names
-    return <span className="w-5 h-5 flex items-center justify-center text-xs font-mono bg-gray-200 rounded">?</span>;
+    return <span className="w-5 h-5 flex items-center justify-center text-xs font-mono bg-neutral-200 rounded">?</span>;
   };
 
   // Helper function to get item styling classes
@@ -152,7 +152,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                   onRemove={() => removeBlockItem(block.id, item.id)}
                   showMoveControls={items.length > 1}
                   showRemoveControl={true}
-                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
+                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-neutral-300"
                 />
               </div>
               
@@ -168,8 +168,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                     rel="noopener noreferrer"
                     className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${
                       isItemSelected 
-                        ? 'ring-2 ring-blue-500 ring-offset-1' 
-                        : 'hover:ring-1 hover:ring-blue-300'
+                        ? 'ring-2 ring-indigo500 ring-offset-1' 
+                        : 'hover:ring-1 hover:ring-indigo300'
                     }`}
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#000000',
@@ -194,8 +194,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                   <div
                     className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${
                       isItemSelected 
-                        ? 'ring-2 ring-blue-500 ring-offset-1' 
-                        : 'hover:ring-1 hover:ring-blue-300'
+                        ? 'ring-2 ring-indigo500 ring-offset-1' 
+                        : 'hover:ring-1 hover:ring-indigo300'
                     }`}
                     style={{
                       backgroundColor: item.style?.backgroundColor || '#000000',
@@ -218,12 +218,12 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
       </div>
       
       {items.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+        <div className="text-center py-8 text-neutral-500">
+          <div className="w-16 h-16 mx-auto mb-4 bg-neutral-100 rounded-full flex items-center justify-center">
             <span className="text-2xl">🏷️</span>
           </div>
           <p className="text-sm font-medium">No badges added yet</p>
-          <p className="text-xs text-gray-400">Click the + button above to add your first badge</p>
+          <p className="text-xs text-neutral-400">Click the + button above to add your first badge</p>
         </div>
       )}
       </BaseWidget>
