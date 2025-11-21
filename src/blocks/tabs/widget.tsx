@@ -122,16 +122,16 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   // Memoize tab style class function
   const getTabStyleClass = useCallback((isActive: boolean) => {
     const baseClass = 'px-4 py-2 rounded transition-all duration-200 font-medium';
-    const activeClass = 'bg-blue-600 text-white shadow-md';
-    const inactiveClass = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
+    const activeClass = 'bg-indigo600 text-white shadow-md';
+    const inactiveClass = 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200';
     
     switch (style?.tabStyle) {
       case 'pill':
         return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
       case 'boxed':
-        return `${baseClass} border ${isActive ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`;
+        return `${baseClass} border ${isActive ? 'border-indigo600 bg-indigo50 text-indigo700' : 'border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50'}`;
       case 'underline':
-        return `${baseClass} border-b-2 ${isActive ? 'border-blue-600 text-blue-700' : 'border-transparent text-gray-700 hover:text-gray-900'}`;
+        return `${baseClass} border-b-2 ${isActive ? 'border-indigo600 text-indigo700' : 'border-transparent text-neutral-700 hover:text-neutral-900'}`;
       default:
         return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
     }
@@ -159,8 +159,8 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   const tabContent = useMemo(() => {
     if (!currentTab) {
       return (
-        <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
-          <p className="text-gray-300 text-center">No tab selected</p>
+        <div className="p-4 border-2 border-dashed border-neutral-600 bg-neutral-800 rounded-lg">
+          <p className="text-neutral-300 text-center">No tab selected</p>
         </div>
       );
     }
@@ -192,9 +192,9 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
             </div>
           ))
         ) : (
-          <div className="p-4 border-2 border-dashed border-gray-600 bg-black rounded-lg">
-            <p className="text-gray-300 text-center">No content in this tab</p>
-            <p className="text-xs text-gray-400 text-center mt-1">Add blocks to populate this tab</p>
+          <div className="p-4 border-2 border-dashed border-neutral-600 bg-black rounded-lg">
+            <p className="text-neutral-300 text-center">No content in this tab</p>
+            <p className="text-xs text-neutral-400 text-center mt-1">Add blocks to populate this tab</p>
           </div>
         )}
       </div>
@@ -213,13 +213,13 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} ${marginClass} ${borderRadiusClass} border-2 border-dashed border-gray-300 ${backgroundClass}`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} border-2 border-dashed border-neutral-300 ${backgroundClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
           maxWidth: style?.maxWidth,
         }}
       >
-        <p className="text-gray-500 text-center">No tabs configured</p>
+        <p className="text-neutral-500 text-center">No tabs configured</p>
       </BaseWidget>
     );
   }

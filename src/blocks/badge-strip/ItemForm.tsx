@@ -128,11 +128,11 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
     
     return (
       <div key={control.key}>
-        <label className="block text-sm text-gray-700 mb-1">{control.label}</label>
+        <label className="block text-sm text-neutral-700 mb-1">{control.label}</label>
         <select
           value={currentValue}
           onChange={(e) => handleStyleChange(control.key, e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded text-sm"
+          className="w-full p-2 border border-neutral-300 rounded text-sm"
         >
           {control.options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -146,7 +146,7 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
 
   return (
     <div className="space-y-4">
-      <h3 className="font-medium text-gray-700">{title}</h3>
+      <h3 className="font-medium text-neutral-700">{title}</h3>
       
       {/* Use BaseItemForm for the label field */}
       <BaseItemForm<BadgeStripItem>
@@ -157,15 +157,15 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
       />
 
       {/* Icon Management */}
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="text-sm font-medium text-gray-700">Badge Icon</h4>
+          <h4 className="text-sm font-medium text-neutral-700">Badge Icon</h4>
         </div>
         
         <div className="space-y-3">
           {/* Icon Selector */}
           <div>
-            <label className="block text-xs text-gray-600 mb-2">Select Icon</label>
+            <label className="block text-xs text-neutral-600 mb-2">Select Icon</label>
             <div className="grid grid-cols-4 gap-2">
               {popularIcons.map(({ name, icon: IconComponent }) => (
                 <button
@@ -173,8 +173,8 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
                   onClick={() => onChange({ ...item, icon: name })}
                   className={`p-2 rounded-lg border-2 transition-all ${
                     item.icon === name
-                      ? 'border-blue-500 bg-blue-50 text-blue-600'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      ? 'border-indigo500 bg-indigo50 text-indigo600'
+                      : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
                   }`}
                   title={name}
                 >
@@ -187,23 +187,23 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
           {/* Icon Preview */}
           {item.icon && (
             <div className="flex items-center space-x-2 p-2 bg-white rounded border">
-              <span className="text-xs text-gray-500">Preview:</span>
-              <div className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded">
+              <span className="text-xs text-neutral-500">Preview:</span>
+              <div className="w-6 h-6 flex items-center justify-center bg-neutral-100 rounded">
                 {(() => {
                   const IconComponent = popularIcons.find(icon => icon.name === item.icon)?.icon;
                   return IconComponent ? <IconComponent className="w-4 h-4" /> : <span className="text-xs">?</span>;
                 })()}
               </div>
-              <span className="text-xs font-mono text-gray-600">{item.icon}</span>
+              <span className="text-xs font-mono text-neutral-600">{item.icon}</span>
             </div>
           )}
         </div>
       </div>
 
       {/* Link Management */}
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="text-sm font-medium text-gray-700">Badge Link</h4>
+          <h4 className="text-sm font-medium text-neutral-700">Badge Link</h4>
           <div className="flex items-center gap-2">
             {item.link ? (
               <button
@@ -230,24 +230,24 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
             type="text"
             value={item.link}
             onChange={(e) => onChange({ ...item, link: e.target.value })}
-            className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:ring-1 focus:ring-indigo500 focus:border-indigo500"
             placeholder="Link URL"
           />
         )}
         
         {!item.link && (
-          <div className="text-center py-4 text-gray-500">
-            <Link className="w-6 h-6 mx-auto mb-2 text-gray-400" />
+          <div className="text-center py-4 text-neutral-500">
+            <Link className="w-6 h-6 mx-auto mb-2 text-neutral-400" />
             <p className="text-xs">No link added</p>
-            <p className="text-xs text-gray-400">Add a link above to make this badge clickable</p>
+            <p className="text-xs text-neutral-400">Add a link above to make this badge clickable</p>
           </div>
         )}
       </div>
 
       {/* Tooltip Management */}
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="text-sm font-medium text-gray-700">Badge Tooltip</h4>
+          <h4 className="text-sm font-medium text-neutral-700">Badge Tooltip</h4>
           <div className="flex items-center gap-2">
             {item.tooltip ? (
               <button
@@ -260,7 +260,7 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
             ) : (
               <button
                 onClick={handleAddTooltip}
-                className="inline-flex items-center px-2 py-1 text-xs rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors font-medium"
+                className="inline-flex items-center px-2 py-1 text-xs rounded-md bg-indigo600 text-white hover:bg-indigo700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo500 transition-colors font-medium"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Tooltip
@@ -273,45 +273,45 @@ const BadgeStripItemForm: React.FC<BadgeStripItemFormProps> = ({
           <textarea
             value={item.tooltip}
             onChange={(e) => onChange({ ...item, tooltip: e.target.value })}
-            className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:ring-1 focus:ring-indigo500 focus:border-indigo500"
             placeholder="Tooltip text (appears on hover)"
             rows={2}
           />
         )}
         
         {!item.tooltip && (
-          <div className="text-center py-4 text-gray-500">
-            <MessageSquare className="w-6 h-6 mx-auto mb-2 text-gray-400" />
+          <div className="text-center py-4 text-neutral-500">
+            <MessageSquare className="w-6 h-6 mx-auto mb-2 text-neutral-400" />
             <p className="text-xs">No tooltip added</p>
-            <p className="text-xs text-gray-400">Add a tooltip above for better user experience</p>
+            <p className="text-xs text-neutral-400">Add a tooltip above for better user experience</p>
           </div>
         )}
       </div>
 
       {/* Item Styling */}
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h4 className="text-sm font-medium text-gray-700 mb-4">Item Styling</h4>
+      <div className="p-4 bg-neutral-50 rounded-lg">
+        <h4 className="text-sm font-medium text-neutral-700 mb-4">Item Styling</h4>
         
         {/* Style Controls */}
         <div className="space-y-4">
           {/* Color Controls */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Background Color</label>
+            <label className="block text-sm text-neutral-700 mb-1">Background Color</label>
             <input
               type="color"
               value={item.style?.backgroundColor || '#ffffff'}
               onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-300 rounded text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+            <label className="block text-sm text-neutral-700 mb-1">Text Color</label>
             <input
               type="color"
               value={item.style?.textColor || '#000000'}
               onChange={(e) => handleStyleChange('textColor', e.target.value)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-300 rounded text-sm"
             />
           </div>
 

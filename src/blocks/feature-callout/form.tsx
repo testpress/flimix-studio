@@ -38,10 +38,10 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
       />
       
       {/* Item Count and Limit Warning */}
-      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="p-4 bg-indigo50 border border-indigo200 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-blue-800">
+            <span className="text-sm font-medium text-indigo800">
               Items: {itemCount}/{FEATURE_CALLOUT_ITEM_LIMIT}
             </span>
           </div>
@@ -60,17 +60,17 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
       </div>
       
       {/* Layout Settings */}
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-medium text-gray-700 mb-4">Layout Settings</h3>
+      <div className="p-4 bg-neutral-800 rounded-lg">
+        <h3 className="font-medium text-white mb-4">Layout Settings</h3>
         
         <div className="space-y-4">
           {/* Item Size */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Size</label>
+            <label className="block text-sm text-neutral-300 mb-1">Item Size</label>
             <select
               value={featureCalloutProps.itemSize || 'medium'}
                    onChange={(e) => updateProps({ itemSize: e.target.value as ItemSize })}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="small">Small</option>
               <option value="medium">Medium</option>
@@ -80,16 +80,16 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
 
           {/* Display Options */}
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={featureCalloutProps.showIcons}
                 onChange={(e) => updateProps({ showIcons: e.target.checked })}
-                className="rounded"
+                className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
               />
               <span>Show Icons</span>
             </label>
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <label className="flex items-center gap-2 text-sm text-neutral-700">
               <input
                 type="checkbox"
                 checked={featureCalloutProps.showDescriptions}

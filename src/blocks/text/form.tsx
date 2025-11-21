@@ -33,15 +33,15 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       
       {/* Font Styling Controls */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Typography Settings</h3>
+        <h3 className="text-lg font-semibold text-neutral-800">Typography Settings</h3>
         
         {/* Font Family */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Font Family</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Font Family</label>
           <select
             value={props.fontFamily || 'sans'}
             onChange={(e) => handleFontChange('fontFamily', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="sans">Sans Serif</option>
             <option value="serif">Serif</option>
@@ -52,11 +52,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Font Size */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Font Size</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Font Size</label>
           <select
             value={props.fontSize || 'base'}
             onChange={(e) => handleFontChange('fontSize', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="xs">Extra Small (xs)</option>
             <option value="sm">Small (sm)</option>
@@ -73,11 +73,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Font Weight */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Font Weight</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Font Weight</label>
           <select
             value={props.fontWeight || 'normal'}
             onChange={(e) => handleFontChange('fontWeight', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="thin">Thin</option>
             <option value="extralight">Extra Light</option>
@@ -92,11 +92,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Font Style */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Font Style</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Font Style</label>
           <select
             value={props.fontStyle || 'normal'}
             onChange={(e) => handleFontChange('fontStyle', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="normal">Normal</option>
             <option value="italic">Italic</option>
@@ -105,11 +105,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Text Decoration */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Text Decoration</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Text Decoration</label>
           <select
             value={props.textDecoration || 'none'}
             onChange={(e) => handleFontChange('textDecoration', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="none">None</option>
             <option value="underline">Underline</option>
@@ -120,11 +120,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Line Height */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Line Height</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Line Height</label>
           <select
             value={props.lineHeight || 'normal'}
             onChange={(e) => handleFontChange('lineHeight', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="none">None</option>
             <option value="tight">Tight</option>
@@ -136,11 +136,11 @@ const TextForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
         {/* Letter Spacing */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Letter Spacing</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">Letter Spacing</label>
           <select
             value={props.letterSpacing || 'normal'}
             onChange={(e) => handleFontChange('letterSpacing', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-neutral-300 rounded"
           >
             <option value="tighter">Tighter</option>
             <option value="tight">Tight</option>

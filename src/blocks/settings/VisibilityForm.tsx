@@ -59,29 +59,29 @@ const VisibilityForm: React.FC<VisibilityFormProps> = ({
   };
 
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
-      <h3 className="font-medium text-gray-700 mb-4">Visibility Settings</h3>
+    <div className="p-4 bg-neutral-800 rounded-lg">
+      <h3 className="font-medium text-white mb-4">Visibility Settings</h3>
       
       <div className="space-y-4">
         {/* Authentication */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Authentication</label>
+          <label className="block text-sm text-neutral-300 mb-1">Authentication</label>
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={visibility.isLoggedIn || false}
                 onChange={(e) => handleBooleanChange('isLoggedIn', e.target.checked)}
-                className="rounded"
+                className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
               />
               <span>Require user to be logged in</span>
             </label>
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={visibility.isSubscribed || false}
                 onChange={(e) => handleBooleanChange('isSubscribed', e.target.checked)}
-                className="rounded"
+                className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
               />
               <span>Require user to be subscribed</span>
             </label>
@@ -90,11 +90,11 @@ const VisibilityForm: React.FC<VisibilityFormProps> = ({
 
         {/* Subscription Tier */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Subscription Tier</label>
+          <label className="block text-sm text-neutral-300 mb-1">Subscription Tier</label>
           <select
             value={visibility.subscriptionTier || ''}
             onChange={(e) => handleSubscriptionTierChange(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="">Any tier</option>
             <option value="basic">Basic</option>
@@ -105,15 +105,15 @@ const VisibilityForm: React.FC<VisibilityFormProps> = ({
 
         {/* Platform */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Platform</label>
+          <label className="block text-sm text-neutral-300 mb-1">Platform</label>
           <div className="space-y-1">
             {(['mobile', 'desktop', 'tv'] as Platform[]).map((platform) => (
-              <label key={platform} className="flex items-center gap-2 text-sm text-gray-700">
+              <label key={platform} className="flex items-center gap-2 text-sm text-neutral-300">
                 <input
                   type="checkbox"
                   checked={visibility.platform?.includes(platform) || false}
                   onChange={(e) => handlePlatformChange(platform, e.target.checked)}
-                  className="rounded"
+                  className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                 />
                 <span className="capitalize">{platform}</span>
               </label>
@@ -123,15 +123,15 @@ const VisibilityForm: React.FC<VisibilityFormProps> = ({
 
         {/* Region */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Region</label>
+          <label className="block text-sm text-neutral-300 mb-1">Region</label>
           <div className="space-y-1">
             {['US', 'IN', 'UK', 'CA', 'AU'].map((region) => (
-              <label key={region} className="flex items-center gap-2 text-sm text-gray-700">
+              <label key={region} className="flex items-center gap-2 text-sm text-neutral-300">
                 <input
                   type="checkbox"
                   checked={visibility.region?.includes(region) || false}
                   onChange={(e) => handleRegionChange(region, e.target.checked)}
-                  className="rounded"
+                  className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                 />
                 <span>{region}</span>
               </label>

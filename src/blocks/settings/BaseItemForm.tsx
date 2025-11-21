@@ -49,8 +49,8 @@ const BaseItemForm = <T extends { id: string }>({
             <textarea
               value={value}
               onChange={(e) => handleChange(field.key, e.target.value)}
-              className={`w-full p-2 border rounded text-sm h-20 resize-none ${
-                isAtCharLimit ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'
+              className={`w-full p-2 border rounded text-sm h-20 resize-none text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                isAtCharLimit ? 'border-yellow-400 bg-yellow-900' : 'border-neutral-700 bg-neutral-900'
               }`}
               placeholder={field.placeholder}
               required={field.required}
@@ -58,7 +58,7 @@ const BaseItemForm = <T extends { id: string }>({
             />
             {field.maxLength && (
               <div className={`text-xs mt-1 text-right ${
-                isAtCharLimit ? 'text-yellow-600 font-medium' : 'text-gray-500'
+                isAtCharLimit ? 'text-yellow-400 font-medium' : 'text-neutral-400'
               }`}>
                 {charCount}/{field.maxLength} characters
                 {isAtCharLimit && ' (limit reached)'}
@@ -73,7 +73,7 @@ const BaseItemForm = <T extends { id: string }>({
             type="url"
             value={value}
             onChange={(e) => handleChange(field.key, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             placeholder={field.placeholder}
             required={field.required}
           />
@@ -84,7 +84,7 @@ const BaseItemForm = <T extends { id: string }>({
           <select
             value={value}
             onChange={(e) => handleChange(field.key, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required={field.required}
           >
             {field.options?.map((option) => (
@@ -101,7 +101,7 @@ const BaseItemForm = <T extends { id: string }>({
             type="text"
             value={value}
             onChange={(e) => handleChange(field.key, e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded text-sm"
+            className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             placeholder={field.placeholder}
             required={field.required}
           />
@@ -112,15 +112,15 @@ const BaseItemForm = <T extends { id: string }>({
   return (
     <div className="space-y-4">
       {/* Basic Fields */}
-      <div className="p-4 bg-gray-50 rounded-lg">
+      <div className="p-4 bg-neutral-800 rounded-lg">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-medium text-gray-700">{title}</h3>
+          <h3 className="font-medium text-white">{title}</h3>
         </div>
         
         <div className="space-y-3">
           {fields.map((field) => (
             <div key={String(field.key)}>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label className="block text-sm text-neutral-300 mb-1">
                 {field.label}
                 {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>

@@ -35,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({ trigger, children, className = '' }
       </div>
       
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-[9999]">
+        <div className="absolute right-0 mt-2 w-48 bg-neutral-800 rounded-md shadow-lg border border-neutral-700 z-[9999]">
           <div className="py-1">
             {children}
           </div>
@@ -64,7 +64,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ${className}`}
+      className={`w-full text-left px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-900 focus:bg-neutral-900 focus:outline-none ${className}`}
     >
       {children}
     </button>

@@ -186,7 +186,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
                   key={item.id} 
                   className={`relative rounded-lg ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 cursor-pointer group ${
                     isSelected 
-                      ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white' 
+                      ? 'ring-2 ring-indigo500 ring-offset-2 ring-offset-white' 
                       : ''
                   }`}
                   style={{
@@ -233,7 +233,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
             })}
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-neutral-500">
             <p>No feature items yet. Click the + button to add items.</p>
           </div>
         )}

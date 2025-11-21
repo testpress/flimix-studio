@@ -31,10 +31,10 @@ const FAQAccordionForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       />
 
       {/* Item Count and Limit Warning */}
-      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="p-4 bg-indigo50 border border-indigo200 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-blue-800">
+            <span className="text-sm font-medium text-indigo800">
               Items: {itemCount}/{FAQ_ACCORDION_ITEM_LIMIT}
             </span>
           </div>

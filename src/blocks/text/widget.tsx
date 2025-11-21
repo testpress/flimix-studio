@@ -141,12 +141,12 @@ const TextWidget: React.FC<TextWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
-          className={`${paddingClass} ${marginClass} ${borderRadiusClass} bg-gray-50 border-2 border-dashed border-gray-300`}
+          className={`${paddingClass} ${marginClass} ${borderRadiusClass} bg-neutral-50 border-2 border-dashed border-neutral-300`}
           style={{
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
           }}
         >
-          <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-gray-500 text-center`} style={textDecorationStyle}>No content provided</p>
+          <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-neutral-500 text-center`} style={textDecorationStyle}>No content provided</p>
         </BaseWidget>
       </div>
     );

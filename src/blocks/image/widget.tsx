@@ -164,7 +164,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
           style={getBackgroundColorStyle()}
         >
           <div className={`w-full ${getPaddingClass()}`}>
-            <div className="text-center py-12 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+            <div className="text-center py-12 text-neutral-500 border-2 border-dashed border-neutral-300 rounded-lg">
               <p className="mb-2 text-lg">No image selected</p>
               <p className="text-sm">Add an image URL in the settings panel</p>
             </div>

@@ -43,10 +43,10 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
                 <button
                   onClick={e => { e.stopPropagation(); onMoveLeft(); }}
                   disabled={index === 0}
-                  className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
+                  className="p-1 disabled:opacity-50 hover:bg-neutral-100 rounded text-neutral-600"
                   title="Move Left"
                 >
-                  <MoveLeft size={12} className="text-gray-600" />
+                  <MoveLeft size={12} className="text-neutral-600" />
                 </button>
               )}
 
@@ -55,10 +55,10 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
                 <button
                   onClick={e => { e.stopPropagation(); onMoveRight(); }}
                   disabled={index === count - 1}
-                  className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
+                  className="p-1 disabled:opacity-50 hover:bg-neutral-100 rounded text-neutral-600"
                   title="Move Right"
                 >
-                  <MoveRight size={12} className="text-gray-600" />
+                  <MoveRight size={12} className="text-neutral-600" />
                 </button>
               )}
             </>
@@ -72,10 +72,10 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
                 <button
                   onClick={e => { e.stopPropagation(); onMoveUp(); }}
                   disabled={index === 0}
-                  className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
+                  className="p-1 disabled:opacity-50 hover:bg-neutral-100 rounded text-neutral-600"
                   title="Move Up"
                 >
-                  <MoveUp size={12} className="text-gray-600" />
+                  <MoveUp size={12} className="text-neutral-600" />
                 </button>
               )}
 
@@ -84,10 +84,10 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
                 <button
                   onClick={e => { e.stopPropagation(); onMoveDown(); }}
                   disabled={index === count - 1}
-                  className="p-1 disabled:opacity-50 hover:bg-gray-100 rounded text-gray-600"
+                  className="p-1 disabled:opacity-50 hover:bg-neutral-100 rounded text-neutral-600"
                   title="Move Down"
                 >
-                  <MoveDown size={12} className="text-gray-600" />
+                  <MoveDown size={12} className="text-neutral-600" />
                 </button>
               )}
             </>

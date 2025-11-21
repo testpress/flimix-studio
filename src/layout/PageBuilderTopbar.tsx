@@ -1,4 +1,4 @@
-import { Undo, Redo, Plus, X, Layers } from 'lucide-react';
+import { Undo, Redo, Plus, Eye, Layers, Menu, Save } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
@@ -32,86 +32,83 @@ const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   };
 
   return (
-    <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          {/* Page Switcher - Switch between different pages */}
-          <div className="relative">
-            <select
-              value={currentPageSlug}
-              onChange={e => loadPage(e.target.value)}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 text-white text-sm"
+    <header className="sticky top-0 inset-x-0 z-50 bg-neutral-900 border-b border-neutral-700">
+      <nav className="w-full py-3 sm:py-4 px-4 sm:px-6">
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-2 w-full">
+          <div className="flex items-center gap-x-1 sm:gap-x-3">
+            {/* Page Switcher - Switch between different pages */}
+            <button 
+              type="button" 
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
             >
-              {pagesList.map(slug => (
-                <option key={slug} value={slug} className="bg-gray-700 text-white">
-                  {slug.charAt(0).toUpperCase() + slug.slice(1)}
-                </option>
-              ))}
-            </select>
+              <Menu className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden sm:inline">Home</span>
+            </button>
+
+            <button 
+              type="button"   
+              onClick={toggleLibrarySafely} 
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <Plus className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden sm:inline">Blocks</span>
+            </button>
+
+            <button 
+              type="button"   
+              onClick={toggleLayoutSafely}
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <Layers className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden sm:inline">Layout</span>
+            </button>
           </div>
           
-          <button 
-            onClick={toggleLibrarySafely}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
-            title={isLibraryOpen ? "Close block library" : "Open block library"}
-          >
-            {isLibraryOpen ? <X size={16} /> : <Plus size={16} />}
-          </button>
-          
-          <button 
-            onClick={toggleLayoutSafely}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
-            title={isLayoutOpen ? "Close layout panel" : "Open layout panel"}
-          >
-            <Layers size={16} />
-          </button>
+          <div className="flex items-center gap-x-1 sm:gap-x-3">
+            <button 
+              type="button"             
+              onClick={undo}
+              disabled={!canUndo} 
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <Undo className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden md:inline">Undo</span>
+            </button>
+            
+            <button 
+              type="button"             
+              onClick={redo}
+              disabled={!canRedo} 
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <span className="hidden md:inline">Redo</span>
+              <Redo className="shrink-0 size-3 sm:size-3.5" />
+            </button>
+            
+            <div className="hidden sm:block h-6 w-px bg-neutral-900"></div>
+            
+            <button 
+              type="button" 
+              onClick={handleSave}
+              disabled={!onSavePage} 
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <Save className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden sm:inline">Save</span>
+            </button>
+            
+            <button 
+              type="button"  
+              className="py-1.5 px-2 sm:px-3 inline-flex items-center gap-x-1.5 text-xs sm:text-sm font-medium rounded-lg border border-neutral-700 bg-neutral-800 text-white shadow-2xs hover:bg-neutral-900 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-neutral-900"
+            >
+              <Eye className="shrink-0 size-3 sm:size-3.5" />
+              <span className="hidden sm:inline">Preview</span>
+            </button>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={undo}
-            disabled={!canUndo}
-            className={`px-4 py-2 rounded flex items-center space-x-2 ${
-              canUndo 
-                ? 'bg-blue-600 hover:bg-blue-700' 
-                : 'bg-gray-600 cursor-not-allowed'
-            }`}
-            title={canUndo ? 'Undo last action' : 'Nothing to undo'}
-          >
-            <Undo className="w-4 h-4" />
-            <span>Undo</span>
-          </button>
-          <button 
-            onClick={redo}
-            disabled={!canRedo}
-            className={`px-4 py-2 rounded flex items-center space-x-2 ${
-              canRedo 
-                ? 'bg-blue-600 hover:bg-blue-700' 
-                : 'bg-gray-600 cursor-not-allowed'
-            }`}
-            title={canRedo ? 'Redo last undone action' : 'Nothing to redo'}
-          >
-            <span>Redo</span>
-            <Redo className="w-4 h-4" />
-          </button>
-          <button 
-            onClick={handleSave}
-            disabled={!onSavePage}
-            className={`px-4 py-2 rounded ${
-              onSavePage 
-                ? 'bg-blue-600 hover:bg-blue-700' 
-                : 'bg-gray-600 cursor-not-allowed opacity-50'
-            }`}
-            title={onSavePage ? 'Save page' : 'Save functionality not available'}
-          >
-            Save
-          </button>
-          <button className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded">
-            Preview
-          </button>
-        </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 
-export default PageBuilderTopbar; 
+export default PageBuilderTopbar;

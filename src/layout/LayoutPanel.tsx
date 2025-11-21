@@ -115,11 +115,11 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
 
   return (
     <div className={`${getPositionClasses()} z-50`} ref={menuRef}>
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
+      <div className="bg-neutral-800 border border-neutral-700 rounded-lg shadow-lg py-1 min-w-[120px]">
         {canMoveUp && onMoveUp && (
           <button
             onClick={(e) => handleAction(e, onMoveUp)}
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-neutral-300 hover:bg-neutral-900 flex items-center gap-2"
           >
             <MoveUp size={14} />
             Move Up
@@ -129,7 +129,7 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
         {canMoveDown && onMoveDown && (
           <button
             onClick={(e) => handleAction(e, onMoveDown)}
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-neutral-300 hover:bg-neutral-900 flex items-center gap-2"
           >
             <MoveDown size={14} />
             Move Down
@@ -138,7 +138,7 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
         
         <button
           onClick={(e) => handleAction(e, onDuplicate)}
-          className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+          className="w-full px-3 py-2 text-left text-sm text-neutral-300 hover:bg-neutral-900 flex items-center gap-2"
         >
           <Copy size={14} />
           Duplicate
@@ -146,7 +146,7 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
         
         <button
           onClick={(e) => handleAction(e, onDelete)}
-          className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+          className="w-full px-3 py-2 text-left text-sm text-red-400 hover:bg-red-950 flex items-center gap-2"
         >
           <Trash2 size={14} />
           Delete
@@ -216,7 +216,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   // Determine icon based on block type
   const getBlockIcon = () => {
     const iconSize = 14;
-    const iconClass = "w-5 h-5 rounded-md flex items-center justify-center bg-gray-100 text-gray-600";
+    const iconClass = "w-5 h-5 rounded-md flex items-center justify-center bg-neutral-900 text-white";
     
     const iconMap: Partial<Record<BlockType['type'], React.ReactNode>> = {
       hero: <LayoutIcon size={iconSize} />,
@@ -243,18 +243,18 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
   return (
     <div className="select-none relative" data-layout-item-id={block.id} ref={blockOptionsRef}>
       <div 
-        className={`${getLevelClasses(level)} ${isSelected ? 'bg-blue-100 border border-blue-200' : 'hover:bg-gray-100'}`}
+        className={`${getLevelClasses(level)} ${isSelected ? 'bg-indigo-900 border border-indigo-700' : 'hover:bg-neutral-800'}`}
         onClick={() => onSelect(block)}
       >
         {hasChildren ? (
           <div 
-            className="mr-2 cursor-pointer hover:bg-gray-200 rounded p-1 transition-colors duration-200"
+            className="mr-2 cursor-pointer hover:bg-neutral-900 rounded p-1 transition-colors duration-200"
             onClick={(e) => {
               e.stopPropagation();
               setIsExpanded(!isExpanded);
             }}
           >
-            {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+            {isExpanded ? <ChevronDown size={20} className="text-white" /> : <ChevronRight size={20} className="text-white" />}
           </div>
         ) : (
           <div className="w-6 mr-2"></div>
@@ -306,11 +306,11 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
             
             return (
               <>
-                <span className="text-base font-medium truncate">
+                <span className="text-base font-medium truncate text-white">
                   {defaultDisplayName}
                 </span>
                 {blockTitle && blockTitle.trim() && (
-                  <span className="text-xs text-gray-500 truncate">
+                  <span className="text-xs text-neutral-400 truncate">
                     {blockTitle}
                   </span>
                 )}
@@ -327,7 +327,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
                 e.stopPropagation();
                 setShowOptionsMenu(!showOptionsMenu);
               }}
-              className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded transition-colors duration-200"
+              className="w-6 h-6 flex items-center justify-center text-neutral-400 hover:text-white hover:bg-neutral-900 rounded transition-colors duration-200"
               title="Block options"
             >
               <MoreVertical size={14} />
@@ -353,16 +353,16 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, onSelect, selectedB
       {isExpanded && hasTabs && (
         <div className="ml-2 space-y-2">
           {tabs.map((tab, tabIndex) => (
-            <div key={tab.id} className="border-l-2 border-gray-300 ml-4">
+            <div key={tab.id} className="border-l-2 border-neutral-700 ml-4">
               <div className="flex items-center py-1 px-2 ml-2">
-                <div className="w-4 h-4 rounded bg-gray-200 text-gray-600 text-xs flex items-center justify-center mr-2">
+                <div className="w-4 h-4 rounded bg-neutral-900 text-white text-xs flex items-center justify-center mr-2">
                   {tabIndex + 1}
                 </div>
-                <span className="text-sm text-gray-600 font-medium">
+                <span className="text-sm text-neutral-300 font-medium">
                   {tab.label || `Tab ${tabIndex + 1}`}
                 </span>
                 {tab.children && tab.children.length > 0 && (
-                  <span className="ml-2 text-xs text-gray-400">
+                  <span className="ml-2 text-xs text-neutral-500">
                     ({tab.children.length} blocks)
                   </span>
                 )}
@@ -494,27 +494,27 @@ const LayoutPanel: React.FC = () => {
   }, [pageSchema.blocks, searchQuery]);
 
   return (
-    <div className={`${isLayoutOpen ? 'w-[22rem] bg-white border-r border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
+    <div className={`${isLayoutOpen ? 'w-[22rem] bg-neutral-900 border-r border-neutral-700' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex-shrink-0">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Layout Structure</h2>
+      <div className="p-6 border-b border-neutral-800 flex-shrink-0">
+        <h2 className="text-xl font-bold text-white mb-4">Layout Structure</h2>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Search blocks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
       </div>
       
       {/* Block Structure */}
-      <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-neutral-800">
         {filteredBlocks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <Search size={24} className="flex flex-col items-center justify-center h-full text-gray-500" />
+          <div className="flex flex-col items-center justify-center h-full text-neutral-400">
+            <Search size={24} className="mb-2" />
             <p>No blocks found matching "{searchQuery}"</p>
           </div>
         ) : (
@@ -534,8 +534,8 @@ const LayoutPanel: React.FC = () => {
       </div>
       
       {/* Footer */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50">
-        <div className="text-xs text-gray-500">
+      <div className="p-3 border-t border-neutral-800 bg-neutral-950">
+        <div className="text-xs text-neutral-400">
           <span>Total blocks: {pageSchema.blocks.length}</span>
         </div>
       </div>

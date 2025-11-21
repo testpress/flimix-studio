@@ -184,7 +184,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
                 className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
                 style={{ boxShadow: boxShadowStyle }}
               >
-                <div className="text-center py-12 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                <div className="text-center py-12 text-neutral-400 border-2 border-dashed border-neutral-700 rounded-lg">
                   <p className="mb-2 text-lg">No video selected</p>
                   <p className="text-sm">Add a video URL in the settings panel</p>
                 </div>

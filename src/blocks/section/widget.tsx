@@ -141,8 +141,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
               ))}
             </div>
           ) : (
-            <div className="p-4 border-2 border-dashed border-gray-600 bg-gray-800 rounded-lg">
-              <p className="text-gray-300 text-center">No content blocks in this section</p>
+            <div className="p-4 border-2 border-dashed border-neutral-600 bg-neutral-800 rounded-lg">
+              <p className="text-neutral-300 text-center">No content blocks in this section</p>
             </div>
           )}
         </div>

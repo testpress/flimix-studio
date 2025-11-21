@@ -106,11 +106,11 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
     
     return (
       <div key={control.key}>
-        <label className="block text-sm text-gray-700 mb-1">{control.label}</label>
+        <label className="block text-sm text-neutral-700 mb-1">{control.label}</label>
         <select
           value={currentValue}
           onChange={(e) => handleStyleChange(control.key, e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded text-sm"
+          className="w-full p-2 border border-neutral-300 rounded text-sm"
         >
           {control.options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -132,29 +132,29 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
       />
       
       {/* Item Styling */}
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h4 className="text-sm font-medium text-gray-700 mb-4">Item Styling</h4>
+      <div className="p-4 bg-neutral-50 rounded-lg">
+        <h4 className="text-sm font-medium text-neutral-700 mb-4">Item Styling</h4>
         
         {/* Style Controls */}
         <div className="space-y-4">
           {/* Color Controls */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Background Color</label>
+            <label className="block text-sm text-neutral-700 mb-1">Background Color</label>
             <input
               type="color"
               value={item.style?.backgroundColor || '#ffffff'}
               onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-300 rounded text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+            <label className="block text-sm text-neutral-700 mb-1">Text Color</label>
             <input
               type="color"
               value={item.style?.textColor || '#000000'}
               onChange={(e) => handleStyleChange('textColor', e.target.value)}
-              className="w-full h-10 border border-gray-300 rounded text-sm"
+              className="w-full h-10 border border-neutral-300 rounded text-sm"
             />
           </div>
 

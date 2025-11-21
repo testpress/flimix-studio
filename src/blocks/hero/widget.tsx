@@ -184,7 +184,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                 }}
                 className={`cursor-pointer transition-all duration-200 ${
                   isItemSelected(block.id, props.items[currentItemIndex].id) 
-                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' 
+                    ? 'ring-2 ring-indigo500 ring-offset-2 ring-offset-black' 
                     : ''
                 }`}
               >
@@ -200,7 +200,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                 
                 {/* Selection indicator overlay */}
                 {isItemSelected(block.id, props.items[currentItemIndex].id) && (
-                  <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full z-10">
+                  <div className="absolute top-2 left-2 bg-indigo500 text-white text-xs px-2 py-1 rounded-full z-10">
                     Selected for editing
                   </div>
                 )}
@@ -216,13 +216,13 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   onRemove={() => removeBlockItem(block.id, props.items[currentItemIndex].id)}
                   showMoveControls={props.items.length > 1}
                   showRemoveControl={true}
-                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
+                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-neutral-300"
                 />
               </div>
             </div>
                       ) : (
               /* Fallback when no items or current item is undefined */
-              <div className="w-full h-full flex items-center justify-center text-gray-500 min-h-[400px]">
+              <div className="w-full h-full flex items-center justify-center text-neutral-500 min-h-[400px]">
                 <div className="text-center">
                   <p className="text-lg font-medium">No Hero Items</p>
                   <p className="text-sm">Add items to your hero carousel</p>
@@ -242,7 +242,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                       e.stopPropagation(); // Prevent block selection
                       prevSlide();
                     }} 
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 z-20"
                     aria-label="Previous slide"
                     onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
                     onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
@@ -256,7 +256,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                       e.stopPropagation(); // Prevent block selection
                       nextSlide();
                     }} 
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-neutral-700 hover:text-neutral-900 z-20"
                     aria-label="Next slide"
                     onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
                     onMouseLeave={() => props.autoplay && setIsAutoplayPaused(false)}
@@ -290,7 +290,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                     className={`w-3 h-3 rounded-full transition-all duration-200 ${
                       idx === currentItemIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
                     } ${
-                      isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
+                      isItemSelected(block.id, item.id) ? 'ring-2 ring-indigo500 ring-offset-1 ring-offset-black' : ''
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
                     title={`Select slide ${idx + 1} for editing`}

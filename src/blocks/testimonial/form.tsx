@@ -113,26 +113,26 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
       />
       
       {/* Layout Settings */}
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-medium text-gray-700 mb-4">Layout Settings</h3>
+      <div className="p-4 bg-neutral-800 rounded-lg">
+        <h3 className="font-medium text-white mb-4">Layout Settings</h3>
         
         {/* Item Count and Limit Warning */}
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-4 p-3 bg-indigo900 border border-indigo700 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-blue-800">
+              <span className="text-sm font-medium text-indigo200">
                 Items: {itemCount}/{maxItems}
               </span>
             </div>
             {isAtLimit && (
               <div className="flex items-center gap-1">
-                <AlertCircle className="w-4 h-4 text-yellow-600" />
-                <span className="text-xs text-yellow-700 font-medium">Limit Reached</span>
+                <AlertCircle className="w-4 h-4 text-yellow-400" />
+                <span className="text-xs text-yellow-300 font-medium">Limit Reached</span>
               </div>
             )}
           </div>
           {isAtLimit && (
-            <p className="text-xs text-yellow-700 mt-1">
+            <p className="text-xs text-yellow-300 mt-1">
               Maximum of {maxItems} items allowed for {testimonialProps.layout} layout. Remove some items before adding more.
             </p>
           )}
@@ -141,17 +141,17 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
         <div className="space-y-4">
           {/* Layout Type */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Layout Type</label>
+            <label className="block text-sm text-neutral-300 mb-1">Layout Type</label>
             <select
               value={testimonialProps.layout || 'carousel'}
               onChange={e => handleLayoutChange(e.target.value as TestimonialLayout)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="carousel">Carousel</option>
               <option value="grid">Grid</option>
               <option value="single">Single</option>
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-neutral-400 mt-1">
               Choose how testimonials are displayed
             </p>
           </div>
@@ -161,11 +161,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
             <>
               {/* Item Size */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Item Size</label>
+                <label className="block text-sm text-neutral-300 mb-1">Item Size</label>
                 <select
                   value={testimonialProps.itemSize || 'large'}
                   onChange={e => updateProps({ ...testimonialProps, itemSize: e.target.value as ItemSize })}
-                  className="w-full p-2 border border-gray-300 rounded text-sm"
+                  className="w-full p-2 border border-neutral-700 bg-neutral-900 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="small">Small</option>
                   <option value="medium">Medium</option>
@@ -176,40 +176,40 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
 
               {/* Show Navigation Arrows */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Navigation</label>
+                <label className="block text-sm text-neutral-300 mb-1">Navigation</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showArrows"
                     checked={testimonialProps.showArrows !== false}
                     onChange={e => updateProps({ ...testimonialProps, showArrows: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="showArrows" className="text-sm text-gray-700">
+                  <label htmlFor="showArrows" className="text-sm text-neutral-300">
                     Show Navigation Arrows
                   </label>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-neutral-400 mt-1">
                   Display left/right arrow buttons for carousel navigation
                 </p>
               </div>
 
               {/* Autoplay Settings */}
               <div>
-                <label className="block text-sm text-gray-700 mb-1">Autoplay</label>
+                <label className="block text-sm text-neutral-300 mb-1">Autoplay</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="autoplay"
                     checked={testimonialProps.autoplay || false}
                     onChange={e => updateProps({ ...testimonialProps, autoplay: e.target.checked })}
-                    className="rounded"
+                    className="rounded border-neutral-600 bg-neutral-900 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="autoplay" className="text-sm text-gray-700">
+                  <label htmlFor="autoplay" className="text-sm text-neutral-300">
                     Enable Autoplay
                   </label>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-neutral-400 mt-1">
                   Automatically scroll through carousel items
                 </p>
               </div>
@@ -217,7 +217,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
               {/* Scroll Speed */}
               {testimonialProps.autoplay && (
                 <div>
-                  <label className="block text-sm text-gray-700 mb-1">Scroll Speed (ms)</label>
+                  <label className="block text-sm text-neutral-300 mb-1">Scroll Speed (ms)</label>
                   <input
                     type="number"
                     min={1000}
@@ -228,10 +228,10 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
                       ...testimonialProps, 
                       scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value, 10) || 1000))
                     })}
-                    className="w-full p-2 border border-gray-300 rounded text-sm"
+                    className="w-full p-2 border border-neutral-300 rounded text-sm"
                     placeholder="1000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-neutral-500 mt-1">
                     Time between scroll actions in milliseconds (1000-10000ms)
                   </p>
                 </div>
@@ -245,11 +245,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
               {/* Grid Size */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-700 mb-1">Columns</label>
+                  <label className="block text-sm text-neutral-700 mb-1">Columns</label>
                   <select
                     value={testimonialProps.columns || 3}
                     onChange={e => handleGridSizeChange(+e.target.value as GridDimension, testimonialProps.rows || 3)}
-                    className="w-full p-2 border border-gray-300 rounded text-sm"
+                    className="w-full p-2 border border-neutral-300 rounded text-sm"
                   >
                     <option value={2}>2</option>
                     <option value={3}>3</option>
@@ -257,11 +257,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-700 mb-1">Rows</label>
+                  <label className="block text-sm text-neutral-700 mb-1">Rows</label>
                   <select
                     value={testimonialProps.rows || 3}
                     onChange={e => handleGridSizeChange(testimonialProps.columns || 3, +e.target.value as GridDimension)}
-                    className="w-full p-2 border border-gray-300 rounded text-sm"
+                    className="w-full p-2 border border-neutral-300 rounded text-sm"
                   >
                     <option value={2}>2</option>
                     <option value={3}>3</option>
@@ -275,11 +275,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
           {/* Common settings */}
           {/* Item Shape */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Shape</label>
+            <label className="block text-sm text-neutral-700 mb-1">Item Shape</label>
             <select
               value={testimonialProps.itemShape || 'circle'}
               onChange={e => updateProps({ ...testimonialProps, itemShape: e.target.value as ItemShape })}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-300 rounded text-sm"
             >
               <option value="square">Square</option>
               <option value="circle">Circle</option>
@@ -288,11 +288,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
 
           {/* Gap */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Item Gap</label>
+            <label className="block text-sm text-neutral-700 mb-1">Item Gap</label>
             <select
               value={style?.gridGap || 'md'}
               onChange={e => handleStyleChange('gridGap', e.target.value as GridGap)}
-              className="w-full p-2 border border-gray-300 rounded text-sm"
+              className="w-full p-2 border border-neutral-300 rounded text-sm"
             >
               <option value="sm">Small</option>
               <option value="md">Medium</option>
