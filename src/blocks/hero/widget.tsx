@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { HeroBlock } from './schema';
@@ -11,9 +11,9 @@ interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
   block: HeroBlock;
 }
 
-const HeroWidget: React.FC<HeroWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const HeroWidget: React.FC<HeroWidgetProps> = ({
+  block,
+  onSelect,
   isSelected = false,
   canMoveUp,
   canMoveDown,
@@ -26,12 +26,12 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
   const autoplayIntervalRef = useRef<number | null>(null);
   const previousItemsLengthRef = useRef<number>(0); // Ref to track previous items length
-  
+
   // Local state for display when block is not selected
   const [displayIndex, setDisplayIndex] = useState(0);
-  
+
   const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectArrayItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
-  
+
   // Memoized current item index calculation
   const currentItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === block.id) {
@@ -42,9 +42,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     }
     return displayIndex; // Use displayIndex when no item is selected
   }, [selectedItemId, selectedItemBlockId, block.id, props.items, displayIndex]);
-  
+
   // Helper function to change slide with conditional selection
-  const changeSlide = (newIndex: number) => {
+  const changeSlide = useCallback((newIndex: number) => {
     if (!props.items?.[newIndex]) return;
 
     if (isSelected) {
@@ -52,7 +52,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     } else {
       setDisplayIndex(newIndex);
     }
-  };
+  }, [props.items, isSelected, selectArrayItem, block.id]);
 
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
@@ -61,7 +61,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const backgroundClass = hasCustomBackground ? '' : 'bg-black';
 
 
-  
+
   // Autoplay functionality for carousel
   useEffect(() => {
     // Clear any existing interval
@@ -69,7 +69,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       clearInterval(autoplayIntervalRef.current);
       autoplayIntervalRef.current = null;
     }
-    
+
     // Start autoplay if enabled and not paused
     if (props.variant === 'carousel' && props.autoplay && !isAutoplayPaused && props.items && props.items.length > 1) {
       autoplayIntervalRef.current = window.setInterval(() => {
@@ -77,7 +77,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         changeSlide(nextIndex);
       }, props.scrollSpeed || 5000);
     }
-    
+
     // Cleanup on unmount or when props change
     return () => {
       if (autoplayIntervalRef.current) {
@@ -86,7 +86,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       }
     };
   }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, changeSlide]);
-  
+
   useEffect(() => {
     if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
       const timer = setTimeout(() => {
@@ -157,9 +157,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
 
   return (
     <div>
-      <BaseWidget 
-        block={block} 
-        onSelect={onSelect} 
+      <BaseWidget
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
         canMoveDown={canMoveDown}
@@ -182,11 +182,10 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   e.stopPropagation();
                   handleItemClick(props.items[currentItemIndex].id);
                 }}
-                className={`cursor-pointer transition-all duration-200 ${
-                  isItemSelected(block.id, props.items[currentItemIndex].id) 
-                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' 
+                className={`cursor-pointer transition-all duration-200 ${isItemSelected(block.id, props.items[currentItemIndex].id)
+                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black'
                     : ''
-                }`}
+                  }`}
               >
                 <ItemWidget
                   item={props.items[currentItemIndex]}
@@ -197,7 +196,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   backgroundColor={style?.backgroundColor}
                   autoplay={!isAutoplayPaused}
                 />
-                
+
                 {/* Selection indicator overlay */}
                 {isItemSelected(block.id, props.items[currentItemIndex].id) && (
                   <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full z-10">
@@ -205,7 +204,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   </div>
                 )}
               </div>
-              
+
               {/* ItemsControl - positioned at the top, visible on hover */}
               <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <ItemsControl
@@ -220,16 +219,16 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                 />
               </div>
             </div>
-                      ) : (
-              /* Fallback when no items or current item is undefined */
-              <div className="w-full h-full flex items-center justify-center text-gray-500 min-h-[400px]">
-                <div className="text-center">
-                  <p className="text-lg font-medium">No Hero Items</p>
-                  <p className="text-sm">Add items to your hero carousel</p>
-                </div>
+          ) : (
+            /* Fallback when no items or current item is undefined */
+            <div className="w-full h-full flex items-center justify-center text-gray-500 min-h-[400px]">
+              <div className="text-center">
+                <p className="text-lg font-medium">No Hero Items</p>
+                <p className="text-sm">Add items to your hero carousel</p>
               </div>
-            )}
-          
+            </div>
+          )}
+
           {/* Carousel Navigation (only if multiple items) */}
           {props.variant === 'carousel' && props.items && props.items.length > 1 && (
             <>
@@ -237,11 +236,11 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
               {props.showArrows && (
                 <>
                   {/* Previous Button */}
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
                       prevSlide();
-                    }} 
+                    }}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
                     aria-label="Previous slide"
                     onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
@@ -249,13 +248,13 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   >
                     <ArrowLeft size={20} />
                   </button>
-                  
+
                   {/* Next Button */}
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
                       nextSlide();
-                    }} 
+                    }}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900 z-20"
                     aria-label="Next slide"
                     onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
@@ -265,9 +264,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   </button>
                 </>
               )}
-              
+
               {/* Dots Indicator */}
-              <div 
+              <div
                 className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={() => props.autoplay && setIsAutoplayPaused(true)}
@@ -279,7 +278,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent block selection
                       changeSlide(idx);
-                      
+
                       if (props.autoplay) {
                         setIsAutoplayPaused(true);
                         setTimeout(() => {
@@ -287,11 +286,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                         }, 1500);
                       }
                     }}
-                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                      idx === currentItemIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
-                    } ${
-                      isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
-                    }`}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${idx === currentItemIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
+                      } ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
+                      }`}
                     aria-label={`Go to slide ${idx + 1}`}
                     title={`Select slide ${idx + 1} for editing`}
                   />

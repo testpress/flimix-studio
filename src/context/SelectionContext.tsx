@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { Block, BlockType } from '@blocks/shared/Block';
 import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { PageSchema } from '@blocks/shared/Page';
@@ -91,7 +91,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   }, [currentPageSlug]);
 
   // Helper function to recursively check if a block exists in the schema
-  const blockExistsInSchema = (blockId: string, blocks: BlockType[]): boolean => {
+  const blockExistsInSchema = useCallback((blockId: string, blocks: BlockType[]): boolean => {
     for (const block of blocks) {
       if (block.id === blockId) {
         return true;
@@ -117,7 +117,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       }
     }
     return false;
-  };
+  }, []);
 
   // Clear selectedId if it no longer exists in the schema after undo/redo
   useEffect(() => {
@@ -156,7 +156,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       };
 
       const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
-      
+
       // Compare specific properties that are likely to change
       if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {
         setSelectedBlock(currentBlockInSchema as Block);
@@ -170,27 +170,27 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     if (JSON.stringify(block1.props) !== JSON.stringify(block2.props)) {
       return true;
     }
-    
+
     // Compare style (likely to change)
     if (JSON.stringify(block1.style) !== JSON.stringify(block2.style)) {
       return true;
     }
-    
+
     // Compare visibility (likely to change)
     if (JSON.stringify(block1.visibility) !== JSON.stringify(block2.visibility)) {
       return true;
     }
-    
+
     // Compare children (less likely to change, but important)
     if (JSON.stringify(block1.children) !== JSON.stringify(block2.children)) {
       return true;
     }
-    
+
     // Compare events (less likely to change)
     if (JSON.stringify(block1.events) !== JSON.stringify(block2.events)) {
       return true;
     }
-    
+
     return false;
   };
 
@@ -209,7 +209,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             }
           } as BlockType;
         }
-        
+
         // Recursively update children if this block has them
         if (block.children) {
           return {
@@ -217,7 +217,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             children: updateBlockInSchema(block.children)
           } as BlockType;
         }
-        
+
         // Check tabs blocks for nested children
         if (block.type === 'tabs') {
           return {
@@ -231,7 +231,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             }
           } as BlockType;
         }
-        
+
         return block;
       });
     };
@@ -243,7 +243,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     };
 
     updatePageWithHistory(updatedSchema);
-    
+
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
       for (const block of blocks) {
@@ -294,7 +294,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             }
           } as BlockType;
         }
-        
+
         // Recursively update children if this block has them
         if (block.children) {
           return {
@@ -302,7 +302,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             children: updateBlockInSchema(block.children)
           } as BlockType;
         }
-        
+
         // Check tabs blocks for nested children
         if (block.type === 'tabs') {
           return {
@@ -316,7 +316,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             }
           } as BlockType;
         }
-        
+
         return block;
       });
     };
@@ -328,7 +328,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     };
 
     updatePageWithHistory(updatedSchema);
-    
+
     // Update the selected block reference
     const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
       for (const block of blocks) {
@@ -393,7 +393,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             return { ...block, children: result.updatedBlocks } as BlockType;
           }
         }
-        
+
         return block;
       });
 
@@ -476,7 +476,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     ) {
       const newBlocks = structuredClone(pageSchema.blocks);
       const newChildren = getChildrenBlocks(parent, selectedBlockId, parentIndex, newBlocks);
-      
+
       if (newChildren && newChildren.length === MinColumns) {
         console.warn('[SelectionContext] Cannot delete the last column in a RowLayout.');
         return;
@@ -525,16 +525,16 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
     newChildren.splice(parentIndex + 1, 0, newBlock);
 
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
-    
+
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
-    
+
     setSelectedBlock(newBlock);
     setSelectedBlockId(newBlock.id);
     setSelectedBlockParentId(parent?.id || null);
   };
 
- 
+
   const modifyRowColumnCount = (direction: 'increase' | 'decrease') => {
     if (!selectedBlockId) return;
 
@@ -592,7 +592,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             children: updateBlockInSchema(b.children),
           } as BlockType;
         }
-        
+
         // Check tabs blocks for nested children
         if (b.type === 'tabs') {
           const tabsBlock = b as TabsBlock;
@@ -600,13 +600,13 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
             ...tab,
             children: tab.children ? updateBlockInSchema(tab.children) : tab.children
           }));
-          
+
           return {
             ...b,
             props: { ...b.props, tabs: updatedTabs }
           } as BlockType;
         }
-        
+
         return b;
       });
     };
@@ -674,7 +674,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       const { parent } = findBlockAndParent(blockId, pageSchema.blocks);
       setSelectedBlockParentId(parent?.id || null);
     }
-    
+
     // Then select the item
     setSelectedItemId(itemId);
     setSelectedItemBlockId(blockId);

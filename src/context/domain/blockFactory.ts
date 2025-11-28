@@ -198,48 +198,46 @@ export function createBlock(type: BlockType['type']): BlockType {
         }
       };
 
-      case 'cta-button': {
-        return {
-          type: 'cta-button',
-          id,
-          props: {
-            ...CTAButtonLibraryItem.defaultProps,
-          },
-          style: {
-            padding: 'md',
-            textAlign: 'center'
-          }
-        };
-      }
-      
-      case 'badge-strip': {
-        return {
-          type: 'badge-strip',
-          id,
-          props: {
-            ...BadgeStripLibraryItem.defaultProps,
-          },
-          style: {
-            padding: 'md',
-            textAlign: 'center'
-          }
-        };
-      }
+    case 'cta-button':
+      return {
+        type: 'cta-button',
+        id,
+        props: {
+          ...CTAButtonLibraryItem.defaultProps,
+        },
+        style: {
+          padding: 'md',
+          textAlign: 'center'
+        }
+      };
 
-      case 'rowLayout': {
-        return {
-          type: 'rowLayout',
-          props: {} as RowLayoutBlockProps,
-          id,
-          style: { padding: 'md' },
-          children: [],
-        };
-      }
+    case 'badge-strip':
+      return {
+        type: 'badge-strip',
+        id,
+        props: {
+          ...BadgeStripLibraryItem.defaultProps,
+        },
+        style: {
+          padding: 'md',
+          textAlign: 'center'
+        }
+      };
 
-    default:
+    case 'rowLayout':
+      return {
+        type: 'rowLayout',
+        props: {} as RowLayoutBlockProps,
+        id,
+        style: { padding: 'md' },
+        children: [],
+      };
+
+    default: {
       // This will cause a compile-time error if a case is missed.
       const exhaustiveCheck: never = type;
       throw new Error(`Unhandled block type: ${exhaustiveCheck}`);
+    }
   }
 }
 
@@ -251,7 +249,7 @@ export function createBlock(type: BlockType['type']): BlockType {
  */
 export function duplicateBlockWithNewIds(block: BlockType): BlockType {
   const newId = generateUniqueId();
-  
+
   // Handle tabs blocks specially
   if (block.type === 'tabs') {
     const tabsBlock = block as TabsBlock;
@@ -267,7 +265,7 @@ export function duplicateBlockWithNewIds(block: BlockType): BlockType {
       }
     } as BlockType;
   }
-  
+
   // Handle regular blocks
   const duplicated: BlockType = {
     ...block,
@@ -286,8 +284,8 @@ export function duplicateBlockWithNewIds(block: BlockType): BlockType {
  * @returns Updated blocks array
  */
 export function updateBlockChildren(
-  blocks: BlockType[], 
-  parentId: string, 
+  blocks: BlockType[],
+  parentId: string,
   newChildren: BlockType[]
 ): BlockType[] {
   return blocks.map(block => {

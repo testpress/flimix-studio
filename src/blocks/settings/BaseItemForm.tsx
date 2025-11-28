@@ -18,10 +18,10 @@ interface BaseItemFormProps<T extends { id: string }> {
   onFieldChange?: (field: keyof T, value: string) => void; // Custom field change handler
 }
 
-const BaseItemForm = <T extends { id: string }>({ 
-  item, 
-  onChange, 
-  title, 
+const BaseItemForm = <T extends { id: string }>({
+  item,
+  onChange,
+  title,
   fields,
   children,
   onFieldChange
@@ -39,9 +39,9 @@ const BaseItemForm = <T extends { id: string }>({
 
   const renderField = (field: typeof fields[0]) => {
     const value = String(item[field.key] || '');
-    
+
     switch (field.type) {
-      case 'textarea':
+      case 'textarea': {
         const charCount = value.length;
         const isAtCharLimit = field.maxLength && charCount >= field.maxLength;
         return (
@@ -49,24 +49,23 @@ const BaseItemForm = <T extends { id: string }>({
             <textarea
               value={value}
               onChange={(e) => handleChange(field.key, e.target.value)}
-              className={`w-full p-2 border rounded text-sm h-20 resize-none ${
-                isAtCharLimit ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'
-              }`}
+              className={`w-full p-2 border rounded text-sm h-20 resize-none ${isAtCharLimit ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'
+                }`}
               placeholder={field.placeholder}
               required={field.required}
               maxLength={field.maxLength}
             />
             {field.maxLength && (
-              <div className={`text-xs mt-1 text-right ${
-                isAtCharLimit ? 'text-yellow-600 font-medium' : 'text-gray-500'
-              }`}>
+              <div className={`text-xs mt-1 text-right ${isAtCharLimit ? 'text-yellow-600 font-medium' : 'text-gray-500'
+                }`}>
                 {charCount}/{field.maxLength} characters
                 {isAtCharLimit && ' (limit reached)'}
               </div>
             )}
           </div>
         );
-      
+      }
+
       case 'url':
         return (
           <input
@@ -78,7 +77,7 @@ const BaseItemForm = <T extends { id: string }>({
             required={field.required}
           />
         );
-      
+
       case 'select':
         return (
           <select
@@ -94,7 +93,7 @@ const BaseItemForm = <T extends { id: string }>({
             ))}
           </select>
         );
-      
+
       default: // text
         return (
           <input
@@ -116,7 +115,7 @@ const BaseItemForm = <T extends { id: string }>({
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-medium text-gray-700">{title}</h3>
         </div>
-        
+
         <div className="space-y-3">
           {fields.map((field) => (
             <div key={String(field.key)}>
@@ -129,7 +128,7 @@ const BaseItemForm = <T extends { id: string }>({
           ))}
         </div>
       </div>
-      
+
       {/* Additional content (meta fields, etc.) */}
       {children}
     </div>

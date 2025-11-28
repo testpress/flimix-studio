@@ -18,21 +18,21 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Utility function to parse color and opacity from a color value
   const parseColorAndOpacity = (colorValue: string | undefined, defaultColor: string = '#ffffff') => {
     if (!colorValue) return { color: defaultColor, opacity: 100 };
-    
+
     // Check if it's rgba format
     const rgbaMatch = colorValue.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
     if (rgbaMatch) {
-      const [_, r, g, b, a] = rgbaMatch;
+      const [, r, g, b, a] = rgbaMatch;
       const opacity = Math.round(parseFloat(a) * 100);
       // Convert RGB to hex
       const hexColor = `#${Number(r).toString(16).padStart(2, '0')}${Number(g).toString(16).padStart(2, '0')}${Number(b).toString(16).padStart(2, '0')}`;
       return { color: hexColor, opacity };
     }
-    
+
     // If it's a hex color
     return { color: colorValue, opacity: 100 };
   };
-  
+
   // Utility function to convert hex color and opacity to rgba
   const convertToRgba = (hexColor: string, opacityValue: number) => {
     if (opacityValue < 100) {
@@ -104,11 +104,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Background Color field with transparency support
   const renderBackgroundColorField = () => {
     const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#ffffff');
-    
+
     const handleColorChange = (hexColor: string, opacityValue: number) => {
       handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
     };
-    
+
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Background Color</label>
@@ -120,7 +120,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               onChange={(e) => handleColorChange(e.target.value, opacity)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
-            <div 
+            <div
               className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
               onClick={() => handleColorChange('#ffffff', 0)} // Set transparent on click
               title="Set transparent"
@@ -149,11 +149,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Text Color field with transparency support
   const renderTextColorField = () => {
     const { color, opacity } = parseColorAndOpacity(style.textColor, '#000000');
-    
+
     const handleColorChange = (hexColor: string, opacityValue: number) => {
       handleStyleChange('textColor', convertToRgba(hexColor, opacityValue));
     };
-    
+
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Text Color</label>
@@ -165,7 +165,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               onChange={(e) => handleColorChange(e.target.value, opacity)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
-            <div 
+            <div
               className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
               onClick={() => handleColorChange('#000000', 0)} // Set transparent on click
               title="Set transparent"
@@ -194,11 +194,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   // Helper function to render Color field (for divider blocks) with transparency support
   const renderColorField = () => {
     const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#000000');
-    
+
     const handleColorChange = (hexColor: string, opacityValue: number) => {
       handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
     };
-    
+
     return (
       <div>
         <label className="block text-sm text-gray-700 mb-1">Color</label>
@@ -210,7 +210,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
               onChange={(e) => handleColorChange(e.target.value, opacity)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
-            <div 
+            <div
               className="absolute top-0 right-0 h-full w-5 flex items-center justify-center cursor-pointer"
               onClick={() => handleColorChange('#000000', 0)} // Set transparent on click
               title="Set transparent"
@@ -338,7 +338,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       case 'image':
         // Image blocks: only show layout and visual styling, no text-related options
         return layoutOnlyFields;
-      
+
       case 'section':
         // Section blocks: show layout options and text color, but no theme or text alignment
         return [
@@ -362,7 +362,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           ...layoutOnlyFields,
           renderTextAlignField(),
         ];
-      
+
       case 'divider':
         // Divider blocks: only show color option
         return [
@@ -370,11 +370,11 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
         ];
       case 'hero':
         return [
-        renderMarginField(),
-        renderBackgroundColorField(),
-        renderTextAlignField(),
-        renderTextColorField(),
-      ];
+          renderMarginField(),
+          renderBackgroundColorField(),
+          renderTextAlignField(),
+          renderTextColorField(),
+        ];
       case 'rowLayout':
         return [
           renderPaddingField(),
@@ -392,7 +392,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
       case 'cta-button':
         // Standard blocks: show all options
         return allFields;
-      
+
       default:
         // Default: show all options for unknown block types
         return allFields;
@@ -404,7 +404,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
       <h3 className="font-medium text-gray-700 mb-4">Style Settings</h3>
-      
+
       <div className="space-y-6">
         {fieldsToRender.map((field, index) => (
           <div key={`style-field-${index}`}>

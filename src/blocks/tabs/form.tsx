@@ -6,6 +6,8 @@ import { generateUniqueId } from '@utils/id';
 import { Plus, Trash2, Edit3 } from 'lucide-react';
 
 const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
+  const [editingTab, setEditingTab] = useState<Tab | null>(null);
+
   // Type guard to ensure we have a TabsBlock
   if (block.type !== 'tabs') {
     return (
@@ -16,7 +18,6 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   }
 
   const tabsBlock = block as TabsBlock;
-  const [editingTab, setEditingTab] = useState<Tab | null>(null);
 
   const handleAddTab = () => {
     // Check if we're at the limit
@@ -38,7 +39,7 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const handleDeleteTab = (tabId: string) => {
     const updatedTabs = tabsBlock.props.tabs.filter(tab => tab.id !== tabId);
     updateProps({ tabs: updatedTabs });
-    
+
     // If we're editing the deleted tab, clear the edit state
     if (editingTab?.id === tabId) {
       setEditingTab(null);
@@ -52,8 +53,8 @@ const TabsForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const handleSaveTab = () => {
     if (!editingTab?.id || !editingTab?.label) return;
 
-    const updatedTabs = tabsBlock.props.tabs.map(tab => 
-      tab.id === editingTab.id 
+    const updatedTabs = tabsBlock.props.tabs.map(tab =>
+      tab.id === editingTab.id
         ? { ...tab, label: editingTab.label }
         : tab
     );

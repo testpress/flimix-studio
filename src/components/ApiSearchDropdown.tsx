@@ -45,50 +45,50 @@ export function ApiSearchDropdown<T>({
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
-  
+
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  
+
   // Debounced query
   const debouncedQuery = useDebouncedValue(query, debounceDelay);
-  
+
   // Handle outside clicks
   useOnClickOutside(dropdownRef, () => setIsOpen(false));
-  
+
   // Fetch items when debounced query changes
   useEffect(() => {
     if (!isOpen) return;
-    
+
     // Reset pagination when query changes
     setCurrentOffset(0);
     setHasMore(true);
     setItems([]); // Clear previous items
     setLoadMoreError(null);
-    
+
     // Cancel previous request if exists
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
-    
+
     const fetchItems = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const controller = new AbortController();
         abortControllerRef.current = controller;
-        
+
         const data = await searchFunction({
           query: debouncedQuery,
           limit: PAGE_SIZE,
           offset: 0
         }, controller.signal);
-        
+
         setItems(data);
         setHasMore(data.length === PAGE_SIZE);
-        
+
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
           setError('Failed to fetch results. Please try again.');
@@ -99,25 +99,25 @@ export function ApiSearchDropdown<T>({
         abortControllerRef.current = null;
       }
     };
-    
+
     fetchItems();
-    
+
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
     };
-  }, [debouncedQuery, isOpen, searchFunction]);
-  
+  }, [debouncedQuery, isOpen, searchFunction, PAGE_SIZE]);
+
   // Handle dropdown scroll for infinite scrolling
   const handleDropdownScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    
+
     // If scrolled to bottom (with scroll tolerance)
     if (scrollTop + clientHeight >= scrollHeight - SCROLL_TOLERANCE) {
       if (!isLoadingMore && hasMore && !loading) {
         setIsLoadingMore(true);
-        
+
         try {
           const nextOffset = currentOffset + PAGE_SIZE;
           const data = await searchFunction({
@@ -125,12 +125,12 @@ export function ApiSearchDropdown<T>({
             limit: PAGE_SIZE,
             offset: nextOffset
           });
-          
+
           // Append new items
           setItems(prev => [...prev, ...data]);
           setCurrentOffset(nextOffset);
           setHasMore(data.length === PAGE_SIZE);
-          
+
         } catch (err) {
           console.error("Failed to load more items:", err);
           setLoadMoreError('Failed to load more items. Please try again.');
@@ -140,14 +140,14 @@ export function ApiSearchDropdown<T>({
       }
     }
   };
-  
+
   // Handle item selection
   const handleSelectItem = (item: T) => {
     onSelect(item);
     setIsOpen(false);
     setQuery('');
   };
-  
+
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       {label && (
@@ -155,7 +155,7 @@ export function ApiSearchDropdown<T>({
           {label}
         </label>
       )}
-      
+
       <div className="relative">
         <input
           ref={searchInputRef}
@@ -172,7 +172,7 @@ export function ApiSearchDropdown<T>({
         </div>
         {query && (
           <div className="absolute right-2 top-1/2 -translate-y-1/2">
-            <button 
+            <button
               onClick={() => {
                 setQuery('');
                 searchInputRef.current?.focus();
@@ -184,9 +184,9 @@ export function ApiSearchDropdown<T>({
           </div>
         )}
       </div>
-      
+
       {isOpen && (
-        <div 
+        <div
           className="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-72 overflow-y-auto"
           onScroll={handleDropdownScroll}
         >
@@ -207,14 +207,14 @@ export function ApiSearchDropdown<T>({
                   </li>
                 ))}
               </ul>
-              
+
               {/* Loading indicator for more items */}
               {isLoadingMore && (
                 <div className="p-3 text-center text-sm text-gray-500 border-t">
                   Loading more...
                 </div>
               )}
-              
+
               {/* Load more error message */}
               {loadMoreError && (
                 <div className="p-3 text-center text-sm text-red-500 border-t">
@@ -235,7 +235,7 @@ export function ApiSearchDropdown<T>({
                   </div>
                 </div>
               )}
-              
+
               {/* End of results indicator */}
               {!hasMore && items.length > 0 && !loadMoreError && (
                 <div className="p-3 text-center text-xs text-gray-400 border-t">

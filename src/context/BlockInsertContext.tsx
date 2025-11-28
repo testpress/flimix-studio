@@ -31,10 +31,10 @@ interface BlockInsertProviderProps {
 
 export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ children }) => {
   const { pageSchema, updatePageWithHistory } = useHistory();
-  const { 
-    selectedBlockId, 
-    setSelectedBlockId, 
-    setSelectedBlock, 
+  const {
+    selectedBlockId,
+    setSelectedBlockId,
+    setSelectedBlock,
     setSelectedBlockParentId,
     setSelectedItemId,
     setSelectedItemBlockId,
@@ -76,19 +76,19 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
           const newChildren = insertIndex !== undefined
             ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
             : [...children, newBlock];
-          
+
           return {
             ...block,
             children: newChildren
           } as BlockType;
-        } 
+        }
 
         else if (block.type === 'tabs') {
           const tabsBlock = block as TabsBlock;
-          const targetTabId = getActiveTabId 
+          const targetTabId = getActiveTabId
             ? getActiveTabId(tabsBlock)
             : (activeTabId || tabsBlock.props.tabs[0]?.id);
-          
+
           if (!targetTabId) {
             console.warn(`[BlockInsertContext] No active tab found for tabs block ${containerId}`);
             return block;
@@ -100,7 +100,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
               const newChildren = insertIndex !== undefined
                 ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
                 : [...children, newBlock];
-              
+
               return {
                 ...tab,
                 children: newChildren
@@ -153,11 +153,11 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    */
   const insertBlockRelative = (blockType: BlockType['type'], position: InsertPositionType) => {
     if (!selectedBlockId) return;
-    
+
     if (!isBlockTypeValid(blockType)) {
       return;
     }
-    
+
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -165,11 +165,11 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       console.error('Failed to create block:', error);
       return;
     }
-    
+
     if (newBlock.type === 'section' && !newBlock.children) {
       newBlock.children = [];
     }
-    
+
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) {
       console.error(`Target block with ID ${selectedBlockId} not found`);
@@ -178,20 +178,20 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
 
     const { index } = result;
     const insertIndex = position === InsertPosition.AFTER ? index + 1 : index;
-    
+
     let updatedBlocks: BlockType[];
-    
+
     if (result.parent) {
       const newBlocks = structuredClone(pageSchema.blocks);
       if (result.parent.type === 'tabs') {
         // For tabs, we need to find which tab contains the selected block
         const getActiveTabId = (tabs: TabsBlock) => {
-          const tab = tabs.props.tabs.find(t => 
+          const tab = tabs.props.tabs.find(t =>
             t.children && t.children.some(child => child.id === selectedBlockId)
           );
           return tab?.id || null;
         };
-        
+
         updatedBlocks = addBlockToChildren(
           newBlocks,
           result.parent.id,
@@ -214,12 +214,12 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       newBlocks.splice(insertIndex, 0, newBlock);
       updatedBlocks = newBlocks;
     }
-    
+
     const updatedSchema = {
       ...pageSchema,
       blocks: updatedBlocks
     };
-    
+
     updatePageWithHistory(updatedSchema);
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
@@ -253,7 +253,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     if (!isBlockTypeValid(blockType)) {
       return;
     }
-    
+
     // Create new block using the factory function
     let newBlock;
     try {
@@ -262,24 +262,24 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       console.error('Failed to create block:', error);
       return;
     }
-    
+
     // Ensure Section blocks have children initialized
     if (newBlock.type === 'section' && !newBlock.children) {
       newBlock.children = []; // Initialize children array for Section blocks
     }
-    
+
     // Add the new block to the end of the page
     const updatedSchema = {
       ...pageSchema,
       blocks: [...pageSchema.blocks, newBlock]
     };
-    
+
     updatePageWithHistory(updatedSchema);
-    
+
     // Clear any previously selected item when selecting a newly inserted block
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
-    
+
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock as BlockType);
@@ -364,19 +364,19 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    * @param options - Optional parameters for specific insertion behavior
    */
   const insertBlockIntoTabs = (
-    blockType: BlockType['type'], 
-    tabsBlockId: string, 
-    options?: { 
-      tabId?: string, 
-      position?: 'above' | 'below', 
-      referenceBlockId?: string 
+    blockType: BlockType['type'],
+    tabsBlockId: string,
+    options?: {
+      tabId?: string,
+      position?: 'above' | 'below',
+      referenceBlockId?: string
     }
   ) => {
     // Validate block type
     if (!isBlockTypeValid(blockType) || blockType === 'rowLayout') {
       return;
     }
-    
+
     // Create new block using the factory function
     let newBlock;
     try {
@@ -385,13 +385,13 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       console.error('Failed to create block:', error);
       return;
     }
-    
+
     // Find the tabs block and determine insertion context
     const updatedBlocks = pageSchema.blocks.map(block => {
       if (block.id === tabsBlockId && block.type === 'tabs') {
         const tabsBlock = block as TabsBlock;
         const tabs = tabsBlock.props.tabs || [];
-        
+
         // Determine which tab to insert into
         let targetTab;
         if (options?.tabId) {
@@ -401,16 +401,16 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
           // Use active tab or fallback to first tab
           targetTab = tabs.find(tab => tab.id === activeTabId) || tabs[0];
         }
-        
+
         if (targetTab) {
           // Use inline logic for insertion instead of helper
           const updatedTabs = tabs.map(tab => {
             if (tab.id === targetTab.id) {
-              let updatedChildren = [...(tab.children || [])];
-              
+              const updatedChildren = [...(tab.children || [])];
+
               const position = options?.position === 'above' ? 'before' : 'after';
               const referenceId = options?.referenceBlockId;
-              
+
               if (position === 'before' && referenceId) {
                 const refIndex = updatedChildren.findIndex(child => child.id === referenceId);
                 if (refIndex !== -1) {
@@ -428,12 +428,12 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
               } else {
                 updatedChildren.push(newBlock);
               }
-              
+
               return { ...tab, children: updatedChildren };
             }
             return tab;
           });
-          
+
           return {
             ...block,
             props: { ...block.props, tabs: updatedTabs }
@@ -442,19 +442,19 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       }
       return block;
     });
-    
+
     // Update the schema
     const updatedSchema = {
       ...pageSchema,
       blocks: updatedBlocks
     };
-    
+
     updatePageWithHistory(updatedSchema);
-    
+
     // Clear any previously selected item when selecting a newly inserted block
     setSelectedItemId(null);
     setSelectedItemBlockId(null);
-    
+
     // Select the newly inserted block
     setSelectedBlockId(newBlock.id);
     setSelectedBlock(newBlock as BlockType);

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
@@ -12,9 +12,9 @@ interface TestimonialWidgetProps extends Omit<BaseWidgetProps<TestimonialBlock>,
   block: TestimonialBlock;
 }
 
-const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
+  block,
+  onSelect,
   isSelected = false,
   canMoveUp,
   canMoveDown,
@@ -24,11 +24,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { 
-    title, 
-    layout = 'carousel', 
-    items = [], 
-    autoplay = false, 
+  const {
+    title,
+    layout = 'carousel',
+    items = [],
+    autoplay = false,
     scrollSpeed = 1000,
     showArrows = true,
     itemSize = 'large',
@@ -36,9 +36,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     rows = 3,
     itemShape = 'circle'
   } = props;
-  
+
   const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
-  
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -46,7 +46,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const previousItemsLengthRef = useRef<number>(0);
   const autoplayIntervalRef = useRef<number | null>(null);
   const manualScrollPauseTimeoutRef = useRef<number | null>(null);
-  
+
   // Map abstract item size values to Tailwind classes for carousel - now responsive
   const getItemSizeClass = (size: ItemSize): string => {
     switch (size) {
@@ -62,19 +62,19 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         return 'w-full sm:w-80 md:w-96 lg:w-[28rem]'; // fallback to large
     }
   };
-  
-  const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' : 
-                      style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
-                      style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
-  
-  const marginClass = style?.margin === 'lg' ? 'm-8' : 
-                     style?.margin === 'md' ? 'm-6' : 
-                     style?.margin === 'sm' ? 'm-4' : 'm-0';
-  
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
-                           style?.borderRadius === 'md' ? 'rounded-md' : 
-                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  
+
+  const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' :
+    style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' :
+      style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
+
+  const marginClass = style?.margin === 'lg' ? 'm-8' :
+    style?.margin === 'md' ? 'm-6' :
+      style?.margin === 'sm' ? 'm-4' : 'm-0';
+
+  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' :
+    style?.borderRadius === 'md' ? 'rounded-md' :
+      style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+
   // Handle box shadow - custom CSS values for better visibility
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -85,9 +85,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     }
   };
   const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
-  
+
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
-                        style?.textAlign === 'right' ? 'text-right' : 'text-left';
+    style?.textAlign === 'right' ? 'text-right' : 'text-left';
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
   const isHexColor = style?.textColor && style.textColor.startsWith('#');
@@ -112,7 +112,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
 
   // Calculate dynamic scroll amount based on item width and gap
-  const getScrollAmount = (): number => {
+  const getScrollAmount = useCallback((): number => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer || !items || items.length < 2) return 400; // Fallback, requires at least 2 items to measure gap.
 
@@ -123,28 +123,28 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
     // This dynamically calculates the scroll distance including item width and responsive gap.
     const scrollAmount = secondItem.offsetLeft - firstItem.offsetLeft;
-    
+
     // Ensure we scroll at least one full item width
     return Math.max(scrollAmount, firstItem.offsetWidth);
-  };
+  }, [items]);
 
   // Check scroll position and update arrow visibility
   const checkScrollPosition = () => {
     if (!scrollContainerRef.current) return;
-    
+
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
     // Add a small tolerance to prevent edge cases
     const tolerance = 5;
-    
+
     // Check if we can scroll left
     setCanScrollLeft(scrollLeft > tolerance);
-    
+
     // Check if we can scroll right - be more generous with the calculation
     const canScrollRight = scrollLeft < scrollWidth - clientWidth - tolerance;
-    
+
     // Also check if we have more items than can fit in the visible area
     const hasOverflow = scrollWidth > clientWidth;
-    
+
     setCanScrollRight(canScrollRight && hasOverflow);
   };
 
@@ -154,32 +154,32 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     if (scrollContainer) {
       // Store current scroll position before items change
       const currentScrollLeft = scrollContainer.scrollLeft;
-      
+
       // Only reset scroll position if this is the initial load or items were added/removed
       const isInitialLoad = previousItemsLengthRef.current === 0;
       const itemsChanged = previousItemsLengthRef.current !== (items?.length || 0);
-      
+
       if (isInitialLoad) {
         scrollContainer.scrollLeft = 0;
       } else if (!itemsChanged) {
         // If items were just reordered (same count), preserve scroll position
         scrollContainer.scrollLeft = currentScrollLeft;
       }
-      
+
       // Always check scroll position after items change
       checkScrollPosition();
-      
+
       // Add a small delay to ensure layout is stable after items change
       const delayedCheck = setTimeout(() => {
         checkScrollPosition();
       }, 150);
-      
+
       scrollContainer.addEventListener('scroll', checkScrollPosition);
       window.addEventListener('resize', checkScrollPosition);
-      
+
       // Update previous items length
       previousItemsLengthRef.current = items?.length || 0;
-      
+
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
         window.removeEventListener('resize', checkScrollPosition);
@@ -199,28 +199,28 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           checkScrollPosition();
         }, 100);
       });
-      
+
       resizeObserver.observe(scrollContainer);
-      
+
       // Also listen for window resize events
       const handleResize = () => {
         setTimeout(() => {
           checkScrollPosition();
         }, 100);
       };
-      
+
       window.addEventListener('resize', handleResize);
-      
+
       // Initial check after a short delay to ensure layout is stable
       const initialCheck = setTimeout(() => {
         checkScrollPosition();
       }, 200);
-      
+
       // Periodic check to ensure accuracy (especially after layout changes)
       const periodicCheck = setInterval(() => {
         checkScrollPosition();
       }, 1000); // Check every second
-      
+
       return () => {
         resizeObserver.disconnect();
         window.removeEventListener('resize', handleResize);
@@ -233,15 +233,15 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   // Autoplay functionality for carousel layout
   useEffect(() => {
     if (layout !== 'carousel') return;
-    
+
     const scrollContainer = scrollContainerRef.current;
-    
+
     // Clear any existing interval
     if (autoplayIntervalRef.current) {
       clearInterval(autoplayIntervalRef.current);
       autoplayIntervalRef.current = null;
     }
-    
+
     // Start autoplay if enabled and we have items and not paused
     if (autoplay && !isAutoplayPaused && scrollContainer && items && items.length > 1) {
       autoplayIntervalRef.current = setInterval(() => {
@@ -249,7 +249,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           // Check if we're at the end of the carousel
           const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
           const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10; // 10px tolerance
-          
+
           if (isAtEnd) {
             // Reset to beginning for infinite loop
             scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
@@ -261,7 +261,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         }
       }, scrollSpeed);
     }
-    
+
     // Cleanup on unmount or when autoplay/scrollSpeed/pause state changes
     return () => {
       if (autoplayIntervalRef.current) {
@@ -273,7 +273,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         manualScrollPauseTimeoutRef.current = null;
       }
     };
-  }, [autoplay, scrollSpeed, items, isAutoplayPaused, layout]);
+  }, [autoplay, scrollSpeed, items, isAutoplayPaused, layout, getScrollAmount]);
 
   // Handle arrow clicks for carousel
   const handleScrollLeft = () => {
@@ -311,9 +311,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   };
 
   const handleAddItem = () => {
-    let currentItemCount = items?.length || 0;
+    const currentItemCount = items?.length || 0;
     let maxItems: number;
-    
+
     if (layout === 'carousel') {
       maxItems = TESTIMONIAL_ITEM_LIMIT;
     } else if (layout === 'grid') {
@@ -322,11 +322,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       // single layout - only allow 1 item
       maxItems = 1;
     }
-    
+
     if (currentItemCount >= maxItems) {
       return; // Don't add more items if at limit
     }
-    
+
     // Create a default item that matches the library item structure
     const defaultItem = {
       id: generateUniqueId(),
@@ -390,36 +390,34 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   // Render testimonial item
   const renderTestimonialItem = (item: TestimonialItem, index: number) => (
     <div key={item.id} className="relative group">
-      <div 
-        className={`bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${
-          isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''
-        }`}
+      <div
+        className={`bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer min-h-[12rem] sm:min-h-[14rem] md:min-h-[16rem] min-w-[280px] sm:min-w-[320px] flex flex-col overflow-hidden ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black' : ''
+          }`}
         onClick={() => handleItemClick(item.id)}
       >
         {/* Quote - flex-grow to take available space */}
         <blockquote className="text-sm sm:text-base md:text-lg font-medium text-white mb-3 sm:mb-4 italic flex-grow leading-relaxed break-words overflow-visible hyphens-auto whitespace-normal">
           "{item.quote}"
         </blockquote>
-        
+
         {/* Rating */}
         {item.rating && (
           <div className="mb-3">
             {renderStars(item.rating)}
           </div>
         )}
-        
+
         {/* Author info - fixed at bottom */}
         <div className="flex items-center mt-auto">
           {item.image && (
-            <img 
-              src={item.image} 
-              alt={item.name || 'Customer'} 
-              className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4 ${
-                itemShape === 'circle' ? 'rounded-full' : 
-                itemShape === 'square' ? 'rounded-md' : 
-                itemShape === 'rectangle-portrait' ? 'rounded-md' : 
-                'rounded-md'
-              }`}
+            <img
+              src={item.image}
+              alt={item.name || 'Customer'}
+              className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4 ${itemShape === 'circle' ? 'rounded-full' :
+                itemShape === 'square' ? 'rounded-md' :
+                  itemShape === 'rectangle-portrait' ? 'rounded-md' :
+                    'rounded-md'
+                }`}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
@@ -436,8 +434,8 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           </div>
         </div>
       </div>
-      
-      <ItemsControl 
+
+      <ItemsControl
         index={index}
         count={items.length}
         onMoveLeft={() => moveBlockItemLeft(block.id, index)}
@@ -454,7 +452,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       <div className="flex items-center">
         {/* Left Arrow */}
         {showArrows && canScrollLeft && (
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               handleScrollLeft();
@@ -464,10 +462,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
           </button>
         )}
-        
+
         {/* Carousel Container */}
         <div className="flex-1 overflow-hidden">
-          <div 
+          <div
             ref={scrollContainerRef}
             className={`flex overflow-x-auto ${getGapClass()} pb-4 scrollbar-hide`}
             onMouseEnter={() => autoplay && setIsAutoplayPaused(true)}
@@ -476,21 +474,21 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           >
             {/* Left padding to ensure first item is fully visible */}
             <div className="flex-shrink-0 w-2 sm:w-4"></div>
-            
+
             {items.map((item, index) => (
               <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} px-2`}>
                 {renderTestimonialItem(item, index)}
               </div>
             ))}
-            
+
             {/* Right padding to ensure last item is fully visible */}
             <div className="flex-shrink-0 w-2 sm:w-4"></div>
           </div>
         </div>
-        
+
         {/* Right Arrow */}
         {showArrows && canScrollRight && (
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               handleScrollRight();
@@ -501,12 +499,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           </button>
         )}
       </div>
-      
+
       {/* Mobile scroll indicators */}
       {showArrows && (canScrollLeft || canScrollRight) && (
         <div className="sm:hidden flex justify-center mt-4 space-x-2">
           {canScrollLeft && (
-            <button 
+            <button
               onClick={handleScrollLeft}
               className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
             >
@@ -514,7 +512,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             </button>
           )}
           {canScrollRight && (
-            <button 
+            <button
               onClick={handleScrollRight}
               className="w-8 h-8 flex items-center justify-center bg-white/90 hover:bg-white shadow-lg rounded-full transition-all duration-200 text-gray-700 hover:text-gray-900"
             >
@@ -573,9 +571,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     return (
       <div className={marginClass}>
         <div style={{ boxShadow: boxShadowStyle }}>
-          <BaseWidget 
-            block={block} 
-            onSelect={onSelect} 
+          <BaseWidget
+            block={block}
+            onSelect={onSelect}
             isSelected={isSelected}
             canMoveUp={canMoveUp}
             canMoveDown={canMoveDown}
@@ -622,17 +620,17 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
           }}
         >
-      <div className={`w-full ${textAlignClass}`}>
-        {title && (
-          <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 ${textColorClass}`} style={textColorStyle}>
-            {title}
-          </h2>
-        )}
-        
-        {layout === 'carousel' && renderCarousel()}
-        {layout === 'grid' && renderGrid()}
-        {layout === 'single' && renderSingle()}
-      </div>
+          <div className={`w-full ${textAlignClass}`}>
+            {title && (
+              <h2 className={`text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 ${textColorClass}`} style={textColorStyle}>
+                {title}
+              </h2>
+            )}
+
+            {layout === 'carousel' && renderCarousel()}
+            {layout === 'grid' && renderGrid()}
+            {layout === 'single' && renderSingle()}
+          </div>
         </BaseWidget>
       </div>
     </div>

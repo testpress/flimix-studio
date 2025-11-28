@@ -21,7 +21,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(muted);
-  
+
   // Error handling state and refs
   const retryCountRef = useRef(0);
   const maxRetries = 3;
@@ -37,9 +37,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     const delay = baseDelay * Math.pow(2, retryCountRef.current); // Exponential backoff
     retryCountRef.current++;
-    
+
     console.log(`Attempting recovery for ${errorType} in ${delay}ms (attempt ${retryCountRef.current}/${maxRetries})`);
-    
+
     setTimeout(() => {
       try {
         switch (errorType) {
@@ -66,16 +66,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!src || !videoElement) return;
-    
+
     // Reset retry count for new video source
     retryCountRef.current = 0;
-    
+
     videoElement.muted = isMuted;
     videoElement.autoplay = autoplay;
     videoElement.loop = loop;
-    
+
     let hls: Hls | null = null;
-    
+
     if (src.includes('.m3u8')) {
       if (Hls.isSupported()) {
         hls = new Hls({
@@ -83,16 +83,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           lowLatencyMode: true,
           backBufferLength: 90
         });
-        
+
         hls.loadSource(src);
         hls.attachMedia(videoElement);
-        
+
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           if (autoplay) {
             videoElement.play().catch(err => console.error('HLS autoplay failed:', err));
           }
         });
-        
+
         hls.on(Hls.Events.ERROR, (_, data) => {
           if (data.fatal) {
             console.error(`HLS fatal error: ${data.type}`, data.details);
@@ -115,7 +115,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         videoElement.play().catch(err => console.error('Video autoplay failed:', err));
       }
     }
-    
+
     return () => {
       if (hls) {
         hls.destroy();
@@ -126,7 +126,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         videoElement.load();
       }
     };
-  }, [src, autoplay, loop]);
+  }, [src, autoplay, loop, isMuted]);
 
   // Separate effect for mute state (doesn't restart video)
   useEffect(() => {
@@ -142,7 +142,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   return (
     <div className="relative w-full h-full">
-      <video 
+      <video
         ref={videoRef}
         className={className}
         poster={poster}
@@ -158,7 +158,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           cursor: 'pointer'
         }}
       />
-      
+
       {/* Custom Mute/Unmute Button */}
       <button
         onClick={e => {
