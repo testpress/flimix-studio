@@ -294,7 +294,7 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    */
   const insertBlockInsideSection = (blockType: BlockType['type'], sectionId: string) => {
     // Find the selected section and its parent
-    const { block: targetContainer } = findBlockAndParent(
+    const { block: targetContainer, parent: targetParent } = findBlockAndParent(
       sectionId,
       pageSchema.blocks,
     );
