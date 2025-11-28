@@ -1,12 +1,11 @@
 import type { BlockType } from '@blocks/shared/Block';
 import { generateUniqueId } from '@utils/id';
-import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem, RowLayoutLibraryItem } from '@blocks/shared/Library';
+import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem } from '@blocks/shared/Library';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 import type { TabsBlockProps, Tab } from '@blocks/tabs/schema';
 import type { TextBlockProps } from '@/blocks/text/schema';
-import type { SectionBlock } from '@blocks/section/schema';
 import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
 /**
  * Creates a new block of the specified type with default values and a unique ID
@@ -230,15 +229,10 @@ export function createBlock(type: BlockType['type']): BlockType {
       case 'rowLayout': {
         return {
           type: 'rowLayout',
-          props: {
-            ...RowLayoutLibraryItem.defaultProps,
-          } as RowLayoutBlockProps,
+          props: {} as RowLayoutBlockProps,
           id,
           style: { padding: 'md' },
-          children: [
-            createBlock('section'),
-            createBlock('section'),
-          ] as SectionBlock[],
+          children: [],
         };
       }
 
