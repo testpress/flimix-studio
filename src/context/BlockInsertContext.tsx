@@ -1,7 +1,6 @@
 import React, { createContext, useContext, type ReactNode } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
-import { createBlock, findBlockPositionById } from '@context/domain';
-import { findBlockAndParent } from '@context/domain/blockTraversal';
+import { createBlock, findBlockPositionById, findBlockAndParent, updateBlockInTree } from '@context/domain';
 import { getAvailableBlockTypes } from '@blocks/shared/Library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
@@ -24,6 +23,33 @@ interface BlockInsertContextType {
 }
 
 const BlockInsertContext = createContext<BlockInsertContextType | undefined>(undefined);
+
+// Helper: Insert at index
+const insertAtIndex = (blocks: BlockType[] | undefined, newBlock: BlockType, index?: number): BlockType[] => {
+  const list = blocks || [];
+  if (index !== undefined && index >= 0 && index <= list.length) {
+    return [...list.slice(0, index), newBlock, ...list.slice(index)];
+  }
+  return [...list, newBlock];
+};
+
+// Helper: Insert relative to ID
+const insertRelative = (
+  blocks: BlockType[] | undefined,
+  newBlock: BlockType,
+  refId?: string,
+  position: 'before' | 'after' = 'after'
+): BlockType[] => {
+  const list = blocks || [];
+  if (refId) {
+    const index = list.findIndex(b => b.id === refId);
+    if (index !== -1) {
+      const targetIndex = position === 'before' ? index : index + 1;
+      return insertAtIndex(list, newBlock, targetIndex);
+    }
+  }
+  return [...list, newBlock];
+};
 
 interface BlockInsertProviderProps {
   children: ReactNode;
@@ -68,74 +94,32 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     getActiveTabId?: (tabsBlock: TabsBlock) => string | null,
     insertIndex?: number
   ): BlockType[] => {
-    return blocks.map(block => {
-      if (block.id === containerId) {
-
-        if (block.type === 'section') {
-          const children = block.children || [];
-          const newChildren = insertIndex !== undefined
-            ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
-            : [...children, newBlock];
-
-          return {
-            ...block,
-            children: newChildren
-          } as BlockType;
-        }
-
-        else if (block.type === 'tabs') {
-          const tabsBlock = block as TabsBlock;
-          const targetTabId = getActiveTabId
-            ? getActiveTabId(tabsBlock)
-            : (activeTabId || tabsBlock.props.tabs[0]?.id);
-
-          if (!targetTabId) {
-            console.warn(`[BlockInsertContext] No active tab found for tabs block ${containerId}`);
-            return block;
-          }
-
-          const updatedTabs = tabsBlock.props.tabs.map(tab => {
-            if (tab.id === targetTabId) {
-              const children = tab.children || [];
-              const newChildren = insertIndex !== undefined
-                ? [...children.slice(0, insertIndex), newBlock, ...children.slice(insertIndex)]
-                : [...children, newBlock];
-
-              return {
-                ...tab,
-                children: newChildren
-              };
-            }
-            return tab;
-          });
-
-          return {
-            ...block,
-            props: { ...block.props, tabs: updatedTabs }
-          } as BlockType;
-        }
-      }
-
-      // Recursively search in children
-      if (block.children && block.children.length > 0) {
+    
+    const { updatedBlocks } = updateBlockInTree(blocks, containerId, (block) => {
+      if (block.type === 'section') {
         return {
           ...block,
-          children: addBlockToChildren(block.children, containerId, newBlock, getActiveTabId, insertIndex)
+          children: insertAtIndex(block.children, newBlock, insertIndex)
         } as BlockType;
       }
 
-      // Recursively search in tabs
       if (block.type === 'tabs') {
         const tabsBlock = block as TabsBlock;
-        const updatedTabs = tabsBlock.props.tabs.map(tab => {
-          if (tab.children && tab.children.length > 0) {
-            return {
-              ...tab,
-              children: addBlockToChildren(tab.children, containerId, newBlock, getActiveTabId, insertIndex)
-            };
-          }
-          return tab;
-        });
+        const targetTabId = getActiveTabId
+          ? getActiveTabId(tabsBlock)
+          : (activeTabId || tabsBlock.props.tabs[0]?.id);
+
+        if (!targetTabId) {
+          console.warn(`[BlockInsertContext] No active tab found for tabs block ${containerId}`);
+          return block;
+        }
+
+        const updatedTabs = tabsBlock.props.tabs.map(tab =>
+          tab.id === targetTabId
+            ? { ...tab, children: insertAtIndex(tab.children, newBlock, insertIndex) }
+            : tab
+        );
+
         return {
           ...block,
           props: { ...block.props, tabs: updatedTabs }
@@ -144,6 +128,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
 
       return block;
     });
+
+    return updatedBlocks;
   };
 
   /**
@@ -175,12 +161,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       console.error(`Target block with ID ${selectedBlockId} not found`);
       return;
     }
-
-    const { index } = result;
-    const insertIndex = position === InsertPosition.AFTER ? index + 1 : index;
-
+    const insertIndex = position === InsertPosition.AFTER ? result.index + 1 : result.index;
     let updatedBlocks: BlockType[];
-
+    
+    //If parent is found, insert the block into the parent
     if (result.parent) {
       const newBlocks = structuredClone(pageSchema.blocks);
       if (result.parent.type === 'tabs') {
@@ -249,12 +233,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
    * @param blockType - Type of block to create and insert
    */
   const insertBlockAtEnd = (blockType: BlockType['type']) => {
-    // Validate block type
     if (!isBlockTypeValid(blockType)) {
       return;
     }
 
-    // Create new block using the factory function
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -263,12 +245,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    // Ensure Section blocks have children initialized
     if (newBlock.type === 'section' && !newBlock.children) {
-      newBlock.children = []; // Initialize children array for Section blocks
+      newBlock.children = [];
     }
 
-    // Add the new block to the end of the page
     const updatedSchema = {
       ...pageSchema,
       blocks: [...pageSchema.blocks, newBlock]
@@ -372,12 +352,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       referenceBlockId?: string
     }
   ) => {
-    // Validate block type
     if (!isBlockTypeValid(blockType) || blockType === 'rowLayout') {
       return;
     }
 
-    // Create new block using the factory function
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -386,9 +364,8 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    // Find the tabs block and determine insertion context
-    const updatedBlocks = pageSchema.blocks.map(block => {
-      if (block.id === tabsBlockId && block.type === 'tabs') {
+    const { updatedBlocks } = updateBlockInTree(pageSchema.blocks, tabsBlockId, (block) => {
+      if (block.type === 'tabs') {
         const tabsBlock = block as TabsBlock;
         const tabs = tabsBlock.props.tabs || [];
 
@@ -398,46 +375,24 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
           // Use specified tab ID
           targetTab = tabs.find(tab => tab.id === options.tabId);
         } else {
-          // Use active tab or fallback to first tab
           targetTab = tabs.find(tab => tab.id === activeTabId) || tabs[0];
         }
 
         if (targetTab) {
-          // Use inline logic for insertion instead of helper
-          const updatedTabs = tabs.map(tab => {
-            if (tab.id === targetTab.id) {
-              const updatedChildren = [...(tab.children || [])];
-
-              const position = options?.position === 'above' ? 'before' : 'after';
-              const referenceId = options?.referenceBlockId;
-
-              if (position === 'before' && referenceId) {
-                const refIndex = updatedChildren.findIndex(child => child.id === referenceId);
-                if (refIndex !== -1) {
-                  updatedChildren.splice(refIndex, 0, newBlock);
-                } else {
-                  updatedChildren.push(newBlock);
-                }
-              } else if (position === 'after' && referenceId) {
-                const refIndex = updatedChildren.findIndex(child => child.id === referenceId);
-                if (refIndex !== -1) {
-                  updatedChildren.splice(refIndex + 1, 0, newBlock);
-                } else {
-                  updatedChildren.push(newBlock);
-                }
-              } else {
-                updatedChildren.push(newBlock);
+          const position = options?.position === 'above' ? 'before' : 'after';
+          const updatedTabs = tabs.map(tab =>
+            tab.id === targetTab.id
+              ? {
+                ...tab,
+                children: insertRelative(tab.children, newBlock, options?.referenceBlockId, position)
               }
-
-              return { ...tab, children: updatedChildren };
-            }
-            return tab;
-          });
+              : tab
+          );
 
           return {
             ...block,
             props: { ...block.props, tabs: updatedTabs }
-          };
+          } as BlockType;
         }
       }
       return block;
