@@ -2,7 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import { useSettingsPanel } from '@context/SettingsPanelContext';
+import { usePanel } from '@context/PanelContext';
 import type { 
   BlockFormProps
 } from '@blocks/shared/FormTypes';
@@ -56,7 +56,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     updateSelectedBlockVisibility,
     updateBlockItem,
   } = useBlockEditing();
-  const { isSettingsOpen, openSettings, closeSettings } = useSettingsPanel();
+  const { isSettingsOpen, openSettings, closeSettings } = usePanel();
 
   // Auto-open settings when a block gets selected
   React.useEffect(() => {
