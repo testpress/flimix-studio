@@ -1,8 +1,6 @@
 import { Undo, Redo, Plus, X, Layers } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
-import { useLibraryPanel } from '@context/LibraryPanelContext';
-import { useLayoutPanel } from '@context/LayoutPanelContext';
-import { usePanelCoordinator } from '@context/PanelCoordinator';
+import { usePanel } from '@context/PanelContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type PageBuilderTopbarProps = {
@@ -11,9 +9,7 @@ type PageBuilderTopbarProps = {
 
 const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
-  const { isLibraryOpen } = useLibraryPanel();
-  const { isLayoutOpen } = useLayoutPanel();
-  const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
+  const { isLibraryOpen, isLayoutOpen, toggleLibrary, toggleLayout } = usePanel();
 
   const handleSave = async () => {
     if (onSavePage) {
@@ -30,7 +26,7 @@ const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">          
           <button 
-            onClick={toggleLibrarySafely}
+            onClick={toggleLibrary}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLibraryOpen ? "Close block library" : "Open block library"}
           >
@@ -38,7 +34,7 @@ const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
           </button>
           
           <button 
-            onClick={toggleLayoutSafely}
+            onClick={toggleLayout}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"
             title={isLayoutOpen ? "Close layout panel" : "Open layout panel"}
           >

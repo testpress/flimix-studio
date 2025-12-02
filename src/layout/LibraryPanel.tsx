@@ -8,7 +8,7 @@ import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockType } from '@blocks/shared/Block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
-import { useLibraryPanel } from '@context/LibraryPanelContext';
+import { usePanel } from '@context/PanelContext';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 
 // Icon mapping for the templates
@@ -31,7 +31,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const LibraryPanel: React.FC = () => {
-  const { isLibraryOpen } = useLibraryPanel();
+  const { isLibraryOpen } = usePanel();
   const { selectedBlockId, selectedBlock } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();

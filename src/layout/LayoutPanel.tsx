@@ -25,7 +25,7 @@ import {
   MoveUp,
   MoveDown
 } from 'lucide-react';
-import { useLayoutPanel } from '@context/LayoutPanelContext';
+import { usePanel } from '@context/PanelContext';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import { useHistory } from '@context/HistoryContext';
@@ -436,7 +436,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelec
 };
 
 const LayoutPanel: React.FC = () => {
-  const { isLayoutOpen } = useLayoutPanel();
+  const { isLayoutOpen } = usePanel();
   const { selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
   const { pageSchema } = useHistory();
   const [searchQuery, setSearchQuery] = useState('');

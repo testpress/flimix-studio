@@ -7,7 +7,7 @@ import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 import { Plus } from 'lucide-react';
-import { useLibraryPanel } from '@context/LibraryPanelContext';
+import { usePanel } from '@context/PanelContext';
 
 interface SectionWidgetProps extends Omit<BaseWidgetProps<SectionBlock>, 'block'> {
   block: SectionBlock;
@@ -35,7 +35,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
 }) => {
   const { props, style, children } = block;
   const { title, description, backgroundImage } = props;
-  const { openLibrary } = useLibraryPanel();
+  const { openLibrary } = usePanel();
   const hasChildren = children && children.length > 0;
 
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
