@@ -4,6 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { FAQAccordionBlock } from './schema';
 import { FAQ_ACCORDION_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { ChevronDown, ChevronRight, HelpCircle } from 'lucide-react';
 
@@ -26,7 +27,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   const { style } = block;
 
   const [openIndex, setOpenIndex] = useState(defaultOpenIndex ?? -1);
-  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected } = useSelection();
+  const { addBlockItem, moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useBlockEditing();
 
   useEffect(() => {
     setOpenIndex(defaultOpenIndex ?? -1);

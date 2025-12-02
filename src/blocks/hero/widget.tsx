@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ItemWidget from './ItemWidget';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 
 interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
   block: HeroBlock;
@@ -30,7 +31,8 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   // Local state for display when block is not selected
   const [displayIndex, setDisplayIndex] = useState(0);
 
-  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectBlockItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
+  const { selectBlockItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
+  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   // Memoized current item index calculation
   const currentItemIndex = useMemo(() => {

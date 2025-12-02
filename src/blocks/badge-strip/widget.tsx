@@ -4,6 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { BadgeStripBlock, BadgeStripItem } from './schema';
 import { BADGE_STRIP_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { generateUniqueId } from '@utils/id';
 import { Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette } from 'lucide-react';
@@ -43,7 +44,8 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { items } = props;
-  const { addBlockItem, selectBlockItem, isItemSelected: isItemSelectedFromContext, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected: isItemSelectedFromContext } = useSelection();
+  const { addBlockItem, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   // Get alignment from block style, default to center
   const alignment = style?.textAlign || 'center';

@@ -27,7 +27,8 @@ import type { ImageBlock } from '@blocks/image/schema';
 import type { VideoBlock } from '@blocks/video/schema';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
-import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
+import { useHistory } from '@context/HistoryContext';
 import { findBlockPositionForUI } from '@context/domain';
 import { AlertTriangle } from 'lucide-react';
 import CTAButtonWidget from '@blocks/cta-button/widget';
@@ -112,8 +113,8 @@ const BlockManager: React.FC<BlockManagerProps> = ({
     moveBlockDown, 
     duplicateSelectedBlock, 
     deleteSelectedBlock,
-    pageSchema 
-  } = useSelection();
+  } = useBlockEditing();
+  const { pageSchema } = useHistory();
 
   // Get position information for the current block
   const position = findBlockPositionForUI(block.id, pageSchema.blocks);

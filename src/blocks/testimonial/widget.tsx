@@ -4,6 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
 import { TESTIMONIAL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
 import { generateUniqueId } from '@utils/id';
@@ -37,7 +38,8 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     itemShape = 'circle'
   } = props;
 
-  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected } = useSelection();
+  const { addBlockItem, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

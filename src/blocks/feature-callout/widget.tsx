@@ -4,6 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { FeatureCalloutBlock } from './schema';
 import { FEATURE_CALLOUT_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { generateUniqueId } from '@utils/id';
 import Icon from '@components/Icon';
@@ -26,7 +27,8 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   const { props, style } = block;
   const { title, subtitle, items, itemSize, showIcons, showDescriptions } = props;
   
-  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected } = useSelection();
+  const { addBlockItem, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
   
   // Function to render icon
   const renderIcon = (iconName: string) => {

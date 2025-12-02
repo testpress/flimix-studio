@@ -1,6 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import { useSettingsPanel } from '@context/SettingsPanelContext';
 import type { 
   BlockFormProps
@@ -44,15 +45,17 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     selectedBlock, 
     selectedItemId, 
     selectedItemBlockId,
-    updateSelectedBlockProps, 
-    updateSelectedBlockStyle, 
-    updateSelectedBlockVisibility,
-    updateBlockItem,
     setSelectedBlock,
     setSelectedBlockId,
     setSelectedItemId,
     setSelectedItemBlockId,
   } = useSelection();
+  const {
+    updateSelectedBlockProps, 
+    updateSelectedBlockStyle, 
+    updateSelectedBlockVisibility,
+    updateBlockItem,
+  } = useBlockEditing();
   const { isSettingsOpen, openSettings, closeSettings } = useSettingsPanel();
 
   // Auto-open settings when a block gets selected
