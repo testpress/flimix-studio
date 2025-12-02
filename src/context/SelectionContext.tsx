@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { Block, BlockType } from '@blocks/shared/Block';
-import type { TabsBlock } from '@blocks/tabs/schema';
+
 import { useHistory } from './HistoryContext';
+import { findBlockAndParent } from '@context/domain';
 
 interface SelectionContextType {
   selectedBlock: Block | null;
@@ -35,72 +36,23 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const [selectedItemBlockId, setSelectedItemBlockId] = useState<string | null>(null);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
 
-  // Helper function to recursively check if a block exists in the schema
-  const blockExistsInSchema = useCallback((blockId: string, blocks: BlockType[]): boolean => {
-    for (const block of blocks) {
-      if (block.id === blockId) {
-        return true;
-      }
-      if (block.children && blockExistsInSchema(blockId, block.children)) {
-        return true;
-      }
-      // Check tabs blocks for nested children using inline logic
-      if (block.type === 'tabs') {
-        const tabsBlock = block as TabsBlock;
-        for (const tab of tabsBlock.props.tabs) {
-          if (tab.children) {
-            for (const child of tab.children) {
-              if (child.id === blockId) {
-                return true;
-              }
-              if (child.children && blockExistsInSchema(blockId, child.children)) {
-                return true;
-              }
-            }
-          }
-        }
-      }
-    }
-    return false;
-  }, []);
-
   // Clear selectedId if it no longer exists in the schema after undo/redo
   useEffect(() => {
-    if (selectedBlockId && !blockExistsInSchema(selectedBlockId, pageSchema.blocks)) {
-      setSelectedBlockId(null);
-      setSelectedBlock(null);
-      setSelectedBlockParentId(null);
+    if (selectedBlockId) {
+      const { block } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
+      if (!block) {
+        setSelectedBlockId(null);
+        setSelectedBlock(null);
+        setSelectedBlockParentId(null);
+      }
     }
-  }, [pageSchema, selectedBlockId, blockExistsInSchema]);
+  }, [pageSchema, selectedBlockId]);
 
   // Sync selectedBlock reference with page schema when it changes (undo/redo)
+  // selected block is values changed also selectedBlock should presist
   useEffect(() => {
     if (selectedBlockId && selectedBlock) {
-      // Find the current version of the selected block in the schema
-      const findBlockInSchema = (blocks: BlockType[]): BlockType | null => {
-        for (const block of blocks) {
-          if (block.id === selectedBlockId) {
-            return block;
-          }
-          if (block.children) {
-            const found = findBlockInSchema(block.children);
-            if (found) return found;
-          }
-          // Check tabs blocks for nested children
-          if (block.type === 'tabs') {
-            const tabsBlock = block as TabsBlock;
-            for (const tab of tabsBlock.props.tabs) {
-              if (tab.children) {
-                const found = findBlockInSchema(tab.children);
-                if (found) return found;
-              }
-            }
-          }
-        }
-        return null;
-      };
-
-      const currentBlockInSchema = findBlockInSchema(pageSchema.blocks);
+      const { block: currentBlockInSchema } = findBlockAndParent(selectedBlockId, pageSchema.blocks);
 
       // Compare specific properties that are likely to change
       if (currentBlockInSchema && hasBlockChanged(currentBlockInSchema, selectedBlock)) {
@@ -111,29 +63,27 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
 
   // Efficient comparison function for block changes
   const hasBlockChanged = (block1: BlockType, block2: Block): boolean => {
-    // Compare props (most likely to change)
-    if (JSON.stringify(block1.props) !== JSON.stringify(block2.props)) {
-      return true;
+    if (block1 === block2) return false;
+
+    if (block1.props !== block2.props) {
+      const keys1 = Object.keys(block1.props);
+      const keys2 = Object.keys(block2.props);
+      if (keys1.length !== keys2.length) return true;
+      
+      if (JSON.stringify(block1.props) !== JSON.stringify(block2.props)) return true;
     }
 
-    // Compare style (likely to change)
-    if (JSON.stringify(block1.style) !== JSON.stringify(block2.style)) {
-      return true;
+    if (block1.style !== block2.style) {
+       if (JSON.stringify(block1.style) !== JSON.stringify(block2.style)) return true;
     }
 
-    // Compare visibility (likely to change)
-    if (JSON.stringify(block1.visibility) !== JSON.stringify(block2.visibility)) {
-      return true;
+    if (block1.visibility !== block2.visibility) {
+       if (JSON.stringify(block1.visibility) !== JSON.stringify(block2.visibility)) return true;
     }
 
-    // Compare children (less likely to change, but important)
-    if (JSON.stringify(block1.children) !== JSON.stringify(block2.children)) {
-      return true;
-    }
-
-    // Compare events (less likely to change)
-    if (JSON.stringify(block1.events) !== JSON.stringify(block2.events)) {
-      return true;
+    if (block1.children !== block2.children) {
+       if ((block1.children?.length || 0) !== (block2.children?.length || 0)) return true;
+       if (JSON.stringify(block1.children) !== JSON.stringify(block2.children)) return true;
     }
 
     return false;
@@ -142,55 +92,12 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const selectBlockItem = (blockId: string, itemId: string): void => {
     // First, ensure the parent block is selected
     // Note: We need to find the block in the schema to get the full block object
-    
-    const findBlock = (blocks: BlockType[]): Block | null => {
-        for (const block of blocks) {
-            if (block.id === blockId) return block as Block;
-            if (block.children) {
-                const found = findBlock(block.children);
-                if (found) return found;
-            }
-            if (block.type === 'tabs') {
-                const tabsBlock = block as TabsBlock;
-                for (const tab of tabsBlock.props.tabs) {
-                    if (tab.children) {
-                        const found = findBlock(tab.children);
-                        if (found) return found;
-                    }
-                }
-            }
-        }
-        return null;
-    };
-
-    const block = findBlock(pageSchema.blocks);
+    const { block, parent } = findBlockAndParent(blockId, pageSchema.blocks);
 
     if (block) {
       setSelectedBlockId(blockId);
-      setSelectedBlock(block);
-      
-      const findParent = (blocks: BlockType[], parentId: string | null = null): string | null | undefined => {
-          for (const b of blocks) {
-              if (b.id === blockId) return parentId;
-              if (b.children) {
-                  const found = findParent(b.children, b.id);
-                  if (found !== undefined) return found; // found can be null (root)
-              }
-              if (b.type === 'tabs') {
-                  const tabsBlock = b as TabsBlock;
-                  for (const tab of tabsBlock.props.tabs) {
-                      if (tab.children) {
-                          const found = findParent(tab.children, b.id); // Tabs children parent is the tabs block
-                          if (found !== undefined) return found;
-                      }
-                  }
-              }
-          }
-          return undefined; // Not found in this branch
-      };
-      
-      const parentId = findParent(pageSchema.blocks);
-      setSelectedBlockParentId(parentId ?? null);
+      setSelectedBlock(block as Block);
+      setSelectedBlockParentId(parent?.id || null);
     }
 
     // Then select the item

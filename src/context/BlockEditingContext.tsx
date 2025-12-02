@@ -3,12 +3,12 @@ import type { Block, BlockType } from '@blocks/shared/Block';
 import type { BlockItem } from '@blocks/shared/FormTypes';
 import type { StyleProps } from '@blocks/shared/Style';
 import type { VisibilityProps } from '@blocks/shared/Visibility';
-import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks } from '@context/domain';
+import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks, updateBlockInTree } from '@context/domain';
 import { createBlock } from '@context/domain/blockFactory';
 import { findBlockPositionById } from '@context/domain/blockTraversal';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
-import type { TabsBlock, Tab } from '@blocks/tabs/schema';
+
 import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
 import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
 import type { SectionBlock } from '@blocks/section/schema';
@@ -64,209 +64,67 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
   const updateSelectedBlockProps = (newProps: Partial<Block['props']>) => {
     if (!selectedBlock) return;
 
-    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
-      return blocks.map(block => {
-        if (block.id === selectedBlock.id) {
-          return {
-            ...block,
-            props: {
-              ...block.props,
-              ...newProps
-            }
-          } as BlockType;
+    const { updatedBlocks, foundBlock } = updateBlockInTree(
+      pageSchema.blocks,
+      selectedBlock.id,
+      (block) => ({
+        ...block,
+        props: {
+          ...block.props,
+          ...newProps
         }
+      } as BlockType)
+    );
 
-        // Recursively update children if this block has them
-        if (block.children) {
-          return {
-            ...block,
-            children: updateBlockInSchema(block.children)
-          } as BlockType;
-        }
-
-        // Check tabs blocks for nested children
-        if (block.type === 'tabs') {
-          return {
-            ...block,
-            props: {
-              ...block.props,
-              tabs: (block.props.tabs as Tab[]).map(tab => ({
-                ...tab,
-                children: tab.children ? updateBlockInSchema(tab.children) : tab.children
-              }))
-            }
-          } as BlockType;
-        }
-
-        return block;
-      });
-    };
-
-    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: updatedBlocks
-    };
-
-    updatePageWithHistory(updatedSchema);
-
-    // Update the selected block reference
-    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
-      for (const block of blocks) {
-        if (block.id === selectedBlock.id) {
-          return {
-            ...block,
-            props: {
-              ...block.props,
-              ...newProps
-            }
-          } as Block;
-        }
-        if (block.children) {
-          const found = findUpdatedBlock(block.children);
-          if (found) return found;
-        }
-        // Check tabs blocks for nested children
-        if (block.type === 'tabs' && selectedBlockId) {
-          const tabsBlock = block as TabsBlock;
-          for (const tab of tabsBlock.props.tabs) {
-            if (tab.children) {
-              const found = findUpdatedBlock(tab.children);
-              if (found) return found;
-            }
-          }
-        }
-      }
-      return null;
-    };
-
-    const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
-    if (updatedSelectedBlock) {
-      setSelectedBlock(updatedSelectedBlock);
+    if (foundBlock) {
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: updatedBlocks
+      };
+      updatePageWithHistory(updatedSchema);
+      setSelectedBlock(foundBlock as Block);
     }
   };
 
   const updateSelectedBlockStyle = (newStyle: Partial<StyleProps>) => {
     if (!selectedBlock) return;
 
-    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
-      return blocks.map(block => {
-        if (block.id === selectedBlock.id) {
-          return {
-            ...block,
-            style: {
-              ...block.style,
-              ...newStyle
-            }
-          } as BlockType;
+    const { updatedBlocks, foundBlock } = updateBlockInTree(
+      pageSchema.blocks,
+      selectedBlock.id,
+      (block) => ({
+        ...block,
+        style: {
+          ...block.style,
+          ...newStyle
         }
+      } as BlockType)
+    );
 
-        // Recursively update children if this block has them
-        if (block.children) {
-          return {
-            ...block,
-            children: updateBlockInSchema(block.children)
-          } as BlockType;
-        }
-
-        // Check tabs blocks for nested children
-        if (block.type === 'tabs') {
-          return {
-            ...block,
-            props: {
-              ...block.props,
-              tabs: (block.props.tabs as Tab[]).map(tab => ({
-                ...tab,
-                children: tab.children ? updateBlockInSchema(tab.children) : tab.children
-              }))
-            }
-          } as BlockType;
-        }
-
-        return block;
-      });
-    };
-
-    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: updatedBlocks
-    };
-
-    updatePageWithHistory(updatedSchema);
-
-    // Update the selected block reference
-    const findUpdatedBlock = (blocks: BlockType[]): Block | null => {
-      for (const block of blocks) {
-        if (block.id === selectedBlock.id) {
-          return {
-            ...block,
-            style: {
-              ...block.style,
-              ...newStyle
-            }
-          } as Block;
-        }
-        if (block.children) {
-          const found = findUpdatedBlock(block.children);
-          if (found) return found;
-        }
-        // Check tabs blocks for nested children
-        if (block.type === 'tabs') {
-          const tabsBlock = block as TabsBlock;
-          for (const tab of tabsBlock.props.tabs) {
-            if (tab.children) {
-              const found = findUpdatedBlock(tab.children);
-              if (found) return found;
-            }
-          }
-        }
-      }
-      return null;
-    };
-
-    const updatedSelectedBlock = findUpdatedBlock(updatedBlocks);
-    if (updatedSelectedBlock) {
-      setSelectedBlock(updatedSelectedBlock);
+    if (foundBlock) {
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: updatedBlocks
+      };
+      updatePageWithHistory(updatedSchema);
+      setSelectedBlock(foundBlock as Block);
     }
   };
 
   const updateSelectedBlockVisibility = (newVisibility: Partial<VisibilityProps>) => {
     if (!selectedBlock) return;
 
-    const updateAndFindBlock = (blocks: BlockType[]): { updatedBlocks: BlockType[], foundBlock: Block | null } => {
-      let foundBlock: Block | null = null;
-
-      const updatedBlocks = blocks.map(block => {
-        if (foundBlock) return block; // Optimization: stop mapping after found
-
-        if (block.id === selectedBlock.id) {
-          const updatedBlock = {
-            ...block,
-            visibility: {
-              ...block.visibility,
-              ...newVisibility,
-            },
-          } as BlockType;
-          foundBlock = updatedBlock as Block;
-          return updatedBlock;
-        }
-
-        if (block.children) {
-          const result = updateAndFindBlock(block.children);
-          if (result.foundBlock) {
-            foundBlock = result.foundBlock;
-            return { ...block, children: result.updatedBlocks } as BlockType;
-          }
-        }
-
-        return block;
-      });
-
-      return { updatedBlocks, foundBlock };
-    };
-
-    const { updatedBlocks, foundBlock } = updateAndFindBlock(pageSchema.blocks);
+    const { updatedBlocks, foundBlock } = updateBlockInTree(
+      pageSchema.blocks,
+      selectedBlock.id,
+      (block) => ({
+        ...block,
+        visibility: {
+          ...block.visibility,
+          ...newVisibility,
+        },
+      } as BlockType)
+    );
 
     if (foundBlock) {
       const updatedSchema = {
@@ -274,7 +132,7 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
         blocks: updatedBlocks,
       };
       updatePageWithHistory(updatedSchema);
-      setSelectedBlock(foundBlock);
+      setSelectedBlock(foundBlock as Block);
     }
   };
 
@@ -432,57 +290,33 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
 
-  const modifyBlockItems = (
+  const updateBlockItemsList = (
     blockId: string,
-    modifyItems: (items: BlockItem[]) => BlockItem[]
+    transformItems: (items: BlockItem[]) => BlockItem[]
   ) => {
-    const block = findBlockAndParent(blockId, pageSchema.blocks);
-    if (!block || !block.block) return;
+    const { updatedBlocks, foundBlock } = updateBlockInTree(
+      pageSchema.blocks,
+      blockId,
+      (block) => {
+        const currentItems = (block.props as { items?: BlockItem[] }).items || [];
+        const newItems = transformItems(currentItems);
+        return {
+          ...block,
+          props: {
+            ...block.props,
+            items: newItems,
+          },
+        } as BlockType;
+      }
+    );
 
-    const updateBlockInSchema = (blocks: BlockType[]): BlockType[] => {
-      return blocks.map(b => {
-        if (b.id === blockId) {
-          const currentItems = (b.props as { items?: BlockItem[] }).items || [];
-          const newItems = modifyItems(currentItems);
-          return {
-            ...b,
-            props: {
-              ...b.props,
-              items: newItems,
-            },
-          } as BlockType;
-        }
-        if (b.children) {
-          return {
-            ...b,
-            children: updateBlockInSchema(b.children),
-          } as BlockType;
-        }
-
-        // Check tabs blocks for nested children
-        if (b.type === 'tabs') {
-          const tabsBlock = b as TabsBlock;
-          const updatedTabs = tabsBlock.props.tabs.map(tab => ({
-            ...tab,
-            children: tab.children ? updateBlockInSchema(tab.children) : tab.children
-          }));
-
-          return {
-            ...b,
-            props: { ...b.props, tabs: updatedTabs }
-          } as BlockType;
-        }
-
-        return b;
-      });
-    };
-
-    const updatedBlocks = updateBlockInSchema(pageSchema.blocks);
-    const updatedSchema = {
-      ...pageSchema,
-      blocks: updatedBlocks,
-    };
-    updatePageWithHistory(updatedSchema);
+    if (foundBlock) {
+      const updatedSchema = {
+        ...pageSchema,
+        blocks: updatedBlocks,
+      };
+      updatePageWithHistory(updatedSchema);
+    }
   };
 
   const addBlockItem = <T extends object>(
@@ -490,7 +324,7 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
     defaultEntry: T
   ): string => {
     const newEntryId = generateUniqueId();
-    modifyBlockItems(blockId, (items) => [
+    updateBlockItemsList(blockId, (items) => [
       ...items,
       { ...defaultEntry, id: newEntryId },
     ]);
@@ -502,7 +336,7 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
     itemId: string,
     updatedItem: T
   ): void => {
-    modifyBlockItems(blockId, (items) =>
+    updateBlockItemsList(blockId, (items) =>
       items.map((item: BlockItem) =>
         item.id === itemId ? { ...item, ...updatedItem } : item
       )
@@ -513,17 +347,17 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
     blockId: string,
     itemId: string
   ): void => {
-    modifyBlockItems(blockId, (items) =>
+    updateBlockItemsList(blockId, (items) =>
       items.filter((item: BlockItem) => item.id !== itemId)
     );
   };
 
   const moveBlockItemLeft = (blockId: string, index: number) => {
-    modifyBlockItems(blockId, (items) => swap(items, index, index - 1));
+    updateBlockItemsList(blockId, (items) => swap(items, index, index - 1));
   };
 
   const moveBlockItemRight = (blockId: string, index: number) => {
-    modifyBlockItems(blockId, (items) => swap(items, index, index + 1));
+    updateBlockItemsList(blockId, (items) => swap(items, index, index + 1));
   };
 
   // Alias functions to reduce code duplication - same logic, different semantic meaning
