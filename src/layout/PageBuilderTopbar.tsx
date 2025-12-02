@@ -6,11 +6,10 @@ import { usePanelCoordinator } from '@context/PanelCoordinator';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type PageBuilderTopbarProps = {
-  id: string | number;
-  onSavePage?: (id: string | number, schema: PageSchema) => Promise<void>;
+  onSavePage?: (schema: PageSchema) => Promise<void>;
 };
 
-const PageBuilderTopbar = ({ id, onSavePage }: PageBuilderTopbarProps) => {
+const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
@@ -19,7 +18,7 @@ const PageBuilderTopbar = ({ id, onSavePage }: PageBuilderTopbarProps) => {
   const handleSave = async () => {
     if (onSavePage) {
       try {
-        await onSavePage(id, pageSchema);
+        await onSavePage(pageSchema);
       } catch (error) {
         console.error('Failed to save page:', error);
       }

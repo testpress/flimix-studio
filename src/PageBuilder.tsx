@@ -15,12 +15,11 @@ import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@fixtures/amazonSchema.json';
 
 export type PageBuilderProps = {
-  id: string | number;
   schema?: PageSchema;
-  onSavePage?: (id: string | number, schema: PageSchema) => Promise<void>;
+  onSavePage?: (schema: PageSchema) => Promise<void>;
 };
 
-function PageBuilder({ id, schema, onSavePage }: PageBuilderProps) {
+function PageBuilder({ schema, onSavePage }: PageBuilderProps) {
   const [showDebug, setShowDebug] = useState(false);
   const initialSchema = schema || (amazonSchemaData as PageSchema);
 
@@ -33,7 +32,7 @@ function PageBuilder({ id, schema, onSavePage }: PageBuilderProps) {
               <SettingsPanelProvider>
                 <PanelCoordinatorProvider>
                   <div className="min-h-screen flex flex-col bg-black relative flimix-studio">
-                    <PageBuilderTopbar id={id} onSavePage={onSavePage} />
+                    <PageBuilderTopbar onSavePage={onSavePage} />
                     <div className="flex-1 flex min-h-0">
                       <LibraryPanel />
                       <LayoutPanel />
