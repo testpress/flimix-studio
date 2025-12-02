@@ -5,7 +5,6 @@ import type { PageSchema } from '@blocks/shared/Page';
 interface HistoryContextType {
   pageSchema: PageSchema;
   updatePageWithHistory: (pageSchema: PageSchema) => void;
-  updatePageSchema: (pageSchema: PageSchema) => void;
   undo: () => void;
   canUndo: boolean;
   redo: () => void;
@@ -45,14 +44,6 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     setPageSchema(newSchema);
   };
 
-  // Public function to update page schema without history recording (for page schema switching)
-  const updatePageSchema = (newPageSchema: PageSchema) => {
-    setPageSchema(newPageSchema);
-    // Clear history when switching page schemas
-    setUndoStack([]);
-    setRedoStack([]);
-  };
-
   const undo = () => {
     if (undoStack.length === 0) return;
     
@@ -85,7 +76,6 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     <HistoryContext.Provider value={{
       pageSchema,
       updatePageWithHistory,
-      updatePageSchema,
       undo,
       canUndo,
       redo,
