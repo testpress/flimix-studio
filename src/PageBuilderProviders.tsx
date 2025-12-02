@@ -1,4 +1,5 @@
 import { SelectionProvider } from '@context/SelectionContext';
+import { BlockEditingProvider } from '@context/BlockEditingContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
 import { LibraryPanelProvider } from '@context/LibraryPanelContext';
@@ -20,17 +21,19 @@ export function PageBuilderProviders({
   return (
     <HistoryProvider initialSchema={initialSchema}>
       <SelectionProvider>
-        <BlockInsertProvider>
-          <LibraryPanelProvider>
-            <LayoutPanelProvider>
-              <SettingsPanelProvider>
-                <PanelCoordinatorProvider>
-                  {children}
-                </PanelCoordinatorProvider>
-              </SettingsPanelProvider>
-            </LayoutPanelProvider>
-          </LibraryPanelProvider>
-        </BlockInsertProvider>
+        <BlockEditingProvider>
+          <BlockInsertProvider>
+            <LibraryPanelProvider>
+              <LayoutPanelProvider>
+                <SettingsPanelProvider>
+                  <PanelCoordinatorProvider>
+                    {children}
+                  </PanelCoordinatorProvider>
+                </SettingsPanelProvider>
+              </LayoutPanelProvider>
+            </LibraryPanelProvider>
+          </BlockInsertProvider>
+        </BlockEditingProvider>
       </SelectionProvider>
     </HistoryProvider>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { BlockFormProps, BlockProps } from '@blocks/shared/FormTypes';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import { useHistory } from '@context/HistoryContext';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { RowLayoutBlock, RowLayoutPreset, GapSize } from './schema';
@@ -44,7 +45,8 @@ const GutterControl: React.FC<GutterControlProps> = ({
 );
 
 const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
-  const { modifyRowColumnCount, selectedBlockId } = useSelection();
+  const { selectedBlockId } = useSelection();
+  const { modifyRowColumnCount } = useBlockEditing();
   const { pageSchema, updatePageWithHistory } = useHistory();
   
   const rowBlock = block as RowLayoutBlock;

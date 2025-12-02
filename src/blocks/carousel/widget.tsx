@@ -3,6 +3,7 @@ import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { CarouselBlock, ItemSize } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -23,7 +24,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
-  const { selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected } = useSelection();
+  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

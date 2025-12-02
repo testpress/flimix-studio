@@ -27,6 +27,8 @@ import {
 } from 'lucide-react';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
+import { useHistory } from '@context/HistoryContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { findBlockPositionForUI } from '@context/domain/blockTraversal';
 import type { Block, BlockType } from '@blocks/shared/Block';
@@ -169,7 +171,8 @@ const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
 const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelect, selectedBlockId, findTabContainingBlock }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
-  const { duplicateSelectedBlock, deleteSelectedBlock, moveBlockUp, moveBlockDown, pageSchema } = useSelection();
+  const { duplicateSelectedBlock, deleteSelectedBlock, moveBlockUp, moveBlockDown } = useBlockEditing();
+  const { pageSchema } = useHistory();
   const blockOptionsRef = useRef<HTMLDivElement>(null);
   const triggerButtonRef = useRef<HTMLButtonElement>(null);
   
@@ -434,7 +437,8 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelec
 
 const LayoutPanel: React.FC = () => {
   const { isLayoutOpen } = useLayoutPanel();
-  const { pageSchema, selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
+  const { selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
+  const { pageSchema } = useHistory();
   const [searchQuery, setSearchQuery] = useState('');
   
   const findTabContainingBlock = (blockId: string): { tabsBlock: TabsBlock; tabId: string } | null => {
