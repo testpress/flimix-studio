@@ -3,28 +3,23 @@ import { useHistory } from '@context/HistoryContext';
 import { useLibraryPanel } from '@context/LibraryPanelContext';
 import { useLayoutPanel } from '@context/LayoutPanelContext';
 import { usePanelCoordinator } from '@context/PanelCoordinator';
-import { usePageSchema } from '@context/PageSchemaContext';
 import type { PageSchema } from '@blocks/shared/Page';
 
 type PageBuilderTopbarProps = {
-  onSavePage?: (pageSlug: string, schema: PageSchema) => Promise<void>;
+  id: string | number;
+  onSavePage?: (id: string | number, schema: PageSchema) => Promise<void>;
 };
 
-const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
+const PageBuilderTopbar = ({ id, onSavePage }: PageBuilderTopbarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen } = useLibraryPanel();
   const { isLayoutOpen } = useLayoutPanel();
   const { toggleLibrarySafely, toggleLayoutSafely } = usePanelCoordinator();
-  const { 
-    currentPageSlug, 
-    loadPage,
-    pagesList 
-  } = usePageSchema();
 
   const handleSave = async () => {
     if (onSavePage) {
       try {
-        await onSavePage(currentPageSlug, pageSchema);
+        await onSavePage(id, pageSchema);
       } catch (error) {
         console.error('Failed to save page:', error);
       }
@@ -34,22 +29,7 @@ const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   return (
     <div className="sticky top-0 left-0 right-0 z-50 bg-gray-800 text-white p-4 border-b border-gray-700">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          {/* Page Switcher - Switch between different pages */}
-          <div className="relative">
-            <select
-              value={currentPageSlug}
-              onChange={e => loadPage(e.target.value)}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded border border-gray-600 text-white text-sm"
-            >
-              {pagesList.map(slug => (
-                <option key={slug} value={slug} className="bg-gray-700 text-white">
-                  {slug.charAt(0).toUpperCase() + slug.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-          
+        <div className="flex items-center space-x-3">          
           <button 
             onClick={toggleLibrarySafely}
             className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200"

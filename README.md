@@ -274,52 +274,21 @@ Renders the Flimix Studio interface into a DOM element.
 ### Configuration Options
 
 ```javascript
-{
-  initialPageSchema: {
+{ 
+  id: 1 or id: '1',
+  schema: {
     'page-slug': {
       title: 'Page Title',
       theme: 'dark', // or 'light'
       blocks: [] // Array of block objects
     }
   },
-  initialPageSlug: 'home', // Default page to load
-  availablePages: ['home', 'movies', 'shows'], // Available pages
-  onSavePage: async function(pageSlug, schema) {
+  onSavePage: async function(id, schema) {
     // Handle page saving - called when user saves a page
     // Return a Promise
-  },
-  onLoadPage: async function(slug) {
-    // Handle page loading - called when user switches to a different page
-    // Useful for loading pages from your backend/database
-    // Return { slug: string, schema: object }
   }
 }
 ```
-
-### When to Use `onLoadPage`
-
-The `onLoadPage` callback is useful when:
-
-- **Multiple Pages**: You have multiple pages and want to load them dynamically from your backend
-- **Database Storage**: Pages are stored in a database and need to be fetched on demand
-- **Lazy Loading**: You want to load page content only when the user switches to that page
-- **Real-time Updates**: You want to fetch the latest version of a page from your server
-
-**Example Usage:**
-```javascript
-onLoadPage: async function(slug) {
-  try {
-    const response = await fetch(`/api/pages/${slug}`);
-    const data = await response.json();
-    return { slug, schema: data };
-  } catch (error) {
-    console.error('Failed to load page:', error);
-    throw error;
-  }
-}
-```
-
-**Note**: If you don't provide `onLoadPage`, the studio will only work with the pages provided in `initialPageSchema`. The `onLoadPage` callback enables dynamic page loading from external sources.
 
 ### Global API
 

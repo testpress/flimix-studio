@@ -4,7 +4,7 @@ import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { Platform, VisibilityContext } from '@blocks/shared/Visibility';
 import type { Block } from '@blocks/shared/Block';
 import { useSelection } from '@context/SelectionContext';
-import { usePageSchema } from '@context/PageSchemaContext';
+import { useHistory } from '@context/HistoryContext';
 import { Search } from 'lucide-react';
 
 interface PageBuilderCanvasProps {
@@ -24,11 +24,10 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
     setSelectedItemId,
     setSelectedItemBlockId
   } = useSelection();
-  const { pages, currentPageSlug } = usePageSchema();
+  const { pageSchema } = useHistory();
   const [visibilityContext, setVisibilityContext] = React.useState<VisibilityContext>(initialVisibilityContext);
 
-  // Get the current page from PageSchemaContext
-  const currentPage = pages[currentPageSlug];
+  const currentPage = pageSchema;
 
   const handleBlockSelect = (block: Block) => {
     // Only clear item selection if selecting a different block

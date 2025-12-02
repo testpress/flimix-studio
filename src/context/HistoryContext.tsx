@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
 import type { PageSchema } from '@blocks/shared/Page';
-import { usePageSchema } from './PageSchemaContext';
 
 interface HistoryContextType {
   pageSchema: PageSchema;
@@ -28,25 +27,6 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
   const [pageSchema, setPageSchema] = useState<PageSchema>(initialSchema);
   const [undoStack, setUndoStack] = useState<PageSchema[]>([]);
   const [redoStack, setRedoStack] = useState<PageSchema[]>([]);
-  
-  // Get PageSchemaContext for multi-page support
-  const { currentPageSlug, pages, updateSpecificPage } = usePageSchema();
-  const prevPageSlugRef = React.useRef(currentPageSlug);
-
-  // Sync with current page when page changes
-  React.useEffect(() => {
-    const currentPage = pages[currentPageSlug];
-    if (currentPage) {
-      setPageSchema(currentPage);
-      
-      // Only clear history when actually switching pages
-      if (currentPageSlug !== prevPageSlugRef.current) {
-        setUndoStack([]);
-        setRedoStack([]);
-        prevPageSlugRef.current = currentPageSlug;
-      }
-    }
-  }, [currentPageSlug, pages]);
 
   // Exposed function to record state changes
   const recordState = (currentBlocks: BlockType[]) => {
@@ -63,15 +43,11 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
   const updatePageWithHistory = (newSchema: PageSchema) => {
     recordState(pageSchema.blocks);
     setPageSchema(newSchema);
-    // Also update the page in multi-page system
-    updateSpecificPage(currentPageSlug, newSchema);
   };
 
   // Public function to update page schema without history recording (for page schema switching)
   const updatePageSchema = (newPageSchema: PageSchema) => {
     setPageSchema(newPageSchema);
-    // Also update the page in multi-page system
-    updateSpecificPage(currentPageSlug, newPageSchema);
     // Clear history when switching page schemas
     setUndoStack([]);
     setRedoStack([]);
@@ -86,8 +62,6 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     
     const previousSchema = undoStack[undoStack.length - 1];
     setPageSchema(previousSchema);
-    // Also update the page in multi-page system
-    updateSpecificPage(currentPageSlug, previousSchema);
     setUndoStack(prev => prev.slice(0, -1)); //remove the last item from the undo stack
   };
 
@@ -102,8 +76,6 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children, init
     
     const nextSchema = redoStack[redoStack.length - 1];
     setPageSchema(nextSchema);
-    // Also update the page in multi-page system
-    updateSpecificPage(currentPageSlug, nextSchema);
     setRedoStack(prev => prev.slice(0, -1));
   };
 
