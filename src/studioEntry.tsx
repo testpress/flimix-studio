@@ -6,7 +6,7 @@ import PageBuilder, { type PageBuilderProps } from './PageBuilder'
 declare global {
   interface Window {
     FlimixStudio: {
-      render: (el: HTMLElement, props: PageBuilderProps) => Root;
+      mount: (el: HTMLElement, props: PageBuilderProps) => Root;
       unmount: () => void;
       onReady: (callback: () => void) => void;
     };
@@ -17,7 +17,7 @@ let root: Root | null = null
 let readyCallbacks: (() => void)[] = []
 let isReady = false
 
-export function renderStudio(el: HTMLElement, props: PageBuilderProps) {
+export function mountStudio(el: HTMLElement, props: PageBuilderProps) {
   // Unmount previous instance if it exists to prevent memory leaks
   if (root) {
     unmountStudio();
@@ -60,7 +60,7 @@ export function onReady(callback: () => void) {
 
 if (typeof window !== 'undefined') {
   window.FlimixStudio = {
-    render: renderStudio,
+    mount: mountStudio,
     unmount: unmountStudio,
     onReady: onReady
   }
