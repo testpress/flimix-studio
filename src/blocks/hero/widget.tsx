@@ -30,7 +30,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   // Local state for display when block is not selected
   const [displayIndex, setDisplayIndex] = useState(0);
 
-  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectArrayItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
+  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem, selectBlockItem, isItemSelected, selectedItemId, selectedItemBlockId } = useSelection();
 
   // Memoized current item index calculation
   const currentItemIndex = useMemo(() => {
@@ -48,11 +48,11 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     if (!props.items?.[newIndex]) return;
 
     if (isSelected) {
-      selectArrayItem(block.id, props.items[newIndex].id);
+      selectBlockItem(block.id, props.items[newIndex].id);
     } else {
       setDisplayIndex(newIndex);
     }
-  }, [props.items, isSelected, selectArrayItem, block.id]);
+  }, [props.items, isSelected, selectBlockItem, block.id]);
 
   const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
@@ -90,14 +90,14 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   useEffect(() => {
     if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
       const timer = setTimeout(() => {
-        selectArrayItem(block.id, props.items[props.items.length - 1].id);
+        selectBlockItem(block.id, props.items[props.items.length - 1].id);
       }, 100);
 
       return () => clearTimeout(timer);
     }
 
     previousItemsLengthRef.current = props.items?.length || 0;
-  }, [props.items, selectArrayItem, block.id]);
+  }, [props.items, selectBlockItem, block.id]);
   // Handle carousel navigation
   const nextSlide = () => {
     if (props.items && props.items.length > 1) {
@@ -134,7 +134,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       moveBlockItemLeft(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        selectArrayItem(block.id, movingItemId);
+        selectBlockItem(block.id, movingItemId);
       }
     }
   };
@@ -145,14 +145,14 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       moveBlockItemRight(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        selectArrayItem(block.id, movingItemId);
+        selectBlockItem(block.id, movingItemId);
       }
     }
   };
 
   // Handle item click for selection
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   return (

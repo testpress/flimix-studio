@@ -26,7 +26,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   const { style } = block;
 
   const [openIndex, setOpenIndex] = useState(defaultOpenIndex ?? -1);
-  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useSelection();
+  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useSelection();
 
   useEffect(() => {
     setOpenIndex(defaultOpenIndex ?? -1);
@@ -54,14 +54,14 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     };
     
     const newId = addBlockItem(block.id, defaultItem);
-    selectArrayItem(block.id, newId);
+    selectBlockItem(block.id, newId);
   };
 
   const handleQuestionClick = (e: React.MouseEvent, itemId: string, index: number) => {
     e.stopPropagation();
     
     // First, select the item
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
     
     // Then, toggle the accordion
     setOpenIndex(index === openIndex ? -1 : index);

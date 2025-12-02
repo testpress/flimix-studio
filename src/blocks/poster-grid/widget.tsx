@@ -23,7 +23,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   const { props, style } = block;
   const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showBadge, showDuration } = props;
   const { gridGap = 'md' } = style || {};
-  const { selectArrayItem, isItemSelected } = useSelection();
+  const { selectBlockItem, isItemSelected } = useSelection();
   
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
@@ -135,7 +135,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
 
 
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   if (!items || items.length === 0) {

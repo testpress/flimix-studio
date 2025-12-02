@@ -23,7 +23,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
-  const { selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -346,7 +346,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 
 
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   // Handle manual scroll to pause autoplay

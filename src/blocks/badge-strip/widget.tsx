@@ -43,7 +43,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { items } = props;
-  const { addBlockItem, selectArrayItem, isItemSelected: isItemSelectedFromContext, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { addBlockItem, selectBlockItem, isItemSelected: isItemSelectedFromContext, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
 
   // Get alignment from block style, default to center
   const alignment = style?.textAlign || 'center';
@@ -88,7 +88,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
   };
 
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   const renderIcon = (iconName: string) => {

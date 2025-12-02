@@ -26,7 +26,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   const { props, style } = block;
   const { title, subtitle, items, itemSize, showIcons, showDescriptions } = props;
   
-  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
   
   // Function to render icon
   const renderIcon = (iconName: string) => {
@@ -114,11 +114,11 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
       }
     };
     const newId = addBlockItem(block.id, defaultItem);
-    selectArrayItem(block.id, newId);
+    selectBlockItem(block.id, newId);
   };
 
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   // Check if we're at the item limit

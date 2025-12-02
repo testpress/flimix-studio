@@ -53,7 +53,7 @@ interface SelectionContextType {
   moveBlockItemRight: (blockId: string, index: number) => void;
   moveBlockItemUp: (blockId: string, index: number) => void;
   moveBlockItemDown: (blockId: string, index: number) => void;
-  selectArrayItem: (blockId: string, itemId: string) => void;
+  selectBlockItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
   modifyRowColumnCount: (direction: 'increase' | 'decrease') => void;
 }
@@ -647,7 +647,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
   const moveBlockItemUp = moveBlockItemLeft;
   const moveBlockItemDown = moveBlockItemRight;
 
-  const selectArrayItem = (blockId: string, itemId: string): void => {
+  const selectBlockItem = (blockId: string, itemId: string): void => {
     // First, ensure the parent block is selected
     const { block } = findBlockAndParent(blockId, pageSchema.blocks);
     if (block) {
@@ -697,7 +697,7 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       moveBlockItemRight,
       moveBlockItemUp,
       moveBlockItemDown,
-      selectArrayItem,
+      selectBlockItem,
       isItemSelected,
       modifyRowColumnCount
     }}>

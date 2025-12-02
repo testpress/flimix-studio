@@ -37,7 +37,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     itemShape = 'circle'
   } = props;
 
-  const { addBlockItem, selectArrayItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
+  const { addBlockItem, selectBlockItem, isItemSelected, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useSelection();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -337,11 +337,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       rating: 5
     };
     const newId = addBlockItem(block.id, defaultItem);
-    selectArrayItem(block.id, newId);
+    selectBlockItem(block.id, newId);
   };
 
   const handleItemClick = (itemId: string) => {
-    selectArrayItem(block.id, itemId);
+    selectBlockItem(block.id, itemId);
   };
 
   // Handle manual scroll to pause autoplay
