@@ -274,14 +274,12 @@ Renders the Flimix Studio interface into a DOM element.
 ### Configuration Options
 
 ```javascript
-{ 
-  id: 1 or id: '1',
+{
+  id: 'home-page', // Can be a string or a number
   schema: {
-    'page-slug': {
-      title: 'Page Title',
-      theme: 'dark', // or 'light'
-      blocks: [] // Array of block objects
-    }
+    title: 'Page Title',
+    theme: 'dark', // or 'light'
+    blocks: [] // Array of block objects
   },
   onSavePage: async function(id, schema) {
     // Handle page saving - called when user saves a page
