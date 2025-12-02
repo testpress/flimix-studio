@@ -5,6 +5,6 @@ import PageBuilder from './PageBuilder.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <PageBuilder id="local-dev" />
+    <PageBuilder />
   </StrictMode>,
 )
