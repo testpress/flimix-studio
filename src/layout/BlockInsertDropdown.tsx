@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useState, useCallback, useRef } from 'react';
 import type { BlockType } from '@blocks/shared/Block';
 import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
 import { useSelection } from '@context/SelectionContext';
@@ -11,6 +10,7 @@ import type { TabsBlock } from '@blocks/tabs/schema';
 import { getAllBlockLibraryItems } from '@blocks/shared/Library';
 import type { BlockLibraryItem } from '@blocks/shared/Library';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
+import { Tooltip } from '@components/Tooltip';
 
 interface BlockInsertDropdownProps {
   position: 'above' | 'below';
@@ -18,18 +18,11 @@ interface BlockInsertDropdownProps {
   visibilityContext: VisibilityContext;
 }
 
-interface TooltipProps {
-  visible: boolean;
-  content: { name: string; description: string; icon: string };
-  position: { top: number; left: number };
-}
 
 interface TemplateGridProps {
   templates: BlockLibraryItem[];
   searchQuery: string;
   onInsert: (blockType: BlockType['type']) => void;
-  onMouseEnter: (e: React.MouseEvent, template: BlockLibraryItem) => void;
-  onMouseLeave: () => void;
 }
 
 const iconMap: Record<string, LucideIcon> = {
@@ -205,43 +198,6 @@ function filterTemplatesBySearch(
   );
 }
 
-/**
- * Tooltip component rendered in a portal
- */
-const Tooltip: React.FC<TooltipProps> = ({ visible, content, position }) => {
-  if (!visible) return null;
-
-  const IconComponent = iconMap[content.icon] || Layout;
-
-  return createPortal(
-    <div
-      className="fixed z-[9999] bg-white border border-gray-200 rounded-lg p-4 shadow-lg"
-      style={{
-        width: '250px',
-        top: position.top,
-        left: position.left,
-        maxWidth: '300px',
-        maxHeight: '200px',
-        overflow: 'auto'
-      }}
-    >
-      <div className="flex items-center space-x-2 mb-2">
-        <IconComponent size={18} />
-        <h3 className="font-medium text-gray-900">{content.name}</h3>
-      </div>
-      <p className="text-sm text-gray-600">
-        {content.description}
-      </p>
-      {/* Arrow pointing to the block */}
-      {position.left > window.innerWidth / 2 ? (
-        <div className="absolute top-4 right-0 transform translate-x-1/2 rotate-45 w-3 h-3 bg-white border-t border-r border-gray-200"></div>
-      ) : (
-        <div className="absolute top-4 left-0 transform -translate-x-1/2 rotate-45 w-3 h-3 bg-white border-l border-b border-gray-200"></div>
-      )}
-    </div>,
-    document.body
-  );
-};
 
 /**
  * Search bar component
@@ -271,9 +227,7 @@ const SearchBar: React.FC<{
 const TemplateGrid: React.FC<TemplateGridProps> = ({
   templates,
   searchQuery,
-  onInsert,
-  onMouseEnter,
-  onMouseLeave
+  onInsert
 }) => {
   if (templates.length === 0) {
     return (
@@ -294,23 +248,35 @@ const TemplateGrid: React.FC<TemplateGridProps> = ({
 
         return (
           <div key={template.type} className="relative">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onInsert(template.type);
-              }}
-              onMouseEnter={(e) => onMouseEnter(e, template)}
-              onMouseLeave={onMouseLeave}
-              data-template-type={template.type}
-              className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
+            <Tooltip
+              content={
+                <>
+                  <div className="flex items-center space-x-2 mb-2">
+                    <IconComponent size={18} />
+                    <h3 className="font-medium text-gray-900">{template.name}</h3>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    {template.description}
+                  </p>
+                </>
+              }
             >
-              <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-1">
-                <IconComponent size={14} />
-              </div>
-              <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
-                {template.name}
-              </span>
-            </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onInsert(template.type);
+                }}
+                data-template-type={template.type}
+                className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
+              >
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-1">
+                  <IconComponent size={14} />
+                </div>
+                <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
+                  {template.name}
+                </span>
+              </button>
+            </Tooltip>
           </div>
         );
       })}
@@ -331,13 +297,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
   // State
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipContent, setTooltipContent] = useState<{ name: string; description: string; icon: string }>({
-    name: '',
-    description: '',
-    icon: ''
-  });
 
   // Ref for click outside detection
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -349,53 +308,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
     }
   });
 
-  // Reset tooltip state when selected block changes
-  useEffect(() => {
-    setTooltipVisible(false);
-    setTooltipContent({ name: '', description: '', icon: '' });
-  }, [selectedBlockId]);
-
-  // Handlers
-  const handleMouseEnter = useCallback((e: React.MouseEvent, template: BlockLibraryItem) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const tooltipWidth = 250;
-    const tooltipHeight = 120;
-
-    const rightEdgePosition = rect.right + 10 + tooltipWidth;
-    const isOffScreenRight = rightEdgePosition > windowWidth;
-
-    const bottomEdgePosition = rect.top + tooltipHeight;
-    const isOffScreenBottom = bottomEdgePosition > windowHeight;
-
-    const topPosition = isOffScreenBottom
-      ? rect.top - (tooltipHeight - rect.height)
-      : rect.top;
-
-    if (isOffScreenRight) {
-      setTooltipPosition({
-        top: topPosition,
-        left: rect.left - tooltipWidth - 10
-      });
-    } else {
-      setTooltipPosition({
-        top: topPosition,
-        left: rect.right + 10
-      });
-    }
-
-    setTooltipContent({
-      name: template.name,
-      description: template.description,
-      icon: template.icon
-    });
-    setTooltipVisible(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setTooltipVisible(false);
-  }, []);
 
   const handleInsert = useCallback((blockType: BlockType['type']) => {
     const tabInfo = findParentTab(blockId, pageSchema.blocks);
@@ -419,8 +331,6 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
     // Reset state
     setIsOpen(false);
     setSearchQuery('');
-    setTooltipVisible(false);
-    setTooltipContent({ name: '', description: '', icon: '' });
   }, [blockId, pageSchema.blocks, position, insertBlockIntoTabs, insertBlockBefore, insertBlockAfter]);
 
   // Early returns
@@ -482,19 +392,12 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
               templates={searchFilteredTemplates}
               searchQuery={searchQuery}
               onInsert={handleInsert}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
             />
           </div>
         </div>
       )}
 
-      {/* Tooltip */}
-      <Tooltip
-        visible={tooltipVisible}
-        content={tooltipContent}
-        position={tooltipPosition}
-      />
+
     </div>
   );
 };
