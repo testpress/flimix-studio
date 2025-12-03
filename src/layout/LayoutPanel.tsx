@@ -47,7 +47,7 @@ interface BlockItemProps {
   parentType?: BlockType['type'];
   onSelect: (block: Block) => void;
   selectedBlockId: string | null;
-  findTabContainingBlock: (blockId: string) => { tabsBlock: TabsBlock; tabId: string } | null;
+  findContainerForBlock: (blockId: string) => { containerBlock: TabsBlock; activePaneId: string } | null;
 }
 
 interface BlockOptionsMenuProps {
@@ -61,114 +61,147 @@ interface BlockOptionsMenuProps {
   triggerElement: HTMLElement | null;
 }
 
-const BlockOptionsMenu: React.FC<BlockOptionsMenuProps> = ({
-  onClose,
-  onDuplicate,
-  onDelete,
-  onMoveUp,
-  onMoveDown,
-  canMoveUp = false,
-  canMoveDown = false,
-  triggerElement
-}) => {
-  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const calculatePosition = () => {
-      if (triggerElement && menuRef.current) {
-        const triggerRect = triggerElement.getBoundingClientRect();
-        const menuHeight = menuRef.current.offsetHeight;
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate available space above and below
-        const spaceAbove = triggerRect.top;
-        const spaceBelow = viewportHeight - triggerRect.bottom;
-        
-        if (spaceBelow >= menuHeight || spaceBelow >= spaceAbove) {
-          setPosition('bottom');
-        } else {
-          setPosition('top');
+function LayoutPanel() {
+  const { isLayoutOpen } = usePanel();
+  const { selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
+  const { pageSchema } = useHistory();
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const findContainerForBlock = (blockId: string): { containerBlock: TabsBlock; activePaneId: string } | null => {
+    const findInBlocks = (blocks: BlockType[]): { containerBlock: TabsBlock; activePaneId: string } | null => {
+      for (const block of blocks) {
+        if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          for (const tab of tabsBlock.props.tabs) {
+            if (tab.children) {
+              for (const child of tab.children) {
+                if (child.id === blockId) {
+                  return { containerBlock: tabsBlock, activePaneId: tab.id };
+                }
+                // Recursively check nested children
+                if (child.children) {
+                  const found = findInBlocks(child.children);
+                  if (found) return found;
+                }
+              }
+            }
+          }
+        }
+        if (block.children) {
+          const found = findInBlocks(block.children);
+          if (found) return found;
         }
       }
+      return null;
     };
-
-    calculatePosition();
-
-    window.addEventListener('resize', calculatePosition);
-    window.addEventListener('scroll', calculatePosition, true);
-
-    return () => {
-      window.removeEventListener('resize', calculatePosition);
-      window.removeEventListener('scroll', calculatePosition, true);
-    };
-  }, [triggerElement, canMoveUp, canMoveDown]);
-
-  const handleAction = (e: React.MouseEvent, action: () => void) => {
-    e.stopPropagation();
-    action();
-    onClose();
+    
+    return findInBlocks(pageSchema.blocks);
   };
-
-  const getPositionClasses = () => {
-    if (position === 'top') {
-      return 'absolute right-2 bottom-full mb-1';
+  
+  const scrollToBlock = (blockId: string) => {
+    setTimeout(() => {
+      const blockElement = document.querySelector(`[data-block-id="${blockId}"]`);
+      
+      if (blockElement) {
+        blockElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      } else {
+        console.warn(`Block with ID ${blockId} not found in the DOM`);
+      }
+    }, 100);
+  };
+  
+  const handleBlockSelect = (block: Block) => {
+    setSelectedBlockId(block.id);
+    setSelectedBlock(block);
+    
+    const tabInfo = findContainerForBlock(block.id);
+    if (tabInfo) {
+      setActiveTabId(tabInfo.activePaneId);
     }
-    return 'absolute right-2 top-full mt-1';
+    
+    scrollToBlock(block.id);
   };
+  
+  // Memoized filtering logic for better performance
+  const filteredBlocks = useMemo(() => {
+    const filter = (blocks: BlockType[]): BlockType[] => {
+      if (!searchQuery) return blocks;
+
+      return blocks.filter(block => {
+        const matchesType = block.type.toLowerCase().includes(searchQuery.toLowerCase());
+        const hasMatchingChildren = block.children ? filter(block.children).length > 0 : false;
+
+        // For tabs blocks, check tab children
+        let hasMatchingTabChildren = false;
+        if (block.type === 'tabs') {
+          const tabsBlock = block as TabsBlock;
+          hasMatchingTabChildren = tabsBlock.props.tabs.some(tab => 
+            tab.children && filter(tab.children).length > 0
+          );
+        }
+
+        return matchesType || hasMatchingChildren || hasMatchingTabChildren;
+      });
+    };
+
+    return filter(pageSchema.blocks);
+  }, [pageSchema.blocks, searchQuery]);
 
   return (
-    <>
-    {(canMoveUp || canMoveDown || onDuplicate || onDelete) && (
-    <div className={`${getPositionClasses()} z-50`} ref={menuRef}>
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
-        {canMoveUp && onMoveUp && (
-          <button
-            onClick={(e) => handleAction(e, onMoveUp)}
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-          >
-            <MoveUp size={14} />
-            Move Up
-          </button>
-        )}
-        
-        {canMoveDown && onMoveDown && (
-          <button
-            onClick={(e) => handleAction(e, onMoveDown)}
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-          >
-            <MoveDown size={14} />
-            Move Down
-          </button>
-        )}
-        
-        {onDuplicate && (
-        <button
-          onClick={(e) => handleAction(e, onDuplicate)}
-          className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-        >
-          <Copy size={14} />
-          Duplicate
-        </button>
-        )}
-        
-        {onDelete && (
-        <button
-          onClick={(e) => handleAction(e, onDelete)}
-          className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-        >
-          <Trash2 size={14} />
-          Delete
-        </button>
+    <div className={`${isLayoutOpen ? 'w-[22rem] bg-white border-r border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
+      {/* Header */}
+      <div className="p-6 border-b border-gray-200 flex-shrink-0">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Layout Structure</h2>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <input
+            type="text"
+            placeholder="Search blocks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+      
+      {/* Block Structure */}
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        {filteredBlocks.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-gray-500">
+            <Search size={24} className="flex flex-col items-center justify-center h-full text-gray-500" />
+            <p>No blocks found matching "{searchQuery}"</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredBlocks.map((block) => (
+              <BlockItem 
+                key={block.id} 
+                block={block} 
+                level={0}
+                onSelect={handleBlockSelect}
+                selectedBlockId={selectedBlockId}
+                findContainerForBlock={findContainerForBlock}
+              />
+            ))}
+          </div>
         )}
       </div>
+      
+      {/* Footer */}
+      <div className="p-3 border-t border-gray-200 bg-gray-50">
+        <div className="text-xs text-gray-500">
+          <span>Total blocks: {pageSchema.blocks.length}</span>
+        </div>
+      </div>
     </div>
-    )}
-    </>
   );
-};
+}
 
-const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelect, selectedBlockId, findTabContainingBlock }) => {
+function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findContainerForBlock }: BlockItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
   const { duplicateSelectedBlock, deleteSelectedBlock, moveBlockUp, moveBlockDown } = useBlockEditing();
@@ -406,7 +439,7 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelec
                       parentType={block.type}
                       onSelect={onSelect}
                       selectedBlockId={selectedBlockId}
-                      findTabContainingBlock={findTabContainingBlock}
+                      findContainerForBlock={findContainerForBlock}
                     />
                   ))}
                 </div>
@@ -426,153 +459,120 @@ const BlockItem: React.FC<BlockItemProps> = ({ block, level, parentType, onSelec
               parentType={block.type}
               onSelect={onSelect}
               selectedBlockId={selectedBlockId}
-              findTabContainingBlock={findTabContainingBlock}
+              findContainerForBlock={findContainerForBlock}
             />
           ))}
         </div>
       )}
     </div>
   );
-};
+}
 
-const LayoutPanel: React.FC = () => {
-  const { isLayoutOpen } = usePanel();
-  const { selectedBlockId, setSelectedBlockId, setSelectedBlock, setActiveTabId } = useSelection();
-  const { pageSchema } = useHistory();
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const findTabContainingBlock = (blockId: string): { tabsBlock: TabsBlock; tabId: string } | null => {
-    const findInBlocks = (blocks: BlockType[]): { tabsBlock: TabsBlock; tabId: string } | null => {
-      for (const block of blocks) {
-        if (block.type === 'tabs') {
-          const tabsBlock = block as TabsBlock;
-          for (const tab of tabsBlock.props.tabs) {
-            if (tab.children) {
-              for (const child of tab.children) {
-                if (child.id === blockId) {
-                  return { tabsBlock, tabId: tab.id };
-                }
-                // Recursively check nested children
-                if (child.children) {
-                  const found = findInBlocks(child.children);
-                  if (found) return found;
-                }
-              }
-            }
-          }
-        }
-        if (block.children) {
-          const found = findInBlocks(block.children);
-          if (found) return found;
+function BlockOptionsMenu({
+  onClose,
+  onDuplicate,
+  onDelete,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp = false,
+  canMoveDown = false,
+  triggerElement
+}: BlockOptionsMenuProps) {
+  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const calculatePosition = () => {
+      if (triggerElement && menuRef.current) {
+        const triggerRect = triggerElement.getBoundingClientRect();
+        const menuHeight = menuRef.current.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate available space above and below
+        const spaceAbove = triggerRect.top;
+        const spaceBelow = viewportHeight - triggerRect.bottom;
+        
+        if (spaceBelow >= menuHeight || spaceBelow >= spaceAbove) {
+          setPosition('bottom');
+        } else {
+          setPosition('top');
         }
       }
-      return null;
     };
-    
-    return findInBlocks(pageSchema.blocks);
+
+    calculatePosition();
+
+    window.addEventListener('resize', calculatePosition);
+    window.addEventListener('scroll', calculatePosition, true);
+
+    return () => {
+      window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener('scroll', calculatePosition, true);
+    };
+  }, [triggerElement, canMoveUp, canMoveDown]);
+
+  const handleAction = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation();
+    action();
+    onClose();
   };
-  
-  const scrollToBlock = (blockId: string) => {
-    setTimeout(() => {
-      const blockElement = document.querySelector(`[data-block-id="${blockId}"]`);
-      
-      if (blockElement) {
-        blockElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'nearest'
-        });
-      } else {
-        console.warn(`Block with ID ${blockId} not found in the DOM`);
-      }
-    }, 100);
-  };
-  
-  const handleBlockSelect = (block: Block) => {
-    setSelectedBlockId(block.id);
-    setSelectedBlock(block);
-    
-    const tabInfo = findTabContainingBlock(block.id);
-    if (tabInfo) {
-      setActiveTabId(tabInfo.tabId);
+
+  const getPositionClasses = () => {
+    if (position === 'top') {
+      return 'absolute right-2 bottom-full mb-1';
     }
-    
-    scrollToBlock(block.id);
+    return 'absolute right-2 top-full mt-1';
   };
-  
-  // Memoized filtering logic for better performance
-  const filteredBlocks = useMemo(() => {
-    const filter = (blocks: BlockType[]): BlockType[] => {
-      if (!searchQuery) return blocks;
-
-      return blocks.filter(block => {
-        const matchesType = block.type.toLowerCase().includes(searchQuery.toLowerCase());
-        const hasMatchingChildren = block.children ? filter(block.children).length > 0 : false;
-
-        // For tabs blocks, check tab children
-        let hasMatchingTabChildren = false;
-        if (block.type === 'tabs') {
-          const tabsBlock = block as TabsBlock;
-          hasMatchingTabChildren = tabsBlock.props.tabs.some(tab => 
-            tab.children && filter(tab.children).length > 0
-          );
-        }
-
-        return matchesType || hasMatchingChildren || hasMatchingTabChildren;
-      });
-    };
-
-    return filter(pageSchema.blocks);
-  }, [pageSchema.blocks, searchQuery]);
 
   return (
-    <div className={`${isLayoutOpen ? 'w-[22rem] bg-white border-r border-gray-200' : 'w-0 bg-transparent border-0'} sticky top-16 self-start h-[calc(100vh-4rem)] min-h-0 flex flex-col transition-width duration-300 ease-in-out overflow-hidden`}>
-      {/* Header */}
-      <div className="p-6 border-b border-gray-200 flex-shrink-0">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Layout Structure</h2>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input
-            type="text"
-            placeholder="Search blocks..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-      
-      {/* Block Structure */}
-      <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-        {filteredBlocks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <Search size={24} className="flex flex-col items-center justify-center h-full text-gray-500" />
-            <p>No blocks found matching "{searchQuery}"</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {filteredBlocks.map((block) => (
-              <BlockItem 
-                key={block.id} 
-                block={block} 
-                level={0}
-                onSelect={handleBlockSelect}
-                selectedBlockId={selectedBlockId}
-                findTabContainingBlock={findTabContainingBlock}
-              />
-            ))}
-          </div>
+    <>
+    {(canMoveUp || canMoveDown || onDuplicate || onDelete) && (
+    <div className={`${getPositionClasses()} z-50`} ref={menuRef}>
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px]">
+        {canMoveUp && onMoveUp && (
+          <button
+            onClick={(e) => handleAction(e, onMoveUp)}
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <MoveUp size={14} />
+            Move Up
+          </button>
+        )}
+        
+        {canMoveDown && onMoveDown && (
+          <button
+            onClick={(e) => handleAction(e, onMoveDown)}
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <MoveDown size={14} />
+            Move Down
+          </button>
+        )}
+        
+        {onDuplicate && (
+        <button
+          onClick={(e) => handleAction(e, onDuplicate)}
+          className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+        >
+          <Copy size={14} />
+          Duplicate
+        </button>
+        )}
+        
+        {onDelete && (
+        <button
+          onClick={(e) => handleAction(e, onDelete)}
+          className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+        >
+          <Trash2 size={14} />
+          Delete
+        </button>
         )}
       </div>
-      
-      {/* Footer */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50">
-        <div className="text-xs text-gray-500">
-          <span>Total blocks: {pageSchema.blocks.length}</span>
-        </div>
-      </div>
     </div>
+    )}
+    </>
   );
-};
+}
 
 export default LayoutPanel;
