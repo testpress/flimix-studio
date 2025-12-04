@@ -5,7 +5,7 @@ import { generateUniqueId } from '@utils/id';
 import CTAsTab from './form-components/CTAsTab';
 import CarouselControls from './form-components/CarouselControls';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
-import { movieApi, type Movie } from '@services/api/movie';
+import { contentApi, type Content } from '@services/api/content';
 import { AlertCircle } from 'lucide-react';
 import { getHashtagSizeClass } from './CTAButton';
 import { useSelection } from '@context/SelectionContext';
@@ -94,23 +94,23 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     }
   };
   
-  // Movie picker functionality
-  const handleSelectMovie = (movie: Movie) => {
-    // Map the movie to a hero item - all data comes from API
+  // Content picker functionality
+  const handleSelectContent = (content: Content) => {
+    // Map the content to a hero item
     const heroItem = {
-      id: movie.id,
-      title: movie.title,
-      subtitle: movie.subtitle,
-      backgroundImage: movie.image || 'https://placehold.co/1920x1080/cccccc/666666?text=No+Image',
-      videoBackground: movie.videoBackground,
-      titleType: movie.titleImage ? 'image' as const : 'text' as const,
-      titleImage: movie.titleImage,
+      id: content.id.toString(),
+      title: content.title,
+      subtitle: content.subtitle,
+      backgroundImage: content.poster || content.cover || content.thumbnail || 'https://placehold.co/1920x1080/cccccc/666666?text=No+Image',
+      videoBackground: content.details?.videoBackground,
+      titleType: content.details?.titleImage ? 'image' as const : 'text' as const,
+      titleImage: content.details?.titleImage,
       metadata: {
-        year: movie.year,
-        language: movie.language,
+        year: content.details?.release_year?.toString(),
+        language: content.details?.language,
       },
-      badges: movie.badges && movie.badges.length > 0 ? movie.badges.map(badge => ({ id: generateUniqueId(), label: badge.label })) : [],
-      hashtag: movie.hashtag ? { text: movie.hashtag, color: '#dc2626', size: 'medium' as const } : undefined,
+      badges: content.genres && content.genres.length > 0 ? content.genres.map(genre => ({ id: generateUniqueId(), label: genre })) : [],
+      hashtag: content.details?.hashtag ? { text: content.details.hashtag, color: '#dc2626', size: 'medium' as const } : undefined,
       showTitle: true,
       showSubtitle: true,
       showBadges: true,
@@ -121,7 +121,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     // Check if item with this ID already exists
     const existingItems = heroBlock.props.items || [];
     if (existingItems.some(item => item.id === heroItem.id)) {
-      setDuplicateWarning(`"${movie.title}" is already in your hero`);
+      setDuplicateWarning(`"${content.title}" is already in your hero`);
       return; 
     }
     
@@ -152,11 +152,11 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         updateProps={updateProps}
       />
       
-      {/* Movie Picker Section */}
+      {/* Content Picker Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
-        <h3 className="font-medium text-gray-700 mb-4">Movie Picker</h3>
+        <h3 className="font-medium text-gray-700 mb-4">Content Picker</h3>
         <p className="text-sm text-gray-600 mb-3">
-          Search for movies and add them to your hero. Movies will be added to the end of your hero items list.
+          Search for Content and add them to your hero. Content will be added to the end of your hero items list.
         </p>
         
         {/* Duplicate item warning */}
@@ -172,20 +172,20 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         )}
         
         {/* Generic API Search Dropdown */}
-        <ApiSearchDropdown<Movie>
-          searchFunction={movieApi.search}
-          placeholder="Search for movies..."
-          onSelect={handleSelectMovie}
-          getItemId={(movie) => movie.id}
-          renderItem={(movie, onSelect) => (
+        <ApiSearchDropdown<Content>
+          searchFunction={contentApi.search}
+          placeholder="Search for Content..."
+          onSelect={handleSelectContent}
+          getItemId={(content) => content.id}
+          renderItem={(content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"
-              onClick={() => onSelect(movie)}
+              onClick={() => onSelect(content)}
             >
-              {movie.image && (
+              {(content.thumbnail || content.poster || content.cover) && (
                 <img 
-                  src={movie.image} 
-                  alt={movie.title}
+                  src={content.thumbnail || content.poster || content.cover || ''} 
+                  alt={content.title}
                   className="w-12 h-8 object-cover rounded"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -194,14 +194,14 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 />
               )}
               <div>
-                <div className="font-medium text-sm">{movie.title}</div>
-                {movie.subtitle && (
-                  <div className="text-xs text-gray-500">{movie.subtitle}</div>
+                <div className="font-medium text-sm">{content.title}</div>
+                {content.subtitle && (
+                  <div className="text-xs text-gray-500">{content.subtitle}</div>
                 )}
               </div>
             </div>
           )}
-          noResultsMessage="No movies found. Try a different search."
+          noResultsMessage="No Content found. Try a different search."
         />
       </div>
       
@@ -309,7 +309,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Title is automatically populated from the Movie API
+                    Title is automatically populated from the Content API
                   </p>
                 </div>
                 
@@ -320,7 +320,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     <div className="text-sm">{currentItem.subtitle || 'No subtitle'}</div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Subtitle is automatically populated from the Movie API
+                    Subtitle is automatically populated from the Content API
                   </p>
                 </div>
                 
@@ -347,7 +347,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Background is automatically populated from the Movie API
+                    Background is automatically populated from the Content API
                   </p>
                 </div>
                 
@@ -362,7 +362,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Metadata is automatically populated from the Movie API
+                    Metadata is automatically populated from the Content API
                   </p>
                 </div>
               </div>
@@ -527,7 +527,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             <div className="text-center">
               <h3 className="font-medium text-blue-700 mb-2">No Hero Items Added Yet</h3>
               <p className="text-sm text-blue-600 mb-3">
-                Use the Movie Picker above to search for and add movies to your hero. Once you add items, you'll be able to configure their display options, customize hashtags, and set up call-to-action buttons.
+                Use the Content Picker above to search for and add Content to your hero. Once you add items, you'll be able to configure their display options, customize hashtags, and set up call-to-action buttons.
               </p>
             </div>
           </div>

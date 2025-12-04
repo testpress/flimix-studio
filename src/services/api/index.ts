@@ -1,1 +1,2 @@
-export * from './movie';
+export * from './mock';
+export * from './content';
