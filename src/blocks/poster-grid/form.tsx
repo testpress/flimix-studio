@@ -5,7 +5,7 @@ import type { Field } from '@blocks/shared/Field';
 import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, ItemShape, GridDimension, ButtonProps, ProgressBarProps } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { movieApi, type Movie } from '@services/api/movie';
+import { contentApi, type Content } from '@services/api/content';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 
 // Poster grid block editor schema - only basic properties
@@ -41,19 +41,19 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
     }
   }, [duplicateWarning]);
 
-  const handleSelectMovie = (movie: Movie) => {
-    // Map the movie to a poster grid item
+  const handleSelectContent = (content: Content) => {
+    // Map the content to a poster grid item
     const posterGridItem = {
-      id: movie.id,
-      title: movie.title,
-      subtitle: movie.subtitle,
-      image: movie.image || 'https://placehold.co/300x170/cccccc/666666?text=No+Image',
-      progress: movie.progress || 0,
-      link: `#${movie.id}`, // You can customize this link as needed
+      id: content.id.toString(),
+      title: content.title,
+      subtitle: content.subtitle,
+      image: content.poster || content.cover || content.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image',
+      progress: 0, // Default progress
+      link: `#${content.id}`, // You can customize this link as needed
       meta: {
-        rating: movie.rating?.toString(),
-        badge: movie.badges && movie.badges.length > 0 ? movie.badges[0].label : undefined,
-        duration: movie.duration?.toString()
+        rating: content.details?.imdb_rating?.toString(),
+        badge: content.genres && content.genres.length > 0 ? content.genres[0] : undefined,
+        duration: content.details?.duration?.toString()
       }
     };
     
@@ -61,7 +61,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
     const existingItems = posterGridProps.items || [];
     if (existingItems.some(item => item.id === posterGridItem.id)) {
       // Show warning for duplicate item
-      setDuplicateWarning(`"${movie.title}" is already in your poster grid`);
+      setDuplicateWarning(`"${content.title}" is already in your poster grid`);
       return; // Skip if duplicate
     }
     
@@ -246,11 +246,11 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
         </div>
       </div>
 
-      {/* Movie Picker Section */}
+      {/* Content Picker Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
-        <h3 className="font-medium text-gray-700 mb-4">Movie Picker</h3>
+        <h3 className="font-medium text-gray-700 mb-4">Content Picker</h3>
         <p className="text-sm text-gray-600 mb-3">
-          Search for movies and add them to your poster grid. Movies will be added to the end of your grid.
+          Search for Content and add them to your poster grid. Content will be added to the end of your grid.
         </p>
         
         {/* Warning when over limit */}
@@ -278,21 +278,21 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
         )}
         
         {/* Generic API Search Dropdown */}
-        <ApiSearchDropdown<Movie>
-          searchFunction={movieApi.search}
+        <ApiSearchDropdown<Content>
+          searchFunction={contentApi.search}
           disabled={isAtItemLimit}
-          placeholder="Search for movies..."
-          onSelect={(movie: Movie) => handleSelectMovie(movie)}
-          getItemId={(movie) => movie.id}
-          renderItem={(movie, onSelect) => (
+          placeholder="Search for Content..."
+          onSelect={(content: Content) => handleSelectContent(content)}
+          getItemId={(content) => content.id}
+          renderItem={(content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"
-              onClick={() => onSelect(movie)}
+              onClick={() => onSelect(content)}
             >
-              {movie.image && (
+              {(content.thumbnail || content.poster || content.cover) && (
                 <img 
-                  src={movie.image} 
-                  alt={movie.title}
+                  src={content.thumbnail || content.poster || content.cover || ''} 
+                  alt={content.title}
                   className="w-12 h-8 object-cover rounded"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -301,14 +301,14 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
                 />
               )}
               <div>
-                <div className="font-medium text-sm">{movie.title}</div>
-                {movie.subtitle && (
-                  <div className="text-xs text-gray-500">{movie.subtitle}</div>
+                <div className="font-medium text-sm">{content.title}</div>
+                {content.subtitle && (
+                  <div className="text-xs text-gray-500">{content.subtitle}</div>
                 )}
               </div>
             </div>
           )}
-          noResultsMessage="No movies found. Try a different search."
+          noResultsMessage="No Content found. Try a different search."
         />
       </div>
       
