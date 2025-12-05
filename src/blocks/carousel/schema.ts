@@ -36,7 +36,6 @@ export interface CarouselItem {
     imdb_rating?: string | number;
   };
   progress?: number;
-  link?: string;
 }
 
 // Carousel block interface

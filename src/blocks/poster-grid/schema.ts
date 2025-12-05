@@ -69,5 +69,4 @@ export interface PosterGridItem {
     imdb_rating?: string | number;
   };
   progress?: number;
-  link?: string;
 } 

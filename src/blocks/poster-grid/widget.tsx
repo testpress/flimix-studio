@@ -243,7 +243,6 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           {items.map((item) => (
             <div key={item.id} className="relative group">
               <a
-                href={item.link || '#'}
                 onClick={(e) => {
                   e.preventDefault();
                   handleItemClick(item.id);

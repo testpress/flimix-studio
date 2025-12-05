@@ -517,7 +517,6 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                       data-item-id={item.id}
                     >
                       <a
-                        href={item.link || '#'}
                         onClick={(e) => {
                           e.preventDefault();
                           handleItemClick(item.id);

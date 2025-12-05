@@ -56,8 +56,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         duration: content.details?.duration,
         release_year: content.details?.release_year
       },
-      progress: 0,
-      link: `#${content.id}`
+      progress: 0
     };
     
     // Check if item with this ID already exists
