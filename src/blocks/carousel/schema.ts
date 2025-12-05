@@ -20,18 +20,23 @@ export type ItemSize = 'small' | 'medium' | 'large' | 'extra-large';
 
 // Carousel item interface
 export interface CarouselItem {
-  id: string;
-  content_id: string;
+  id: number;
+  content_id: number;
   title: string;
   subtitle?: string;
-  image: string;
-  link?: string;
-  progress?: number; 
-  meta?: {
-    rating?: string;
-    genre?: string;
-    duration?: string;
+  type?: string;
+  status?: string;
+  thumbnail?: string | null;
+  poster?: string | null;
+  cover?: string | null;
+  genres?: string[];
+  details?: {
+    duration?: string | number;
+    release_year?: number | string;
+    imdb_rating?: string | number;
   };
+  progress?: number;
+  link?: string;
 }
 
 // Carousel block interface

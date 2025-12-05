@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { Field } from '@blocks/shared/Field';
-import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, ItemShape, ItemSize, ButtonProps, ProgressBarProps } from './schema';
+import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, CarouselItem, ItemShape, ItemSize, ButtonProps, ProgressBarProps } from './schema';
 import { CAROUSEL_ITEM_LIMIT } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -38,19 +38,26 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   }, [duplicateWarning]);
 
   const handleSelectContent = (content: Content) => {
-    // Map the content to a carousel item
-    const carouselItem = {
-      id: content.id.toString(),
-      content_id: content.id.toString(),
+    const numericId = typeof content.id === 'number' ? content.id : parseInt(content.id, 10);
+    
+    const carouselItem: CarouselItem = {
+      id: numericId,
+      content_id: numericId,
       title: content.title,
       subtitle: content.subtitle,
-      image: content.poster || content.cover || content.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image',
+      type: content.type,
+      status: content.status,
+      thumbnail: content.thumbnail || null,
+      poster: content.poster || null,
+      cover: content.cover || null,
+      genres: content.genres || [],
+      details: {
+        imdb_rating: content.details?.imdb_rating,
+        duration: content.details?.duration,
+        release_year: content.details?.release_year
+      },
       progress: 0,
-      meta: {
-        rating: content.details?.imdb_rating?.toString(),
-        genre: content.genres && content.genres.length > 0 ? content.genres[0] : undefined,
-        duration: content.details?.duration?.toString()
-      }
+      link: `#${content.id}`
     };
     
     // Check if item with this ID already exists

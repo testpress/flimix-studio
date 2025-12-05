@@ -347,8 +347,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
 
-  const handleItemClick = (itemId: string) => {
-    selectBlockItem(block.id, itemId);
+  const handleItemClick = (itemId: number) => {
+    selectBlockItem(block.id, itemId.toString());
   };
 
   // Handle manual scroll to pause autoplay
@@ -522,8 +522,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           e.preventDefault();
                           handleItemClick(item.id);
                         }}
-                        className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
-                          }`}
+                        className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
+                  isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                }`}
                       >
                         <div className={`${getItemShapeClass()} overflow-hidden ${itemShape === 'circle' ? 'rounded-full' :
                           style?.borderRadius === 'none' ? '' :
@@ -532,7 +533,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                                 style?.borderRadius === 'sm' ? 'rounded-md' : 'rounded-lg'
                           } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
                           <img
-                            src={item.image}
+                            src={item.poster || item.cover || item.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image'}
                             alt={item.title}
                             className="w-full h-full object-cover"
                             onError={(e) => {
@@ -545,9 +546,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                         {(item.title && item.title.trim() !== "") ||
                           item.subtitle ||
                           props.progressBar?.enabled ||
-                          (props.showGenre && item.meta?.genre) ||
-                          (props.showRating && item.meta?.rating) ||
-                          (props.showDuration && item.meta?.duration) ? (
+                          (props.showGenre && item.genres && item.genres.length > 0) ||
+                          (props.showRating && item.details?.imdb_rating) ||
+                          (props.showDuration && item.details?.duration) ? (
                           <div className="mt-3 space-y-1">
                             {/* Title - only render if not empty and global showTitle is not false */}
                             {props.showTitle !== false && item.title && item.title.trim() !== "" && (
@@ -578,23 +579,23 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                             )}
 
                             {/* Meta information - only render if any meta exists and global options are enabled */}
-                            {((props.showGenre && item.meta?.genre) ||
-                              (props.showRating && item.meta?.rating) ||
-                              (props.showDuration && item.meta?.duration)) && (
+                            {((props.showGenre && item.genres && item.genres.length > 0) ||
+                              (props.showRating && item.details?.imdb_rating) ||
+                              (props.showDuration && item.details?.duration)) && (
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  {props.showGenre && item.meta?.genre && (
-                                    <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getGenreColor(item.meta.genre)}`}>
-                                      {item.meta.genre}
+                                  {props.showGenre && item.genres && item.genres.length > 0 && (
+                                    <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getGenreColor(item.genres[0])}`}>
+                                      {item.genres[0]}
                                     </span>
                                   )}
-                                  {props.showRating && item.meta?.rating && (
+                                  {props.showRating && item.details?.imdb_rating && (
                                     <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                                      {item.meta.rating}
+                                      {item.details.imdb_rating}
                                     </span>
                                   )}
-                                  {props.showDuration && item.meta?.duration && (
+                                  {props.showDuration && item.details?.duration && (
                                     <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                                      {item.meta.duration}
+                                      {item.details.duration}
                                     </span>
                                   )}
                                 </div>
@@ -607,7 +608,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                         count={items.length}
                         onMoveLeft={() => moveBlockItemLeft(block.id, index)}
                         onMoveRight={() => moveBlockItemRight(block.id, index)}
-                        onRemove={() => removeBlockItem(block.id, item.id)}
+                        onRemove={() => removeBlockItem(block.id, item.id.toString())}
                         className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       />
                     </div>

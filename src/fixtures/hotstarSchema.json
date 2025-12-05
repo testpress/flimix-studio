@@ -2,7 +2,10 @@
   "title": "Hotstar",
   "theme": "dark",
   "visibility": {
-    "platform": ["mobile", "desktop"]
+    "platform": [
+      "mobile",
+      "desktop"
+    ]
   },
   "blocks": [
     {
@@ -26,9 +29,18 @@
               "language": "Tamil"
             },
             "badges": [
-              { "id": "badge-1", "label": "Action" },
-              { "id": "badge-2", "label": "Drama" },
-              { "id": "badge-3", "label": "Thriller" }
+              {
+                "id": "badge-1",
+                "label": "Action"
+              },
+              {
+                "id": "badge-2",
+                "label": "Drama"
+              },
+              {
+                "id": "badge-3",
+                "label": "Thriller"
+              }
             ],
             "primaryCTA": {
               "label": "Watch Now",
@@ -47,7 +59,8 @@
               "iconPosition": "left",
               "iconThickness": "thick",
               "borderRadius": "sm"
-            }
+            },
+            "content_id": 1
           },
           {
             "id": "hero-item-2",
@@ -61,9 +74,18 @@
               "language": "Tamil"
             },
             "badges": [
-              { "id": "badge-4", "label": "Reality" },
-              { "id": "badge-5", "label": "Comedy" },
-              { "id": "badge-6", "label": "Culinary" }
+              {
+                "id": "badge-4",
+                "label": "Reality"
+              },
+              {
+                "id": "badge-5",
+                "label": "Comedy"
+              },
+              {
+                "id": "badge-6",
+                "label": "Culinary"
+              }
             ],
             "primaryCTA": {
               "label": "Watch Now",
@@ -82,7 +104,8 @@
               "iconPosition": "left",
               "iconThickness": "thick",
               "borderRadius": "sm"
-            }
+            },
+            "content_id": 2
           },
           {
             "id": "hero-item-3",
@@ -95,9 +118,18 @@
               "language": "Tamil"
             },
             "badges": [
-              { "id": "badge-7", "label": "Action" },
-              { "id": "badge-8", "label": "Thriller" },
-              { "id": "badge-9", "label": "Drama" }
+              {
+                "id": "badge-7",
+                "label": "Action"
+              },
+              {
+                "id": "badge-8",
+                "label": "Thriller"
+              },
+              {
+                "id": "badge-9",
+                "label": "Drama"
+              }
             ],
             "primaryCTA": {
               "label": "Watch Now",
@@ -116,7 +148,8 @@
               "iconPosition": "left",
               "iconThickness": "thick",
               "borderRadius": "sm"
-            }
+            },
+            "content_id": 3
           },
           {
             "id": "hero-item-4",
@@ -129,9 +162,18 @@
               "language": "Tamil"
             },
             "badges": [
-              { "id": "badge-10", "label": "Action" },
-              { "id": "badge-11", "label": "Thriller" },
-              { "id": "badge-12", "label": "Crime" }
+              {
+                "id": "badge-10",
+                "label": "Action"
+              },
+              {
+                "id": "badge-11",
+                "label": "Thriller"
+              },
+              {
+                "id": "badge-12",
+                "label": "Crime"
+              }
             ],
             "primaryCTA": {
               "label": "Watch Now",
@@ -150,7 +192,8 @@
               "iconPosition": "left",
               "iconThickness": "thick",
               "borderRadius": "sm"
-            }
+            },
+            "content_id": 4
           }
         ]
       },
@@ -163,8 +206,14 @@
         "textAlign": "left"
       },
       "visibility": {
-        "platform": ["mobile", "desktop"],
-        "region": ["IN", "US"]
+        "platform": [
+          "mobile",
+          "desktop"
+        ],
+        "region": [
+          "IN",
+          "US"
+        ]
       }
     },
     {
@@ -190,49 +239,94 @@
         "items": [
           {
             "id": "item-1",
+            "content_id": 1,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3084/1755330873084-v",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3084/1755330873084-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3084/1755330873084-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3084/1755330873084-v",
+            "genres": [],
+            "details": {},
             "link": "/movie/the-rage"
           },
           {
             "id": "item-2",
+            "content_id": 2,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/6738/1755229966738-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/6738/1755229966738-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/6738/1755229966738-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/6738/1755229966738-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-3",
+            "content_id": 3,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4186/1754287614186-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4186/1754287614186-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4186/1754287614186-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4186/1754287614186-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-4",
+            "content_id": 4,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1300/1755500481300-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1300/1755500481300-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1300/1755500481300-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1300/1755500481300-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-5",
+            "content_id": 5,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/5166/1754460935166-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/5166/1754460935166-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/5166/1754460935166-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/5166/1754460935166-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-6",
+            "content_id": 6,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5203/1754202395203-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5203/1754202395203-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5203/1754202395203-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5203/1754202395203-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-7",
+            "content_id": 7,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1803/1754654061803-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1803/1754654061803-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1803/1754654061803-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/1803/1754654061803-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-8",
+            "content_id": 8,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4180/1753176644180-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4180/1753176644180-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4180/1753176644180-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4180/1753176644180-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item-9",
+            "content_id": 9,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4408/1754462054408-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4408/1754462054408-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4408/1754462054408-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4408/1754462054408-v",
+            "genres": [],
+            "details": {}
           }
         ]
       },
@@ -255,57 +349,79 @@
         "items": [
           {
             "id": "sports-1",
+            "content_id": 1,
             "title": "East Delhi Riders (W) vs Central Delhi Queens (W)",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/419/1755426930419-h",
-            "meta": {
-              "badge": "LIVE"
-            }
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/419/1755426930419-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/419/1755426930419-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/419/1755426930419-h",
+            "genres": [
+              "LIVE"
+            ],
+            "details": {}
           },
           {
             "id": "sports-2",
+            "content_id": 2,
             "title": "Manchester United 0-1 Arsenal",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4567/1755452254567-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4567/1755452254567-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4567/1755452254567-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4567/1755452254567-h",
+            "details": {
               "duration": "6m"
             }
           },
           {
             "id": "sports-3",
+            "content_id": 3,
             "title": "American Stars to Watch ft. Fritz, Gauff",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5504/1755443005504-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5504/1755443005504-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5504/1755443005504-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5504/1755443005504-h",
+            "details": {
               "duration": "5m"
             }
           },
           {
             "id": "sports-4",
+            "content_id": 4,
             "title": "Chelsea 0-0 Crystal Palace",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2717/1755443282717-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2717/1755443282717-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2717/1755443282717-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2717/1755443282717-h",
+            "details": {
               "duration": "5m"
             }
           },
           {
             "id": "sports-5",
+            "content_id": 5,
             "title": "South Delhi Superstarz vs Purani Dilli-6: Highlights",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7333/1755452777333-h",
+            "details": {
               "duration": "12m"
             }
           },
           {
             "id": "sports-6",
+            "content_id": 6,
             "title": "AUS vs SA: 1st ODI, Highlights",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/331/1755602620331-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/331/1755602620331-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/331/1755602620331-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/331/1755602620331-h",
+            "details": {
               "duration": "11m"
             }
           },
           {
             "id": "sports-7",
+            "content_id": 7,
             "title": "Yashasvi Jaiswal: The Run Machine",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2058/1755076682058-h",
-            "meta": {
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2058/1755076682058-h",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2058/1755076682058-h",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2058/1755076682058-h",
+            "details": {
               "duration": "8m"
             }
           }
@@ -378,44 +494,84 @@
             "items": [
               {
                 "id": "independence-1",
+                "content_id": 1,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5218/1755108255218-v",
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5218/1755108255218-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5218/1755108255218-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5218/1755108255218-v",
+                "genres": [],
+                "details": {},
                 "link": "/movie/salaar"
               },
               {
                 "id": "independence-2",
+                "content_id": 2,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7004/1753382647004-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7004/1753382647004-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7004/1753382647004-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7004/1753382647004-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-3",
+                "content_id": 3,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7472/1754202297472-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7472/1754202297472-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7472/1754202297472-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7472/1754202297472-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-4",
+                "content_id": 4,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3876/1751871283876-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3876/1751871283876-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3876/1751871283876-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3876/1751871283876-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-5",
+                "content_id": 5,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9974/1738830599974-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9974/1738830599974-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9974/1738830599974-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9974/1738830599974-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-6",
+                "content_id": 6,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2984/1734434352984-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-7",
+                "content_id": 7,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9439/529439-v"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9439/529439-v",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9439/529439-v",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/9439/529439-v",
+                "genres": [],
+                "details": {}
               },
               {
                 "id": "independence-8",
+                "content_id": 8,
                 "title": "",
-                "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2370/1652370-v-7df617a0adb2"
+                "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2370/1652370-v-7df617a0adb2",
+                "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2370/1652370-v-7df617a0adb2",
+                "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/2370/1652370-v-7df617a0adb2",
+                "genres": [],
+                "details": {}
               }
             ]
           },
@@ -441,32 +597,57 @@
         "items": [
           {
             "id": "studio-1",
+            "content_id": 1,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5598/1739441155598-a",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5598/1739441155598-a",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5598/1739441155598-a",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5598/1739441155598-a",
+            "genres": [],
+            "details": {},
             "link": "/studio/hotstar"
           },
           {
             "id": "studio-2",
+            "content_id": 2,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/3703/1747996723703-a",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/3703/1747996723703-a",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/3703/1747996723703-a",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/3703/1747996723703-a",
+            "genres": [],
+            "details": {},
             "link": "/studio/disney"
           },
           {
             "id": "studio-3",
+            "content_id": 3,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5731/1739780835731-a",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5731/1739780835731-a",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5731/1739780835731-a",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5731/1739780835731-a",
+            "genres": [],
+            "details": {},
             "link": "/studio/hbo"
           },
           {
             "id": "studio-4",
+            "content_id": 4,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7816/1739359307816-a",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7816/1739359307816-a",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7816/1739359307816-a",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/7816/1739359307816-a",
+            "genres": [],
+            "details": {},
             "link": "/studio/peacock"
           },
           {
             "id": "studio-5",
+            "content_id": 5,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/583/1739358280583-a",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/583/1739358280583-a",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/583/1739358280583-a",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/583/1739358280583-a",
+            "genres": [],
+            "details": {},
             "link": "/studio/peacock"
           }
         ]
@@ -492,44 +673,84 @@
         "items": [
           {
             "id": "item1-1",
+            "content_id": 1,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3212/1754203333212-v",
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3212/1754203333212-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3212/1754203333212-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/3212/1754203333212-v",
+            "genres": [],
+            "details": {},
             "link": "/movie/the-rage"
           },
           {
             "id": "item1-2",
+            "content_id": 2,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7083/1754907187083-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7083/1754907187083-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7083/1754907187083-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7083/1754907187083-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-3",
+            "content_id": 3,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4706/1743158284706-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4706/1743158284706-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4706/1743158284706-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4706/1743158284706-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-4",
+            "content_id": 4,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4354/1734949344354-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4354/1734949344354-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4354/1734949344354-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/4354/1734949344354-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-5",
+            "content_id": 5,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5375/1739947275375-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5375/1739947275375-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5375/1739947275375-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5375/1739947275375-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-6",
+            "content_id": 6,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/486/1747141090486-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-7",
+            "content_id": 7,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5570/1739362395570-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5570/1739362395570-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5570/1739362395570-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/5570/1739362395570-v",
+            "genres": [],
+            "details": {}
           },
           {
             "id": "item1-8",
+            "content_id": 8,
             "title": "",
-            "image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7899/977899-v"
+            "poster": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7899/977899-v",
+            "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7899/977899-v",
+            "cover": "https://img.hotstar.com/image/upload/f_auto,q_90,w_384/sources/r1/cms/prod/7899/977899-v",
+            "genres": [],
+            "details": {}
           }
         ]
       },
