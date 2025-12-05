@@ -45,6 +45,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
     // Map the content to a poster grid item
     const posterGridItem = {
       id: content.id.toString(),
+      content_id: content.id.toString(),
       title: content.title,
       subtitle: content.subtitle,
       image: content.poster || content.cover || content.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image',

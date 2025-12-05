@@ -21,6 +21,7 @@ export type ItemSize = 'small' | 'medium' | 'large' | 'extra-large';
 // Carousel item interface
 export interface CarouselItem {
   id: string;
+  content_id: string;
   title: string;
   subtitle?: string;
   image: string;

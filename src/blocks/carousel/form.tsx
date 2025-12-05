@@ -41,6 +41,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
     // Map the content to a carousel item
     const carouselItem = {
       id: content.id.toString(),
+      content_id: content.id.toString(),
       title: content.title,
       subtitle: content.subtitle,
       image: content.poster || content.cover || content.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image',

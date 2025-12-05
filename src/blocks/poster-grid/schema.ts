@@ -54,6 +54,7 @@ export interface PosterGridBlockProps {
 // Individual poster item interface
 export interface PosterGridItem {
   id: string;
+  content_id: string;
   image: string;
   title: string;
   subtitle?: string;

@@ -31,6 +31,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   
   const currentItem = heroBlock.props.items?.[editingItemIndex] || {
     id: generateUniqueId(),
+    content_id: generateUniqueId(),
     title: '',
     subtitle: '',
     backgroundImage: ''
@@ -39,6 +40,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   // Helper function to create a default hero item
   const createDefaultHeroItem = () => ({
     id: generateUniqueId(),
+    content_id: generateUniqueId(),
     titleType: 'text' as const,
     title: '',
     titleImage: '',
@@ -99,6 +101,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     // Map the content to a hero item
     const heroItem = {
       id: content.id.toString(),
+      content_id: content.id.toString(),
       title: content.title,
       subtitle: content.subtitle,
       backgroundImage: content.poster || content.cover || content.thumbnail || 'https://placehold.co/1920x1080/cccccc/666666?text=No+Image',
