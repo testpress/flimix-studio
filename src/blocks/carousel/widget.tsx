@@ -130,8 +130,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     return ITEM_SHAPE_CLASSES[itemShape] || ITEM_SHAPE_CLASSES['rectangle-landscape'];
   };
 
-  // Badge color mapping for better maintainability
-  const BADGE_COLORS: Record<string, string> = {
+  // Genre color mapping for better maintainability
+  const GENRE_COLORS: Record<string, string> = {
     'new': 'bg-green-100 text-green-800',
     'popular': 'bg-red-100 text-red-800',
     'featured': 'bg-blue-100 text-blue-800',
@@ -142,8 +142,8 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     'coming soon': 'bg-indigo-100 text-indigo-800',
   };
 
-  const getBadgeColor = (badge: string) => {
-    return BADGE_COLORS[badge.toLowerCase()] || 'bg-gray-100 text-gray-800';
+  const getGenreColor = (genre: string) => {
+    return GENRE_COLORS[genre.toLowerCase()] || 'bg-gray-100 text-gray-800';
   };
 
   // Calculate dynamic scroll amount based on item width and gap
@@ -545,7 +545,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                         {(item.title && item.title.trim() !== "") ||
                           item.subtitle ||
                           props.progressBar?.enabled ||
-                          (props.showBadge && item.meta?.badge) ||
+                          (props.showGenre && item.meta?.genre) ||
                           (props.showRating && item.meta?.rating) ||
                           (props.showDuration && item.meta?.duration) ? (
                           <div className="mt-3 space-y-1">
@@ -578,13 +578,13 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                             )}
 
                             {/* Meta information - only render if any meta exists and global options are enabled */}
-                            {((props.showBadge && item.meta?.badge) ||
+                            {((props.showGenre && item.meta?.genre) ||
                               (props.showRating && item.meta?.rating) ||
                               (props.showDuration && item.meta?.duration)) && (
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  {props.showBadge && item.meta?.badge && (
-                                    <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getBadgeColor(item.meta.badge)}`}>
-                                      {item.meta.badge}
+                                  {props.showGenre && item.meta?.genre && (
+                                    <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getGenreColor(item.meta.genre)}`}>
+                                      {item.meta.genre}
                                     </span>
                                   )}
                                   {props.showRating && item.meta?.rating && (

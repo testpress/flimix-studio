@@ -53,7 +53,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       link: `#${content.id}`, // You can customize this link as needed
       meta: {
         rating: content.details?.imdb_rating?.toString(),
-        badge: content.genres && content.genres.length > 0 ? content.genres[0] : undefined,
+        genre: content.genres && content.genres.length > 0 ? content.genres[0] : undefined,
         duration: content.details?.duration?.toString()
       }
     };
@@ -363,13 +363,13 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
-              id="showBadge"
-              checked={posterGridProps.showBadge ?? false}
-              onChange={e => updateProps({ ...posterGridProps, showBadge: e.target.checked })}
+              id="showGenre"
+              checked={posterGridProps.showGenre ?? false}
+              onChange={e => updateProps({ ...posterGridProps, showGenre: e.target.checked })}
               className="rounded"
             />
-            <label htmlFor="showBadge" className="text-sm text-gray-700">
-              Show Badge
+            <label htmlFor="showGenre" className="text-sm text-gray-700">
+              Show Genre
             </label>
           </div>
           

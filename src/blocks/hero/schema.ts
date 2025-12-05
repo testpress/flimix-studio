@@ -16,14 +16,14 @@ export interface HeroItem {
   backgroundImage?: string;
   videoBackground?: string;
   metadata?: HeroMetadata;
-  badges?: HeroBadge[];
+  genres?: HeroGenre[];
   primaryCTA?: HeroCTABtn;
   secondaryCTA?: HeroCTABtn;
   tertiaryCTA?: HeroCTABtn;
   hashtag?: HeroHashtag;
   showTitle?: boolean;     
   showSubtitle?: boolean; 
-  showBadges?: boolean;     
+  showGenres?: boolean;     
   showMeta?: boolean;
   showHashtag?: boolean; 
 }
@@ -57,7 +57,7 @@ export interface HeroMetadata {
   language?: string;
 }
 
-export interface HeroBadge {
+export interface HeroGenre {
   id: string;
   label: string;
 }

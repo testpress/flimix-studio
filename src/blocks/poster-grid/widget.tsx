@@ -21,7 +21,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showBadge, showDuration } = props;
+  const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showGenre, showDuration } = props;
   const { gridGap = 'md' } = style || {};
   const { selectBlockItem, isItemSelected } = useSelection();
   
@@ -266,7 +266,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                 {(showTitle !== false && item.title && item.title.trim() !== "") || 
                  (showSubtitle && item.subtitle) ||
                  (showRating && item.meta?.rating) ||
-                 (showBadge && item.meta?.badge) ||
+                 (showGenre && item.meta?.genre) ||
                  (showDuration && item.meta?.duration) ||
                  progressBar?.enabled ? (
                   <div className="mt-3 space-y-1">
@@ -286,7 +286,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                     
                     {/* Meta information row */}
                     {(showRating && item.meta?.rating) ||
-                     (showBadge && item.meta?.badge) ||
+                     (showGenre && item.meta?.genre) ||
                      (showDuration && item.meta?.duration) ? (
                       <div className="flex items-center gap-2 flex-wrap">
                         {showRating && item.meta?.rating && (
@@ -294,9 +294,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                             {item.meta.rating}
                           </span>
                         )}
-                        {showBadge && item.meta?.badge && (
+                        {showGenre && item.meta?.genre && (
                           <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
-                            {item.meta.badge}
+                            {item.meta.genre}
                           </span>
                         )}
                         {showDuration && item.meta?.duration && (

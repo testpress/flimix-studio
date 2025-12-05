@@ -18,7 +18,7 @@ export const CarouselLibraryItem = {
     showTitle: true,
     showSubtitle: true,
     showRating: true,
-    showBadge: true,
+    showGenre: true,
     showDuration: true
   } as CarouselBlockProps
 }; 

@@ -86,15 +86,15 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       {/* Content Container - Positioned at bottom with padding */}
       <div className={`absolute inset-x-0 bottom-0 flex flex-col justify-end ${alignmentClass} z-10 pb-16 pt-32 px-8`}>
         
-        {/* Category Badges */}
-        {item.showBadges !== false && item.badges && item.badges.length > 0 && (
+        {/* Category Genres */}
+        {item.showGenres !== false && item.genres && item.genres.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
-            {item.badges.map((badge) => (
+            {item.genres.map((genre) => (
               <span 
-                key={badge.id} 
+                key={genre.id} 
                 className="px-2 py-1 bg-white/20 text-white text-xs font-medium rounded"
               >
-                {badge.label}
+                {genre.label}
               </span>
             ))}
           </div>

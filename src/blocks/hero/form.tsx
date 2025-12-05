@@ -49,7 +49,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     hashtag: undefined,
     showTitle: true,
     showSubtitle: true,
-    showBadges: true,
+    showGenres: true,
     showMeta: true,
     showHashtag: true
   });
@@ -112,11 +112,11 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         year: content.details?.release_year?.toString(),
         language: content.details?.language,
       },
-      badges: content.genres && content.genres.length > 0 ? content.genres.map(genre => ({ id: generateUniqueId(), label: genre })) : [],
+      genres: content.genres && content.genres.length > 0 ? content.genres.map(genre => ({ id: generateUniqueId(), label: genre })) : [],
       hashtag: content.details?.hashtag ? { text: content.details.hashtag, color: '#dc2626', size: 'medium' as const } : undefined,
       showTitle: true,
       showSubtitle: true,
-      showBadges: true,
+      showGenres: true,
       showMeta: true,
       showHashtag: true
     };
@@ -408,13 +408,13 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
-                    id="showBadges"
-                    checked={currentItem.showBadges !== false}
-                    onChange={e => updateCurrentHeroItem({ showBadges: e.target.checked })}
+                    id="showGenres"
+                    checked={currentItem.showGenres !== false}
+                    onChange={e => updateCurrentHeroItem({ showGenres: e.target.checked })}
                     className="rounded"
                   />
-                  <label htmlFor="showBadges" className="text-sm text-gray-700">
-                    Show Badges
+                  <label htmlFor="showGenres" className="text-sm text-gray-700">
+                    Show Genres
                   </label>
                 </div>
                 

@@ -47,7 +47,7 @@ export interface PosterGridBlockProps {
   showTitle?: boolean;
   showSubtitle?: boolean;
   showRating?: boolean;
-  showBadge?: boolean;
+  showGenre?: boolean;
   showDuration?: boolean;
 }
 
@@ -62,7 +62,7 @@ export interface PosterGridItem {
   progress?: number;
   meta?: {
     rating?: string;
-    badge?: string;
+    genre?: string;
     duration?: string;
   };
 } 
