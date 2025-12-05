@@ -338,7 +338,7 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
   ): void => {
     updateBlockItemsList(blockId, (items) =>
       items.map((item: BlockItem) =>
-        item.id === itemId ? { ...item, ...updatedItem } : item
+        item.id == itemId ? { ...item, ...updatedItem } : item
       )
     );
   };
@@ -348,7 +348,7 @@ export const BlockEditingProvider: React.FC<BlockEditingProviderProps> = ({ chil
     itemId: string
   ): void => {
     updateBlockItemsList(blockId, (items) =>
-      items.filter((item: BlockItem) => item.id !== itemId)
+      items.filter((item: BlockItem) => item.id != itemId)
     );
   };
 
