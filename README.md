@@ -151,15 +151,14 @@ git push origin main
             const root = window.FlimixStudio.render(
                 document.getElementById('flimix-studio-container'),
                 {
-                    initialPageSchema: {
+                    schema: {
                         'home': {
                             title: 'My Landing Page',
                             theme: 'dark',
                             blocks: []
                         }
                     },
-                    initialPageSlug: 'home',
-                    onSavePage: async function(pageSlug, schema) {
+                    onSavePage: async function( schema) {
                         console.log('Saving page:', pageSlug, schema);
                         // Handle save logic here
                     }
