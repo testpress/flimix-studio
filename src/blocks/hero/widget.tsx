@@ -38,7 +38,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   const currentItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === block.id) {
       const selectedIndex = props.items?.findIndex(item => item.id === parseInt(selectedItemId || '0', 10));
-      if (selectedIndex !== -1 && selectedIndex !== undefined) {
+      if (selectedIndex !== -1) {
         return selectedIndex;
       }
     }

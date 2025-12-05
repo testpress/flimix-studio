@@ -8,11 +8,10 @@ export function generateUniqueId(): string {
 
 /**
  * Generates a unique integer ID for block items
- * Uses timestamp + random component to ensure uniqueness
+ * Uses timestamp + a counter to ensure uniqueness
  * @returns A unique numeric ID
  */
-export function generateUniqueInt(): number {
-  // Use timestamp (milliseconds since epoch) + random component
-  // This ensures uniqueness even if called multiple times in quick succession
-  return Date.now() * 1000 + Math.floor(Math.random() * 1000);
-} 
+export const generateUniqueInt = (() => {
+  let i = 0;
+  return (): number => Date.now() * 1000 + i++;
+})(); 
