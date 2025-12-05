@@ -134,8 +134,8 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   };
 
 
-  const handleItemClick = (itemId: string) => {
-    selectBlockItem(block.id, itemId);
+  const handleItemClick = (itemId: number) => {
+    selectBlockItem(block.id, itemId.toString());
   };
 
   if (!items || items.length === 0) {
@@ -243,20 +243,19 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           {items.map((item) => (
             <div key={item.id} className="relative group">
               <a
-                href={item.link || '#'}
                 onClick={(e) => {
                   e.preventDefault();
                   handleItemClick(item.id);
                 }}
                 className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
-                  isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                  isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
                 }`}
               >
                 <div className={`${getAspectRatioClass()} overflow-hidden ${
                   itemShape === 'circle' ? 'rounded-full' : 'rounded-lg'
                 } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
                   <img
-                    src={item.image}
+                    src={item.poster || item.cover || item.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image'}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -265,9 +264,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                 {/* Content section - only render if there's actual content */}
                 {(showTitle !== false && item.title && item.title.trim() !== "") || 
                  (showSubtitle && item.subtitle) ||
-                 (showRating && item.meta?.rating) ||
-                 (showGenre && item.meta?.genre) ||
-                 (showDuration && item.meta?.duration) ||
+                 (showRating && item.details?.imdb_rating) ||
+                 (showGenre && item.genres && item.genres.length > 0) ||
+                 (showDuration && item.details?.duration) ||
                  progressBar?.enabled ? (
                   <div className="mt-3 space-y-1">
                     {/* Title - only render if enabled and not empty */}
@@ -285,23 +284,23 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                     )}
                     
                     {/* Meta information row */}
-                    {(showRating && item.meta?.rating) ||
-                     (showGenre && item.meta?.genre) ||
-                     (showDuration && item.meta?.duration) ? (
+                    {(showRating && item.details?.imdb_rating) ||
+                     (showGenre && item.genres && item.genres.length > 0) ||
+                     (showDuration && item.details?.duration) ? (
                       <div className="flex items-center gap-2 flex-wrap">
-                        {showRating && item.meta?.rating && (
+                        {showRating && item.details?.imdb_rating && (
                           <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                            {item.meta.rating}
+                            {item.details.imdb_rating}
                           </span>
                         )}
-                        {showGenre && item.meta?.genre && (
+                        {showGenre && item.genres && item.genres.length > 0 && (
                           <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
-                            {item.meta.genre}
+                            {item.genres[0]}
                           </span>
                         )}
-                        {showDuration && item.meta?.duration && (
+                        {showDuration && item.details?.duration && (
                           <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                            {item.meta.duration}
+                            {item.details.duration}
                           </span>
                         )}
                       </div>

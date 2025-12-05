@@ -1,5 +1,5 @@
 import type { BlockType } from '@blocks/shared/Block';
-import { generateUniqueId } from '@utils/id';
+import { generateUniqueId, generateUniqueInt } from '@utils/id';
 import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibraryItem, CarouselLibraryItem, TestimonialLibraryItem, SpacerLibraryItem, DividerLibraryItem, FeatureCalloutLibraryItem, FAQAccordionLibraryItem, ImageLibraryItem, VideoLibraryItem, TabsLibraryItem } from '@blocks/shared/Library';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
@@ -37,7 +37,7 @@ export function createBlock(type: BlockType['type']): BlockType {
           ...HeroLibraryItem.defaultProps,
           items: HeroLibraryItem.defaultProps.items?.map(item => ({
             ...item,
-            id: generateUniqueId(),
+            id: generateUniqueInt(),
           })) || []
         },
         style: {
@@ -78,7 +78,7 @@ export function createBlock(type: BlockType['type']): BlockType {
           ...CarouselLibraryItem.defaultProps,
           items: CarouselLibraryItem.defaultProps.items?.map(item => ({
             ...item,
-            id: generateUniqueId(),
+            id: generateUniqueInt(),
           })) || [],
         },
         style: {

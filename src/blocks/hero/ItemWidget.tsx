@@ -89,12 +89,12 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
         {/* Category Genres */}
         {item.showGenres !== false && item.genres && item.genres.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
-            {item.genres.map((genre) => (
+            {item.genres.map((genre, index) => (
               <span 
-                key={genre.id} 
+                key={index} 
                 className="px-2 py-1 bg-white/20 text-white text-xs font-medium rounded"
               >
-                {genre.label}
+                {genre}
               </span>
             ))}
           </div>
@@ -118,19 +118,13 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
         )}
         
         {/* Metadata Row */}
-        {item.showMeta !== false && item.metadata && Object.values(item.metadata).some(value => !!value) && (
+        {item.showMeta !== false && item.details && Object.values(item.details).some(value => !!value) && (
           <div className="flex flex-wrap items-center gap-x-3 text-sm text-white/80 mb-2">
-            {item.metadata.year && <span>{item.metadata.year}</span>}
-            {item.metadata.seasons && (
+            {item.details.release_year && <span>{item.details.release_year}</span>}
+            {item.details.language && (
               <>
-                <span className="w-1 h-1 bg-white/50 rounded-full"></span>
-                <span>{item.metadata.seasons} Seasons</span>
-              </>
-            )}
-            {item.metadata.language && (
-              <>
-                <span className="w-1 h-1 bg-white/50 rounded-full"></span>
-                <span>{item.metadata.language}</span>
+                {item.details.release_year && <span className="text-gray-400">•</span>}
+                <span>{item.details.language}</span>
               </>
             )}
           </div>

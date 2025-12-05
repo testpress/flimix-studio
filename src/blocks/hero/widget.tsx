@@ -37,7 +37,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   // Memoized current item index calculation
   const currentItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === block.id) {
-      const selectedIndex = props.items?.findIndex(item => item.id === selectedItemId);
+      const selectedIndex = props.items?.findIndex(item => item.id === parseInt(selectedItemId || '0', 10));
       if (selectedIndex !== -1) {
         return selectedIndex;
       }
@@ -50,7 +50,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     if (!props.items?.[newIndex]) return;
 
     if (isSelected) {
-      selectBlockItem(block.id, props.items[newIndex].id);
+      selectBlockItem(block.id, props.items[newIndex].id.toString());
     } else {
       setDisplayIndex(newIndex);
     }
@@ -92,7 +92,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   useEffect(() => {
     if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
       const timer = setTimeout(() => {
-        selectBlockItem(block.id, props.items[props.items.length - 1].id);
+        selectBlockItem(block.id, props.items[props.items.length - 1].id.toString());
       }, 100);
 
       return () => clearTimeout(timer);
@@ -136,7 +136,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       moveBlockItemLeft(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        selectBlockItem(block.id, movingItemId);
+        selectBlockItem(block.id, movingItemId.toString());
       }
     }
   };
@@ -147,14 +147,14 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       moveBlockItemRight(block.id, currentItemIndex);
       // Only update selection if block is selected
       if (isSelected) {
-        selectBlockItem(block.id, movingItemId);
+        selectBlockItem(block.id, movingItemId.toString());
       }
     }
   };
 
   // Handle item click for selection
-  const handleItemClick = (itemId: string) => {
-    selectBlockItem(block.id, itemId);
+  const handleItemClick = (itemId: number) => {
+    selectBlockItem(block.id, itemId.toString());
   };
 
   return (
@@ -184,7 +184,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   e.stopPropagation();
                   handleItemClick(props.items[currentItemIndex].id);
                 }}
-                className={`cursor-pointer transition-all duration-200 ${isItemSelected(block.id, props.items[currentItemIndex].id)
+                className={`cursor-pointer transition-all duration-200 ${isItemSelected(block.id, props.items[currentItemIndex].id.toString())
                     ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black'
                     : ''
                   }`}
@@ -200,7 +200,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                 />
 
                 {/* Selection indicator overlay */}
-                {isItemSelected(block.id, props.items[currentItemIndex].id) && (
+                {isItemSelected(block.id, props.items[currentItemIndex].id.toString()) && (
                   <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full z-10">
                     Selected for editing
                   </div>
@@ -214,7 +214,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   count={props.items.length}
                   onMoveLeft={currentItemIndex > 0 ? handleMoveLeft : undefined}
                   onMoveRight={currentItemIndex < props.items.length - 1 ? handleMoveRight : undefined}
-                  onRemove={() => removeBlockItem(block.id, props.items[currentItemIndex].id)}
+                  onRemove={() => removeBlockItem(block.id, props.items[currentItemIndex].id.toString())}
                   showMoveControls={props.items.length > 1}
                   showRemoveControl={true}
                   className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
@@ -289,7 +289,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                       }
                     }}
                     className={`w-3 h-3 rounded-full transition-all duration-200 ${idx === currentItemIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/80'
-                      } ${isItemSelected(block.id, item.id) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
+                      } ${isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-black' : ''
                       }`}
                     aria-label={`Go to slide ${idx + 1}`}
                     title={`Select slide ${idx + 1} for editing`}

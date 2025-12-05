@@ -7,16 +7,24 @@ export interface HeroBlock extends Omit<Block, 'props'> {
 }
 
 export interface HeroItem {
-  id: string;
-  content_id: string;
+  id: number;
+  content_id: number;
   titleType?: 'text' | 'image';
   title?: string;
   titleImage?: string;
   subtitle?: string;
   backgroundImage?: string;
   videoBackground?: string;
-  metadata?: HeroMetadata;
-  genres?: HeroGenre[];
+  details?: {
+    duration?: string | number;
+    release_year?: number | string;
+    imdb_rating?: string | number;
+    language?: string;
+    videoBackground?: string;
+    titleImage?: string;
+    hashtag?: string;
+  };
+  genres?: string[];
   primaryCTA?: HeroCTABtn;
   secondaryCTA?: HeroCTABtn;
   tertiaryCTA?: HeroCTABtn;
@@ -49,17 +57,6 @@ export interface HeroCTABtn {
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   iconThickness?: 'thin' | 'normal' | 'thick';
   size?: 'small' | 'medium' | 'large'; // Button size option
-}
-
-export interface HeroMetadata {
-  year?: string;
-  seasons?: string;
-  language?: string;
-}
-
-export interface HeroGenre {
-  id: string;
-  label: string;
 }
 
 export interface HeroHashtag {

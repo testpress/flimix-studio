@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { BlockFormProps } from '@blocks/shared/FormTypes';
 import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
-import { generateUniqueId } from '@utils/id';
 import CTAsTab from './form-components/CTAsTab';
 import CarouselControls from './form-components/CarouselControls';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 import { contentApi, type Content } from '@services/api/content';
+import { generateUniqueInt } from '@utils/id';
 import { AlertCircle } from 'lucide-react';
 import { getHashtagSizeClass } from './CTAButton';
 import { useSelection } from '@context/SelectionContext';
@@ -21,7 +21,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   // Memoized editing item index calculation
   const editingItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === heroBlock.id) {
-      const selectedIndex = heroBlock.props.items?.findIndex(item => item.id === selectedItemId);
+      const selectedIndex = heroBlock.props.items?.findIndex(item => item.id === parseInt(selectedItemId, 10));
       if (selectedIndex !== -1) {
         return selectedIndex;
       }
@@ -30,8 +30,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   }, [selectedItemId, selectedItemBlockId, heroBlock.id, heroBlock.props.items]);
   
   const currentItem = heroBlock.props.items?.[editingItemIndex] || {
-    id: generateUniqueId(),
-    content_id: generateUniqueId(),
+    id: generateUniqueInt(),
+    content_id: 0,  
     title: '',
     subtitle: '',
     backgroundImage: ''
@@ -39,8 +39,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   
   // Helper function to create a default hero item
   const createDefaultHeroItem = () => ({
-    id: generateUniqueId(),
-    content_id: generateUniqueId(),
+    id: generateUniqueInt(),
+    content_id: 0,
     titleType: 'text' as const,
     title: '',
     titleImage: '',
@@ -98,21 +98,24 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   
   // Content picker functionality
   const handleSelectContent = (content: Content) => {
-    // Map the content to a hero item
+    const numericId = typeof content.id === 'number' ? content.id : parseInt(content.id, 10);
+    
     const heroItem = {
-      id: content.id.toString(),
-      content_id: content.id.toString(),
+      id: numericId,
+      content_id: numericId,
       title: content.title,
       subtitle: content.subtitle,
       backgroundImage: content.poster || content.cover || content.thumbnail || 'https://placehold.co/1920x1080/cccccc/666666?text=No+Image',
       videoBackground: content.details?.videoBackground,
       titleType: content.details?.titleImage ? 'image' as const : 'text' as const,
       titleImage: content.details?.titleImage,
-      metadata: {
-        year: content.details?.release_year?.toString(),
+      details: {
+        release_year: content.details?.release_year,
         language: content.details?.language,
+        duration: content.details?.duration,
+        imdb_rating: content.details?.imdb_rating,
       },
-      genres: content.genres && content.genres.length > 0 ? content.genres.map(genre => ({ id: generateUniqueId(), label: genre })) : [],
+      genres: content.genres || [],
       hashtag: content.details?.hashtag ? { text: content.details.hashtag, color: '#dc2626', size: 'medium' as const } : undefined,
       showTitle: true,
       showSubtitle: true,
@@ -359,9 +362,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Metadata</label>
                   <div className="p-3 bg-gray-100 rounded">
                     <div className="text-sm">
-                      {currentItem.metadata?.year && <span className="mr-2">Year: {currentItem.metadata.year}</span>}
-                      {currentItem.metadata?.language && <span>Language: {currentItem.metadata.language}</span>}
-                      {!currentItem.metadata?.year && !currentItem.metadata?.language && <span>No metadata</span>}
+                      {currentItem.details?.release_year && <span className="mr-2">Year: {currentItem.details.release_year}</span>}
+                      {currentItem.details?.language && <span>Language: {currentItem.details.language}</span>}
+                      {!currentItem.details?.release_year && !currentItem.details?.language && <span>No metadata</span>}
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">

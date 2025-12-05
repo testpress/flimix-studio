@@ -53,16 +53,20 @@ export interface PosterGridBlockProps {
 
 // Individual poster item interface
 export interface PosterGridItem {
-  id: string;
-  content_id: string;
-  image: string;
+  id: number;
+  content_id: number;
   title: string;
   subtitle?: string;
-  link?: string;
-  progress?: number;
-  meta?: {
-    rating?: string;
-    genre?: string;
-    duration?: string;
+  type?: string;
+  status?: string;
+  thumbnail?: string | null;
+  poster?: string | null;
+  cover?: string | null;
+  genres?: string[];
+  details?: {
+    duration?: string | number;
+    release_year?: number | string;
+    imdb_rating?: string | number;
   };
+  progress?: number;
 } 
