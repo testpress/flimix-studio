@@ -24,7 +24,7 @@
             "titleType": "image",
             "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/56699a1c-41e7-4b44-a624-76a2735f4a41._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "After the events of Jurassic World Dominion, the planet's ecology has proven largely inhospitable to dinosaurs.",
-            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/da44ae5a-9d30-4f50-af31-4b1e364c624f._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/da44ae5a-9d30-4f50-af31-4b1e364c624f._UR3840,1440_SX2160_FMjpg_.jpeg",
             "videoBackground": "",
             "genres": [
               "Action",
@@ -77,7 +77,7 @@
             "titleType": "image",
             "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/7b4b65b1-8b37-4fb1-b0f4-a36f065b6cab._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "A fearless warrior, Kubera, embarks on a quest to reclaim his lost kingdom and avenge his father's death.",
-            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/d0fe3280-b79d-4d54-9b0a-1b946ee47704._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/d0fe3280-b79d-4d54-9b0a-1b946ee47704._UR3840,1440_SX2160_FMjpg_.jpeg",
             "videoBackground": "",
             "genres": [
               "Action",
@@ -130,7 +130,7 @@
             "titleType": "image",
             "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/b20bace5-9d55-47c3-9498-3d38709924bb._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "Our lives are the sum of our choices. Tom Cruise is Ethan Hunt in Mission: Impossible – The Final Reckoning.",
-            "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/2c32baaf-e7d6-4171-817d-0659bb79a944._UR3840,1440_SX2160_FMjpg_.jpeg",
+            "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/2c32baaf-e7d6-4171-817d-0659bb79a944._UR3840,1440_SX2160_FMjpg_.jpeg",
             "videoBackground": "",
             "genres": [
               "Action",

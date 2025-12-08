@@ -50,7 +50,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
 
   const aspectRatioClass = getAspectRatioClass(aspectRatio);
 
-
+  const backgroundImageSrc = item.poster || item.cover || item.thumbnail;
 
   return (
     <div 
@@ -62,7 +62,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
         <div className="absolute inset-0 w-full h-full bg-black">
                       <VideoPlayer 
               src={item.videoBackground}
-              poster={item.backgroundImage}
+              poster={backgroundImageSrc || undefined}
               autoplay={autoplay}
               muted={true}
               loop={true}
@@ -72,9 +72,9 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
       )}
       
       {/* Image Background (if no video) */}
-      {!item.videoBackground && item.backgroundImage && (
+      {!item.videoBackground && backgroundImageSrc && (
         <img 
-          src={item.backgroundImage} 
+          src={backgroundImageSrc} 
           alt={item.title || 'Hero background'}
           className="absolute inset-0 w-full h-full object-cover"
         />

@@ -13,7 +13,6 @@ export interface HeroItem {
   title?: string;
   titleImage?: string;
   subtitle?: string;
-  backgroundImage?: string;
   videoBackground?: string;
   details?: {
     duration?: string | number;
@@ -25,6 +24,9 @@ export interface HeroItem {
     hashtag?: string;
   };
   genres?: string[];
+  thumbnail?: string | null;
+  poster?: string | null;
+  cover?: string | null;
   primaryCTA?: HeroCTABtn;
   secondaryCTA?: HeroCTABtn;
   tertiaryCTA?: HeroCTABtn;
