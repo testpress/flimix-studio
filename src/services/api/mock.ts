@@ -75,39 +75,4 @@ export const mockApi = {
       }
     }));
   },
-  
-  /**
-   * Get movie by ID
-   * @param id Movie ID
-   * @param signal AbortSignal for cancellation
-   * @returns Promise with content
-   */
-  async getById(
-    id: string,
-    signal?: AbortSignal
-  ): Promise<Content> {
-    const url = `${MOVIE_API_BASE}/movies/${id}`;
-    const m = await getJSON<MockMovie>(url, signal);
-    
-    return {
-      id: m.id,
-      title: m.title,
-      type: 'Movie',
-      status: 'Published',
-      subtitle: m.subtitle || '',
-      thumbnail: m.image || null,
-      poster: m.image || null,
-      cover: m.image || null,
-      genres: m.badges?.map(b => b.label) || [],
-      details: {
-        duration: m.duration,
-        release_year: m.year,
-        imdb_rating: m.rating,
-        videoBackground: m.videoBackground,
-        titleImage: m.titleImage,
-        hashtag: m.hashtag,
-        language: m.language
-      }
-    };
-  }
 };
