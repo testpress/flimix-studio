@@ -45,7 +45,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     title: '',
     titleImage: '',
     subtitle: '',
-    backgroundImage: '',
+    thumbnail: null,
+    poster: null,
+    cover: null,
     hashtag: undefined,
     showTitle: true,
     showSubtitle: true,
@@ -105,7 +107,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       content_id: numericId,
       title: content.title,
       subtitle: content.subtitle,
-      backgroundImage: content.poster || content.cover || content.thumbnail || 'https://placehold.co/1920x1080/cccccc/666666?text=No+Image',
+      thumbnail: content.thumbnail || null,
+      poster: content.poster || null,
+      cover: content.cover || null,
       videoBackground: content.details?.videoBackground,
       titleType: content.details?.titleImage ? 'image' as const : 'text' as const,
       titleImage: content.details?.titleImage,
@@ -336,10 +340,10 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                   <div className="p-3 bg-gray-100 rounded">
                     {currentItem.videoBackground ? (
                       <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
-                    ) : currentItem.backgroundImage ? (
+                    ) : (currentItem.poster || currentItem.cover || currentItem.thumbnail) ? (
                       <div className="aspect-video bg-gray-200 relative overflow-hidden">
                         <img 
-                          src={currentItem.backgroundImage} 
+                          src={currentItem.poster || currentItem.cover || currentItem.thumbnail || ''} 
                           alt="Background" 
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -352,9 +356,6 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                       <div className="text-sm">No background</div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Background is automatically populated from the Content API
-                  </p>
                 </div>
                 
                 {/* Metadata Preview */}
