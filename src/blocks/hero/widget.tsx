@@ -90,16 +90,23 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, changeSlide]);
 
   useEffect(() => {
-    if (previousItemsLengthRef.current > 0 && props.items && props.items.length > previousItemsLengthRef.current) {
+    const isNewItemAdded = previousItemsLengthRef.current > 0 && 
+                           props.items && 
+                           props.items.length > previousItemsLengthRef.current;
+    
+    const currentLength = props.items?.length || 0;
+    
+    if (isSelected && isNewItemAdded) {
       const timer = setTimeout(() => {
         selectBlockItem(block.id, props.items[props.items.length - 1].id.toString());
       }, 100);
-
+      
+      previousItemsLengthRef.current = currentLength;
       return () => clearTimeout(timer);
     }
 
-    previousItemsLengthRef.current = props.items?.length || 0;
-  }, [props.items, selectBlockItem, block.id]);
+    previousItemsLengthRef.current = currentLength;
+  }, [props.items, selectBlockItem, block.id, isSelected]);
   // Handle carousel navigation
   const nextSlide = () => {
     if (props.items && props.items.length > 1) {

@@ -19,22 +19,16 @@
         "scrollSpeed": 3000,
         "items": [
           {
-            "id": "hero-item-netflix-1",
+            "id": 1,
             "title": "THE CLIENT",
             "titleType": "image",
             "titleImage": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABTK8CGD-smG7qZBEEQcNw734VCF2OONsB_2I8aJBZaAUXZ-ed5r_E3leBm4cX_efOLYBGDMx1bgbcIA8JDUolGXhXFAXTMMRfpLLEEy7CRqP.webp?r=397",
             "backgroundImage": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABU0pgEY5kjEHi8lVRi9Mmm6oDAVZLAPS3QXDLSUC6gs6chTusE6uq11ov-C3NQqCg5St6yUiH1wXeYaFA2Tg336-a0kJZOLW-nKf.webp?r=d55",
             "videoBackground": "",
-            "metadata": {
-              "year": "1994",
-              "language": "English",
-              "rating": "U/A 16+"
-            },
-            "badges": [
-              {
-                "id": "badge-netflix-1",
-                "label": "US Crime TV Dramas"
-              }
+            "genres": [
+              "Action",
+              "Adventure",
+              "Crime"
             ],
             "primaryCTA": {
               "label": "Play",

@@ -1,5 +1,6 @@
 import { getJSON } from '@utils/http';
 import type { Content, ContentSearchParams } from './content';
+import { generateUniqueInt } from '@/utils/id';
 
 // API base URL
 const MOVIE_API_BASE = "https://68b005943b8db1ae9c026d70.mockapi.io/api/studio/";
@@ -53,7 +54,7 @@ export const mockApi = {
 
     // Map MockMovie to Content
     return mockData.map(m => ({
-      id: m.id,
+      id: generateUniqueInt(),
       title: m.title,
       type: 'Movie',
       status: 'Published',
