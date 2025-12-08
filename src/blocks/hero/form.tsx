@@ -37,6 +37,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     backgroundImage: ''
   };
   
+  const currentItemImage = currentItem.poster || currentItem.cover || currentItem.thumbnail;
+  
   // Helper function to create a default hero item
   const createDefaultHeroItem = () => ({
     id: generateUniqueInt(),
@@ -340,10 +342,10 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                   <div className="p-3 bg-gray-100 rounded">
                     {currentItem.videoBackground ? (
                       <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
-                    ) : (currentItem.poster || currentItem.cover || currentItem.thumbnail) ? (
+                    ) : currentItemImage ? (
                       <div className="aspect-video bg-gray-200 relative overflow-hidden">
                         <img 
-                          src={currentItem.poster || currentItem.cover || currentItem.thumbnail || ''} 
+                          src={currentItemImage} 
                           alt="Background" 
                           className="w-full h-full object-cover"
                           onError={(e) => {
