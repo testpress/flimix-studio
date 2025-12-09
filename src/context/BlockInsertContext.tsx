@@ -22,7 +22,7 @@ interface BlockInsertContextType {
   insertBlockIntoTabs: (blockType: BlockType['type'], tabsBlockId: string, options?: { tabId?: string, position?: 'above' | 'below', referenceBlockId?: string }) => void;
 }
 
-const BlockInsertContext = createContext<BlockInsertContextType | undefined>(undefined);
+export const BlockInsertContext = createContext<BlockInsertContextType | undefined>(undefined);
 
 // Helper: Insert at index
 const insertAtIndex = (blocks: BlockType[] | undefined, newBlock: BlockType, index?: number): BlockType[] => {

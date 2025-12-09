@@ -1,6 +1,8 @@
 import { createRoot, type Root } from 'react-dom/client'
 import './index.css'
+import { mountPreview, unmountPreview } from './previewEntry'
 import PageBuilder, { type PageBuilderProps } from './PageBuilder'
+import type { PagePreviewProps } from './PagePreview'
 
 // TypeScript declaration for global FlimixStudio 
 declare global {
@@ -8,6 +10,8 @@ declare global {
     FlimixStudio: {
       mount: (el: HTMLElement, props: PageBuilderProps) => Root;
       unmount: () => void;
+      mountPreview: (el: HTMLElement, props: PagePreviewProps) => Root;
+      unmountPreview: () => void;
       onReady: (callback: () => void) => void;
     };
   }
@@ -62,6 +66,8 @@ if (typeof window !== 'undefined') {
   window.FlimixStudio = {
     mount: mountStudio,
     unmount: unmountStudio,
+    mountPreview: mountPreview,
+    unmountPreview: unmountPreview,
     onReady: onReady
   }
   
