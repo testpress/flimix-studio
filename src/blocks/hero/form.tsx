@@ -191,24 +191,24 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           getItemId={(content) => content.id}
           renderItem={(content, onSelect) => (
             <div 
-              className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-center gap-3"
+              className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
             >
               {(content.thumbnail || content.poster || content.cover) && (
                 <img 
                   src={content.thumbnail || content.poster || content.cover || ''} 
                   alt={content.title}
-                  className="w-12 h-8 object-cover rounded"
+                  className="w-12 h-8 object-cover rounded flex-shrink-0"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                   }}
                 />
               )}
-              <div>
-                <div className="font-medium text-sm">{content.title}</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-sm line-clamp-1">{content.title}</div>
                 {content.subtitle && (
-                  <div className="text-xs text-gray-500">{content.subtitle}</div>
+                  <div className="text-xs text-gray-500 line-clamp-2">{content.subtitle}</div>
                 )}
               </div>
             </div>

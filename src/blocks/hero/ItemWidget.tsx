@@ -142,7 +142,7 @@ const ItemWidget: React.FC<ItemWidgetProps> = ({
           )}
         {/* Subtitle */}
         {item.showSubtitle !== false && item.subtitle && (
-          <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90`} style={textColorStyle}>
+          <p className={`text-base md:text-lg mb-4 max-w-xl ${textColorClass} opacity-90 line-clamp-3`} style={textColorStyle}>
             {item.subtitle}
           </p>
         )}

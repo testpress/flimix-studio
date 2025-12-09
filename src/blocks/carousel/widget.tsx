@@ -558,7 +558,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 
                             {/* Subtitle - only render if exists and global showSubtitle is true */}
                             {props.showSubtitle && item.subtitle && (
-                              <p className={`text-xs ${textColorClass} opacity-80`} style={textColorStyle}>
+                              <p className={`text-xs ${textColorClass} opacity-80 line-clamp-2`} style={textColorStyle}>
                                 {item.subtitle}
                               </p>
                             )}
