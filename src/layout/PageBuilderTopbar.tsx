@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Undo, Redo, Plus, X, Layers } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { usePanel } from '@context/PanelContext';
@@ -13,6 +13,17 @@ const PageBuilderTopbar = ({ onSavePage }: PageBuilderTopbarProps) => {
   const { undo, canUndo, redo, canRedo, pageSchema } = useHistory();
   const { isLibraryOpen, isLayoutOpen, toggleLibrary, toggleLayout } = usePanel();
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+
+  // Disable body scrolling when preview modal is open
+  useEffect(() => {
+    if (isPreviewMode) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isPreviewMode]);
 
   const handleSave = async () => {
     if (onSavePage) {
