@@ -19,9 +19,10 @@ interface SelectionContextType {
   setActiveTabId: (id: string | null) => void;
   selectBlockItem: (blockId: string, itemId: string) => void;
   isItemSelected: (blockId: string, itemId: string) => boolean;
+  isReadOnly?: boolean;
 }
 
-const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
+export const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
 
 interface SelectionProviderProps {
   children: ReactNode;
@@ -125,7 +126,8 @@ export const SelectionProvider: React.FC<SelectionProviderProps> = ({ children }
       activeTabId,
       setActiveTabId,
       selectBlockItem,
-      isItemSelected
+      isItemSelected,
+      isReadOnly: false
     }}>
       {children}
     </SelectionContext.Provider>

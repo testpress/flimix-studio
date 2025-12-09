@@ -13,6 +13,7 @@ export interface ItemsControlProps {
   showMoveControls?: boolean;
   showRemoveControl?: boolean;
 }
+import { useSelection } from '@context/SelectionContext';
 
 const ItemsControl: React.FC<ItemsControlProps> = ({
   index,
@@ -26,6 +27,13 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
   showMoveControls = true,
   showRemoveControl = true,
 }) => {
+  
+  const { isReadOnly } = useSelection();
+
+  if (isReadOnly) {
+    return null;
+  }
+  
   // Determine which move controls to show based on provided functions
   const hasHorizontalMoves = onMoveLeft || onMoveRight;
   const hasVerticalMoves = onMoveUp || onMoveDown;

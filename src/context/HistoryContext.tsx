@@ -12,7 +12,7 @@ interface HistoryContextType {
   recordState: (currentBlocks: BlockType[]) => void;
 }
 
-const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
+export const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
 
 interface HistoryProviderProps {
   children: ReactNode;

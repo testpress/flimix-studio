@@ -43,7 +43,7 @@ interface BlockEditingContextType {
   modifyRowColumnCount: (direction: 'increase' | 'decrease') => void;
 }
 
-const BlockEditingContext = createContext<BlockEditingContextType | undefined>(undefined);
+export const BlockEditingContext = createContext<BlockEditingContextType | undefined>(undefined);
 
 interface BlockEditingProviderProps {
   children: ReactNode;

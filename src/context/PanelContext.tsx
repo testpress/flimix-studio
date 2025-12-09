@@ -20,7 +20,7 @@ interface PanelContextType {
   toggleSettings: () => void;
 }
 
-const PanelContext = createContext<PanelContextType | undefined>(undefined);
+export const PanelContext = createContext<PanelContextType | undefined>(undefined);
 
 export const PanelProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
