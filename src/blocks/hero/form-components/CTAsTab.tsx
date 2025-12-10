@@ -136,8 +136,9 @@ const CTAsTab: React.FC<CTAsTabProps> = ({
                 type="text"
                 value={currentItem.primaryCTA?.link ?? ''}
                 onChange={(e) => handlePrimaryCTAChange('link', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className={`w-full p-2 border border-gray-300 rounded ${currentItem.content_id ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
                 placeholder="Enter CTA link..."
+                disabled={!!currentItem.content_id}
               />
           </div>
           

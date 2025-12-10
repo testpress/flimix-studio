@@ -24,6 +24,7 @@ export interface CarouselItem {
   content_id: number;
   title: string;
   subtitle?: string;
+  url?: string;
   type?: string;
   status?: string;
   thumbnail?: string | null;

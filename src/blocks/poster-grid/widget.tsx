@@ -1,7 +1,7 @@
 import React from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { PosterGridBlock } from './schema';
+import type { PosterGridBlock, PosterGridItem } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -23,7 +23,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   const { props, style } = block;
   const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showGenre, showDuration } = props;
   const { gridGap = 'md' } = style || {};
-  const { selectBlockItem, isItemSelected } = useSelection();
+  const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
   
   const paddingClass = style?.padding === 'lg' ? 'p-8' : 
                       style?.padding === 'md' ? 'p-6' : 
@@ -134,8 +134,12 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   };
 
 
-  const handleItemClick = (itemId: number) => {
-    selectBlockItem(block.id, itemId.toString());
+  const handleItemClick = (item: PosterGridItem) => {
+    if (isReadOnly && item.url) {
+      window.location.href = item.url;
+      return;
+    }
+    selectBlockItem(block.id, item.id.toString());
   };
 
   if (!items || items.length === 0) {
@@ -245,7 +249,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
               <a
                 onClick={(e) => {
                   e.preventDefault();
-                  handleItemClick(item.id);
+                  handleItemClick(item);
                 }}
                 className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
                   isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''

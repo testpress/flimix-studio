@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
-import type { CarouselBlock, ItemSize } from './schema';
+import type { CarouselBlock, CarouselItem, ItemSize } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import ItemsControl from '@blocks/shared/ItemsControl';
@@ -24,7 +24,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
 }) => {
   const { props, style } = block;
   const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
-  const { selectBlockItem, isItemSelected } = useSelection();
+  const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
   const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -347,8 +347,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
 
-  const handleItemClick = (itemId: number) => {
-    selectBlockItem(block.id, itemId.toString());
+  const handleItemClick = (item: CarouselItem) => {
+    if (isReadOnly && item.url) {
+      window.location.href = item.url;
+      return;
+    }
+    selectBlockItem(block.id, item.id.toString());
   };
 
   // Handle manual scroll to pause autoplay
@@ -519,7 +523,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                       <a
                         onClick={(e) => {
                           e.preventDefault();
-                          handleItemClick(item.id);
+                          handleItemClick(item);
                         }}
                         className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
                   isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
