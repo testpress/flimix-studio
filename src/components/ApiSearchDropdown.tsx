@@ -151,6 +151,10 @@ export function ApiSearchDropdown<T>({
   useEffect(() => { getItemIdRef.current = getItemId; }, [getItemId]);
   const stableGetItemId = React.useCallback((item: T) => getItemIdRef.current(item), []);
 
+  const retryLoadMore = React.useCallback(() => {
+    handleDropdownScroll({ currentTarget: { scrollTop: 0, scrollHeight: 0, clientHeight: 0 } } as React.UIEvent<HTMLDivElement>);
+  }, [handleDropdownScroll]);
+
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       {label && (
@@ -203,7 +207,7 @@ export function ApiSearchDropdown<T>({
           onScroll={handleDropdownScroll}
           onSelect={handleSelectItem}
           setLoadMoreError={setLoadMoreError}
-          retryLoadMore={() => handleDropdownScroll({ currentTarget: { scrollTop: 0, scrollHeight: 0, clientHeight: 0 } } as React.UIEvent<HTMLDivElement>)}
+          retryLoadMore={retryLoadMore}
         />
       )}
     </div>
