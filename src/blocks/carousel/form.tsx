@@ -195,7 +195,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           placeholder="Search for Content..."
           onSelect={handleSelectContent}
           getItemId={(content) => content.id}
-          renderItem={(content, onSelect) => (
+          renderItem={React.useCallback((content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
@@ -218,7 +218,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                 )}
               </div>
             </div>
-          )}
+          ), [])}
           noResultsMessage="No Content found. Try a different search."
         />
       </div>

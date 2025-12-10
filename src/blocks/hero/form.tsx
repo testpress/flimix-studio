@@ -189,7 +189,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           placeholder="Search for Content..."
           onSelect={handleSelectContent}
           getItemId={(content) => content.id}
-          renderItem={(content, onSelect) => (
+          renderItem={React.useCallback((content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
@@ -212,7 +212,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 )}
               </div>
             </div>
-          )}
+          ), [])}
           noResultsMessage="No Content found. Try a different search."
         />
       </div>

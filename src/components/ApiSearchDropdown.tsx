@@ -54,8 +54,8 @@ export function ApiSearchDropdown<T>({
   // Debounced query
   const debouncedQuery = useDebouncedValue(query, debounceDelay);
 
-  // Handle outside clicks
-  useOnClickOutside(dropdownRef, () => setIsOpen(false));
+  const handleOutsideClick = React.useCallback(() => setIsOpen(false), []);
+  useOnClickOutside(dropdownRef, handleOutsideClick);
 
   // Fetch items when debounced query changes
   useEffect(() => {
@@ -64,7 +64,6 @@ export function ApiSearchDropdown<T>({
     // Reset pagination when query changes
     setCurrentOffset(0);
     setHasMore(true);
-    setItems([]); // Clear previous items
     setLoadMoreError(null);
 
     // Cancel previous request if exists
@@ -109,8 +108,14 @@ export function ApiSearchDropdown<T>({
     };
   }, [debouncedQuery, isOpen, searchFunction, PAGE_SIZE]);
 
+  const handleSelectItem = React.useCallback((item: T) => {
+    onSelect(item);
+    setIsOpen(false);
+    setQuery('');
+  }, [onSelect]);
+
   // Handle dropdown scroll for infinite scrolling
-  const handleDropdownScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+  const handleDropdownScroll = React.useCallback(async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
 
     // If scrolled to bottom (with scroll tolerance)
@@ -139,14 +144,12 @@ export function ApiSearchDropdown<T>({
         }
       }
     }
-  };
+  }, [currentOffset, debouncedQuery, hasMore, isLoadingMore, loading, searchFunction, PAGE_SIZE]);
 
-  // Handle item selection
-  const handleSelectItem = (item: T) => {
-    onSelect(item);
-    setIsOpen(false);
-    setQuery('');
-  };
+
+  const getItemIdRef = useRef(getItemId);
+  useEffect(() => { getItemIdRef.current = getItemId; }, [getItemId]);
+  const stableGetItemId = React.useCallback((item: T) => getItemIdRef.current(item), []);
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
@@ -165,7 +168,7 @@ export function ApiSearchDropdown<T>({
           onFocus={() => setIsOpen(true)}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+          className={`w-full pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
         />
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
           <Search size={16} />
@@ -186,66 +189,117 @@ export function ApiSearchDropdown<T>({
       </div>
 
       {isOpen && (
-        <div
-          className="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-72 overflow-y-auto"
+        <DropdownList
+          items={items}
+          loading={loading}
+          error={error}
+          hasMore={hasMore}
+          isLoadingMore={isLoadingMore}
+          loadMoreError={loadMoreError}
+          debouncedQuery={debouncedQuery}
+          noResultsMessage={noResultsMessage}
+          renderItem={renderItem}
+          getItemId={stableGetItemId}
           onScroll={handleDropdownScroll}
-        >
-          {loading && items.length === 0 ? (
-            <div className="p-4 text-center text-sm text-gray-500">Loading...</div>
-          ) : error ? (
-            <div className="p-4 text-center text-sm text-red-500">{error}</div>
-          ) : items.length === 0 ? (
-            <div className="p-4 text-center text-sm text-gray-500">
-              {debouncedQuery ? noResultsMessage : 'Start typing to search...'}
-            </div>
-          ) : (
-            <>
-              <ul className="py-1">
-                {items.map((item) => (
-                  <li key={getItemId(item)}>
-                    {renderItem(item, handleSelectItem)}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Loading indicator for more items */}
-              {isLoadingMore && (
-                <div className="p-3 text-center text-sm text-gray-500 border-t">
-                  Loading more...
-                </div>
-              )}
-
-              {/* Load more error message */}
-              {loadMoreError && (
-                <div className="p-3 text-center text-sm text-red-500 border-t">
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <span>{loadMoreError}</span>
-                    <button
-                      onClick={() => {
-                        setLoadMoreError(null);
-                        // Retry loading more items
-                        if (!isLoadingMore && hasMore && !loading) {
-                          handleDropdownScroll({ currentTarget: { scrollTop: 0, scrollHeight: 0, clientHeight: 0 } } as React.UIEvent<HTMLDivElement>);
-                        }
-                      }}
-                      className="px-3 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded border border-red-300 transition-colors"
-                    >
-                      Retry
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* End of results indicator */}
-              {!hasMore && items.length > 0 && !loadMoreError && (
-                <div className="p-3 text-center text-xs text-gray-400 border-t">
-                  End of results
-                </div>
-              )}
-            </>
-          )}
-        </div>
+          onSelect={handleSelectItem}
+          setLoadMoreError={setLoadMoreError}
+          retryLoadMore={() => handleDropdownScroll({ currentTarget: { scrollTop: 0, scrollHeight: 0, clientHeight: 0 } } as React.UIEvent<HTMLDivElement>)}
+        />
       )}
     </div>
   );
 }
+
+interface DropdownListProps<T> {
+  items: T[];
+  loading: boolean;
+  error: string | null;
+  hasMore: boolean;
+  isLoadingMore: boolean;
+  loadMoreError: string | null;
+  debouncedQuery: string;
+  noResultsMessage: string;
+  renderItem: (item: T, onSelect: (item: T) => void) => React.ReactNode;
+  getItemId: (item: T) => string | number;
+  onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
+  onSelect: (item: T) => void;
+  setLoadMoreError: (error: string | null) => void;
+  retryLoadMore: () => void;
+}
+
+const DropdownList = React.memo(<T,>({
+  items,
+  loading,
+  error,
+  hasMore,
+  isLoadingMore,
+  loadMoreError,
+  debouncedQuery,
+  noResultsMessage,
+  renderItem,
+  getItemId,
+  onScroll,
+  onSelect,
+  setLoadMoreError,
+  retryLoadMore
+}: DropdownListProps<T>) => {
+  return (
+    <div
+      className="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-72 overflow-y-auto"
+      onScroll={onScroll}
+    >
+      {/* Show full loading state ONLY if we have no items */}
+      {loading && items.length === 0 ? (
+        <div className="p-4 text-center text-sm text-gray-500">Loading...</div>
+      ) : error ? (
+        <div className="p-4 text-center text-sm text-red-500">{error}</div>
+      ) : items.length === 0 ? (
+        <div className="p-4 text-center text-sm text-gray-500">
+          {debouncedQuery ? noResultsMessage : 'Start typing to search...'}
+        </div>
+      ) : (
+        <>
+          <ul className="py-1">
+            {items.map((item) => (
+              <li key={getItemId(item)}>
+                {renderItem(item, onSelect)}
+              </li>
+            ))}
+          </ul>
+
+          {/* Loading indicator for more items */}
+          {isLoadingMore && (
+            <div className="p-3 text-center text-sm text-gray-500 border-t">
+              Loading more...
+            </div>
+          )}
+
+          {/* Load more error message */}
+          {loadMoreError && (
+            <div className="p-3 text-center text-sm text-red-500 border-t">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <span>{loadMoreError}</span>
+                <button
+                  onClick={() => {
+                    setLoadMoreError(null);
+                    retryLoadMore();
+                  }}
+                  className="px-3 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded border border-red-300 transition-colors"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* End of results indicator */}
+          {!hasMore && items.length > 0 && !loadMoreError && (
+            <div className="p-3 text-center text-xs text-gray-400 border-t">
+              End of results
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}) as <T>(props: DropdownListProps<T>) => React.ReactElement;

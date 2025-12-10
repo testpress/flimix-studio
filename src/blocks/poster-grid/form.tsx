@@ -290,7 +290,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           placeholder="Search for Content..."
           onSelect={(content: Content) => handleSelectContent(content)}
           getItemId={(content) => content.id}
-          renderItem={(content, onSelect) => (
+          renderItem={React.useCallback((content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
@@ -313,7 +313,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
                 )}
               </div>
             </div>
-          )}
+          ), [])}
           noResultsMessage="No Content found. Try a different search."
         />
       </div>
