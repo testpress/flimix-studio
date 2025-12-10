@@ -49,6 +49,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       content_id: numericId,
       title: content.title,
       subtitle: content.subtitle,
+      url: content.url || undefined,
       type: content.type,
       status: content.status,
       thumbnail: content.thumbnail || null,

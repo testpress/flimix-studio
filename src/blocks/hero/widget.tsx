@@ -160,8 +160,8 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
   };
 
   // Handle item click for selection
-  const handleItemClick = (itemId: number) => {
-    selectBlockItem(block.id, itemId.toString());
+  const handleItemClick = (item: HeroBlock['props']['items'][0]) => {
+    selectBlockItem(block.id, item.id.toString());
   };
 
   return (
@@ -189,7 +189,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleItemClick(props.items[currentItemIndex].id);
+                  handleItemClick(props.items[currentItemIndex]);
                 }}
                 className={`cursor-pointer transition-all duration-200 ${isItemSelected(block.id, props.items[currentItemIndex].id.toString())
                     ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black'

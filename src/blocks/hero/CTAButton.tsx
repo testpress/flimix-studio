@@ -1,6 +1,7 @@
 import React from 'react';
 import type { HeroCTABtn } from './schema';
 import { ButtonIcon } from './form-components/ButtonIcons';
+import { useSelection } from '@context/SelectionContext';
 
 interface CTAButtonProps {
   cta: HeroCTABtn;
@@ -78,59 +79,78 @@ const CTAButton: React.FC<CTAButtonProps> = ({
   defaultBackgroundColor, 
   defaultTextColor,  
 }) => {
+  const { isReadOnly } = useSelection();
   const isCircle = cta.borderRadius === 'full';
   const buttonSizeClass = getButtonSizeClass(cta.size, isCircle);
   const variantClass = getButtonVariantClass(cta.variant);
   const borderRadiusClass = getBorderRadiusClass(cta.borderRadius);
 
+  const buttonContent = isCircle ? (
+    // Circle button: only show icon, no text
+    cta.icon && cta.icon !== 'None' ? (
+      <ButtonIcon 
+        icon={cta.icon} 
+        size={getIconSize(cta.size)}
+        thickness={cta.iconThickness || 'normal'} 
+      />
+    ) : (
+      // If no icon, show first letter of label
+      <span className={`font-bold ${getCircleFallbackTextSizeClass(cta.size)}`}>
+        {cta.label.split('\n')[0].charAt(0).toUpperCase()}
+      </span>
+    )
+  ) : (
+    // Regular button: show icon + text
+    <>
+      {/* Icon on the left */}
+      {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'left' && (
+        <ButtonIcon 
+          icon={cta.icon} 
+          size={getIconSize(cta.size)}
+          thickness={cta.iconThickness || 'normal'} 
+        />
+      )}
+      
+      {/* Button text */}
+      <span className="whitespace-pre-line text-left">{cta.label}</span>
+      
+      {/* Icon on the right */}
+      {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'right' && (
+        <ButtonIcon 
+          icon={cta.icon} 
+          size={getIconSize(cta.size)}
+          thickness={cta.iconThickness || 'normal'} 
+        />
+      )}
+    </>
+  );
+
+  const commonClasses = `font-semibold transition-colors duration-200 ${variantClass} flex items-center justify-center gap-2 ${borderRadiusClass} ${buttonSizeClass} cursor-pointer`;
+  const commonStyles = {
+    backgroundColor: cta.backgroundColor || defaultBackgroundColor,
+    color: cta.textColor || defaultTextColor,
+    borderColor: cta.variant === 'outline' ? (cta.textColor || defaultTextColor) : 'transparent'
+  };
+
+  if (isReadOnly && cta.link) {
+    return (
+      <a 
+        href={cta.link}
+        className={commonClasses}
+        style={commonStyles}
+      >
+        {buttonContent}
+      </a>
+    );
+  }
+
   return (
     <button 
-      className={`font-semibold transition-colors duration-200 ${variantClass} flex items-center justify-center gap-2 ${borderRadiusClass} ${buttonSizeClass}`}
-      style={{
-        backgroundColor: cta.backgroundColor || defaultBackgroundColor,
-        color: cta.textColor || defaultTextColor,
-        borderColor: cta.variant === 'outline' ? (cta.textColor || defaultTextColor) : 'transparent'
-      }}
+      type="button"
+      className={commonClasses}
+      style={commonStyles}
     >
-      {isCircle ? (
-        // Circle button: only show icon, no text
-        cta.icon && cta.icon !== 'None' ? (
-          <ButtonIcon 
-            icon={cta.icon} 
-            size={getIconSize(cta.size)}
-            thickness={cta.iconThickness || 'normal'} 
-          />
-        ) : (
-          // If no icon, show first letter of label
-          <span className={`font-bold ${getCircleFallbackTextSizeClass(cta.size)}`}>
-            {cta.label.split('\n')[0].charAt(0).toUpperCase()}
-          </span>
-        )
-      ) : (
-        // Regular button: show icon + text
-        <>
-          {/* Icon on the left */}
-          {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'left' && (
-            <ButtonIcon 
-              icon={cta.icon} 
-              size={getIconSize(cta.size)}
-              thickness={cta.iconThickness || 'normal'} 
-            />
-          )}
-          
-          {/* Button text */}
-          <span className="whitespace-pre-line text-left">{cta.label}</span>
-          
-          {/* Icon on the right */}
-          {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'right' && (
-            <ButtonIcon 
-              icon={cta.icon} 
-              size={getIconSize(cta.size)}
-              thickness={cta.iconThickness || 'normal'} 
-            />
-          )}
-        </>
-      )}
+      {buttonContent}
     </button>
   );
 };

@@ -35,6 +35,7 @@ export interface Content {
   poster: string | null;
   cover: string | null;
   genres: string[];
+  url?: string | null;
   details: ContentDetails;
 }
 

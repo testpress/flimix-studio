@@ -109,6 +109,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       content_id: numericId,
       title: content.title,
       subtitle: content.subtitle,
+      url: content.url || undefined,
       thumbnail: content.thumbnail || null,
       poster: content.poster || null,
       cover: content.cover || null,
@@ -127,7 +128,19 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       showSubtitle: true,
       showGenres: true,
       showMeta: true,
-      showHashtag: true
+      showHashtag: true,
+      primaryCTA: {
+        label: 'Watch Now',
+        link: content.url || 'undefined',
+        variant: 'solid' as const,
+        backgroundColor: '#dc2626',
+        textColor: '#ffffff',
+        icon: 'Play' as const,
+        iconPosition: 'left' as const,
+        iconThickness: 'normal' as const,
+        borderRadius: 'md' as const,
+        size: 'medium' as const
+      }
     };
     
     // Check if item with this ID already exists

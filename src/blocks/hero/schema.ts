@@ -11,6 +11,7 @@ export interface HeroItem {
   content_id: number;
   titleType?: 'text' | 'image';
   title?: string;
+  url?: string;
   titleImage?: string;
   subtitle?: string;
   videoBackground?: string;
