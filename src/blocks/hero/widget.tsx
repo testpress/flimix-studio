@@ -159,7 +159,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     }
   };
 
-  // Handle item click for selection or navigation
+  // Handle item click for selection
   const handleItemClick = (item: HeroBlock['props']['items'][0]) => {
     selectBlockItem(block.id, item.id.toString());
   };

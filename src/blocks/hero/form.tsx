@@ -131,7 +131,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       showHashtag: true,
       primaryCTA: {
         label: 'Watch Now',
-        link: content.url || '#',
+        link: content.url || 'undefined',
         variant: 'solid' as const,
         backgroundColor: '#dc2626',
         textColor: '#ffffff',
