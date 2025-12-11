@@ -262,7 +262,7 @@ const DropdownList = React.memo(<T,>({
           {debouncedQuery ? noResultsMessage : 'Start typing to search...'}
         </div>
       ) : (
-        <>
+        <div className={`transition-all duration-200 ${loading ? 'opacity-60 blur-[2px] pointer-events-none' : ''}`}>
           <ul className="py-1">
             {items.map((item) => (
               <li key={getItemId(item)}>
@@ -302,7 +302,7 @@ const DropdownList = React.memo(<T,>({
               End of results
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
