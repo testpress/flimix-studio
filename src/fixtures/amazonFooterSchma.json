@@ -1,0 +1,97 @@
+{
+    "type": "footer",
+    "rows": [
+      {
+        "id": "row-links",
+        "type": "row-layout",
+        "preset": "1-col",
+        "style": {
+          "columnGap": "xl"
+        },
+        "columns": [
+          {
+            "id": "col-1",
+            "type": "column",
+            "items": [
+              {
+                "id": "item-1-1",
+                "type": "item",
+                "label": "",
+                "linkType": "internal",
+                "icon": "https://m.media-amazon.com/images/G/01/digital/video/acquisition/logo/pv_logo_white._CB548637580_.png",
+                "style": {
+                  "size": "xl"
+                }
+              }
+            ],
+            "orientation": "horizontal",
+            "alignment": "center",
+            "itemGap": "none"
+          }
+        ]
+      },
+      {
+        "id": "row-copy",
+        "type": "row-layout",
+        "preset": "1-col",
+        "columns": [
+          {
+            "id": "col-copy",
+            "type": "column",
+            "items": [
+              {
+                "id": "48496855-f3ce-46fc-91d1-99f6e1bf17ee",
+                "type": "column",
+                "items": [
+                  {
+                    "id": "760167cb-1347-4c18-8760-897abc152966",
+                    "type": "item",
+                    "label": "Terms and Privacy Notice",
+                    "url": "",
+                    "linkType": "internal"
+                  },
+                  {
+                    "id": "ea1458e3-72c7-4d8f-946e-1a3c044b9e5c",
+                    "type": "item",
+                    "label": "Send us feedback",
+                    "url": "",
+                    "linkType": "internal",
+                    "icon": ""
+                  },
+                  {
+                    "id": "4a93ad1c-eff4-4c42-8a9d-c42dac6eae83",
+                    "type": "item",
+                    "label": "Help",
+                    "url": "",
+                    "linkType": "internal"
+                  }
+                ],
+                "orientation": "horizontal",
+                "alignment": "start",
+                "isNested": true,
+                "itemGap": "none"
+              },
+              {
+                "id": "778e6e4f-18af-4eca-89ed-a0e33c868e9d",
+                "type": "item",
+                "label": "© 1996-2025, Amazon.com, Inc. or its affiliates",
+                "url": "",
+                "linkType": "internal"
+              }
+            ],
+            "orientation": "vertical",
+            "alignment": "center",
+            "itemGap": "none"
+          }
+        ]
+      }
+    ],
+    "style": {
+      "padding": "lg",
+      "backgroundColor": "#212121",
+      "textColor": "#7ca5d7",
+      "fontSize": "sm",
+      "maxWidth": "none",
+      "rowGap": "none"
+    }
+  }
