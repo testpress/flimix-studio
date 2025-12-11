@@ -67,5 +67,16 @@ export const contentApi = {
         limit: params.limit,
         offset: params.offset
     }, signal);
+  },
+
+  searchExcludingItems(existingItems: { content_id: number | string }[] = []) {
+    return async (params: ContentSearchParams, signal?: AbortSignal) => {
+        const results = await this.search(params, signal);
+        const existingIds = new Set(existingItems.map(item => item.content_id));
+        return results.filter(item => {
+            const itemId = typeof item.id === 'string' ? parseInt(item.id, 10) : item.id;
+            return !existingIds.has(itemId);
+        });
+    };
   }
 };
