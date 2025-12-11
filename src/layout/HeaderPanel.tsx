@@ -157,7 +157,7 @@ const HeaderPanel: React.FC = () => {
                <label className="text-xs text-gray-400 mb-1">Background</label>
                <div className="flex items-center gap-2">
                   <input type="color" value={headerSchema.style?.backgroundColor || '#111111'} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="w-6 h-6 cursor-pointer"/>
-                  <input type="text" value={headerSchema.style?.backgroundColor || ''} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-xs text-white w-full border" />
+                  <input type="text" value={headerSchema.style?.backgroundColor || '#111111'} onChange={(e) => updateGlobalStyle('backgroundColor', e.target.value)} className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-xs text-white w-full border" />
                </div>
              </div>
              <div className="flex flex-col">
