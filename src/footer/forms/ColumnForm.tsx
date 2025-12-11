@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, ChevronRight, ChevronDown, AlignLeft, AlignCenter, AlignRight, AlignVerticalJustifyStart, AlignHorizontalJustifyStart } from 'lucide-react';
-import type { FooterColumn, FooterItem, ItemAlignment } from '../schema';
+import type { FooterColumn, FooterItem, ItemAlignment, Size } from '../schema';
 import { MAX_COLUMN_ITEMS } from '../schema';
 import ColumnItemEditor from './ColumnItemEditor';
 import { generateUniqueId } from '@utils/id';
+
+const sizeOptions = [
+  { label: 'None', value: 'none' },
+  { label: 'X-Small', value: 'xs' },
+  { label: 'Small', value: 'sm' },
+  { label: 'Base', value: 'base' },
+  { label: 'Medium', value: 'md' },
+  { label: 'Large', value: 'lg' },
+  { label: 'X-Large', value: 'xl' },
+];
 
 interface ColumnFormProps {
   column: FooterColumn;
@@ -121,6 +131,22 @@ const ColumnForm: React.FC<ColumnFormProps> = ({ column, index, onUpdate, select
           >
             <Plus size={14} />
           </button>
+        </div>
+      </div>
+
+      {/* Item Gap Control */}
+      <div className="mb-3 px-2">
+        <div className="flex flex-col">
+          <label className="text-xs text-gray-300 mb-1.5 font-medium">Item Gap</label>
+          <select
+            value={column.itemGap || (column.orientation === 'vertical' ? 'sm' : 'md')}
+            onChange={(e) => onUpdate({ ...column, itemGap: e.target.value as Size })}
+            className="bg-gray-700 border border-gray-600 rounded px-2.5 py-1.5 text-white text-xs focus:border-blue-500 outline-none"
+          >
+            {sizeOptions.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
         </div>
       </div>
 

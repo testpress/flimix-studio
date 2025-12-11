@@ -34,7 +34,7 @@
           "id": "col-links-1",
           "type": "column",
           "orientation": "vertical",
-          "alignment": "center",
+          "alignment": "start",
           "items": [
             { "id": "l1", "type": "item", "linkType": "internal", "label": "Home", "url": "/" },
             { "id": "l2", "type": "item", "linkType": "internal", "label": "Movies", "url": "/movies" }
@@ -44,7 +44,7 @@
           "id": "col-links-2",
           "type": "column",
           "orientation": "vertical",
-          "alignment": "end",
+          "alignment": "start",
           "items": [
             { "id": "l4", "type": "item", "linkType": "internal", "label": "Help", "url": "/help" },
             { "id": "l5", "type": "item", "linkType": "internal", "label": "Terms", "url": "/terms" }
@@ -54,7 +54,7 @@
           "id": "col-social",
           "type": "column",
           "orientation": "horizontal",
-          "alignment": "end",
+          "alignment": "start",
           "items": [
             { 
               "id": "icon-1", 
@@ -81,7 +81,6 @@
       "type": "row-layout",
       "preset": "1-col",
       "style": {
-        "padding": "20px 0px 0px 0px",
         "borderTop": "1px solid #333"
       },
       "columns": [
@@ -105,7 +104,7 @@
     }
   ],
   "style": {
-    "padding": "60px 20px",
+    "padding": "base",
     "backgroundColor": "#000000",
     "textColor": "#999999"
   }
