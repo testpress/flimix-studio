@@ -286,7 +286,9 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
         
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
-          searchFunction={contentApi.search}
+          searchFunction={
+            React.useMemo(() => contentApi.searchExcludingItems(posterGridProps.items || []), [posterGridProps.items])
+          }
           disabled={isAtItemLimit}
           placeholder="Search for Content..."
           onSelect={(content: Content) => handleSelectContent(content)}

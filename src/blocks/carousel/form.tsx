@@ -191,7 +191,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
-          searchFunction={contentApi.search}
+          searchFunction={
+              React.useMemo(() => 
+                  contentApi.searchExcludingItems(carouselProps.items || []), [carouselProps.items])
+              }
           disabled={isAtLimit}
           placeholder="Search for Content..."
           onSelect={handleSelectContent}

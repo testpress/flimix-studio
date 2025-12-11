@@ -198,7 +198,9 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
-          searchFunction={contentApi.search}
+          searchFunction={
+              React.useMemo(() => contentApi.searchExcludingItems(heroBlock.props.items || []), [heroBlock.props.items])
+            }
           placeholder="Search for Content..."
           onSelect={handleSelectContent}
           getItemId={(content) => content.id}
