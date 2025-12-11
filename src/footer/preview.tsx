@@ -103,7 +103,7 @@ const FooterPreview: React.FC = () => {
     <footer 
       className={`w-full transition-all duration-200 ${paddingClass} ${marginClass}`}
       style={{
-        backgroundColor: footerSchema.style?.backgroundColor || '#111111',
+        backgroundColor: footerSchema.style?.backgroundColor || 'transparent',
         color: footerSchema.style?.textColor || '#cccccc',
       }}
     >

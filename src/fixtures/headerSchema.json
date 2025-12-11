@@ -59,7 +59,6 @@
   ],
   "style": {
     "padding": "base",
-    "backgroundColor": "#111111",
     "textColor": "#ffffff"
   }
 }

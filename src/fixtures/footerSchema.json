@@ -105,7 +105,6 @@
   ],
   "style": {
     "padding": "base",
-    "backgroundColor": "#000000",
     "textColor": "#999999"
   }
 }

@@ -163,9 +163,9 @@ const HeaderPreview: React.FC = () => {
 
   return (
     <div 
-      className={`border-b border-gray-800 transition-all duration-200 ${paddingClass} ${marginClass} ${radiusClass}`}
+      className={`transition-all duration-200 ${paddingClass} ${marginClass} ${radiusClass}`}
       style={{
-        backgroundColor: headerSchema.style?.backgroundColor || '#111111',
+        backgroundColor: headerSchema.style?.backgroundColor || 'transparent',
         color: headerSchema.style?.textColor || '#ffffff',
       }}
       onClick={() => selectItem(HEADER_ROOT_ID, 'header', [])}

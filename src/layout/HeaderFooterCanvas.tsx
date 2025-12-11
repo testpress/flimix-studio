@@ -11,7 +11,7 @@ const HeaderFooterCanvas: React.FC = () => {
       </div>
       
       {/* Page Content Area - Fills remaining space */}
-      <div className="flex-1 flex items-center justify-center min-h-[400px] bg-[#0a0a0a] border-y border-gray-800/50 border-dashed">
+      <div className="flex-1 flex items-center justify-center min-h-[400px] bg-[#0a0a0a]">
         <div className="text-center text-gray-600 select-none">
           <h2 className="text-sm font-semibold mb-1 uppercase tracking-wider opacity-50">Page Content Area</h2>
           <p className="text-xs opacity-30">Content renders here</p>
