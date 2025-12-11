@@ -1,13 +1,19 @@
-export type HeaderItemType = 'logo' | 'title' | 'internal' | 'external' | 'anchor' | 'dropdown';
+export type HeaderItemType = 'logo' | 'title' | 'internal' | 'external' | 'anchor' | 'dropdown' | 'button';
+export type Size = 'none' | 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 export const MAX_NAVIGATION_ITEMS = 10;
 export const MAX_DROPDOWN_ITEMS = 5;
 
+export type NavigationAlignment = 'left' | 'center' | 'right';
+export type HoverEffect = 'text' | 'background';
+
 export interface HeaderItem {
   id: string;
   type: HeaderItemType;
+  isVisible?: boolean;
   label?: string;
   link?: string;
+  icon?: string;
   items?: HeaderItem[];
   attrs?: {
     src?: string;
@@ -16,10 +22,13 @@ export interface HeaderItem {
     target?: string;
   };
   style?: {
-    fontSize?: string;
+    fontSize?: Size;
+    borderRadius?: Size;
     color?: string;
     padding?: string;
     margin?: string;
+    backgroundColor?: string;
+    border?: string;
   };
 }
 
@@ -27,10 +36,20 @@ export interface HeaderSchema {
   type: 'header';
   items: HeaderItem[];
   style?: {
-    padding?: string;
+    padding?: Size;
+    margin?: Size;
+    borderRadius?: Size;
+    navigationFontSize?: Size;
+    logoSize?: Size;
+    navigationIconSize?: Size;
     backgroundColor?: string;
     textColor?: string;
-    borderRadius?: string;
+    navigationAlignment?: NavigationAlignment;
+    hoverColor?: string;
+    hoverTextColor?: string;
+    disableHover?: boolean;
+    hoverEffect?: HoverEffect;
+    hideNavIcons?: boolean;
   };
 }
 
