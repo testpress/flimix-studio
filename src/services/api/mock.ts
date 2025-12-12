@@ -1,12 +1,13 @@
 import { getJSON } from '@utils/http';
-import type { Content, ContentSearchParams } from './content';
+import { DEFAULT_PAGE_SIZE, type Content, type ContentSearchParams } from './content';
 import { generateUniqueInt } from '@/utils/id';
 
 // API base URL
 const MOVIE_API_BASE = "https://68b005943b8db1ae9c026d70.mockapi.io/api/studio/";
 
-// Default pagination values
-export const DEFAULT_PAGE_SIZE = 20;
+
+// Mock content types for fallback
+export const MOCK_CONTENT_TYPES = [{ id: 1, label: 'Movie' }];
 
 // Internal Mock Interface (from external mock API)
 interface MockMovie {

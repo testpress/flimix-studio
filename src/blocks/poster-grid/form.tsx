@@ -293,6 +293,10 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           placeholder="Search for Content..."
           onSelect={(content: Content) => handleSelectContent(content)}
           getItemId={(content) => content.id}
+          filterOptions={{
+            label: 'Content Type',
+            defaultValue: 1  
+          }}
           renderItem={React.useCallback((content, onSelect) => (
             <div 
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
