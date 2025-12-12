@@ -294,8 +294,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           onSelect={(content: Content) => handleSelectContent(content)}
           getItemId={(content) => content.id}
           filterOptions={{
-            label: 'Content Type',
-            defaultValue: 1  
+            label: 'Content Type'
           }}
           renderItem={React.useCallback((content, onSelect) => (
             <div 

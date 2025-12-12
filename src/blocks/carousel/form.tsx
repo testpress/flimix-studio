@@ -200,8 +200,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           onSelect={handleSelectContent}
           getItemId={(content) => content.id}
           filterOptions={{
-            label: 'Content Type',
-            defaultValue: 1  
+            label: 'Content Type'
           }}
           renderItem={React.useCallback((content, onSelect) => (
             <div 

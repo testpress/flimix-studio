@@ -84,7 +84,8 @@ export function ApiSearchDropdown<T>({
         const data = await contentApi.fetchContentTypes();
         setFilterOptionsData(data);
         
-        if (selectedFilter === undefined && data.length > 0) {
+        // Only set initial filter value if we haven't set one yet
+        if (data.length > 0) {
           setSelectedFilter(filterOptions.defaultValue ?? data[0].id);
         }
       } catch (err) {
@@ -95,7 +96,7 @@ export function ApiSearchDropdown<T>({
     };
 
     fetchFilters();
-  }, [filterOptions, filterOptions?.defaultValue, selectedFilter]);
+  }, [filterOptions]);
 
   // Fetch items when debounced query or filter changes
   useEffect(() => {
