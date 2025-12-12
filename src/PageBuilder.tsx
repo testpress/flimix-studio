@@ -7,15 +7,16 @@ import { PageBuilderProviders } from './PageBuilderProviders';
 import { useState, useEffect } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@fixtures/amazonSchema.json';
-import { contentApi, type ContentSearchParams, type Content } from '@services/api/content';
+import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@services/api/content';
 
 export type PageBuilderProps = {
   schema?: PageSchema;
   onSavePage?: (schema: PageSchema) => Promise<void>;
   onSearchContent?: (params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>;
+  onFetchContentTypes?: () => Promise<ContentType[]>;
 };
 
-function PageBuilder({ schema, onSavePage, onSearchContent }: PageBuilderProps) {
+function PageBuilder({ schema, onSavePage, onSearchContent, onFetchContentTypes }: PageBuilderProps) {
   const [showDebug, setShowDebug] = useState(false);
   const initialSchema = schema || (amazonSchemaData as PageSchema);
 
@@ -23,7 +24,10 @@ function PageBuilder({ schema, onSavePage, onSearchContent }: PageBuilderProps) 
     if (onSearchContent) {
       contentApi.setSearchCallback(onSearchContent);
     }
-  }, [onSearchContent]);
+    if (onFetchContentTypes) {
+      contentApi.setFetchContentTypesCallback(onFetchContentTypes);
+    }
+  }, [onSearchContent, onFetchContentTypes]);
 
   return (
     <PageBuilderProviders initialSchema={initialSchema}>

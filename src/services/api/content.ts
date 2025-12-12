@@ -1,5 +1,6 @@
-import { mockApi } from './mock';
+import { mockApi, MOCK_CONTENT_TYPES } from './mock';
 
+export const DEFAULT_PAGE_SIZE = 20;
 export interface ContentDetails {
   duration?: number | string;
   release_year?: number | string;
@@ -22,6 +23,11 @@ export interface ContentDetails {
   titleImage?: string;
   hashtag?: string;
   language?: string;
+}
+
+export interface ContentType {
+  id: number;
+  label: string;
 }
 
 // Content interface matching Backend Serializer
@@ -48,10 +54,15 @@ export interface ContentSearchParams {
 }
 
 let searchCallback: ((params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>) | null = null;
+let fetchContentTypesCallback: (() => Promise<ContentType[]>) | null = null;
 
 export const contentApi = {
   setSearchCallback(cb: (params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>) {
     searchCallback = cb;
+  },
+
+  setFetchContentTypesCallback(cb: () => Promise<ContentType[]>) {
+    fetchContentTypesCallback = cb;
   },
 
   async search(params: ContentSearchParams, signal?: AbortSignal): Promise<Content[]> {
@@ -75,5 +86,15 @@ export const contentApi = {
         const existingIds = new Set(existingItems.map(item => String(item.content_id)));
         return results.filter(item => !existingIds.has(String(item.id)));
     };
+  },
+
+  async fetchContentTypes(): Promise<ContentType[]> {
+    // If backend callback exists → use it
+    if (fetchContentTypesCallback) {
+      return fetchContentTypesCallback();
+    }
+
+    // Fallback: return mock data with Movie type only
+    return MOCK_CONTENT_TYPES;
   }
 };

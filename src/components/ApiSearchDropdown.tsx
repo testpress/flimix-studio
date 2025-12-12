@@ -2,11 +2,22 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { useDebouncedValue } from '@hooks/useDebouncedValue';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
-import { DEFAULT_PAGE_SIZE } from '@/services/api/mock';
+import { DEFAULT_PAGE_SIZE } from '@/services/api/content';
+import { contentApi } from '@services/api/content';
+
+interface FilterOption {
+  id: number;
+  label: string;
+}
+
+interface FilterConfig {
+  defaultValue?: number;    
+  label?: string;           
+}
 
 interface ApiSearchDropdownProps<T> {
   // Search function that returns items of type T
-  searchFunction: (params: { query: string; limit: number; offset: number; }, signal?: AbortSignal) => Promise<T[]>;
+  searchFunction: (params: { query: string; limit: number; offset: number; filter?: number }, signal?: AbortSignal) => Promise<T[]>;
   renderItem: (item: T, onSelect: (item: T) => void) => React.ReactNode;
   onSelect: (item: T) => void;
   placeholder?: string;
@@ -17,6 +28,7 @@ interface ApiSearchDropdownProps<T> {
   noResultsMessage?: string;
   initialQuery?: string;
   debounceDelay?: number;
+  filterOptions?: FilterConfig; 
 }
 
 export function ApiSearchDropdown<T>({
@@ -30,7 +42,8 @@ export function ApiSearchDropdown<T>({
   getItemId,
   noResultsMessage = 'No results found',
   initialQuery = '',
-  debounceDelay = 250
+  debounceDelay = 250,
+  filterOptions
 }: ApiSearchDropdownProps<T>) {
   // Constants for better maintainability
   const PAGE_SIZE = DEFAULT_PAGE_SIZE;
@@ -45,6 +58,11 @@ export function ApiSearchDropdown<T>({
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
+  
+  // Filter state
+  const [filterOptionsData, setFilterOptionsData] = useState<FilterOption[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<number | undefined>(filterOptions?.defaultValue);
+  const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -57,11 +75,34 @@ export function ApiSearchDropdown<T>({
   const handleOutsideClick = React.useCallback(() => setIsOpen(false), []);
   useOnClickOutside(dropdownRef, handleOutsideClick);
 
-  // Fetch items when debounced query changes
+  useEffect(() => {
+    if (!filterOptions) return;
+
+    const fetchFilters = async () => {
+      setIsLoadingFilters(true);
+      try {
+        const data = await contentApi.fetchContentTypes();
+        setFilterOptionsData(data);
+        
+        // Only set initial filter value if we haven't set one yet
+        if (data.length > 0) {
+          setSelectedFilter(filterOptions.defaultValue ?? data[0].id);
+        }
+      } catch (err) {
+        console.error('Failed to load filter options:', err);
+      } finally {
+        setIsLoadingFilters(false);
+      }
+    };
+
+    fetchFilters();
+  }, [filterOptions]);
+
+  // Fetch items when debounced query or filter changes
   useEffect(() => {
     if (!isOpen) return;
 
-    // Reset pagination when query changes
+    // Reset pagination when query or filter changes
     setCurrentOffset(0);
     setHasMore(true);
     setLoadMoreError(null);
@@ -82,7 +123,8 @@ export function ApiSearchDropdown<T>({
         const data = await searchFunction({
           query: debouncedQuery,
           limit: PAGE_SIZE,
-          offset: 0
+          offset: 0,
+          filter: selectedFilter
         }, controller.signal);
 
         setItems(data);
@@ -106,7 +148,7 @@ export function ApiSearchDropdown<T>({
         abortControllerRef.current.abort();
       }
     };
-  }, [debouncedQuery, isOpen, searchFunction, PAGE_SIZE]);
+  }, [debouncedQuery, selectedFilter, isOpen, searchFunction, PAGE_SIZE]);
 
   const handleSelectItem = React.useCallback((item: T) => {
     onSelect(item);
@@ -128,7 +170,8 @@ export function ApiSearchDropdown<T>({
           const data = await searchFunction({
             query: debouncedQuery,
             limit: PAGE_SIZE,
-            offset: nextOffset
+            offset: nextOffset,
+            filter: selectedFilter
           });
 
           // Append new items
@@ -144,7 +187,7 @@ export function ApiSearchDropdown<T>({
         }
       }
     }
-  }, [currentOffset, debouncedQuery, hasMore, isLoadingMore, loading, searchFunction, PAGE_SIZE]);
+  }, [currentOffset, debouncedQuery, selectedFilter, hasMore, isLoadingMore, loading, searchFunction, PAGE_SIZE]);
 
 
   const getItemIdRef = useRef(getItemId);
@@ -161,6 +204,31 @@ export function ApiSearchDropdown<T>({
         <label className="block text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
+      )}
+
+      {/* Filter Dropdown */}
+      {filterOptions && (
+        <div className="mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {filterOptions.label || 'Filter'}
+          </label>
+          <select
+            value={selectedFilter ?? ''}
+            onChange={(e) => setSelectedFilter(Number(e.target.value))}
+            disabled={isLoadingFilters || disabled}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          >
+            {isLoadingFilters ? (
+              <option>Loading...</option>
+            ) : (
+              filterOptionsData.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
       )}
 
       <div className="relative">
@@ -259,7 +327,7 @@ const DropdownList = React.memo(<T,>({
         <div className="p-4 text-center text-sm text-red-500">{error}</div>
       ) : items.length === 0 ? (
         <div className="p-4 text-center text-sm text-gray-500">
-          {debouncedQuery ? noResultsMessage : 'Start typing to search...'}
+          {debouncedQuery ? noResultsMessage : 'No content available'}
         </div>
       ) : (
         <div className={`transition-all duration-200 ${loading ? 'opacity-60 blur-[2px] pointer-events-none' : ''}`}>
