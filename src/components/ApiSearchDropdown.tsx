@@ -77,11 +77,12 @@ export function ApiSearchDropdown<T>({
 
   useEffect(() => {
     if (!filterOptions) return;
+    const controller = new AbortController();
 
     const fetchFilters = async () => {
       setIsLoadingFilters(true);
       try {
-        const data = await contentApi.fetchContentTypes();
+        const data = await contentApi.fetchContentTypes(controller.signal);
         setFilterOptionsData(data);
         
         // Only set initial filter value if we haven't set one yet
@@ -89,13 +90,19 @@ export function ApiSearchDropdown<T>({
           setSelectedFilter(filterOptions.defaultValue ?? data[0].id);
         }
       } catch (err) {
-        console.error('Failed to load filter options:', err);
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Failed to load filter options:', err);
+        }
       } finally {
         setIsLoadingFilters(false);
       }
     };
 
     fetchFilters();
+
+    return () => {
+      controller.abort();
+    };
   }, [filterOptions]);
 
   // Fetch items when debounced query or filter changes

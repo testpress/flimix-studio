@@ -13,7 +13,7 @@ export type PageBuilderProps = {
   schema?: PageSchema;
   onSavePage?: (schema: PageSchema) => Promise<void>;
   onSearchContent?: (params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>;
-  onFetchContentTypes?: () => Promise<ContentType[]>;
+  onFetchContentTypes?: (signal?: AbortSignal) => Promise<ContentType[]>;
 };
 
 function PageBuilder({ schema, onSavePage, onSearchContent, onFetchContentTypes }: PageBuilderProps) {

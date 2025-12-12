@@ -54,14 +54,14 @@ export interface ContentSearchParams {
 }
 
 let searchCallback: ((params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>) | null = null;
-let fetchContentTypesCallback: (() => Promise<ContentType[]>) | null = null;
+let fetchContentTypesCallback: ((signal?: AbortSignal) => Promise<ContentType[]>) | null = null;
 
 export const contentApi = {
   setSearchCallback(cb: (params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>) {
     searchCallback = cb;
   },
 
-  setFetchContentTypesCallback(cb: () => Promise<ContentType[]>) {
+  setFetchContentTypesCallback(cb: (signal?: AbortSignal) => Promise<ContentType[]>) {
     fetchContentTypesCallback = cb;
   },
 
@@ -88,10 +88,10 @@ export const contentApi = {
     };
   },
 
-  async fetchContentTypes(): Promise<ContentType[]> {
+  async fetchContentTypes(signal?: AbortSignal): Promise<ContentType[]> {
     // If backend callback exists → use it
     if (fetchContentTypesCallback) {
-      return fetchContentTypesCallback();
+      return fetchContentTypesCallback(signal);
     }
 
     // Fallback: return mock data with Movie type only
