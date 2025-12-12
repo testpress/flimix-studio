@@ -1,6 +1,6 @@
 import { mockApi, MOCK_CONTENT_TYPES } from './mock';
 
-export const DEFAULT_PAGE_SIZE = 20;
+export const DEFAULT_PAGE_SIZE = 10;
 export interface ContentDetails {
   duration?: number | string;
   release_year?: number | string;

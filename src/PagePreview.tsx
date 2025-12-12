@@ -4,16 +4,28 @@ import { PagePreviewProviders } from './PagePreviewProviders';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { Block } from '@blocks/shared/Block';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
+import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@services/api/content';
 
 export interface PagePreviewProps {
   schema: PageSchema;
   visibilityContext?: VisibilityContext;
+  onSearchContent?: (params: ContentSearchParams, signal?: AbortSignal) => Promise<Content[]>;
+  onFetchContentTypes?: (signal?: AbortSignal) => Promise<ContentType[]>;
 }
 
 export const PagePreview: React.FC<PagePreviewProps> = ({
   schema,
-  visibilityContext = { isLoggedIn: false } 
+  visibilityContext = { isLoggedIn: false },
+  onSearchContent,
+  onFetchContentTypes
 }) => {
+  if (onSearchContent) {
+    contentApi.setSearchCallback(onSearchContent);
+  }
+  if (onFetchContentTypes) {
+    contentApi.setFetchContentTypesCallback(onFetchContentTypes);
+  }
+
   return (
     <PagePreviewProviders initialSchema={schema}>
       <div className="flimix-preview bg-black min-h-screen relative">
