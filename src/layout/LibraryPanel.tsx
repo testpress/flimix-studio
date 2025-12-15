@@ -86,6 +86,12 @@ const LibraryPanel: React.FC = () => {
       )
     : allTemplates;
 
+  const contentLibraryTemplate = filteredTemplates.find(t => t.type === 'contentLibrary');
+  const regularTemplates = filteredTemplates.filter(t => t.type !== 'contentLibrary');
+
+  const isContentLibraryPresent = pageSchema.blocks.some(block => block.type === ('contentLibrary' as BlockType['type']));
+  const hasBlocks = pageSchema.blocks.length > 0;
+
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (!selectedBlock) {
       insertBlockAtEnd(blockType);
@@ -164,46 +170,125 @@ const LibraryPanel: React.FC = () => {
             <p>No blocks found matching "{searchQuery}"</p>
           </div>
         ) : (
-          <div className={`grid gap-3 grid-cols-3`}>
-            {filteredTemplates.map((template) => {
-            const IconComponent = iconMap[template.icon] || Layout;
-            
-            return (
-              <div key={template.type} className="relative">
-                {/* Block Item */}
-                <Tooltip
-                  content={
-                    <>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <IconComponent size={18} />
-                        <h3 className="font-medium text-gray-900">{template.name}</h3>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        {template.description}
-                      </p>
-                    </>
-                  }
-                >
-                  <button
-                    onClick={() => handleBlockInsert(template.type)}
-                    className="w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-200"
-                  >
-                    {/* Icon */}
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 text-gray-700 mb-2">
-                      <IconComponent 
-                        size={18} 
-                      />
-                    </div>
-                    
-                    {/* Name */}
-                    <span className="text-xs font-medium text-gray-900 text-center leading-tight w-full px-1 whitespace-normal">
-                      {template.name}
-                    </span>
-                  </button>
-                </Tooltip>
+          <div className="space-y-4">
+            {/* Special Section for Content Library */}
+            {contentLibraryTemplate && (
+              <div className="mb-4">
+                <div className="text-xs font-semibold text-gray-500 text-transform uppercase mb-2 px-1">Special Blocks</div>
+                {(() => {
+                   const template = contentLibraryTemplate;
+                   const IconComponent = iconMap[template.icon] || Layout;
+                   
+                   let isDisabled = false;
+                   let tooltipMessage = template.description;
+       
+                   if (isContentLibraryPresent) {
+                      isDisabled = true;
+                      tooltipMessage = "Content Library takes up the entire page.";
+                   } else if (hasBlocks && (template.type as string) === 'contentLibrary') {
+                      isDisabled = true;
+                      tooltipMessage = "This block requires an empty page. Please remove other blocks first.";
+                   }
+
+                   return (
+                    <Tooltip
+                      content={
+                        <>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <IconComponent size={18} />
+                            <h3 className="font-medium text-gray-900">{template.name}</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            {isDisabled ? <span className="text-red-400 font-semibold">{tooltipMessage}</span> : tooltipMessage}
+                          </p>
+                        </>
+                      }
+                    >
+                      <button
+                        onClick={() => !isDisabled && handleBlockInsert(template.type)}
+                        disabled={isDisabled}
+                        className={`w-full flex items-center p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg transition-all duration-200 group ${
+                            isDisabled 
+                            ? 'opacity-50 cursor-not-allowed bg-none bg-gray-50 border-gray-200' 
+                            : 'hover:border-blue-400 hover:shadow-md'
+                        }`}
+                      >
+                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center mr-3 ${isDisabled ? 'bg-gray-200 text-gray-400' : 'bg-white text-blue-600 shadow-sm'}`}>
+                          <IconComponent size={20} />
+                        </div>
+                        <div className="text-left">
+                          <span className={`block text-sm font-semibold ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}>
+                            {template.name}
+                          </span>
+                          <span className={`block text-xs ${isDisabled ? 'text-gray-400' : 'text-blue-600/70'}`}>
+                             Full-page specialized block 
+                          </span>
+                        </div>
+                      </button>
+                    </Tooltip>
+                   );
+                })()}
               </div>
-            );
-            })}
+            )}
+
+            {/* Regular Grid for Other Blocks */}
+            <div>
+               {contentLibraryTemplate && <div className="text-xs font-semibold text-gray-500 text-transform uppercase mb-2 px-1">Standard Blocks</div>}
+               <div className={`grid gap-3 grid-cols-3`}>
+                {regularTemplates.map((template) => {
+                const IconComponent = iconMap[template.icon] || Layout;
+                
+                let isDisabled = false;
+                let tooltipMessage = template.description;
+
+                if (isContentLibraryPresent) {
+                   isDisabled = true;
+                   tooltipMessage = "Content Library takes up the entire page. Remove it to add other blocks.";
+                }
+
+                return (
+                  <div key={template.type} className="relative">
+                    {/* Block Item */}
+                    <Tooltip
+                      content={
+                        <>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <IconComponent size={18} />
+                            <h3 className="font-medium text-gray-900">{template.name}</h3>
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            {isDisabled ? <span className="text-red-400 font-semibold">{tooltipMessage}</span> : tooltipMessage}
+                          </p>
+                        </>
+                      }
+                    >
+                      <button
+                        onClick={() => !isDisabled && handleBlockInsert(template.type)}
+                        disabled={isDisabled}
+                        className={`w-full aspect-square flex flex-col items-center justify-center p-2 bg-white border border-gray-200 rounded-lg transition-all duration-200 ${
+                            isDisabled 
+                            ? 'opacity-50 cursor-not-allowed bg-gray-50' 
+                            : 'hover:border-blue-300 hover:shadow-md'
+                        }`}
+                      >
+                        {/* Icon */}
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${isDisabled ? 'bg-gray-200 text-gray-400' : 'bg-gray-100 text-gray-700'}`}>
+                          <IconComponent 
+                            size={18} 
+                          />
+                        </div>
+                        
+                        {/* Name */}
+                        <span className={`text-xs font-medium text-center leading-tight w-full px-1 whitespace-normal ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}>
+                          {template.name}
+                        </span>
+                      </button>
+                    </Tooltip>
+                  </div>
+                );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </div>

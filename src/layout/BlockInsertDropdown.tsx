@@ -338,13 +338,18 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
   if (!block || !evaluateVisibility(block.visibility, visibilityContext)) {
     return null;
   }
+  if (block.type === 'contentLibrary') {
+    return null;
+  }
 
   if (selectedBlockId !== blockId) {
     return null;
   }
 
   // Compute filtered templates
-  const allTemplates = getAllBlockLibraryItems();
+  const allTemplates = getAllBlockLibraryItems().filter(
+    item => item.type !== 'contentLibrary'
+  );
   const contextFilteredTemplates = filterTemplatesByContext(allTemplates, selectedBlockId, pageSchema.blocks);
   const searchFilteredTemplates = filterTemplatesBySearch(contextFilteredTemplates, searchQuery);
 

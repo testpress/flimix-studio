@@ -39,6 +39,7 @@ import type { FAQAccordionBlockProps } from '@blocks/faq-accordion/schema';
 import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
+import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 import { MaxColumns } from '@blocks/rowLayout/schema';
 
 interface BlockItemProps {
@@ -295,6 +296,7 @@ function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findCo
       'cta-button': <Zap size={iconSize} />,
       'badge-strip': <Award size={iconSize} />,
       'rowLayout': <LayoutIcon size={iconSize} />,
+      'contentLibrary': <Grid2x2 size={iconSize} />,
     };
     
     const icon = iconMap[block.type] ?? <RectangleEllipsis size={iconSize} />;
@@ -338,6 +340,8 @@ function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findCo
                   return (block.props as FAQAccordionBlockProps).title;
                 case 'testimonial':
                   return (block.props as TestimonialBlockProps).title;
+                case 'contentLibrary':
+                  return (block.props as ContentLibraryBlockProps).title;
                 default:
                   return undefined;
               }
@@ -362,6 +366,7 @@ function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findCo
               'cta-button': 'CTA Button',
               'badge-strip': 'Badge Strip',
               'rowLayout': 'Row Layout',
+              'contentLibrary': 'Content Library',
             };
             
             const defaultDisplayName = displayNameMap[block.type] || 'Unknown Block';
