@@ -383,6 +383,12 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           renderBorderRadiusField(),
           renderBoxShadowField(),
         ];
+      case 'contentLibrary':
+        return [
+          renderPaddingField(),
+          renderMarginField(),
+          renderBackgroundColorField(),
+        ];
       case 'faq-accordion':
       case 'testimonial':
       case 'featureCallout':

@@ -18,7 +18,23 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
   isSelected,
   onRemove 
 }) => {
-  const { props } = block;
+  const { props, style } = block;
+
+  const paddingClass = {
+    none: 'p-0',
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+  }[style?.padding || 'lg'];
+
+  const marginClass = {
+    none: 'm-0',
+    sm: 'm-4',
+    md: 'm-6',
+    lg: 'm-8',
+  }[style?.margin || 'none'];
+
+  const containerStyle = style?.backgroundColor ? { backgroundColor: style.backgroundColor } : {};
   
   const [items, setItems] = useState<Content[]>([]);
   const [loading, setLoading] = useState(false);
@@ -127,7 +143,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 
   return (
     <div 
-      className={`relative group ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+      className={`relative group ${isSelected ? 'ring-2 ring-blue-500' : ''} ${marginClass}`}
       onClick={(e) => {
         e.stopPropagation();
         onSelect?.(block);
@@ -148,7 +164,10 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
       )}
 
       {/* Main Content Area */}
-      <div className="p-8 bg-black min-h-[500px]">
+      <div 
+        className={`bg-black min-h-[500px] ${paddingClass}`}
+        style={containerStyle}
+      >
         {/* Optional Block Title */}
         {props.title && (
           <div className={`mb-6 ${titleAlignmentClass}`}>
