@@ -10,7 +10,6 @@ export const ContentLibraryLibraryItem: BlockLibraryItem = {
     title: '',
     titleAlignment: 'left',
     contentTypeId: 1, // Default to Movies (usually ID 1)
-    columns: 4, // kept for legacy reference
     itemSize: 'medium',
     itemGap: 'medium',
     itemShape: 'landscape',

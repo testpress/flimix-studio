@@ -111,6 +111,12 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
     large: 'gap-10',
   }[props.itemGap || 'medium'];
 
+  const titleAlignmentClass = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
+  }[props.titleAlignment || 'left'];
+
   const SkeletonItem = () => (
     <div className={`flex flex-col justify-between p-1 bg-neutral-900 border border-neutral-800 rounded-2xl`}>
       <div className="relative w-full">
@@ -145,7 +151,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
       <div className="p-8 bg-black min-h-[500px]">
         {/* Optional Block Title */}
         {props.title && (
-          <div className={`mb-6 text-${props.titleAlignment || 'left'}`}>
+          <div className={`mb-6 ${titleAlignmentClass}`}>
             <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
               {props.title}
             </h2>
@@ -157,7 +163,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
            {/* Render Actual Items */}
            {items.map((item) => (
               <div 
-                key={`${item.id}-${Math.random()}`} 
+                key={item.id} 
                 onClick={(e) => {
                   e.stopPropagation();
                   handleItemClick(item);

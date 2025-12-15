@@ -1,13 +1,11 @@
 import type { Block } from '@blocks/shared/Block';
 
-export type ContentLibraryColumns = 2 | 3 | 4 | 5 | 6;
 export type ContentLibraryItemSize = 'small' | 'medium' | 'large';
 export type ContentLibraryItemGap = 'small' | 'medium' | 'large';
 export type ContentLibraryItemShape = 'landscape' | 'portrait' | 'square';
 
 export interface ContentLibraryBlockProps {
   contentTypeId?: number;
-  columns?: ContentLibraryColumns;
   itemSize?: ContentLibraryItemSize;
   itemGap?: ContentLibraryItemGap;
   itemShape?: ContentLibraryItemShape;

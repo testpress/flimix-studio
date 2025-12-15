@@ -94,7 +94,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     tabs: TabsForm,
     'badge-strip': BadgeStripForm,
     rowLayout: RowLayoutForm,
-    contentLibrary: ContentLibraryForm as unknown as React.FC<BlockFormProps>,
+    contentLibrary: ContentLibraryForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {

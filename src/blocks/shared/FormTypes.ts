@@ -35,7 +35,6 @@ export type BlockProps =
   | TabsBlockProps
   | CTAButtonBlockProps
   | BadgeStripBlockProps
-  | BadgeStripBlockProps
   | RowLayoutBlockProps
   | ContentLibraryBlockProps;
 
