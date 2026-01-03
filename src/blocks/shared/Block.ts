@@ -33,6 +33,8 @@ import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
 import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
 import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
 import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
+import type { ContentLibraryBlock } from '@blocks/content-library/schema';
+import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 
 // Union type for all block types (imported from individual block schemas)
 export type BlockType = 
@@ -51,15 +53,18 @@ export type BlockType =
   | TabsBlock
   | CTAButtonBlock
   | BadgeStripBlock
-  | RowLayoutBlock;
+  | RowLayoutBlock
+  | ContentLibraryBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
-  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'cta-button' | 'badge-strip' | 'rowLayout';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | CTAButtonBlockProps | BadgeStripBlockProps | RowLayoutBlockProps;
+  type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'cta-button' | 'badge-strip'
+  | 'rowLayout'
+  | 'contentLibrary';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | CTAButtonBlockProps | BadgeStripBlockProps | RowLayoutBlockProps | ContentLibraryBlockProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;
   children?: BlockType[];
-} 
+}

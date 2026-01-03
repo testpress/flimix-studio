@@ -34,6 +34,7 @@ import TabsForm from '@blocks/tabs/form';
 import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
 import RowLayoutForm from '@blocks/rowLayout/form';
+import ContentLibraryForm from '@blocks/content-library/form';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -93,6 +94,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     tabs: TabsForm,
     'badge-strip': BadgeStripForm,
     rowLayout: RowLayoutForm,
+    contentLibrary: ContentLibraryForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {

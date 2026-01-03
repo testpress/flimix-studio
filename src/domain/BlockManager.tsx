@@ -38,6 +38,8 @@ import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
 import RowLayoutWidget from '@blocks/rowLayout/widget';
 import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
 import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
+import ContentLibraryWidget from '@blocks/content-library/widget';
+import type { ContentLibraryBlock } from '@blocks/content-library/schema';
 /**
  * Evaluate if a block should be visible based on visibility rules and context
  * @param visibility - The visibility rules for the block
@@ -250,6 +252,15 @@ const BlockManager: React.FC<BlockManagerProps> = ({
             showDebug={showDebug}
             selectedBlockId={selectedBlockId}
             onSelect={(rowLayoutBlock) => onSelect?.(rowLayoutBlock as Block)}
+            isSelected={isSelected}
+            {...widgetControlProps}
+          />
+        );
+      case 'contentLibrary':
+        return (
+          <ContentLibraryWidget
+            block={block as ContentLibraryBlock}
+            onSelect={(contentLibraryBlock) => onSelect?.(contentLibraryBlock as Block)}
             isSelected={isSelected}
             {...widgetControlProps}
           />

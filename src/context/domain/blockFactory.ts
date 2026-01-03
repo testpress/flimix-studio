@@ -4,6 +4,8 @@ import { HeroLibraryItem, TextLibraryItem, SectionLibraryItem, PosterGridLibrary
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
+import { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
+import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 import type { TabsBlockProps, Tab } from '@blocks/tabs/schema';
 import type { TextBlockProps } from '@/blocks/text/schema';
 import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
@@ -231,6 +233,13 @@ export function createBlock(type: BlockType['type']): BlockType {
         id,
         style: { padding: 'md' },
         children: [],
+      };
+
+    case 'contentLibrary':
+      return {
+        type: 'contentLibrary',
+        id,
+        props: ContentLibraryLibraryItem.defaultProps as ContentLibraryBlockProps,
       };
 
     default: {
