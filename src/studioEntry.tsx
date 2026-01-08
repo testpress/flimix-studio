@@ -1,8 +1,7 @@
 import { createRoot, type Root } from 'react-dom/client'
 import './index.css'
-import { mountPreview, unmountPreview } from './previewEntry'
 import PageBuilder, { type PageBuilderProps } from './PageBuilder'
-import type { PagePreviewProps } from './PagePreview'
+import PagePreview, { type PagePreviewProps } from './PagePreview'
 
 // TypeScript declaration for global FlimixStudio 
 declare global {
@@ -17,25 +16,44 @@ declare global {
   }
 }
 
-let root: Root | null = null
+let studioRoot: Root | null = null
+let previewRoot: Root | null = null
 let readyCallbacks: (() => void)[] = []
 let isReady = false
 
 export function mountStudio(el: HTMLElement, props: PageBuilderProps) {
   // Unmount previous instance if it exists to prevent memory leaks
-  if (root) {
+  if (studioRoot) {
     unmountStudio();
   }
   
-  root = createRoot(el)
-  root.render(<PageBuilder {...props} />)
-  return root
+  studioRoot = createRoot(el)
+  studioRoot.render(<PageBuilder {...props} />)
+  return studioRoot
 }
 
 export function unmountStudio() {
-  if (root) {
-    root.unmount()
-    root = null
+  if (studioRoot) {
+    studioRoot.unmount()
+    studioRoot = null
+  }
+}
+
+export function mountPreview(el: HTMLElement, props: PagePreviewProps) {
+  // Unmount previous instance if it exists to prevent memory leaks
+  if (previewRoot) {
+    unmountPreview();
+  }
+  
+  previewRoot = createRoot(el)
+  previewRoot.render(<PagePreview {...props} />)
+  return previewRoot
+}
+
+export function unmountPreview() {
+  if (previewRoot) {
+    previewRoot.unmount()
+    previewRoot = null
   }
 }
 
