@@ -1,7 +1,7 @@
 import React from 'react';
 import { MoveLeft, MoveRight, MoveUp, MoveDown, Trash2 } from 'lucide-react';
 
-export interface ItemsControlProps {
+export interface BlockItemControlProps {
   index: number;
   count: number;
   onMoveLeft?: () => void;
@@ -15,7 +15,7 @@ export interface ItemsControlProps {
 }
 import { useSelection } from '@context/SelectionContext';
 
-const ItemsControl: React.FC<ItemsControlProps> = ({
+const BlockItemControl: React.FC<BlockItemControlProps> = ({
   index,
   count,
   onMoveLeft,
@@ -117,4 +117,4 @@ const ItemsControl: React.FC<ItemsControlProps> = ({
   );
 };
 
-export default ItemsControl; 
+export default BlockItemControl; 

@@ -5,7 +5,7 @@ import type { FeatureCalloutBlock } from './schema';
 import { FEATURE_CALLOUT_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { generateUniqueId } from '@utils/id';
 import Icon from '@components/Icon';
 
@@ -222,7 +222,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
                   )}
 
                   {/* Item Controls */}
-                  <ItemsControl 
+                  <BlockItemControl 
                     index={index}
                     count={items.length}
                     onMoveLeft={() => moveBlockItemLeft(block.id, index)}

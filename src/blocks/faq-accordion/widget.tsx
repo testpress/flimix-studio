@@ -5,7 +5,7 @@ import type { FAQAccordionBlock } from './schema';
 import { FAQ_ACCORDION_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { ChevronDown, ChevronRight, HelpCircle } from 'lucide-react';
 
 interface FAQAccordionWidgetProps extends Omit<BaseWidgetProps<FAQAccordionBlock>, 'block'> {
@@ -267,7 +267,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
                 )}
 
                 {/* Item Controls - visible on hover and when selected */}
-                <ItemsControl 
+                <BlockItemControl 
                   index={index}
                   count={items.length}
                   onMoveUp={() => moveBlockItemUp(block.id, index)}

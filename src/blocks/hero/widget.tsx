@@ -4,7 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { HeroBlock } from './schema';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ItemWidget from './ItemWidget';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 
@@ -216,7 +216,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
 
               {/* ItemsControl - positioned at the top, visible on hover */}
               <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <ItemsControl
+                <BlockItemControl
                   index={currentItemIndex}
                   count={props.items.length}
                   onMoveLeft={currentItemIndex > 0 ? handleMoveLeft : undefined}

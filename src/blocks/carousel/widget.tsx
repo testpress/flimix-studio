@@ -4,7 +4,7 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { CarouselBlock, CarouselItem, ItemSize } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CarouselWidgetProps extends Omit<BaseWidgetProps<CarouselBlock>, 'block'> {
@@ -606,7 +606,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           </div>
                         ) : null}
                       </a>
-                      <ItemsControl
+                      <BlockItemControl
                         index={index}
                         count={items.length}
                         onMoveLeft={() => moveBlockItemLeft(block.id, index)}

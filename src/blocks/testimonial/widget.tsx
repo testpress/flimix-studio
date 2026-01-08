@@ -5,7 +5,7 @@ import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
 import { TESTIMONIAL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
 import { generateUniqueId } from '@utils/id';
 
@@ -437,7 +437,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         </div>
       </div>
 
-      <ItemsControl
+      <BlockItemControl
         index={index}
         count={items.length}
         onMoveLeft={() => moveBlockItemLeft(block.id, index)}

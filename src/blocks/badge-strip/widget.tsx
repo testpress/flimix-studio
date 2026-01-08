@@ -5,7 +5,7 @@ import type { BadgeStripBlock, BadgeStripItem } from './schema';
 import { BADGE_STRIP_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
-import ItemsControl from '@blocks/shared/ItemsControl';
+import BlockItemControl from '@layout/BlockItemControl';
 import { generateUniqueId } from '@utils/id';
 import { Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette } from 'lucide-react';
 
@@ -146,7 +146,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
             <div key={item.id} className="relative group mt-4">
               {/* ItemsControl - positioned at the top, visible on hover */}
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <ItemsControl
+                <BlockItemControl
                   index={index}
                   count={items.length}
                   onMoveLeft={() => moveBlockItemLeft(block.id, index)}
