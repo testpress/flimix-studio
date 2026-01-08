@@ -4,8 +4,8 @@ import BaseWidget from '@blocks/shared/BaseWidget';
 import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { SectionBlock } from './schema';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
-import type { VisibilityContext } from '@blocks/shared/Visibility';
-import type { Block } from '@blocks/shared/Block';
+import type { VisibilityContext } from '@type/visibility';
+import type { Block } from '@type/block';
 import { Plus } from 'lucide-react';
 import { usePanel } from '@context/PanelContext';
 

@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Text block interface
 export interface TextBlock extends Omit<Block, 'props'> {

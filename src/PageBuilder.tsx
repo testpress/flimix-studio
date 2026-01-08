@@ -5,7 +5,7 @@ import LibraryPanel from '@layout/LibraryPanel';
 import LayoutPanel from '@layout/LayoutPanel';
 import { PageBuilderProviders } from './PageBuilderProviders';
 import { useState } from 'react';
-import type { PageSchema } from '@blocks/shared/Page';
+import type { PageSchema } from '@type/page';
 import amazonSchemaData from '@fixtures/amazonSchema.json';
 import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@api/content';
 

@@ -16,8 +16,8 @@ import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 import { RowLayoutLibraryItem } from '@blocks/row-layout/libraryItem';
 import { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
-  import type { BlockType } from '@blocks/shared/Block';
-import type { BlockProps } from '@blocks/shared/FormTypes';
+import type { BlockType } from '@type/block';
+import type { BlockProps } from '@type/form';
 
 // Export individual library items
 export { HeroLibraryItem } from '@blocks/hero/libraryItem';

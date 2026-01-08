@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useRef } from 'react';
-import type { BlockType } from '@blocks/shared/Block';
-import type { VisibilityContext, VisibilityProps, Platform } from '@blocks/shared/Visibility';
+import type { BlockType } from '@type/block';
+import type { VisibilityContext, VisibilityProps, Platform } from '@type/visibility';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
 import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard, RectangleEllipsis, Search } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
-import { getAllBlockLibraryItems } from '@blocks/shared/Library';
-import type { BlockLibraryItem } from '@blocks/shared/Library';
+import { getAllBlockLibraryItems } from '@type/library';
+import type { BlockLibraryItem } from '@type/library';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { Tooltip } from '@components/Tooltip';
 

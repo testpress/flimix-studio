@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Hero block interface
 export interface HeroBlock extends Omit<Block, 'props'> {

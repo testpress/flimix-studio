@@ -5,9 +5,9 @@ import { useBlockEditing } from '@context/BlockEditingContext';
 import { usePanel } from '@context/PanelContext';
 import type { 
   BlockFormProps
-} from '@blocks/shared/FormTypes';
-import type { VisibilityProps } from '@blocks/shared/Visibility';
-import type { StyleProps } from '@blocks/shared/Style';
+} from '@type/form';
+import type { VisibilityProps } from '@type/visibility';
+import type { StyleProps } from '@type/style';
 import { VisibilityForm, StyleForm } from '@blocks/settings';
 import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';

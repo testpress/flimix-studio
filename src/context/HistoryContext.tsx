@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
-import type { BlockType } from '@blocks/shared/Block';
-import type { PageSchema } from '@blocks/shared/Page';
+import type { BlockType } from '@type/block';
+import type { PageSchema } from '@type/page';
 
 interface HistoryContextType {
   pageSchema: PageSchema;

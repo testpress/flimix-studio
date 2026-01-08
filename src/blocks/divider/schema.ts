@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 export type DividerThickness = 'sm' | 'md' | 'lg';
 export type DividerLength = 'full' | 'percentage';

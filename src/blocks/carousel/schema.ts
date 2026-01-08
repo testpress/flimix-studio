@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Carousel item limit constant
 export const CAROUSEL_ITEM_LIMIT = 12;

@@ -1,9 +1,9 @@
 import React from 'react';
 import BlockManager from '@domain/BlockManager';
 import { PagePreviewProviders } from './PagePreviewProviders';
-import type { PageSchema } from '@blocks/shared/Page';
-import type { Block } from '@blocks/shared/Block';
-import type { VisibilityContext } from '@blocks/shared/Visibility';
+import type { PageSchema } from '@type/page';
+import type { Block } from '@type/block';
+import type { VisibilityContext } from '@type/visibility';
 import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@api/content';
 
 export interface PagePreviewProps {

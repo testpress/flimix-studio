@@ -1,10 +1,10 @@
 import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { Field } from '@blocks/shared/Field';
+import type { BlockFormProps } from '@type/form';
+import type { Field } from '@type/field';
 import type { TestimonialBlockProps, TestimonialLayout, ItemShape, ItemSize, GridDimension } from './schema';
 import { TESTIMONIAL_ITEM_LIMIT } from './schema';
-import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
+import type { GridGap, StyleProps, StyleValue } from '@type/style';
 import { AlertCircle } from 'lucide-react';
 
 // Testimonial block editor schema - only basic properties

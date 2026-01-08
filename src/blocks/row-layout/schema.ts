@@ -1,5 +1,5 @@
-import type { Block } from '@blocks/shared/Block';
-import type { StyleProps } from '@blocks/shared/Style';
+import type { Block } from '@type/block';
+import type { StyleProps } from '@type/style';
 import type { SectionBlock } from '@blocks/section/schema';
 
 export const MaxColumns = 4;

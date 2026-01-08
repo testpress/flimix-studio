@@ -3,8 +3,8 @@ import { Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpace
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
-import { getAllBlockLibraryItems } from '@blocks/shared/Library';
-import type { BlockType } from '@blocks/shared/Block';
+import { getAllBlockLibraryItems } from '@type/library';
+import type { BlockType } from '@type/block';
 import { useHistory } from '@context/HistoryContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import { usePanel } from '@context/PanelContext';

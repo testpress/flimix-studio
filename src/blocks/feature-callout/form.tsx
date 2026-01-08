@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { Field } from '@blocks/shared/Field';
+import type { BlockFormProps } from '@type/form';
+import type { Field } from '@type/field';
 import type { FeatureCalloutBlockProps, ItemSize } from './schema';
 import { FEATURE_CALLOUT_ITEM_LIMIT } from './schema';
 import { AlertCircle } from 'lucide-react';

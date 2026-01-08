@@ -4,7 +4,7 @@ import { BlockEditingContext } from '@context/BlockEditingContext';
 import { HistoryContext } from '@context/HistoryContext';
 import { BlockInsertContext } from '@context/BlockInsertContext';
 import { PanelContext } from '@context/PanelContext';
-import type { PageSchema } from '@blocks/shared/Page';
+import type { PageSchema } from '@type/page';
 
 
 export const PagePreviewProviders: React.FC<{

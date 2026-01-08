@@ -1,8 +1,8 @@
 import React from 'react';
 import BlockManager from '@domain/BlockManager';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
-import type { Platform, VisibilityContext } from '@blocks/shared/Visibility';
-import type { Block } from '@blocks/shared/Block';
+import type { Platform, VisibilityContext } from '@type/visibility';
+import type { Block } from '@type/block';
 import { useSelection } from '@context/SelectionContext';
 import { useHistory } from '@context/HistoryContext';
 import { Search } from 'lucide-react';

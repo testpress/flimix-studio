@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Feature callout item limit constant
 export const FEATURE_CALLOUT_ITEM_LIMIT = 8;

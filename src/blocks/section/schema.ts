@@ -1,4 +1,4 @@
-import type { Block, BlockType } from '@blocks/shared/Block';
+import type { Block, BlockType } from '@type/block';
 
 // Section block interface
 export interface SectionBlock extends Omit<Block, 'props'> {

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { BlockFormProps, BlockProps } from '@blocks/shared/FormTypes';
+import type { BlockFormProps, BlockProps } from '@type/form';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import { useHistory } from '@context/HistoryContext';

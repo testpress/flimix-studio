@@ -1,5 +1,5 @@
-import type { Block } from '@blocks/shared/Block';
-import type { StyleProps } from '@blocks/shared/Style';
+import type { Block } from '@type/block';
+import type { StyleProps } from '@type/style';
 
 // Badge strip item limit constant
 export const BADGE_STRIP_ITEM_LIMIT = 10;

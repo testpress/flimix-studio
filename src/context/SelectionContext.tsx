@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { Block, BlockType } from '@blocks/shared/Block';
+import type { Block, BlockType } from '@type/block';
 
 import { useHistory } from './HistoryContext';
 import { findBlockAndParent } from '@context/domain';

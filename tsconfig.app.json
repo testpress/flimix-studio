@@ -39,7 +39,7 @@
       "@context/*": ["src/context/*"],
       "@fixtures/*": ["src/fixtures/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@types/*": ["src/types/*"],
+      "@type/*": ["src/types/*"],
       "@api/*": ["src/api/*"]
     }
   },

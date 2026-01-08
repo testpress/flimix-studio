@@ -1,4 +1,4 @@
-import type { BlockLibraryItem } from '@blocks/shared/Library';
+import type { BlockLibraryItem } from '@type/library';
 
 export const TextLibraryItem: BlockLibraryItem = {
   type: 'text',
