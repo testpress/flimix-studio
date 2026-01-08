@@ -35,9 +35,9 @@ import CTAButtonWidget from '@blocks/cta-button/widget';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 import BadgeStripWidget from '@blocks/badge-strip/widget';
 import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
-import RowLayoutWidget from '@blocks/rowLayout/widget';
-import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
-import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
+import RowLayoutWidget from '@blocks/row-layout/widget';
+import type { RowLayoutBlock } from '@blocks/row-layout/schema';
+import { MaxColumns, MinColumns } from '@blocks/row-layout/schema';
 import ContentLibraryWidget from '@blocks/content-library/widget';
 import type { ContentLibraryBlock } from '@blocks/content-library/schema';
 /**

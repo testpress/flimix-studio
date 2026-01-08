@@ -40,7 +40,7 @@ import type { TestimonialBlockProps } from '@blocks/testimonial/schema';
 import type { CarouselBlockProps } from '@blocks/carousel/schema';
 import type { PosterGridBlockProps } from '@blocks/poster-grid/schema';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
-import { MaxColumns } from '@blocks/rowLayout/schema';
+import { MaxColumns } from '@blocks/row-layout/schema';
 
 interface BlockItemProps {
   block: Block;

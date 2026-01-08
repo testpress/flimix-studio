@@ -14,7 +14,7 @@ import { VideoLibraryItem } from '@blocks/video/libraryItem';
 import { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
-import { RowLayoutLibraryItem } from '@blocks/rowLayout/libraryItem';
+import { RowLayoutLibraryItem } from '@blocks/row-layout/libraryItem';
 import { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
   import type { BlockType } from '@blocks/shared/Block';
 import type { BlockProps } from '@blocks/shared/FormTypes';
@@ -35,7 +35,7 @@ export { VideoLibraryItem } from '@blocks/video/libraryItem';
 export { TabsLibraryItem } from '@blocks/tabs/libraryItem';
 export { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 export { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
-export { RowLayoutLibraryItem } from '@blocks/rowLayout/libraryItem';
+export { RowLayoutLibraryItem } from '@blocks/row-layout/libraryItem';
 export { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
 
 // Block library item type

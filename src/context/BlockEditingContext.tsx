@@ -9,8 +9,8 @@ import { findBlockPositionById } from '@context/domain/blockTraversal';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 
-import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
-import { MaxColumns, MinColumns } from '@blocks/rowLayout/schema';
+import type { RowLayoutBlock } from '@blocks/row-layout/schema';
+import { MaxColumns, MinColumns } from '@blocks/row-layout/schema';
 import type { SectionBlock } from '@blocks/section/schema';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';

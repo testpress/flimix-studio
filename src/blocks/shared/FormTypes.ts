@@ -15,7 +15,7 @@ import type { VideoBlockProps } from '@blocks/video/schema';
 import type { TabsBlockProps } from '@blocks/tabs/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
-import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
+import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 
 // Define a type for all possible block props

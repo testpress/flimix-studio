@@ -31,8 +31,8 @@ import type { CTAButtonBlock } from '@blocks/cta-button/schema';
 import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 import type { BadgeStripBlock } from '@blocks/badge-strip/schema';
 import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
-import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
-import type { RowLayoutBlock } from '@blocks/rowLayout/schema';
+import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
+import type { RowLayoutBlock } from '@blocks/row-layout/schema';
 import type { ContentLibraryBlock } from '@blocks/content-library/schema';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 

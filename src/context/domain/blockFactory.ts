@@ -8,7 +8,7 @@ import { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
 import type { TabsBlockProps, Tab } from '@blocks/tabs/schema';
 import type { TextBlockProps } from '@/blocks/text/schema';
-import type { RowLayoutBlockProps } from '@blocks/rowLayout/schema';
+import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
 /**
  * Creates a new block of the specified type with default values and a unique ID
  * @param type - The type of block to create ('text', 'hero', 'section', 'posterGrid', 'carousel', 'testimonial', 'spacer', 'divider', 'featureCallout', 'faq-accordion', 'image', 'video')
