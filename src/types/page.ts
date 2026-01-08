@@ -1,6 +1,6 @@
-import type { BlockType } from './Block';
-import type { Theme } from './Style';
-import type { VisibilityProps } from './Visibility';
+import type { BlockType } from '@type/block';
+import type { Theme } from '@type/style';
+import type { VisibilityProps } from '@type/visibility';
 
 // Page schema interface
 export interface PageSchema {

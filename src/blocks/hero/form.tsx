@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
+import type { BlockFormProps } from '@type/form';
 import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
 import CTAsTab from './form-components/CTAsTab';
 import CarouselControls from './form-components/CarouselControls';

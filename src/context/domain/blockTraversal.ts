@@ -1,5 +1,5 @@
-import type { Block } from '@blocks/shared/Block';
-import type { BlockType } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
+import type { BlockType } from '@type/block';
 import type { TabsBlock } from '@blocks/tabs/schema';
 
 export interface BlockPosition {

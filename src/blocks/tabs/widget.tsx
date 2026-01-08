@@ -4,8 +4,8 @@ import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
 import type { TabsBlock } from './schema';
 import BlockManager from '@domain/BlockManager';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
-import type { VisibilityContext } from '@blocks/shared/Visibility';
-import type { Block } from '@blocks/shared/Block';
+import type { VisibilityContext } from '@type/visibility';
+import type { Block } from '@type/block';
 import { useSelection } from '@context/SelectionContext';
 
 interface TabsWidgetProps extends Omit<BaseWidgetProps<TabsBlock>, 'block'> {

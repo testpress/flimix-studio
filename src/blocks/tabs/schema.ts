@@ -1,4 +1,4 @@
-import type { Block, BlockType } from '@blocks/shared/Block';
+import type { Block, BlockType } from '@type/block';
 
 // Tab interface for individual tabs
 export interface Tab {

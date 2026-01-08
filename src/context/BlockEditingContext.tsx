@@ -1,8 +1,8 @@
 import React, { createContext, useContext, type ReactNode } from 'react';
-import type { Block, BlockType } from '@blocks/shared/Block';
-import type { BlockItem } from '@blocks/shared/FormTypes';
-import type { StyleProps } from '@blocks/shared/Style';
-import type { VisibilityProps } from '@blocks/shared/Visibility';
+import type { Block, BlockType } from '@type/block';
+import type { BlockItem } from '@type/form';
+import type { StyleProps } from '@type/style';
+import type { VisibilityProps } from '@type/visibility';
 import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks, updateBlockInTree } from '@context/domain';
 import { createBlock } from '@context/domain/blockFactory';
 import { findBlockPositionById } from '@context/domain/blockTraversal';

@@ -3,7 +3,7 @@ import { BlockEditingProvider } from '@context/BlockEditingContext';
 import { HistoryProvider } from '@context/HistoryContext';
 import { BlockInsertProvider } from '@context/BlockInsertContext';
 import { PanelProvider } from '@context/PanelContext';
-import type { PageSchema } from '@blocks/shared/Page';
+import type { PageSchema } from '@type/page';
 import type { ReactNode } from 'react';
 
 interface PageBuilderProvidersProps {

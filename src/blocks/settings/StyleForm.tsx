@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@blocks/shared/Style';
+import type { StyleProps, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@type/style';
 
 interface StyleFormProps {
   style: StyleProps;

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Block } from '@blocks/shared/Block';
-import type { Field, FieldValue, NestedFormData } from '@blocks/shared/Field';
-import type { BlockProps } from '@blocks/shared/FormTypes';
+import type { Block } from '@type/block';
+import type { Field, FieldValue, NestedFormData } from '@type/field';
+import type { BlockProps } from '@type/form';
 
 /**
  * Get a form field value from block props using dot notation path

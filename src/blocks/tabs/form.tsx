@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
+import type { BlockFormProps } from '@type/form';
 import type { TabsBlock, Tab } from './schema';
 import { TABS_ITEM_LIMIT } from './schema';
 import { generateUniqueId } from '@utils/id';

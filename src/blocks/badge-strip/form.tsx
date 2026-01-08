@@ -1,7 +1,7 @@
 import React from 'react';
 import { BADGE_STRIP_ITEM_LIMIT } from './schema';
 import type { BadgeStripBlockProps } from './schema';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
+import type { BlockFormProps } from '@type/form';
 import { AlertCircle } from 'lucide-react';
 
 const BadgeStripForm: React.FC<BlockFormProps> = ({ block }) => {

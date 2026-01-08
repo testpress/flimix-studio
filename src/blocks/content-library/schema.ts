@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 export type ContentLibraryItemSize = 'small' | 'medium' | 'large';
 export type ContentLibraryItemGap = 'small' | 'medium' | 'large';

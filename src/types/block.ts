@@ -1,6 +1,6 @@
-import type { StyleProps } from '@blocks/shared/Style';
-import type { VisibilityProps } from '@blocks/shared/Visibility';
-import type { EventProps } from '@blocks/shared/Event';
+import type { StyleProps } from '@type/style';
+import type { VisibilityProps } from '@type/visibility';
+import type { EventProps } from '@type/event';
 import type { HeroBlock } from '@blocks/hero/schema';
 import type { TextBlock } from '@blocks/text/schema';
 import type { SectionBlock } from '@blocks/section/schema';

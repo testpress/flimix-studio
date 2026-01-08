@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { Field } from '@blocks/shared/Field';
+import type { BlockFormProps } from '@type/form';
+import type { Field } from '@type/field';
 import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, PosterGridItem, ItemShape, GridDimension, ButtonProps, ProgressBarProps } from './schema';
-import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
+import type { GridGap, StyleProps, StyleValue } from '@type/style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { contentApi, type Content } from '@api/content';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';

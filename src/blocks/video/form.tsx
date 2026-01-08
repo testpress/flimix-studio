@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertiesForm from '@blocks/settings/PropertiesForm';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
-import type { Field } from '@blocks/shared/Field';
+import type { BlockFormProps } from '@type/form';
+import type { Field } from '@type/field';
 
 const videoEditorFields: Field[] = [
   {

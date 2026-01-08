@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // FAQ item limit constant
 export const FAQ_ACCORDION_ITEM_LIMIT = 5;

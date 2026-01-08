@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 export type SpacerHeight = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 

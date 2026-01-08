@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Testimonial item limit constant for carousel
 export const TESTIMONIAL_ITEM_LIMIT = 12;

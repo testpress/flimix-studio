@@ -1,4 +1,4 @@
-import type { Block } from '@blocks/shared/Block';
+import type { Block } from '@type/block';
 
 // Define item shape type
 export type ItemShape = 'rectangle-landscape' | 'rectangle-portrait' | 'square' | 'circle';

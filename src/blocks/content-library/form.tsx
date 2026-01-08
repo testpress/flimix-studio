@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { BlockFormProps } from '@blocks/shared/FormTypes';
+import type { BlockFormProps } from '@type/form';
 import type { ContentLibraryBlockProps, ContentLibraryItemSize, ContentLibraryItemGap, ContentLibraryItemShape } from './schema';
 import { Settings, Grid3X3, Layers, Type, Calendar, Star } from 'lucide-react';
 import { contentApi, type ContentType } from '@api/content';

@@ -1,6 +1,6 @@
 import React from 'react';
 import BlockControls from '@layout/BlockControls';
-import type { Block } from './Block';
+import type { Block } from '@type/block';
 
 export interface BaseWidgetProps<T extends Block = Block> {
   block: T;

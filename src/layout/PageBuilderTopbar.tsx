@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Undo, Redo, Plus, X, Layers } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
 import { usePanel } from '@context/PanelContext';
-import type { PageSchema } from '@blocks/shared/Page';
+import type { PageSchema } from '@type/page';
 import { PagePreview } from '../PagePreview';
 
 type PageBuilderTopbarProps = {
