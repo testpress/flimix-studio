@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import type { ContentLibraryBlock } from './schema';
-import { contentApi, type Content } from '@services/api/content';
+import { contentApi, type Content } from '@api/content';
 import { useSelection } from '@context/SelectionContext';
 import BlockControls from '@layout/BlockControls';
 

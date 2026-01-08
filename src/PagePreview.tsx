@@ -4,7 +4,7 @@ import { PagePreviewProviders } from './PagePreviewProviders';
 import type { PageSchema } from '@blocks/shared/Page';
 import type { Block } from '@blocks/shared/Block';
 import type { VisibilityContext } from '@blocks/shared/Visibility';
-import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@services/api/content';
+import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@api/content';
 
 export interface PagePreviewProps {
   schema: PageSchema;

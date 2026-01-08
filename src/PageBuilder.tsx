@@ -7,7 +7,7 @@ import { PageBuilderProviders } from './PageBuilderProviders';
 import { useState } from 'react';
 import type { PageSchema } from '@blocks/shared/Page';
 import amazonSchemaData from '@fixtures/amazonSchema.json';
-import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@services/api/content';
+import { contentApi, type ContentSearchParams, type Content, type ContentType } from '@api/content';
 
 export type PageBuilderProps = {
   schema?: PageSchema;

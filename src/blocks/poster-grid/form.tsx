@@ -5,7 +5,7 @@ import type { Field } from '@blocks/shared/Field';
 import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, PosterGridItem, ItemShape, GridDimension, ButtonProps, ProgressBarProps } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { contentApi, type Content } from '@services/api/content';
+import { contentApi, type Content } from '@api/content';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 
 // Poster grid block editor schema - only basic properties

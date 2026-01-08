@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => ({
       '@blocks/hero': path.resolve(__dirname, 'src/blocks/hero'),
       '@blocks/text': path.resolve(__dirname, 'src/blocks/text'),
       '@blocks/section': path.resolve(__dirname, 'src/blocks/section'),
-      '@services': path.resolve(__dirname, 'src/services')
+      '@api': path.resolve(__dirname, 'src/api')
     }
   },
   define: {

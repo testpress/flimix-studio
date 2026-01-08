@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { useDebouncedValue } from '@hooks/useDebouncedValue';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
-import { DEFAULT_PAGE_SIZE } from '@/services/api/content';
-import { contentApi } from '@services/api/content';
+import { DEFAULT_PAGE_SIZE } from '@/api/content';
+import { contentApi } from '@api/content';
 
 interface FilterOption {
   id: number;

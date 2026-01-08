@@ -6,7 +6,7 @@ import type { ButtonAlignment, ButtonIconPosition, CarouselBlockProps, CarouselI
 import { CAROUSEL_ITEM_LIMIT } from './schema';
 import type { GridGap, StyleProps, StyleValue } from '@blocks/shared/Style';
 import { AlertCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { contentApi, type Content } from '@services/api/content';
+import { contentApi, type Content } from '@api/content';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 
 // Carousel block editor schema - only basic properties

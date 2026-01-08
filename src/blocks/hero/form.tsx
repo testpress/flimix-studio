@@ -4,7 +4,7 @@ import type { HeroBlock, HeroCTABtn, HeroItem } from './schema';
 import CTAsTab from './form-components/CTAsTab';
 import CarouselControls from './form-components/CarouselControls';
 import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
-import { contentApi, type Content } from '@services/api/content';
+import { contentApi, type Content } from '@api/content';
 import { generateUniqueInt } from '@utils/id';
 import { AlertCircle } from 'lucide-react';
 import { getHashtagSizeClass } from './CTAButton';

@@ -40,7 +40,7 @@
       "@fixtures/*": ["src/fixtures/*"],
       "@hooks/*": ["src/hooks/*"],
       "@types/*": ["src/types/*"],
-      "@services/*": ["src/services/*"]
+      "@api/*": ["src/api/*"]
     }
   },
   "include": ["src"]
