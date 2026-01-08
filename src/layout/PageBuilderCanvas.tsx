@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockManager from '@domain/BlockManager';
+import BlockRenderer from '@layout/BlockRenderer';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { Platform, VisibilityContext } from '@type/visibility';
 import type { Block } from '@type/block';
@@ -155,7 +155,7 @@ const PageBuilderCanvas: React.FC<PageBuilderCanvasProps> = ({ showDebug }) => {
           {currentPage.blocks.map((block: Block) => (
             <div key={block.id} data-block-id={block.id}>
               <BlockInsertDropdown position="above" blockId={block.id} visibilityContext={visibilityContext} />
-              <BlockManager 
+              <BlockRenderer 
                 block={block} 
                 showDebug={showDebug} 
                 visibilityContext={visibilityContext}

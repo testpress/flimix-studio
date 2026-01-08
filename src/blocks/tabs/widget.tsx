@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useEffect } from 'react';
 import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
 import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { TabsBlock } from './schema';
-import BlockManager from '@domain/BlockManager';
+import BlockRenderer from '@layout/BlockRenderer';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { VisibilityContext } from '@type/visibility';
 import type { Block } from '@type/block';
@@ -176,7 +176,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
                 blockId={childBlock.id} 
                 visibilityContext={visibilityContext} 
               />
-              <BlockManager 
+              <BlockRenderer 
                 block={childBlock} 
                 visibilityContext={visibilityContext} 
                 showDebug={showDebug}

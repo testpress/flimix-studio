@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import type { Block, BlockType } from '@type/block';
 
 import { useHistory } from './HistoryContext';
-import { findBlockAndParent } from '@context/domain';
+import { findBlockAndParent } from '@domain';
 
 interface SelectionContextType {
   selectedBlock: Block | null;

@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockManager from '@domain/BlockManager';
+import BlockRenderer from '@layout/BlockRenderer';
 import { PagePreviewProviders } from './PagePreviewProviders';
 import type { PageSchema } from '@type/page';
 import type { Block } from '@type/block';
@@ -32,7 +32,7 @@ export const PagePreview: React.FC<PagePreviewProps> = ({
         <div className="space-y-0">
             {schema.blocks.map((block: Block) => (
             <div key={block.id} className="relative transition-opacity duration-500 ease-in-out">
-                <BlockManager
+                <BlockRenderer
                     block={block}
                     visibilityContext={visibilityContext}
                     showDebug={false}

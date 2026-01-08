@@ -3,9 +3,9 @@ import type { Block, BlockType } from '@type/block';
 import type { BlockItem } from '@type/form';
 import type { StyleProps } from '@type/style';
 import type { VisibilityProps } from '@type/visibility';
-import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks, updateBlockInTree } from '@context/domain';
-import { createBlock } from '@context/domain/blockFactory';
-import { findBlockPositionById } from '@context/domain/blockTraversal';
+import { duplicateBlockWithNewIds, findBlockAndParent, getChildrenBlocks, updateBlockInTree } from '@domain';
+import { createBlock } from '@domain/blockFactory';
+import { findBlockPositionById } from '@domain/blockTraversal';
 import { swap } from '@utils/array';
 import { generateUniqueId } from '@utils/id';
 

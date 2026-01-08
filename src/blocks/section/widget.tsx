@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockManager from '@domain/BlockManager';
+import BlockRenderer from '@layout/BlockRenderer';
 import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
 import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { SectionBlock } from './schema';
@@ -140,7 +140,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
               {children.map((childBlock) => (
                 <div key={childBlock.id} className="w-full" data-block-id={childBlock.id}>
                   <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
-                  <BlockManager 
+                  <BlockRenderer 
                     block={childBlock} 
                     visibilityContext={visibilityContext} 
                     showDebug={showDebug}

@@ -7,8 +7,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { RowLayoutBlock, RowLayoutPreset, GapSize } from './schema';
 import { MinColumns, MaxColumns } from './schema';
 import { ROW_LAYOUT_PRESETS } from './constants';
-import { createBlock } from '@context/domain/blockFactory';
-import { findBlockPositionById } from '@context/domain/blockTraversal';
+import { createBlock } from '@domain/blockFactory';
+import { findBlockPositionById } from '@domain/blockTraversal';
 import type { SectionBlock } from '@blocks/section/schema';
 
 interface GutterControlProps {

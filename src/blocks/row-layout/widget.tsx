@@ -1,16 +1,16 @@
 import React from 'react';
 import BlockWidgetWrapper, { type BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
-import BlockManager from '@domain/BlockManager';
+import BlockRenderer from '@layout/BlockRenderer';
 import type { RowLayoutBlock, RowLayoutPreset } from './schema';
 import type { VisibilityContext } from '@type/visibility';
 import type { Block, BlockType } from '@type/block';
 import LayoutSelector from './LayoutSelector';
 import { ROW_LAYOUT_PRESETS } from './constants';
 import { useHistory } from '@context/HistoryContext';
-import { createBlock } from '@context/domain/blockFactory';
+import { createBlock } from '@domain/blockFactory';
 import type { SectionBlock } from '@blocks/section/schema';
 import { useSelection } from '@context/SelectionContext';
-import { findBlockPositionById } from '@context/domain/blockTraversal';
+import { findBlockPositionById } from '@domain/blockTraversal';
 
 
 interface RowLayoutWidgetProps extends Omit<BlockWidgetWrapperProps<RowLayoutBlock>, 'block' | 'onSelect'> {
@@ -133,7 +133,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         ) : (
           <div className={layoutClass}>
             {block.children.map((childSection) => (
-              <BlockManager
+              <BlockRenderer
                 key={childSection.id}
                 block={childSection}
                 visibilityContext={visibilityContext}

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, type ReactNode } from 'react';
 import type { BlockType } from '@type/block';
-import { createBlock, findBlockPositionById, findBlockAndParent, updateBlockInTree } from '@context/domain';
+import { createBlock, findBlockPositionById, findBlockAndParent, updateBlockInTree } from '@domain';
 import { getAvailableBlockTypes } from '@type/library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';

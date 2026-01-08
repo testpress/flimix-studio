@@ -30,7 +30,7 @@ import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import { useHistory } from '@context/HistoryContext';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
-import { findBlockPositionForUI } from '@context/domain/blockTraversal';
+import { findBlockPositionForUI } from '@domain/blockTraversal';
 import type { Block, BlockType } from '@type/block';
 import type { TabsBlock } from '@blocks/tabs/schema';
 import type { SectionBlockProps } from '@blocks/section/schema';

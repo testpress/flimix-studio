@@ -34,6 +34,7 @@
       "@blocks/ui/*": ["src/blocks/ui/*"],
 
       "@utils/*": ["src/utils/*"],
+      "@domain": ["src/domain"],
       "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],
       "@fixtures/*": ["src/fixtures/*"],

@@ -29,7 +29,7 @@ import type { TabsBlock } from '@blocks/tabs/schema';
 import type { VisibilityContext, VisibilityProps, Platform } from '@type/visibility';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import { useHistory } from '@context/HistoryContext';
-import { findBlockPositionForUI } from '@context/domain';
+import { findBlockPositionForUI } from '@domain/blockTraversal';
 import { AlertTriangle } from 'lucide-react';
 import CTAButtonWidget from '@blocks/cta-button/widget';
 import type { CTAButtonBlock } from '@blocks/cta-button/schema';
@@ -89,7 +89,7 @@ function evaluateVisibility(
   return true;
 }
 
-interface BlockManagerProps {
+interface BlockRendererProps {
   block: Block;
   showDebug?: boolean;
   visibilityContext: VisibilityContext;
@@ -100,7 +100,7 @@ interface BlockManagerProps {
   columnCount?: number;
 }
 
-const BlockManager: React.FC<BlockManagerProps> = ({ 
+const BlockRenderer: React.FC<BlockRendererProps> = ({ 
   block, 
   showDebug = false, 
   visibilityContext, 
@@ -282,4 +282,4 @@ const BlockManager: React.FC<BlockManagerProps> = ({
   );
 };
 
-export default BlockManager; 
+export default BlockRenderer; 
