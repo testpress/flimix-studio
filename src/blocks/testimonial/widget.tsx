@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { TestimonialBlock, ItemSize, TestimonialItem } from './schema';
 import { TESTIMONIAL_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
@@ -9,7 +9,7 @@ import BlockItemControl from '@layout/BlockItemControl';
 import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
 import { generateUniqueId } from '@utils/id';
 
-interface TestimonialWidgetProps extends Omit<BaseWidgetProps<TestimonialBlock>, 'block'> {
+interface TestimonialWidgetProps extends Omit<BlockWidgetWrapperProps<TestimonialBlock>, 'block'> {
   block: TestimonialBlock;
 }
 
@@ -573,7 +573,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     return (
       <div className={marginClass}>
         <div style={{ boxShadow: boxShadowStyle }}>
-          <BaseWidget
+          <BlockWidgetWrapper
             block={block}
             onSelect={onSelect}
             isSelected={isSelected}
@@ -597,7 +597,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
               )}
               <p className="text-gray-500 text-center text-sm sm:text-base">No testimonials added</p>
             </div>
-          </BaseWidget>
+          </BlockWidgetWrapper>
         </div>
       </div>
     );
@@ -606,7 +606,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   return (
     <div className={marginClass}>
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BaseWidget
+        <BlockWidgetWrapper
           block={block}
           onSelect={onSelect}
           isSelected={isSelected}
@@ -633,7 +633,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             {layout === 'grid' && renderGrid()}
             {layout === 'single' && renderSingle()}
           </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     </div>
   );

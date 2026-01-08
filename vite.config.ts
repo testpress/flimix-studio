@@ -27,7 +27,6 @@ export default defineConfig(({ mode }) => ({
       '@blocks': path.resolve(__dirname, 'src/blocks'),
       '@blocks/ui': path.resolve(__dirname, 'src/blocks/ui'),
       '@blocks/settings': path.resolve(__dirname, 'src/blocks/settings'),
-      '@blocks/shared': path.resolve(__dirname, 'src/blocks/shared'),
       '@blocks/hero': path.resolve(__dirname, 'src/blocks/hero'),
       '@blocks/text': path.resolve(__dirname, 'src/blocks/text'),
       '@blocks/section': path.resolve(__dirname, 'src/blocks/section'),

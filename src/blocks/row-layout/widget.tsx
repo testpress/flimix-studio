@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseWidget, { type BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper, { type BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import BlockManager from '@domain/BlockManager';
 import type { RowLayoutBlock, RowLayoutPreset } from './schema';
 import type { VisibilityContext } from '@type/visibility';
@@ -13,7 +13,7 @@ import { useSelection } from '@context/SelectionContext';
 import { findBlockPositionById } from '@context/domain/blockTraversal';
 
 
-interface RowLayoutWidgetProps extends Omit<BaseWidgetProps<RowLayoutBlock>, 'block' | 'onSelect'> {
+interface RowLayoutWidgetProps extends Omit<BlockWidgetWrapperProps<RowLayoutBlock>, 'block' | 'onSelect'> {
   block: RowLayoutBlock;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
@@ -118,7 +118,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget
+      <BlockWidgetWrapper
         block={block}
         onSelect={() => onSelect?.(block)}
         isSelected={isSelected}
@@ -147,7 +147,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
             ))}
           </div>
         )}
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import BlockControls from '@layout/BlockControls';
 import type { Block } from '@type/block';
 
-export interface BaseWidgetProps<T extends Block = Block> {
+export interface BlockWidgetWrapperProps<T extends Block = Block> {
   block: T;
   onSelect?: (block: T) => void;
   isSelected?: boolean;
@@ -20,7 +20,7 @@ export interface BaseWidgetProps<T extends Block = Block> {
 }
 
 /**
- * BaseWidget - A base component that provides common selection functionality
+ * BlockWidgetWrapper - A base component that provides common selection functionality
  * for all block components. Implements:
  * - Click handling with event bubbling prevention
  * - Selection state management
@@ -28,7 +28,7 @@ export interface BaseWidgetProps<T extends Block = Block> {
  * - Extensible render method
  * - Inline block controls when selected
  */
-const BaseWidget = <T extends Block = Block>({ 
+const BlockWidgetWrapper = <T extends Block = Block>({ 
   block, 
   onSelect, 
   isSelected = false, 
@@ -42,7 +42,7 @@ const BaseWidget = <T extends Block = Block>({
   onDuplicate,
   onRemove,
   onAddItem
-}: BaseWidgetProps<T>) => {
+}: BlockWidgetWrapperProps<T>) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling to parent blocks
     onSelect?.(block);
@@ -83,4 +83,4 @@ const BaseWidget = <T extends Block = Block>({
   );
 };
 
-export default BaseWidget; 
+export default BlockWidgetWrapper;

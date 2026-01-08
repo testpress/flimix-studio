@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { FAQAccordionBlock } from './schema';
 import { FAQ_ACCORDION_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
@@ -8,7 +8,7 @@ import { useBlockEditing } from '@context/BlockEditingContext';
 import BlockItemControl from '@layout/BlockItemControl';
 import { ChevronDown, ChevronRight, HelpCircle } from 'lucide-react';
 
-interface FAQAccordionWidgetProps extends Omit<BaseWidgetProps<FAQAccordionBlock>, 'block'> {
+interface FAQAccordionWidgetProps extends Omit<BlockWidgetWrapperProps<FAQAccordionBlock>, 'block'> {
   block: FAQAccordionBlock;
 }
 
@@ -126,7 +126,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     lg: '1rem',
   };
 
-  // Build complete style object for BaseWidget - this applies to the main container
+  // Build complete style object for BlockWidgetWrapper - this applies to the main container
   const widgetStyle: React.CSSProperties = {
     backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
     color: isHexColor ? style.textColor : undefined,
@@ -138,7 +138,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   if (!items || items.length === 0) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BaseWidget 
+        <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
           isSelected={isSelected}
@@ -167,14 +167,14 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
             <p className="text-sm">Click the + button to add your first FAQ (max {FAQ_ACCORDION_ITEM_LIMIT} items)</p>
           </div>
         </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -280,7 +280,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
           })}
         </div>
       </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

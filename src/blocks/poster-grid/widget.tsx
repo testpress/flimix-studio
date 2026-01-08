@@ -1,11 +1,11 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { PosterGridBlock, PosterGridItem } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface PosterGridWidgetProps extends Omit<BaseWidgetProps<PosterGridBlock>, 'block'> {
+interface PosterGridWidgetProps extends Omit<BlockWidgetWrapperProps<PosterGridBlock>, 'block'> {
   block: PosterGridBlock;
 }
 
@@ -145,7 +145,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   if (!items || items.length === 0) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BaseWidget 
+        <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
           isSelected={isSelected}
@@ -166,14 +166,14 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
             )}
             <p className="text-gray-500 text-center">No posters added</p>
           </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -331,7 +331,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           ))}
         </div>
       </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

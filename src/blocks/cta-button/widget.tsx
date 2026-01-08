@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { CTAButtonBlock } from './schema';
 
-interface CTAButtonWidgetProps extends Omit<BaseWidgetProps<CTAButtonBlock>, 'block'> {
+interface CTAButtonWidgetProps extends Omit<BlockWidgetWrapperProps<CTAButtonBlock>, 'block'> {
   block: CTAButtonBlock;
 }
 
@@ -60,7 +60,7 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
   const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
 
   return (
-    <BaseWidget
+    <BlockWidgetWrapper
       block={block}
       onSelect={onSelect}
       isSelected={isSelected}
@@ -85,7 +85,7 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
           {label}
         </a>
       </div>
-    </BaseWidget>
+    </BlockWidgetWrapper>
   );
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { VideoBlock } from './schema';
 
-interface VideoWidgetProps extends Omit<BaseWidgetProps<VideoBlock>, 'block'> {
+interface VideoWidgetProps extends Omit<BlockWidgetWrapperProps<VideoBlock>, 'block'> {
   block: VideoBlock;
 }
 
@@ -165,7 +165,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   if (!src) {
     return (
       <div className={getMarginClass()}>
-        <BaseWidget 
+        <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
           isSelected={isSelected}
@@ -191,7 +191,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
               </div>
             </div>
           </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
@@ -199,7 +199,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   // Main video rendering
   return (
     <div className={getMarginClass()}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -251,7 +251,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
             </div>
           )}
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

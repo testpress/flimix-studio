@@ -1,6 +1,6 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { BadgeStripBlock, BadgeStripItem } from './schema';
 import { BADGE_STRIP_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
@@ -9,7 +9,7 @@ import BlockItemControl from '@layout/BlockItemControl';
 import { generateUniqueId } from '@utils/id';
 import { Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette } from 'lucide-react';
 
-interface BadgeStripWidgetProps extends Omit<BaseWidgetProps<BadgeStripBlock>, 'block'> {
+interface BadgeStripWidgetProps extends Omit<BlockWidgetWrapperProps<BadgeStripBlock>, 'block'> {
   block: BadgeStripBlock;
 }
 
@@ -122,7 +122,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget
+      <BlockWidgetWrapper
         block={block}
         onSelect={onSelect}
         isSelected={isSelected}
@@ -228,7 +228,7 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
           <p className="text-xs text-gray-400">Click the + button above to add your first badge</p>
         </div>
       )}
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

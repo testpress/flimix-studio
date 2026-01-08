@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { SpacerBlock, SpacerHeight } from './schema';
 
-interface SpacerWidgetProps extends Omit<BaseWidgetProps<SpacerBlock>, 'block'> {
+interface SpacerWidgetProps extends Omit<BlockWidgetWrapperProps<SpacerBlock>, 'block'> {
   block: SpacerBlock;
 }
 
@@ -31,7 +31,7 @@ const SpacerWidget: React.FC<SpacerWidgetProps> = ({
   };
 
   return (
-    <BaseWidget
+    <BlockWidgetWrapper
       block={block}
       onSelect={onSelect}
       isSelected={isSelected}
@@ -45,7 +45,7 @@ const SpacerWidget: React.FC<SpacerWidgetProps> = ({
       style={{ backgroundColor: 'transparent' }}
     >
       <div className={`${heightClasses[height] || 'h-8'} w-full bg-transparent`} />
-    </BaseWidget>
+    </BlockWidgetWrapper>
   );
 };
 

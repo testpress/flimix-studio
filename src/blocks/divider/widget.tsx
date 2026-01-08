@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { DividerBlock, DividerThickness, DividerAlignment, DividerStyle } from './schema';
 
-interface DividerWidgetProps extends Omit<BaseWidgetProps<DividerBlock>, 'block'> {
+interface DividerWidgetProps extends Omit<BlockWidgetWrapperProps<DividerBlock>, 'block'> {
   block: DividerBlock;
 }
 
@@ -66,7 +66,7 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
   };
 
   return (
-    <BaseWidget
+    <BlockWidgetWrapper
       block={block}
       onSelect={onSelect}
       isSelected={isSelected}
@@ -84,7 +84,7 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
           style={getInlineStyles()}
         />
       </div>
-    </BaseWidget>
+    </BlockWidgetWrapper>
   );
 };
 

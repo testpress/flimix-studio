@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { CarouselBlock, CarouselItem, ItemSize } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import BlockItemControl from '@layout/BlockItemControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface CarouselWidgetProps extends Omit<BaseWidgetProps<CarouselBlock>, 'block'> {
+interface CarouselWidgetProps extends Omit<BlockWidgetWrapperProps<CarouselBlock>, 'block'> {
   block: CarouselBlock;
 }
 
@@ -388,7 +388,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   if (!items || items.length === 0) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BaseWidget
+        <BlockWidgetWrapper
           block={block}
           onSelect={onSelect}
           isSelected={isSelected}
@@ -411,14 +411,14 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             )}
             <p className="text-gray-500 text-center">No carousel items added</p>
           </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget
+      <BlockWidgetWrapper
         block={block}
         onSelect={onSelect}
         isSelected={isSelected}
@@ -634,7 +634,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             </div>
           </div>
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { TabsBlock } from './schema';
 import BlockManager from '@domain/BlockManager';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
@@ -8,7 +8,7 @@ import type { VisibilityContext } from '@type/visibility';
 import type { Block } from '@type/block';
 import { useSelection } from '@context/SelectionContext';
 
-interface TabsWidgetProps extends Omit<BaseWidgetProps<TabsBlock>, 'block'> {
+interface TabsWidgetProps extends Omit<BlockWidgetWrapperProps<TabsBlock>, 'block'> {
   block: TabsBlock;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
@@ -203,7 +203,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 
   if (!tabs || tabs.length === 0) {
     return (
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={handleSelect}
         isSelected={isSelected}
@@ -220,13 +220,13 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         }}
       >
         <p className="text-gray-500 text-center">No tabs configured</p>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     );
   }
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={handleSelect}
         isSelected={isSelected}
@@ -251,7 +251,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
             {tabContent}
           </div>
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

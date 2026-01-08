@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { HeroBlock } from './schema';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ItemWidget from './ItemWidget';
@@ -8,7 +8,7 @@ import BlockItemControl from '@layout/BlockItemControl';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 
-interface HeroWidgetProps extends Omit<BaseWidgetProps<HeroBlock>, 'block'> {
+interface HeroWidgetProps extends Omit<BlockWidgetWrapperProps<HeroBlock>, 'block'> {
   block: HeroBlock;
 }
 
@@ -166,7 +166,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
 
   return (
     <div>
-      <BaseWidget
+      <BlockWidgetWrapper
         block={block}
         onSelect={onSelect}
         isSelected={isSelected}
@@ -306,7 +306,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
             </>
           )}
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

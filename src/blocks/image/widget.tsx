@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { ImageBlock } from './schema';
 
-interface ImageWidgetProps extends Omit<BaseWidgetProps<ImageBlock>, 'block'> {
+interface ImageWidgetProps extends Omit<BlockWidgetWrapperProps<ImageBlock>, 'block'> {
   block: ImageBlock;
 }
 
@@ -150,7 +150,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   if (!src) {
     return (
       <div className={getMarginClass()}>
-        <BaseWidget 
+        <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
           isSelected={isSelected}
@@ -169,7 +169,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
               <p className="text-sm">Add an image URL in the settings panel</p>
             </div>
           </div>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
@@ -177,7 +177,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   // Main image rendering
   return (
     <div className={getMarginClass()}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -223,7 +223,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
             )}
           </div>
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

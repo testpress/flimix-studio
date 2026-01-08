@@ -1,9 +1,9 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { TextBlock } from './schema';
 
-interface TextWidgetProps extends Omit<BaseWidgetProps<TextBlock>, 'block'> {
+interface TextWidgetProps extends Omit<BlockWidgetWrapperProps<TextBlock>, 'block'> {
   block: TextBlock;
 }
 
@@ -131,7 +131,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   if (!content) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BaseWidget 
+        <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
           isSelected={isSelected}
@@ -147,14 +147,14 @@ const TextWidget: React.FC<TextWidgetProps> = ({
           }}
         >
           <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-gray-500 text-center`} style={textDecorationStyle}>No content provided</p>
-        </BaseWidget>
+        </BlockWidgetWrapper>
       </div>
     );
   }
 
     return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -174,7 +174,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
             {content}
           </div>
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

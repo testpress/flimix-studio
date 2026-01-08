@@ -1,7 +1,7 @@
 import React from 'react';
 import BlockManager from '@domain/BlockManager';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { SectionBlock } from './schema';
 import BlockInsertDropdown from '@layout/BlockInsertDropdown';
 import type { VisibilityContext } from '@type/visibility';
@@ -9,7 +9,7 @@ import type { Block } from '@type/block';
 import { Plus } from 'lucide-react';
 import { usePanel } from '@context/PanelContext';
 
-interface SectionWidgetProps extends Omit<BaseWidgetProps<SectionBlock>, 'block'> {
+interface SectionWidgetProps extends Omit<BlockWidgetWrapperProps<SectionBlock>, 'block'> {
   block: SectionBlock;
   visibilityContext: VisibilityContext;
   showDebug?: boolean;
@@ -91,7 +91,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }} className="h-full">
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={handleSelect}
         isSelected={isSelected}
@@ -168,7 +168,7 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
             </div>
           )}
         </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };

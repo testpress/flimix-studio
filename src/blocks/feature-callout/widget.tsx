@@ -1,6 +1,6 @@
 import React from 'react';
-import BaseWidget from '@blocks/shared/BaseWidget';
-import type { BaseWidgetProps } from '@blocks/shared/BaseWidget';
+import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
+import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { FeatureCalloutBlock } from './schema';
 import { FEATURE_CALLOUT_ITEM_LIMIT } from './schema';
 import { useSelection } from '@context/SelectionContext';
@@ -9,7 +9,7 @@ import BlockItemControl from '@layout/BlockItemControl';
 import { generateUniqueId } from '@utils/id';
 import Icon from '@components/Icon';
 
-interface FeatureCalloutWidgetProps extends Omit<BaseWidgetProps, 'block'> {
+interface FeatureCalloutWidgetProps extends Omit<BlockWidgetWrapperProps, 'block'> {
   block: FeatureCalloutBlock;
 }
 
@@ -128,7 +128,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BaseWidget 
+      <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
         isSelected={isSelected}
@@ -240,7 +240,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
           </div>
         )}
       </div>
-      </BaseWidget>
+      </BlockWidgetWrapper>
     </div>
   );
 };
