@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseItemForm from '@blocks/settings/BaseItemForm';
+import BaseItemForm from '@components/block-settings/BaseItemForm';
 import type { FeatureCalloutItem } from './schema';
 import { FEATURE_ICONS } from './schema';
 

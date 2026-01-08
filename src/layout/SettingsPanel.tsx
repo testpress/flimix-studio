@@ -8,7 +8,7 @@ import type {
 } from '@type/form';
 import type { VisibilityProps } from '@type/visibility';
 import type { StyleProps } from '@type/style';
-import { VisibilityForm, StyleForm } from '@blocks/settings';
+import { VisibilityForm, StyleForm } from '@components/block-settings';
 import HeroForm from '@blocks/hero/form';
 import TextForm from '@blocks/text/form';
 import SectionForm from '@blocks/section/form';

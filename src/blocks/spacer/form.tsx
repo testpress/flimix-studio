@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropertiesForm, type BlockFormProps, type Field } from '@blocks/settings';
+import { PropertiesForm, type BlockFormProps, type Field } from '@components/block-settings';
 
 const spacerFields: Field[] = [
   {

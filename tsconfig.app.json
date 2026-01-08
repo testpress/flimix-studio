@@ -32,7 +32,7 @@
       "@layout/*": ["src/layout/*"],
       "@blocks/*": ["src/blocks/*"],
       "@blocks/ui/*": ["src/blocks/ui/*"],
-      "@blocks/settings/*": ["src/blocks/settings/*"],
+
       "@utils/*": ["src/utils/*"],
       "@domain/*": ["src/domain/*"],
       "@context/*": ["src/context/*"],

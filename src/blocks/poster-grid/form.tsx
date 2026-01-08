@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropertiesForm from '@blocks/settings/PropertiesForm';
+import PropertiesForm from '@components/block-settings/PropertiesForm';
 import type { BlockFormProps } from '@type/form';
 import type { Field } from '@type/field';
 import type { ButtonAlignment, ButtonIconPosition, PosterGridBlockProps, PosterGridItem, ItemShape, GridDimension, ButtonProps, ProgressBarProps } from './schema';

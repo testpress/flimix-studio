@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseItemForm from '@blocks/settings/BaseItemForm';
+import BaseItemForm from '@components/block-settings/BaseItemForm';
 import type { BadgeStripItem } from './schema';
 import { Plus, Trash2, Link, MessageSquare, Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette } from 'lucide-react';
 

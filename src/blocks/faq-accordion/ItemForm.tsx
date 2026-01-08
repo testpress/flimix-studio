@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseItemForm from '@blocks/settings/BaseItemForm';
+import BaseItemForm from '@components/block-settings/BaseItemForm';
 import type { FAQAccordionItem } from './schema';
 
 interface FAQAccordionItemFormProps {

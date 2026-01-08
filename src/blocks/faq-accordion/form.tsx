@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertiesForm from '@blocks/settings/PropertiesForm';
+import PropertiesForm from '@components/block-settings/PropertiesForm';
 import type { BlockFormProps } from '@type/form';
 import type { Field } from '@type/field';
 import { FAQ_ACCORDION_ITEM_LIMIT } from './schema';
