@@ -16,7 +16,10 @@
       },
       "id": "fe5be124-f82a-474d-b43b-999c0f22c457",
       "style": {
-        "padding": "md"
+        "paddingTop": "24px",
+        "paddingRight": "24px",
+        "paddingBottom": "24px",
+        "paddingLeft": "24px"
       },
       "children": [
         {
@@ -24,8 +27,11 @@
           "id": "534bd1fc-9bad-4f53-924e-20fbc951b25e",
           "props": {},
           "style": {
-            "padding": "md",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#000000",
+            "paddingTop": "24px",
+            "paddingRight": "24px",
+            "paddingBottom": "24px",
+            "paddingLeft": "24px"
           },
           "children": [
             {
@@ -42,9 +48,15 @@
                 "letterSpacing": "widest"
               },
               "style": {
-                "padding": "none",
                 "textAlign": "right",
-                "margin": "none"
+                "paddingTop": "0px",
+                "paddingRight": "0px",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "marginTop": "0px",
+                "marginRight": "0px",
+                "marginBottom": "0px",
+                "marginLeft": "0px"
               }
             }
           ]
@@ -54,9 +66,15 @@
           "id": "88187217-ee43-4c40-8171-95f6cac97072",
           "props": {},
           "style": {
-            "padding": "sm",
             "backgroundColor": "#000000",
-            "margin": "none"
+            "paddingTop": "16px",
+            "paddingRight": "16px",
+            "paddingBottom": "16px",
+            "paddingLeft": "16px",
+            "marginTop": "0px",
+            "marginRight": "0px",
+            "marginBottom": "0px",
+            "marginLeft": "0px"
           },
           "children": [
             {
@@ -153,9 +171,12 @@
                 }
               },
               "style": {
-                "padding": "sm",
                 "backgroundColor": "transparent",
-                "textColor": "#ffffff"
+                "textColor": "#ffffff",
+                "paddingTop": "16px",
+                "paddingRight": "16px",
+                "paddingBottom": "16px",
+                "paddingLeft": "16px"
               }
             }
           ]
@@ -165,8 +186,11 @@
           "id": "d410d84b-b0fc-402f-9f61-718ff4f9feae",
           "props": {},
           "style": {
-            "padding": "md",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#000000",
+            "paddingTop": "0px",
+            "paddingRight": "24px",
+            "paddingBottom": "0px",
+            "paddingLeft": "24px"
           },
           "children": [
             {
@@ -286,10 +310,16 @@
                 }
               },
               "style": {
-                "padding": "sm",
                 "backgroundColor": "transparent",
                 "textColor": "#ffffff",
-                "margin": "sm"
+                "paddingTop": "16px",
+                "paddingRight": "16px",
+                "paddingBottom": "16px",
+                "paddingLeft": "16px",
+                "marginTop": "13px",
+                "marginRight": "7px",
+                "marginBottom": "5px",
+                "marginLeft": "px"
               }
             }
           ]

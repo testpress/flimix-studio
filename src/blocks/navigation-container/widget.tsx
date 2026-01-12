@@ -146,31 +146,6 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
     }
   };
 
-  // Get padding class
-  const getPaddingClass = (padding?: string) => {
-    switch (padding) {
-      case 'sm':
-        return 'p-2';
-      case 'lg':
-        return 'p-6';
-      case 'md':
-      default:
-        return 'p-4';
-    }
-  };
-
-  // Get margin class
-  const getMarginClass = (margin?: string) => {
-    switch (margin) {
-      case 'sm':
-        return 'm-2';
-      case 'lg':
-        return 'm-6';
-      case 'md':
-      default:
-        return 'm-4';
-    }
-  };
 
 
   // Render navigation item
@@ -199,9 +174,15 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
     const itemStyle = {
       color: appliedColor,
       backgroundColor: appliedBackgroundColor,
-      padding: item.style?.padding,
+      paddingTop: item.style?.paddingTop,
+      paddingRight: item.style?.paddingRight,
+      paddingBottom: item.style?.paddingBottom,
+      paddingLeft: item.style?.paddingLeft,
       gap: item.appearance?.iconGap ? `${item.appearance.iconGap}px` : '8px',
-      margin: item.style?.margin,
+      marginTop: item.style?.marginTop,
+      marginRight: item.style?.marginRight,
+      marginBottom: item.style?.marginBottom,
+      marginLeft: item.style?.marginLeft,
       borderRadius: item.style?.borderRadius || '4px', // Default radius for background
     };
 
@@ -360,8 +341,18 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
       onRemove={onRemove}
     >
       <nav
-        className={`relative ${getPaddingClass(block.style?.padding)} ${getMarginClass(block.style?.margin)}`}
-        style={{ backgroundColor: block.style?.backgroundColor }}
+        className="relative"
+        style={{ 
+          backgroundColor: block.style?.backgroundColor,
+          paddingTop: block.style?.paddingTop,
+          paddingRight: block.style?.paddingRight,
+          paddingBottom: block.style?.paddingBottom,
+          paddingLeft: block.style?.paddingLeft,
+          marginTop: block.style?.marginTop,
+          marginRight: block.style?.marginRight,
+          marginBottom: block.style?.marginBottom,
+          marginLeft: block.style?.marginLeft,
+        }}
       >
         {/* Navigation Items */}
         <div
