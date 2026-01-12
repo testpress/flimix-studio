@@ -223,7 +223,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       <div className="p-4 bg-gray-50 rounded-lg">
         <label className="block text-sm text-gray-700 mb-2">Image or Icon</label>
         <select
-          value={item.appearance?.image?.src ? 'image' : item.appearance?.icon ? 'icon' : 'none'}
+          value={item.appearance?.image !== undefined ? 'image' : item.appearance?.icon ? 'icon' : 'none'}
           onChange={(e) => {
             const newType = e.target.value;
             if (newType === 'none') {
@@ -242,7 +242,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
         </select>
 
         {/* Icon Selection */}
-        {item.appearance?.icon !== undefined && !item.appearance?.image?.src && (
+        {item.appearance?.icon !== undefined && item.appearance?.image === undefined && (
           <div>
             <label className="block text-sm text-gray-700 mb-1">Select Icon</label>
             <select
@@ -258,7 +258,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
             
             <div className="mt-3">
               <div className="flex justify-between mb-1">
-                <label className="text-sm text-gray-700">Icon Icon Gap (px)</label>
+                <label className="text-sm text-gray-700">Icon Gap (px)</label>
                 <span className="text-xs text-gray-500">{item.appearance?.iconGap || 0}px</span>
               </div>
               <input
@@ -274,7 +274,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
         )}
 
         {/* Image Selection */}
-        {item.appearance?.image?.src !== undefined && (
+        {item.appearance?.image !== undefined && (
           <div className="space-y-3">
             <div>
               <label className="block text-sm text-gray-700 mb-1">Image URL</label>

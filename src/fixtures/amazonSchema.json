@@ -146,7 +146,11 @@
                   "disabled": false
                 },
                 "hideIcons": false,
-                "itemGap": 2
+                "itemGap": 2,
+                "colors": {
+                  "itemText": "#ffffff",
+                  "hoverText": "#a0a0a0"
+                }
               },
               "style": {
                 "padding": "sm",
@@ -276,7 +280,10 @@
                   "disabled": false
                 },
                 "hideIcons": false,
-                "itemGap": 0
+                "itemGap": 0,
+                "colors": {
+                  "hoverText": "#949494"
+                }
               },
               "style": {
                 "padding": "sm",
