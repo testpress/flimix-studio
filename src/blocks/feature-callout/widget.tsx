@@ -144,11 +144,19 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
           color: isHexColor ? style.textColor : undefined,
           borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
-          margin: style?.margin ? marginMap[style.margin] : undefined,
           maxWidth: style?.maxWidth || undefined,
+          ...style,
         }}
       >
-      <div className={`w-full ${alignmentClasses[style?.textAlign || 'center']} ${style?.padding === 'lg' ? 'p-12' : style?.padding === 'md' ? 'p-8' : 'p-6'}`}>
+      <div 
+        className={`w-full ${alignmentClasses[style?.textAlign || 'center']} ${!style?.paddingTop ? 'p-6' : ''}`}
+        style={{
+           paddingTop: style?.paddingTop,
+           paddingRight: style?.paddingRight,
+           paddingBottom: style?.paddingBottom,
+           paddingLeft: style?.paddingLeft,
+        }}
+      >
         {/* Title */}
         {title && (
           <h2 className={`text-3xl md:text-4xl font-bold mb-2 ${textColorClass}`} style={textColorStyle}>

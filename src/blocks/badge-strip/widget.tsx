@@ -81,7 +81,13 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
     const newItem: BadgeStripItem = {
       id: generateUniqueId(),
       label: 'New Badge',
-      icon: 'Award'
+      icon: 'Award',
+      style: {
+        paddingTop: '15px',
+        paddingRight: '15px',
+        paddingBottom: '15px',
+        paddingLeft: '15px',
+      }
     };
     addBlockItem(block.id, newItem);
   };
@@ -178,6 +184,14 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                       backgroundColor: item.style?.backgroundColor || '#000000',
                       color: item.style?.textColor || '#ffffff',
                       boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
+                      paddingTop: item.style?.paddingTop,
+                      paddingRight: item.style?.paddingRight,
+                      paddingBottom: item.style?.paddingBottom,
+                      paddingLeft: item.style?.paddingLeft,
+                      marginTop: item.style?.marginTop,
+                      marginRight: item.style?.marginRight,
+                      marginBottom: item.style?.marginBottom,
+                      marginLeft: item.style?.marginLeft,
                     }}
                     onClick={(e) => {
                       e.preventDefault(); // Prevent page reload
@@ -204,6 +218,14 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
                       backgroundColor: item.style?.backgroundColor || '#000000',
                       color: item.style?.textColor || '#ffffff',
                       boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
+                      paddingTop: item.style?.paddingTop,
+                      paddingRight: item.style?.paddingRight,
+                      paddingBottom: item.style?.paddingBottom,
+                      paddingLeft: item.style?.paddingLeft,
+                      marginTop: item.style?.marginTop,
+                      marginRight: item.style?.marginRight,
+                      marginBottom: item.style?.marginBottom,
+                      marginLeft: item.style?.marginLeft,
                     }}
                     onClick={(e) => {
                       e.stopPropagation();

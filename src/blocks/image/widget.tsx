@@ -13,26 +13,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   const { src, alt, link, size, aspectRatio, fit, alignment } = block.props;
   const { style } = block;
 
-  // Get padding class from style settings
-  const getPaddingClass = () => {
-    switch (style?.padding) {
-      case 'lg': return 'p-6';
-      case 'sm': return 'p-2';
-      case 'none': return 'p-0';
-      default: return 'p-4'; // md
-    }
-  };
 
-  // Get margin class from style settings
-  const getMarginClass = () => {
-    switch (style?.margin) {
-      case 'lg': return 'm-6';
-      case 'md': return 'm-4';
-      case 'sm': return 'm-2';
-      case 'none': return 'm-0';
-      default: return 'm-4';
-    }
-  };
 
   // Get background color
   const getBackgroundColor = () => {
@@ -149,7 +130,12 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   // Empty state when no image
   if (!src) {
     return (
-      <div className={getMarginClass()}>
+      <div style={{
+        marginTop: style?.marginTop,
+        marginRight: style?.marginRight,
+        marginBottom: style?.marginBottom,
+        marginLeft: style?.marginLeft
+      }}>
         <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
@@ -163,7 +149,12 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
           className={`${widgetClasses} ${style?.backgroundColor && style.backgroundColor.startsWith('rgba') ? '!bg-transparent' : ''}`}
           style={getBackgroundColorStyle()}
         >
-          <div className={`w-full ${getPaddingClass()}`}>
+          <div className="w-full" style={{
+            paddingTop: style?.paddingTop,
+            paddingRight: style?.paddingRight,
+            paddingBottom: style?.paddingBottom,
+            paddingLeft: style?.paddingLeft
+          }}>
             <div className="text-center py-12 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
               <p className="mb-2 text-lg">No image selected</p>
               <p className="text-sm">Add an image URL in the settings panel</p>
@@ -176,7 +167,12 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
 
   // Main image rendering
   return (
-    <div className={getMarginClass()}>
+    <div style={{
+      marginTop: style?.marginTop,
+      marginRight: style?.marginRight,
+      marginBottom: style?.marginBottom,
+      marginLeft: style?.marginLeft
+    }}>
       <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
@@ -191,7 +187,12 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
         style={getBackgroundColorStyle()}
       >
         {/* Apply padding from style settings */}
-        <div className={`w-full ${getPaddingClass()}`}>
+        <div className="w-full" style={{
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft
+        }}>
           {/* Use flexbox with proper alignment to position the image */}
           <div className={`flex ${getAlignmentClasses()} w-full`}>
             {link ? (
