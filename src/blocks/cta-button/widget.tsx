@@ -38,9 +38,6 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
     }
   };
 
-  // Clean object maps for CSS classes
-  const paddingClass = { lg: 'p-6', md: 'p-4', sm: 'p-2', none: 'p-0' }[style?.padding ?? 'md'];
-  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
   // Custom box shadow styles for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
@@ -70,7 +67,16 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
       onMoveDown={onMoveDown}
       onDuplicate={onDuplicate}
       onRemove={onRemove}
-      className={`${paddingClass} ${marginClass} ${borderRadiusClass}`}
+      style={{
+        paddingTop: style?.paddingTop,
+        paddingRight: style?.paddingRight,
+        paddingBottom: style?.paddingBottom,
+        paddingLeft: style?.paddingLeft,
+        marginTop: style?.marginTop,
+        marginRight: style?.marginRight,
+        marginBottom: style?.marginBottom,
+        marginLeft: style?.marginLeft,
+      }}
     >
       <div className={`flex ${getAlignmentClass()}`}>
         <a

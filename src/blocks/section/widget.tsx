@@ -38,12 +38,6 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   const { openLibrary } = usePanel();
   const hasChildren = children && children.length > 0;
 
-  const paddingClass = style?.padding === 'lg' ? 'p-8' : 
-                      style?.padding === 'md' ? 'p-6' : 
-                      style?.padding === 'sm' ? 'p-4' : 'p-6';
-  const marginClass = style?.margin === 'lg' ? 'm-8' : 
-                     style?.margin === 'md' ? 'm-6' : 
-                     style?.margin === 'sm' ? 'm-4' : 'm-0';
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' : 
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
@@ -101,9 +95,17 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`relative overflow-hidden ${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass} ${emptyColumnClasses} h-full flex flex-col`}
+        className={`relative overflow-hidden ${borderRadiusClass} ${backgroundClass} ${emptyColumnClasses} h-full flex flex-col`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft,
+          marginTop: style?.marginTop,
+          marginRight: style?.marginRight,
+          marginBottom: style?.marginBottom,
+          marginLeft: style?.marginLeft,
         }}
       >
         {/* Background Image */}

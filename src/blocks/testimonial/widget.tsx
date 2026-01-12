@@ -65,14 +65,6 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     }
   };
 
-  const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' :
-    style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' :
-      style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
-
-  const marginClass = style?.margin === 'lg' ? 'm-8' :
-    style?.margin === 'md' ? 'm-6' :
-      style?.margin === 'sm' ? 'm-4' : 'm-0';
-
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' :
     style?.borderRadius === 'md' ? 'rounded-md' :
       style?.borderRadius === 'sm' ? 'rounded-sm' : '';
@@ -571,7 +563,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
   if (!items || items.length === 0) {
     return (
-      <div className={marginClass}>
+      <div style={{
+        marginTop: style?.marginTop,
+        marginRight: style?.marginRight,
+        marginBottom: style?.marginBottom,
+        marginLeft: style?.marginLeft,
+      }}>
         <div style={{ boxShadow: boxShadowStyle }}>
           <BlockWidgetWrapper
             block={block}
@@ -584,9 +581,13 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             onDuplicate={onDuplicate}
             onRemove={onRemove}
             onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-            className={`${paddingClass} ${borderRadiusClass} ${backgroundClass}`}
+            className={`${borderRadiusClass} ${backgroundClass}`}
             style={{
-              backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
+              backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+              paddingTop: style?.paddingTop,
+              paddingRight: style?.paddingRight,
+              paddingBottom: style?.paddingBottom,
+              paddingLeft: style?.paddingLeft,
             }}
           >
             <div className={`${textAlignClass}`}>
@@ -604,7 +605,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   }
 
   return (
-    <div className={marginClass}>
+    <div style={{
+      marginTop: style?.marginTop,
+      marginRight: style?.marginRight,
+      marginBottom: style?.marginBottom,
+      marginLeft: style?.marginLeft,
+    }}>
       <div style={{ boxShadow: boxShadowStyle }}>
         <BlockWidgetWrapper
           block={block}
@@ -617,9 +623,13 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           onDuplicate={onDuplicate}
           onRemove={onRemove}
           onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-          className={`${paddingClass} ${borderRadiusClass} ${backgroundClass}`}
+          className={`${borderRadiusClass} ${backgroundClass}`}
           style={{
-            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
+            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+            paddingTop: style?.paddingTop,
+            paddingRight: style?.paddingRight,
+            paddingBottom: style?.paddingBottom,
+            paddingLeft: style?.paddingLeft,
           }}
         >
           <div className={`w-full ${textAlignClass}`}>

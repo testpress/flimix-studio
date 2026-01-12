@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StyleProps, Padding, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@type/style';
+import type { StyleProps, TextAlign, BorderRadius, BoxShadow, TabAlignment, TabStyle, StyleValue } from '@type/style';
 
 interface StyleFormProps {
   style: StyleProps;
@@ -49,37 +49,103 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
   };
 
 
+  // Helper to parse px value to number
+  const parsePxValue = (value: string | undefined): number => {
+    if (!value) return 0;
+    return parseInt(value.replace('px', '')) || 0;
+  };
+
   // Helper function to render Padding field
   const renderPaddingField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Padding</label>
-      <select
-        value={style.padding || 'md'}
-        onChange={(e) => handleStyleChange('padding', e.target.value as Padding)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
-      >
-        <option value="none">None</option>
-        <option value="sm">Small</option>
-        <option value="md">Medium</option>
-        <option value="lg">Large</option>
-      </select>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Padding (px)</label>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Top</label>
+          <input
+            type="number"
+            min="0"
+            value={parsePxValue(style.paddingTop)}
+            onChange={(e) => handleStyleChange('paddingTop', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Right</label>
+          <input
+            type="number"
+            min="0"
+            value={parsePxValue(style.paddingRight)}
+            onChange={(e) => handleStyleChange('paddingRight', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Bottom</label>
+          <input
+            type="number"
+            min="0"
+            value={parsePxValue(style.paddingBottom)}
+            onChange={(e) => handleStyleChange('paddingBottom', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Left</label>
+          <input
+            type="number"
+            min="0"
+            value={parsePxValue(style.paddingLeft)}
+            onChange={(e) => handleStyleChange('paddingLeft', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+      </div>
     </div>
   );
 
   // Helper function to render Margin field
   const renderMarginField = () => (
     <div>
-      <label className="block text-sm text-gray-700 mb-1">Margin</label>
-      <select
-        value={style.margin || 'none'}
-        onChange={(e) => handleStyleChange('margin', e.target.value as Padding)}
-        className="w-full p-2 border border-gray-300 rounded text-sm"
-      >
-        <option value="none">None</option>
-        <option value="sm">Small</option>
-        <option value="md">Medium</option>
-        <option value="lg">Large</option>
-      </select>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Margin (px)</label>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Top</label>
+          <input
+            type="number"
+            value={parsePxValue(style.marginTop)}
+            onChange={(e) => handleStyleChange('marginTop', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Right</label>
+          <input
+            type="number"
+            value={parsePxValue(style.marginRight)}
+            onChange={(e) => handleStyleChange('marginRight', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Bottom</label>
+          <input
+            type="number"
+            value={parsePxValue(style.marginBottom)}
+            onChange={(e) => handleStyleChange('marginBottom', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Left</label>
+          <input
+            type="number"
+            value={parsePxValue(style.marginLeft)}
+            onChange={(e) => handleStyleChange('marginLeft', `${e.target.value}px`)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+          />
+        </div>
+      </div>
     </div>
   );
 
