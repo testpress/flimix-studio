@@ -23,7 +23,8 @@ import {
   Copy,
   Trash2,
   MoveUp,
-  MoveDown
+  MoveDown,
+  Navigation
 } from 'lucide-react';
 import { usePanel } from '@context/PanelContext';
 import { useSelection } from '@context/SelectionContext';
@@ -297,6 +298,7 @@ function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findCo
       'badge-strip': <Award size={iconSize} />,
       'rowLayout': <LayoutIcon size={iconSize} />,
       'contentLibrary': <Grid2x2 size={iconSize} />,
+      'navigation-container': <Navigation size={iconSize} />,
     };
     
     const icon = iconMap[block.type] ?? <RectangleEllipsis size={iconSize} />;
@@ -367,6 +369,7 @@ function BlockItem({ block, level, parentType, onSelect, selectedBlockId, findCo
               'badge-strip': 'Badge Strip',
               'rowLayout': 'Row Layout',
               'contentLibrary': 'Content Library',
+              'navigation-container': 'Navigation Container',
             };
             
             const defaultDisplayName = displayNameMap[block.type] || 'Unknown Block';

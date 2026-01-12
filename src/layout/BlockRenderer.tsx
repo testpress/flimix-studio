@@ -40,6 +40,8 @@ import type { RowLayoutBlock } from '@blocks/row-layout/schema';
 import { MaxColumns, MinColumns } from '@blocks/row-layout/schema';
 import ContentLibraryWidget from '@blocks/content-library/widget';
 import type { ContentLibraryBlock } from '@blocks/content-library/schema';
+import NavigationContainerWidget from '@blocks/navigation-container/widget';
+import type { NavigationContainerBlock } from '@blocks/navigation-container/schema';
 /**
  * Evaluate if a block should be visible based on visibility rules and context
  * @param visibility - The visibility rules for the block
@@ -261,6 +263,15 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
           <ContentLibraryWidget
             block={block as ContentLibraryBlock}
             onSelect={(contentLibraryBlock) => onSelect?.(contentLibraryBlock as Block)}
+            isSelected={isSelected}
+            {...widgetControlProps}
+          />
+        );
+      case 'navigation-container':
+        return (
+          <NavigationContainerWidget
+            block={block as NavigationContainerBlock}
+            onSelect={(navigationContainerBlock) => onSelect?.(navigationContainerBlock as Block)}
             isSelected={isSelected}
             {...widgetControlProps}
           />
