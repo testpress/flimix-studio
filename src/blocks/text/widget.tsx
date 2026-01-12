@@ -21,9 +21,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   const { props, style } = block;
   const { content, fontFamily, fontSize, fontWeight, fontStyle, textDecoration, lineHeight, letterSpacing } = props;
   
-  // Clean object maps for CSS classes (similar to other blocks)
-  const paddingClass = { lg: 'p-8', md: 'p-6', sm: 'p-4', none: 'p-0' }[style?.padding ?? 'md'];
-  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
+  // Border radius class
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
   
   // Font family classes
@@ -141,9 +139,17 @@ const TextWidget: React.FC<TextWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
-          className={`${paddingClass} ${marginClass} ${borderRadiusClass} bg-gray-50 border-2 border-dashed border-gray-300`}
+          className={`${borderRadiusClass} bg-gray-50 border-2 border-dashed border-gray-300`}
           style={{
             backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+            paddingTop: style?.paddingTop,
+            paddingRight: style?.paddingRight,
+            paddingBottom: style?.paddingBottom,
+            paddingLeft: style?.paddingLeft,
+            marginTop: style?.marginTop,
+            marginRight: style?.marginRight,
+            marginBottom: style?.marginBottom,
+            marginLeft: style?.marginLeft,
           }}
         >
           <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-gray-500 text-center`} style={textDecorationStyle}>No content provided</p>
@@ -164,9 +170,17 @@ const TextWidget: React.FC<TextWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
+        className={`${borderRadiusClass} ${backgroundClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft,
+          marginTop: style?.marginTop,
+          marginRight: style?.marginRight,
+          marginBottom: style?.marginBottom,
+          marginLeft: style?.marginLeft,
         }}
       >
         <div className={`${textAlignClass}`}>

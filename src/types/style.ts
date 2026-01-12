@@ -1,6 +1,5 @@
 // Theme and padding enums
 export type Theme = 'light' | 'dark';
-export type Padding = 'none' | 'sm' | 'md' | 'lg';
 
 // Text alignment options
 export type TextAlign = 'left' | 'center' | 'right';
@@ -22,7 +21,6 @@ export type TabStyle = 'underline' | 'pill' | 'boxed';
 // Keep literal information *and* allow arbitrary strings
 export type StyleValue =
   | Theme
-  | Padding
   | TextAlign
   | BorderRadius
   | BoxShadow
@@ -34,8 +32,16 @@ export type StyleValue =
 // Enhanced style properties
 export interface StyleProps {
   theme?: Theme;
-  padding?: Padding;
-  margin?: Padding;
+  // Individual padding sides (in pixels as strings, e.g., "10px")
+  paddingTop?: string;
+  paddingRight?: string;
+  paddingBottom?: string;
+  paddingLeft?: string;
+  // Individual margin sides (in pixels as strings, e.g., "10px")
+  marginTop?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  marginLeft?: string;
   textAlign?: TextAlign;
   backgroundColor?: string;
   textColor?: string;

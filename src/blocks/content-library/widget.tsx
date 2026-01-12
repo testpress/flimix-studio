@@ -20,20 +20,6 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 }) => {
   const { props, style } = block;
 
-  const paddingClass = {
-    none: 'p-0',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-  }[style?.padding || 'lg'];
-
-  const marginClass = {
-    none: 'm-0',
-    sm: 'm-4',
-    md: 'm-6',
-    lg: 'm-8',
-  }[style?.margin || 'none'];
-
   const containerStyle = style?.backgroundColor ? { backgroundColor: style.backgroundColor } : {};
   
   const [items, setItems] = useState<Content[]>([]);
@@ -143,7 +129,13 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 
   return (
     <div 
-      className={`relative group ${isSelected ? 'ring-2 ring-blue-500' : ''} ${marginClass}`}
+      className={`relative group ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+      style={{
+        marginTop: style?.marginTop,
+        marginRight: style?.marginRight,
+        marginBottom: style?.marginBottom,
+        marginLeft: style?.marginLeft,
+      }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect?.(block);
@@ -165,8 +157,14 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 
       {/* Main Content Area */}
       <div 
-        className={`bg-black min-h-[500px] ${paddingClass}`}
-        style={containerStyle}
+        className="bg-black min-h-[500px]"
+        style={{
+          ...containerStyle,
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft,
+        }}
       >
         {/* Optional Block Title */}
         {props.title && (
