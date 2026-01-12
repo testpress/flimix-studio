@@ -9,6 +9,287 @@
   },
   "blocks": [
     {
+      "type": "rowLayout",
+      "props": {
+        "preset": "3-col-wide-center",
+        "columnGap": "md"
+      },
+      "id": "fe5be124-f82a-474d-b43b-999c0f22c457",
+      "style": {
+        "padding": "md"
+      },
+      "children": [
+        {
+          "type": "section",
+          "id": "534bd1fc-9bad-4f53-924e-20fbc951b25e",
+          "props": {},
+          "style": {
+            "padding": "md",
+            "backgroundColor": "#000000"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "147e44d3-4831-47a3-954a-41a4d9539235",
+              "props": {
+                "content": "Flimix",
+                "fontFamily": "mono",
+                "fontSize": "3xl",
+                "fontWeight": "bold",
+                "fontStyle": "italic",
+                "textDecoration": "line-through",
+                "lineHeight": "loose",
+                "letterSpacing": "widest"
+              },
+              "style": {
+                "padding": "none",
+                "textAlign": "right",
+                "margin": "none"
+              }
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "id": "88187217-ee43-4c40-8171-95f6cac97072",
+          "props": {},
+          "style": {
+            "padding": "sm",
+            "backgroundColor": "#000000",
+            "margin": "none"
+          },
+          "children": [
+            {
+              "type": "navigation-container",
+              "id": "8644f480-2326-4444-8eb6-3ed2ec941ee6",
+              "props": {
+                "items": [
+                  {
+                    "id": "57461643-ee97-4d55-9256-50833664d2ab",
+                    "type": "internal",
+                    "label": "Home",
+                    "link": "/home"
+                  },
+                  {
+                    "id": "8bfa1b1e-5a54-4454-bbec-6032cfee92e3",
+                    "type": "internal",
+                    "label": "Movies",
+                    "link": "/Movies"
+                  },
+                  {
+                    "id": "f48edb01-4826-4662-8024-1f90d6898104",
+                    "type": "internal",
+                    "label": "Series",
+                    "link": "/Series"
+                  },
+                  {
+                    "id": "39b4a69c-0850-4ce8-9c43-6b26594b73a5",
+                    "type": "dropdown",
+                    "label": "Live",
+                    "link": "/",
+                    "items": [
+                      {
+                        "id": "f7e25cad-28fb-4cf1-b193-dcd497097923",
+                        "type": "internal",
+                        "label": "Live Streams",
+                        "link": "/",
+                        "subtitle": "Real-time broadcasts of live events and sessions",
+                        "appearance": {
+                          "icon": "Radio",
+                          "iconGap": 22
+                        }
+                      },
+                      {
+                        "id": "db6d85e8-4a6d-4f94-b22a-a24301d6e0d5",
+                        "type": "internal",
+                        "label": "Zoom Classes",
+                        "link": "/",
+                        "subtitle": "Scheduled interactive session via Zoom",
+                        "appearance": {
+                          "icon": "Video",
+                          "iconGap": 23
+                        }
+                      }
+                    ],
+                    "dropdown": {
+                      "paddingTop": 10,
+                      "paddingRight": 10,
+                      "paddingBottom": 10,
+                      "paddingLeft": 10,
+                      "itemMarginBottom": 10
+                    }
+                  },
+                  {
+                    "id": "93cbc6fc-e9f5-4f94-9880-676f3a522793",
+                    "type": "internal",
+                    "label": "Podcasts",
+                    "link": "/podcasts"
+                  },
+                  {
+                    "id": "c1ab827e-05ca-4c5a-8b49-c0ed6ef056b8",
+                    "type": "internal",
+                    "label": "Albums",
+                    "link": "/albums"
+                  },
+                  {
+                    "id": "d2175639-b970-4268-8f48-86ea222c79d8",
+                    "type": "internal",
+                    "label": "Books",
+                    "link": "/books"
+                  }
+                ],
+                "alignment": "left",
+                "fontSize": "md",
+                "iconSize": "md",
+                "hover": {
+                  "effect": "color",
+                  "disabled": false
+                },
+                "hideIcons": false,
+                "itemGap": 2
+              },
+              "style": {
+                "padding": "sm",
+                "backgroundColor": "transparent",
+                "textColor": "#ffffff"
+              }
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "id": "d410d84b-b0fc-402f-9f61-718ff4f9feae",
+          "props": {},
+          "style": {
+            "padding": "md",
+            "backgroundColor": "#000000"
+          },
+          "children": [
+            {
+              "type": "navigation-container",
+              "id": "50f6caf5-beb0-4f2c-99f2-465931de089f",
+              "props": {
+                "items": [
+                  {
+                    "id": "adb4e5f9-4e20-43ae-9c71-75e5872d8129",
+                    "type": "internal",
+                    "label": "",
+                    "link": "/searc",
+                    "appearance": {
+                      "icon": "Search"
+                    }
+                  },
+                  {
+                    "id": "35ea39b3-92ba-47a6-9985-04d55d673d26",
+                    "type": "internal",
+                    "label": "",
+                    "link": "/notification",
+                    "appearance": {
+                      "icon": "Bell"
+                    }
+                  },
+                  {
+                    "id": "dda3a9d8-d9e5-46c9-95ac-97a5b2232b85",
+                    "type": "dropdown",
+                    "label": "Harish V",
+                    "link": "/",
+                    "appearance": {
+                      "image": {
+                        "src": "https://m.media-amazon.com/images/G/02/CerberusPrimeVideo-FN38FSBD/adult-2.png"
+                      }
+                    },
+                    "items": [
+                      {
+                        "id": "f04d9d1d-600a-4200-b894-685d42fd9ecf",
+                        "type": "internal",
+                        "label": "Harish V",
+                        "link": "/",
+                        "subtitle": "9952807662",
+                        "appearance": {
+                          "image": {
+                            "src": "https://m.media-amazon.com/images/G/02/CerberusPrimeVideo-FN38FSBD/adult-2.png"
+                          }
+                        }
+                      },
+                      {
+                        "id": "642af776-adb4-4576-b4aa-8feffcbb1a59",
+                        "type": "internal",
+                        "label": "Plan and Billing",
+                        "link": "/",
+                        "appearance": {
+                          "icon": "Box"
+                        }
+                      },
+                      {
+                        "id": "1c59826b-c344-4240-b3cc-505b58e26651",
+                        "type": "internal",
+                        "label": "Subscription",
+                        "link": "/",
+                        "appearance": {
+                          "icon": "DollarSign"
+                        }
+                      },
+                      {
+                        "id": "e681032f-8b5c-48d7-8961-00f3fe19cd70",
+                        "type": "internal",
+                        "label": "My account",
+                        "link": "/",
+                        "appearance": {
+                          "icon": "Users"
+                        }
+                      },
+                      {
+                        "id": "6d302e5c-88d3-40cb-b574-bcf6d5808149",
+                        "type": "internal",
+                        "label": "Watch History",
+                        "link": "/"
+                      },
+                      {
+                        "id": "f71c401b-0397-4535-8cec-5512f944b120",
+                        "type": "internal",
+                        "label": "Downloads",
+                        "link": "/"
+                      },
+                      {
+                        "id": "d4e0ee0d-65a2-4f1d-84dd-80919fb57e04",
+                        "type": "internal",
+                        "label": "Sign out",
+                        "link": "/"
+                      },
+                      {
+                        "id": "d535dc89-1c50-4da0-8f48-9feb9ab346a2",
+                        "type": "internal",
+                        "label": "Help & Support",
+                        "link": "/",
+                        "appearance": {
+                          "icon": "CircleQuestionMark"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "alignment": "left",
+                "fontSize": "md",
+                "iconSize": "md",
+                "hover": {
+                  "effect": "color",
+                  "disabled": false
+                },
+                "hideIcons": false,
+                "itemGap": 0
+              },
+              "style": {
+                "padding": "sm",
+                "backgroundColor": "transparent",
+                "textColor": "#ffffff",
+                "margin": "sm"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "type": "hero",
       "id": "hero-amazon-001",
       "props": {

@@ -102,6 +102,23 @@ const PropertiesForm: React.FC<PropertiesFormProps> = ({
           />
         );
         
+      case 'range':
+        return (
+          <div className="flex items-center gap-3">
+            <input
+              type="range"
+              value={Number(value) || 0}
+              onChange={(e) => handleFieldChange(field.key, Number(e.target.value))}
+              min={field.min || 0}
+              max={field.max || 100}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            />
+            <span className="text-sm text-gray-600 w-8 text-right font-mono">
+              {Number(value) || 0}
+            </span>
+          </div>
+        );
+
       case 'number':
         return (
           <input
