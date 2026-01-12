@@ -52,6 +52,9 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
   const alignmentClass = alignment === 'left' ? 'justify-start' :
                          alignment === 'right' ? 'justify-end' : 'justify-center';
 
+  // Clean object maps for CSS classes
+  const paddingClass = { lg: 'p-6', md: 'p-4', sm: 'p-2', none: 'p-0' }[style?.padding ?? 'md'];
+  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
   const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
   
   // Handle box shadow - custom CSS values for better visibility on dark backgrounds
@@ -101,8 +104,12 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
 
   // Helper function to get item styling classes
   const getItemStyleClasses = (item: BadgeStripItem) => {
+    const itemPaddingClass = { lg: 'p-4', md: 'p-3', sm: 'p-2', none: 'p-0' }[item.style?.padding ?? 'md'];
+    const itemMarginClass = { lg: 'm-4', md: 'm-3', sm: 'm-2', none: 'm-0' }[item.style?.margin ?? 'sm'];
     const itemBorderRadiusClass = { lg: 'rounded-xl', md: 'rounded-lg', sm: 'rounded-md', none: 'rounded-none' }[item.style?.borderRadius ?? 'md'];
-    return itemBorderRadiusClass;
+    // Don't include shadow classes - will be handled by inline styles
+    
+    return `${itemPaddingClass} ${itemMarginClass} ${itemBorderRadiusClass}`;
   };
   
   // Helper function to get item box shadow styles
@@ -126,17 +133,9 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
         onDuplicate={onDuplicate}
         onRemove={onRemove}
         onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-        className={`${borderRadiusClass}`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass}`}
         style={{
-          backgroundColor: style?.backgroundColor || '#000000',
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: style?.backgroundColor || '#000000'
         }}
       >
       <div className={`flex ${alignmentClass} flex-wrap gap-4`}>

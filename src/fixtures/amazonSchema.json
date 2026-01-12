@@ -465,16 +465,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "none",
+        "margin": "none",
         "borderRadius": "none",
-        "textAlign": "left",
-        "paddingTop": "0px",
-        "paddingRight": "0px",
-        "paddingBottom": "0px",
-        "paddingLeft": "0px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       },
       "visibility": {
         "platform": [
@@ -603,16 +597,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
         "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       }
     },
     {
@@ -751,16 +739,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
         "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       }
     },
     {
@@ -899,16 +881,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
         "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       }
     },
     {
@@ -920,11 +896,8 @@
         "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_HCECovercarousel/b7f50a32-d3b8-40a2-aef2-6134494bb002._SX2880_FMjpg_.jpeg"
       },
       "style": {
-        "backgroundColor": "#000000",
-        "paddingTop": "24px",
-        "paddingRight": "24px",
-        "paddingBottom": "24px",
-        "paddingLeft": "24px"
+        "padding": "md",
+        "backgroundColor": "#000000"
       },
       "children": [
         {
@@ -968,10 +941,7 @@
             "alignment": "left"
           },
           "style": {
-            "paddingTop": "24px",
-            "paddingRight": "24px",
-            "paddingBottom": "24px",
-            "paddingLeft": "24px"
+            "padding": "md"
           }
         },
         {
@@ -988,15 +958,9 @@
             "letterSpacing": "wider"
           },
           "style": {
+            "padding": "none",
             "textAlign": "left",
-            "paddingTop": "0px",
-            "paddingRight": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "marginTop": "32px",
-            "marginRight": "32px",
-            "marginBottom": "32px",
-            "marginLeft": "32px"
+            "margin": "lg"
           }
         },
         {
@@ -1009,13 +973,10 @@
             "size": "md"
           },
           "style": {
+            "padding": "md",
             "textAlign": "left",
             "borderRadius": "lg",
-            "backgroundColor": "#303439",
-            "paddingTop": "24px",
-            "paddingRight": "24px",
-            "paddingBottom": "24px",
-            "paddingLeft": "24px"
+            "backgroundColor": "#303439"
           }
         },
         {
@@ -1155,17 +1116,11 @@
           "style": {
             "backgroundColor": "rgba(0, 0, 0, 0)",
             "textColor": "#ffffff",
+            "padding": "lg",
+            "margin": "none",
             "borderRadius": "lg",
             "textAlign": "left",
-            "opacity": "0",
-            "paddingTop": "32px",
-            "paddingRight": "32px",
-            "paddingBottom": "32px",
-            "paddingLeft": "32px",
-            "marginTop": "0px",
-            "marginRight": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px"
+            "opacity": "0"
           }
         }
       ]
@@ -1273,16 +1228,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
         "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       }
     },
     {
@@ -1410,16 +1359,10 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "padding": "lg",
+        "margin": "none",
         "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "textAlign": "left"
       }
     }
   ]

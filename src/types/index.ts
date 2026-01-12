@@ -31,6 +31,7 @@ export {
 export type { PageSchema } from './page';
 export type { 
   Theme, 
+  Padding, 
   TextAlign, 
   BorderRadius, 
   BoxShadow, 

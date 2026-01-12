@@ -56,7 +56,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
     }
   }, [props.items, isSelected, selectBlockItem, block.id]);
 
-
+  const marginClass = { lg: 'm-8', md: 'm-6', sm: 'm-4', none: 'm-0' }[style?.margin ?? 'none'];
 
   // Determine background styling - default to black
   const hasCustomBackground = !!style?.backgroundColor;
@@ -176,13 +176,9 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`relative overflow-hidden ${backgroundClass}`}
+        className={`relative overflow-hidden ${marginClass} ${backgroundClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
         }}
       >
         {/* Hero Content */}

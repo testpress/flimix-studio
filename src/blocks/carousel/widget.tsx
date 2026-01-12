@@ -71,6 +71,14 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
 
+  const paddingClass = style?.padding === 'lg' ? 'p-8' :
+    style?.padding === 'md' ? 'p-6' :
+      style?.padding === 'sm' ? 'p-4' : 'p-6';
+
+  const marginClass = style?.margin === 'lg' ? 'm-8' :
+    style?.margin === 'md' ? 'm-6' :
+      style?.margin === 'sm' ? 'm-4' : 'm-0';
+
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' :
     style?.borderRadius === 'md' ? 'rounded-md' :
       style?.borderRadius === 'sm' ? 'rounded-sm' : '';
@@ -390,17 +398,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           onMoveDown={onMoveDown}
           onDuplicate={onDuplicate}
           onRemove={onRemove}
-          className={`${borderRadiusClass} ${backgroundClass}`}
+          className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
           style={{
-            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft,
-            marginTop: style?.marginTop,
-            marginRight: style?.marginRight,
-            marginBottom: style?.marginBottom,
-            marginLeft: style?.marginLeft,
+            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
           }}
         >
           <div className={`${textAlignClass}`}>
@@ -428,17 +428,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         onMoveDown={onMoveDown}
         onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${borderRadiusClass} ${backgroundClass}`}
+        className={`${paddingClass} ${marginClass} ${borderRadiusClass} ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined
         }}
       >
         <div className={`w-full ${textAlignClass}`}>

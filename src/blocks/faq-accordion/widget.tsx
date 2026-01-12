@@ -72,6 +72,11 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
   // Check if we're at the item limit
   const isAtItemLimit = (items?.length || 0) >= FAQ_ACCORDION_ITEM_LIMIT;
 
+  // Get styling classes based on block style
+  const paddingClass = style?.padding === 'lg' ? 'p-4 sm:p-6 md:p-8' : 
+                      style?.padding === 'md' ? 'p-3 sm:p-4 md:p-6' : 
+                      style?.padding === 'sm' ? 'p-2 sm:p-3 md:p-4' : 'p-3 sm:p-4 md:p-6';
+  
   const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
                         style?.textAlign === 'right' ? 'text-right' : 'text-left';
 
@@ -91,7 +96,12 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     lg: '1rem',
   };
 
-
+  const marginMap = {
+    none: '0',
+    sm: '0.5rem',
+    md: '1rem',
+    lg: '1.5rem',
+  };
 
   // Handle box shadow - custom CSS values for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
@@ -121,15 +131,8 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
     backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
     color: isHexColor ? style.textColor : undefined,
     borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
+    margin: style?.margin ? marginMap[style.margin] : undefined,
     maxWidth: style?.maxWidth || undefined,
-    paddingTop: style?.paddingTop,
-    paddingRight: style?.paddingRight,
-    paddingBottom: style?.paddingBottom,
-    paddingLeft: style?.paddingLeft,
-    marginTop: style?.marginTop,
-    marginRight: style?.marginRight,
-    marginBottom: style?.marginBottom,
-    marginLeft: style?.marginLeft,
   };
 
   if (!items || items.length === 0) {
@@ -146,7 +149,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
           onDuplicate={onDuplicate}
           onRemove={onRemove}
           onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-          className={`${backgroundClass} ${textAlignClass}`}
+          className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
           style={widgetStyle}
         >
         <div className="faq-accordion">
@@ -182,7 +185,7 @@ export const FAQAccordionWidget: React.FC<FAQAccordionWidgetProps> = ({
         onDuplicate={onDuplicate}
         onRemove={onRemove}
         onAddItem={!isAtItemLimit ? handleAddItem : undefined}
-        className={`${backgroundClass} ${textAlignClass}`}
+        className={`${backgroundClass} ${paddingClass} ${textAlignClass}`}
         style={widgetStyle}
       >
       <div className="faq-accordion">
