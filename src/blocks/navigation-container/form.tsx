@@ -159,6 +159,48 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
       {/* Hover Settings & Colors */}
       <div className="p-4 bg-gray-50 rounded-lg space-y-4">
         
+        <h3 className="font-medium text-gray-700">Navigation Item Colors</h3>
+        
+        {/* Item Colors Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-gray-200">
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Text Color</label>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={currentProps.colors?.itemText || '#ffffff'}
+                onChange={(e) => handleColorChange('itemText', e.target.value)}
+                className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
+              />
+              <button
+                onClick={() => handleColorChange('itemText', '')}
+                className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
+                title="Clear color"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Background</label>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={currentProps.colors?.itemBackground || '#000000'}
+                onChange={(e) => handleColorChange('itemBackground', e.target.value)}
+                className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
+              />
+              <button
+                onClick={() => handleColorChange('itemBackground', '')}
+                className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
+                title="Clear color"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Disable Hover Checkbox */}
         <div className="flex items-center">
           <input
@@ -190,47 +232,7 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
               </select>
             </div>
 
-            <h3 className="font-medium text-gray-700 pt-2 border-t border-gray-200">Navigation Item Colors</h3>
-            
-            {/* Item Colors Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-gray-700 mb-1">Text Color</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={currentProps.colors?.itemText || '#ffffff'}
-                    onChange={(e) => handleColorChange('itemText', e.target.value)}
-                    className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
-                  />
-                  <button
-                    onClick={() => handleColorChange('itemText', '')}
-                    className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
-                    title="Clear color"
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-1">Background</label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={currentProps.colors?.itemBackground || '#000000'}
-                    onChange={(e) => handleColorChange('itemBackground', e.target.value)}
-                    className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
-                  />
-                  <button
-                    onClick={() => handleColorChange('itemBackground', '')}
-                    className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
-                    title="Clear color"
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-            </div>
+
 
             {/* Hover Colors Grid - Only if Hover Effect is 'Color' */}
             {currentProps.hover?.effect === 'color' && (
@@ -316,32 +318,6 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
           </div>
         )}
         
-        {/* Show Item Colors even if hover disabled? Usually yes. */}
-        {currentProps.hover?.disabled && (
-           <div className="space-y-4 pt-2 border-t border-gray-200">
-             <h3 className="font-medium text-gray-700">Colors</h3>
-              <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-gray-700 mb-1">Text Color</label>
-                <input
-                  type="color"
-                  value={currentProps.colors?.itemText || '#ffffff'}
-                  onChange={(e) => handleColorChange('itemText', e.target.value)}
-                  className="w-full h-10 border border-gray-300 rounded text-sm cursor-pointer"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-700 mb-1">Background</label>
-                <input
-                  type="color"
-                  value={currentProps.colors?.itemBackground || '#000000'}
-                  onChange={(e) => handleColorChange('itemBackground', e.target.value)}
-                  className="w-full h-10 border border-gray-300 rounded text-sm cursor-pointer"
-                />
-              </div>
-            </div>
-           </div>
-        )}
 
       </div>
 

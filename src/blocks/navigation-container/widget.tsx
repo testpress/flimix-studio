@@ -5,7 +5,7 @@ import type { NavigationContainerBlock, NavigationItem } from './schema';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockEditing } from '@context/BlockEditingContext';
 import BlockItemControl from '@layout/BlockItemControl';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import Icon from '@components/Icon';
 
 interface NavigationContainerWidgetProps extends Omit<BlockWidgetWrapperProps, 'block'> {
@@ -26,7 +26,6 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
   const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
   const { moveBlockItemUp, moveBlockItemDown, removeBlockItem } = useBlockEditing();
   const [openDropdowns, setOpenDropdowns] = useState<Set<string>>(new Set());
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
 
   const { 
@@ -42,7 +41,7 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
   // Extract nested configs with defaults
   const hoverEffect = hover?.effect;
   const disableHover = hover?.disabled || false;
-  const hoverColor = hover?.color;
+  const hoverTextColor = colors?.hoverText;
 
   // Auto-open dropdown when a dropdown item is selected
   useEffect(() => {
@@ -183,8 +182,8 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
 
     // Determine color based on hover state and whether this is a sub-item
     // Sub-items use dropdown colors, main items use item colors
-    const appliedColor = (isHovered && !disableHover && hoverColor)
-      ? hoverColor
+    const appliedColor = (isHovered && !disableHover && hoverTextColor)
+      ? hoverTextColor
       : isSubItem
       ? item.style?.textColor || colors?.dropdownText || '#ffffff'
       : item.style?.textColor || colors?.itemText || block.style?.textColor || '#ffffff';
@@ -207,14 +206,14 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
     };
 
     // Check if we have custom colors defined to determine if we should disable default opacity logic
-    const hasCustomColors = !!hoverColor || !!colors?.hoverBackground;
+    const hasCustomColors = !!hoverTextColor || !!colors?.hoverBackground;
 
     const hoverClass = !disableHover
       ? hoverEffect === 'underline'
         ? 'hover:underline'
         : hoverEffect === 'scale'
         ? 'hover:scale-105'
-        : hasCustomColors || hoverEffect === 'none' || hoverEffect === 'color' || hoverEffect === 'background'
+        : hasCustomColors || hoverEffect === 'none' || hoverEffect === 'color'
         ? ''
         : 'hover:opacity-80' // Default / fallthrough behavior
       : '';
@@ -364,30 +363,13 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
         className={`relative ${getPaddingClass(block.style?.padding)} ${getMarginClass(block.style?.margin)}`}
         style={{ backgroundColor: block.style?.backgroundColor }}
       >
-        {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex justify-between items-center">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-white"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Desktop Navigation */}
+        {/* Navigation Items */}
         <div
-          className={`hidden md:flex items-center ${getAlignmentClass()}`}
+          className={`flex items-center ${getAlignmentClass()}`}
           style={{ gap: `${block.props.itemGap ?? 24}px` }}
         >
           {items.map((item, index) => renderNavigationItem(item, index))}
         </div>
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden flex flex-col gap-2 mt-4">
-            {items.map((item, index) => renderNavigationItem(item, index))}
-          </div>
-        )}
       </nav>
     </BlockWidgetWrapper>
   );
