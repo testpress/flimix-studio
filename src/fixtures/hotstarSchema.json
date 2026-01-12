@@ -147,10 +147,16 @@
       "style": {
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
-        "padding": "lg",
-        "margin": "none",
         "borderRadius": "none",
-        "textAlign": "left"
+        "textAlign": "left",
+        "paddingTop": "32px",
+        "paddingRight": "32px",
+        "paddingBottom": "32px",
+        "paddingLeft": "32px",
+        "marginTop": "0px",
+        "marginRight": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px"
       },
       "visibility": {
         "platform": [
@@ -377,7 +383,10 @@
       "style": {
         "backgroundColor": "black",
         "textColor": "#ffffff",
-        "padding": "none"
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px"
       }
     },
     {
@@ -402,7 +411,10 @@
             "textAlign": "center",
             "backgroundColor": "transparent",
             "textColor": "#ffffff",
-            "padding": "none"
+            "paddingTop": "0px",
+            "paddingRight": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px"
           }
         },
         {
@@ -415,7 +427,10 @@
             "textAlign": "center",
             "backgroundColor": "transparent",
             "textColor": "#999999",
-            "padding": "none"
+            "paddingTop": "0px",
+            "paddingRight": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px"
           }
         },
         {
@@ -525,7 +540,10 @@
           "style": {
             "backgroundColor": "transparent",
             "textColor": "#ffffff",
-            "padding": "none"
+            "paddingTop": "0px",
+            "paddingRight": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px"
           }
         }
       ]
@@ -602,8 +620,11 @@
       "style": {
         "backgroundColor": "transparent",
         "textColor": "#ffffff",
-        "padding": "none",
-        "gridGap": "lg"
+        "gridGap": "lg",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px"
       }
     },
     {
