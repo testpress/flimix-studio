@@ -25,7 +25,8 @@ export {
   CTAButtonLibraryItem,
   BadgeStripLibraryItem,
   RowLayoutLibraryItem,
-  ContentLibraryLibraryItem
+  ContentLibraryLibraryItem,
+  NavigationContainerLibraryItem
 } from './library';
 export type { PageSchema } from './page';
 export type { 

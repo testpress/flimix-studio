@@ -242,6 +242,42 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: ContentLibraryLibraryItem.defaultProps as ContentLibraryBlockProps,
       };
 
+    case 'navigation-container':
+      return {
+        type: 'navigation-container',
+        id,
+        props: {
+          items: [
+            {
+              id: generateUniqueId(),
+              type: 'internal',
+              label: 'Home',
+              link: '/',
+            },
+            {
+              id: generateUniqueId(),
+              type: 'internal',
+              label: 'About',
+              link: '/about',
+            },
+          ],
+          alignment: 'left',
+          fontSize: 'md',
+          iconSize: 'md',
+          hover: {
+            effect: 'color',
+            disabled: false,
+          },
+          hideIcons: false,
+          itemGap: 24,
+        },
+        style: {
+          padding: 'md',
+          backgroundColor: 'transparent',
+          textColor: '#ffffff',
+        },
+      };
+
     default: {
       // This will cause a compile-time error if a case is missed.
       const exhaustiveCheck: never = type;
