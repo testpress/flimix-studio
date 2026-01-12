@@ -17,7 +17,10 @@ export const TabsLibraryItem: BlockLibraryItem = {
             id: generateUniqueId(),
             props: { content: 'Features content here...' },
             style: {
-              padding: 'md',
+              paddingTop: '16px',
+              paddingBottom: '16px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
               textAlign: 'center'
             }
           }
@@ -32,7 +35,10 @@ export const TabsLibraryItem: BlockLibraryItem = {
             id: generateUniqueId(),
             props: { content: 'Pricing content here...' },
             style: {
-              padding: 'md',
+              paddingTop: '16px',
+              paddingBottom: '16px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
               textAlign: 'center'
             }
           }
@@ -47,7 +53,10 @@ export const TabsLibraryItem: BlockLibraryItem = {
             id: generateUniqueId(),
             props: { content: 'Reviews content here...' },
             style: {
-              padding: 'md',
+              paddingTop: '16px',
+              paddingBottom: '16px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
               textAlign: 'center'
             }
           }

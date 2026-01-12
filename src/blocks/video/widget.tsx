@@ -13,26 +13,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   const { src, poster, caption, autoplay, muted, controls, loop, aspectRatio, alignment, size = 'medium' } = block.props;
   const { style } = block;
 
-  // Get padding class from style settings
-  const getPaddingClass = () => {
-    switch (style?.padding) {
-      case 'lg': return 'p-6';
-      case 'sm': return 'p-2';
-      case 'none': return 'p-0';
-      default: return 'p-4'; // md
-    }
-  };
 
-  // Get margin class from style settings
-  const getMarginClass = () => {
-    switch (style?.margin) {
-      case 'lg': return 'm-6';
-      case 'md': return 'm-4';
-      case 'sm': return 'm-2';
-      case 'none': return 'm-0';
-      default: return 'm-4';
-    }
-  };
 
   // Get size classes for the video container with proper alignment handling
   const getSizeClasses = () => {
@@ -164,7 +145,12 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   // Empty state when no video
   if (!src) {
     return (
-      <div className={getMarginClass()}>
+      <div style={{
+        marginTop: style?.marginTop,
+        marginRight: style?.marginRight,
+        marginBottom: style?.marginBottom,
+        marginLeft: style?.marginLeft
+      }}>
         <BlockWidgetWrapper 
           block={block} 
           onSelect={onSelect} 
@@ -178,7 +164,12 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
           className={widgetClasses}
           style={getBackgroundColorStyle()}
         >
-          <div className={`w-full ${getPaddingClass()}`}>
+          <div className="w-full" style={{
+            paddingTop: style?.paddingTop,
+            paddingRight: style?.paddingRight,
+            paddingBottom: style?.paddingBottom,
+            paddingLeft: style?.paddingLeft
+          }}>
             <div className={`w-full ${getContainerAlignmentClasses()}`}>
               <div 
                 className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
@@ -198,7 +189,12 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
 
   // Main video rendering
   return (
-    <div className={getMarginClass()}>
+    <div style={{
+      marginTop: style?.marginTop,
+      marginRight: style?.marginRight,
+      marginBottom: style?.marginBottom,
+      marginLeft: style?.marginLeft
+    }}>
       <BlockWidgetWrapper 
         block={block} 
         onSelect={onSelect} 
@@ -213,7 +209,12 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
         style={getBackgroundColorStyle()}
       >
         {/* Apply padding from style settings */}
-        <div className={`w-full ${getPaddingClass()}`}>
+        <div className="w-full" style={{
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft
+        }}>
           {/* Video container with proper alignment */}
           <div className={`w-full ${getContainerAlignmentClasses()}`}>
             {/* Video wrapper with fixed dimensions and size constraints */}

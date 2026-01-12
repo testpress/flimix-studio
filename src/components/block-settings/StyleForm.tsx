@@ -428,6 +428,16 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           ...layoutOnlyFields,
           renderTextAlignField(),
         ];
+        
+      case 'badge-strip-item':
+        return [
+          renderPaddingField(),
+          renderMarginField(),
+          renderBackgroundColorField(),
+          renderTextColorField(),
+          renderBorderRadiusField(),
+          renderBoxShadowField(),
+        ];
 
       case 'divider':
         // Divider blocks: only show color option
