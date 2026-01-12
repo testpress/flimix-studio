@@ -5,7 +5,7 @@ import type { StyleProps } from '@type/style';
 export type Size = 'sm' | 'md' | 'lg' | 'none';
 export type NavigationItemType = 'internal' | 'external' | 'anchor' | 'dropdown';
 export type NavigationAlignment = 'left' | 'center' | 'right';
-export type HoverEffect = 'underline' | 'scale' | 'color' | 'background' | 'none';
+export type HoverEffect = 'underline' | 'scale' | 'color' | 'none';
 export type DropdownLayout = 'list' | 'grid-2x2';
 
 // Navigation item limit constant
@@ -51,7 +51,6 @@ export interface NavigationColors {
 export interface HoverConfig {
   disabled?: boolean;
   effect?: HoverEffect;
-  color?: string;
 }
 
 // Navigation item interface
