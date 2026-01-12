@@ -17,6 +17,7 @@ import type { CTAButtonBlockProps } from '@blocks/cta-button/schema';
 import type { BadgeStripBlockProps } from '@blocks/badge-strip/schema';
 import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
+import type { NavigationContainerProps } from '@blocks/navigation-container/schema';
 
 // Define a type for all possible block props
 export type BlockProps = 
@@ -36,7 +37,8 @@ export type BlockProps =
   | CTAButtonBlockProps
   | BadgeStripBlockProps
   | RowLayoutBlockProps
-  | ContentLibraryBlockProps;
+  | ContentLibraryBlockProps
+  | NavigationContainerProps;
 
 // Generic type for block items that have an id
 export interface BlockItem {

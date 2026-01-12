@@ -35,6 +35,10 @@ import { BadgeStripForm, BadgeStripItemForm } from '@blocks/badge-strip';
 import type { BadgeStripBlockProps, BadgeStripItem } from '@blocks/badge-strip/schema';
 import RowLayoutForm from '@blocks/row-layout/form';
 import ContentLibraryForm from '@blocks/content-library/form';
+import NavigationContainerForm from '@blocks/navigation-container/form';
+import NavigationItemForm from '@blocks/navigation-container/ItemForm';
+import type { NavigationItem } from '@blocks/navigation-container/schema';
+import type { NavigationContainerProps } from '@blocks/navigation-container/schema';
 
 interface SettingsPanelProps {
   showDebug: boolean;
@@ -95,6 +99,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
     'badge-strip': BadgeStripForm,
     rowLayout: RowLayoutForm,
     contentLibrary: ContentLibraryForm,
+    'navigation-container': NavigationContainerForm,
   };
 
   const handleVisibilityChange = (newVisibility: VisibilityProps) => {
@@ -190,6 +195,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ showDebug, onToggleShowDe
             item={item}
             onChange={handleItemChange}
             title="Badge Editor"
+          />
+        );
+      }
+      
+      case 'navigation-container': {
+        const items = (selectedBlock.props as NavigationContainerProps).items || [];
+        const item = items.find((i: NavigationItem) => i.id === selectedItemId);
+        
+        if (!item) return null;
+        
+        const handleItemChange = (updatedItem: NavigationItem) => {
+          updateBlockItem(selectedBlock.id, selectedItemId, updatedItem);
+        };
+
+        return (
+          <NavigationItemForm
+            item={item}
+            onChange={handleItemChange}
+            title="Navigation Item"
           />
         );
       }

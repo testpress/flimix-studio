@@ -35,6 +35,8 @@ import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
 import type { RowLayoutBlock } from '@blocks/row-layout/schema';
 import type { ContentLibraryBlock } from '@blocks/content-library/schema';
 import type { ContentLibraryBlockProps } from '@blocks/content-library/schema';
+import type { NavigationContainerBlock } from '@blocks/navigation-container/schema';
+import type { NavigationContainerProps } from '@blocks/navigation-container/schema';
 
 // Union type for all block types (imported from individual block schemas)
 export type BlockType = 
@@ -54,15 +56,17 @@ export type BlockType =
   | CTAButtonBlock
   | BadgeStripBlock
   | RowLayoutBlock
-  | ContentLibraryBlock;
+  | ContentLibraryBlock
+  | NavigationContainerBlock;
 
 // Base Block interface that all blocks extend
 export interface Block {
   id: string;
   type: 'hero' | 'text' | 'section' | 'posterGrid' | 'carousel' | 'testimonial' | 'spacer' | 'divider' | 'featureCallout' | 'faq-accordion' | 'image' | 'video' | 'tabs' | 'cta-button' | 'badge-strip'
   | 'rowLayout'
-  | 'contentLibrary';
-  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | CTAButtonBlockProps | BadgeStripBlockProps | RowLayoutBlockProps | ContentLibraryBlockProps;
+  | 'contentLibrary'
+  | 'navigation-container';
+  props: HeroBlockProps | TextBlockProps | SectionBlockProps | PosterGridBlockProps | CarouselBlockProps | TestimonialBlockProps | SpacerBlockProps | DividerBlockProps | FeatureCalloutBlockProps | FAQAccordionBlockProps | ImageBlockProps | VideoBlockProps | TabsBlockProps | CTAButtonBlockProps | BadgeStripBlockProps | RowLayoutBlockProps | ContentLibraryBlockProps | NavigationContainerProps;
   style?: StyleProps;
   visibility?: VisibilityProps;
   events?: EventProps;

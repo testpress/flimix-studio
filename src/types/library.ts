@@ -16,6 +16,7 @@ import { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 import { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 import { RowLayoutLibraryItem } from '@blocks/row-layout/libraryItem';
 import { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
+import { NavigationContainerLibraryItem } from '@blocks/navigation-container/libraryItem';
 import type { BlockType } from '@type/block';
 import type { BlockProps } from '@type/form';
 
@@ -37,13 +38,14 @@ export { CTAButtonLibraryItem } from '@blocks/cta-button/libraryItem';
 export { BadgeStripLibraryItem } from '@blocks/badge-strip/libraryItem';
 export { RowLayoutLibraryItem } from '@blocks/row-layout/libraryItem';
 export { ContentLibraryLibraryItem } from '@blocks/content-library/libraryItem';
+export { NavigationContainerLibraryItem } from '@blocks/navigation-container/libraryItem';
 
 // Block library item type
 export type BlockLibraryItem = {
   type: BlockType['type'];
   name: string;
   description: string;
-  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video'| 'Columns3Cog' | 'Columns' | 'CreditCard' | 'Zap' | 'Award' | 'RectangleEllipsis';
+  icon: 'Layout' | 'Type' | 'Square' | 'Grid2x2' | 'GalleryHorizontalEnd' | 'AlignVerticalSpaceBetween' | 'Minus' | 'MessageSquare' | 'Sparkles' | 'HelpCircle' | 'Image' | 'Video'| 'Columns3Cog' | 'Columns' | 'CreditCard' | 'Zap' | 'Award' | 'RectangleEllipsis' | 'Menu';
   defaultProps: BlockProps;
 };
 
@@ -66,6 +68,7 @@ export const allLibraryItems: BlockLibraryItem[] = [
   BadgeStripLibraryItem,
   RowLayoutLibraryItem,
   ContentLibraryLibraryItem,
+  NavigationContainerLibraryItem,
 ];
 
 // Helper function to get all available block types

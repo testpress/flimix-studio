@@ -4,7 +4,7 @@ import {
   Shield, CheckCircle, Award, Gift, Lightbulb, Target, TrendingUp,
   Users, Globe, Smartphone, Monitor, Tv, Headphones, Music,
   Camera, Image, FileText, BookOpen, GraduationCap, Briefcase,
-  Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile
+  Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile, Radio,Search,Bell,Box,DollarSign,CircleQuestionMark
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -21,8 +21,10 @@ const iconMap: Record<string, LucideIcon> = {
   Shield, CheckCircle, Award, Gift, Lightbulb, Target, TrendingUp,
   Users, Globe, Smartphone, Monitor, Tv, Headphones, Music,
   Camera, Image, FileText, BookOpen, GraduationCap, Briefcase,
-  Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile
+  Home, MapPin, Phone, Mail, MessageCircle, ThumbsUp, Smile, Radio,Search,Bell,Box,DollarSign,CircleQuestionMark
 };
+
+export const iconNames = Object.keys(iconMap);
 
 const Icon: React.FC<IconProps> = ({ 
   name, 
