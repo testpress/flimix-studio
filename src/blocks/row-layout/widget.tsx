@@ -85,14 +85,6 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   const layoutClass = `grid ${gridTemplateClass} ${gapClass}`;
 
   const { style } = block;
-  const paddingClass = style?.padding === 'lg' ? 'p-8' : 
-                      style?.padding === 'md' ? 'p-6' : 
-                      style?.padding === 'sm' ? 'p-4' : 
-                      style?.padding === 'none' ? 'p-0' : 'p-6';
-  const marginClass = style?.margin === 'lg' ? 'm-8' : 
-                     style?.margin === 'md' ? 'm-6' : 
-                     style?.margin === 'sm' ? 'm-4' : 
-                     style?.margin === 'none' ? 'm-0' : 'm-0';
   const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
                            style?.borderRadius === 'md' ? 'rounded-md' : 
                            style?.borderRadius === 'sm' ? 'rounded-sm' : 
@@ -122,9 +114,17 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         block={block}
         onSelect={() => onSelect?.(block)}
         isSelected={isSelected}
-        className={`relative ${paddingClass} ${marginClass} ${borderRadiusClass}`}
+        className={`relative ${borderRadiusClass}`}
         style={{
           backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
+          paddingTop: style?.paddingTop,
+          paddingRight: style?.paddingRight,
+          paddingBottom: style?.paddingBottom,
+          paddingLeft: style?.paddingLeft,
+          marginTop: style?.marginTop,
+          marginRight: style?.marginRight,
+          marginBottom: style?.marginBottom,
+          marginLeft: style?.marginLeft,
         }}
         {...widgetControlProps}
       >
