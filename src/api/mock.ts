@@ -63,6 +63,9 @@ export const mockApi = {
       thumbnail: m.image || null,
       poster: m.image || null,
       cover: m.image || null,
+      thumbnail_path: m.image || null,
+      poster_path: m.image || null,
+      cover_path: m.image || null,
       genres: m.badges?.map(b => b.label) || [],
       details: {
         duration: m.duration,

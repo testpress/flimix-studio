@@ -25,6 +25,9 @@ export interface HeroItem {
     hashtag?: string;
   };
   genres?: string[];
+  thumbnail_path?: string | null;
+  poster_path?: string | null;
+  cover_path?: string | null;
   thumbnail?: string | null;
   poster?: string | null;
   cover?: string | null;

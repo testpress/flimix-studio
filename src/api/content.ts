@@ -37,6 +37,9 @@ export interface Content {
   type: string;
   status: string;
   subtitle: string;
+  thumbnail_path: string | null;
+  poster_path: string | null;
+  cover_path: string | null;
   thumbnail: string | null;
   poster: string | null;
   cover: string | null;
