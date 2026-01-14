@@ -8,17 +8,17 @@ export const CarouselLibraryItem = {
   icon: 'GalleryHorizontalEnd' as const,
   defaultProps: {
     title: 'Trending Now',
-    itemShape: 'rectangle-landscape' as const,
+    item_shape: 'rectangle-landscape' as const,
     alignment: 'left' as const,
     autoplay: false,
-    scrollSpeed: 1000,
-    showArrows: true,
-    itemSize: 'large',
+    scroll_speed: 1000,
+    show_arrows: true,
+    item_size: 'large',
     items: [],
-    showTitle: true,
-    showSubtitle: true,
-    showRating: true,
-    showGenre: true,
-    showDuration: true
+    show_title: true,
+    show_subtitle: true,
+    show_rating: true,
+    show_genre: true,
+    show_duration: true
   } as CarouselBlockProps
 }; 

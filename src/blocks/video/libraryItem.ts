@@ -13,7 +13,7 @@ export const VideoLibraryItem = {
     muted: false,
     controls: true,
     loop: false,
-    aspectRatio: '16:9' as const,
+    aspect_ratio: '16:9' as const,
     alignment: 'center' as const,
     size: 'medium' as const,
   } as VideoBlockProps,

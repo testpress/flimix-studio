@@ -54,8 +54,8 @@ export interface ButtonProps {
   enabled: boolean;
   alignment: ButtonAlignment;
   icon: string;
-  iconPosition: ButtonIconPosition;
-  textColor?: string;
+  icon_position: ButtonIconPosition;
+  text_color?: string;
   link?: string;
 }
 
@@ -68,18 +68,18 @@ export interface ProgressBarProps {
 // Carousel block props interface
 export interface CarouselBlockProps {
   title?: string;
-  itemShape: ItemShape;
+  item_shape: ItemShape;
   alignment: Alignment;
   autoplay: boolean;
-  scrollSpeed: number;
-  showArrows: boolean;
-  itemSize?: ItemSize;
+  scroll_speed: number;
+  show_arrows: boolean;
+  item_size?: ItemSize;
   items: CarouselItem[];
   button?: ButtonProps;
-  progressBar?: ProgressBarProps;
-  showTitle?: boolean;
-  showSubtitle?: boolean;
-  showRating?: boolean;
-  showGenre?: boolean;
-  showDuration?: boolean;
+  progress_bar?: ProgressBarProps;
+  show_title?: boolean;
+  show_subtitle?: boolean;
+  show_rating?: boolean;
+  show_genre?: boolean;
+  show_duration?: boolean;
 } 

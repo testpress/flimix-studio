@@ -17,10 +17,10 @@ export interface ContentDetails {
   chat_enabled?: boolean;
   meeting_id?: string;
   status?: string;
-  
+
   // Frontend specific or legacy fields (feature)
-  videoBackground?: string;
-  titleImage?: string;
+  video_background?: string;
+  title_image?: string;
   hashtag?: string;
   language?: string;
 }
@@ -77,17 +77,17 @@ export const contentApi = {
     // Fallback: use existing mock movie API
     // Map ContentSearchParams to MovieSearchParams if necessary
     return mockApi.search({
-        query: params.query,
-        limit: params.limit,
-        offset: params.offset
+      query: params.query,
+      limit: params.limit,
+      offset: params.offset
     }, signal);
   },
 
   searchExcludingItems(existingItems: { content_id: number | string }[] = []) {
     return async (params: ContentSearchParams, signal?: AbortSignal) => {
-        const results = await this.search(params, signal);
-        const existingIds = new Set(existingItems.map(item => String(item.content_id)));
-        return results.filter(item => !existingIds.has(String(item.id)));
+      const results = await this.search(params, signal);
+      const existingIds = new Set(existingItems.map(item => String(item.content_id)));
+      return results.filter(item => !existingIds.has(String(item.id)));
     };
   },
 

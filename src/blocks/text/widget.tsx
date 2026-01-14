@@ -7,9 +7,9 @@ interface TextWidgetProps extends Omit<BlockWidgetWrapperProps<TextBlock>, 'bloc
   block: TextBlock;
 }
 
-const TextWidget: React.FC<TextWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const TextWidget: React.FC<TextWidgetProps> = ({
+  block,
+  onSelect,
   isSelected = false,
   canMoveUp,
   canMoveDown,
@@ -19,18 +19,18 @@ const TextWidget: React.FC<TextWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { content, fontFamily, fontSize, fontWeight, fontStyle, textDecoration, lineHeight, letterSpacing } = props;
-  
+  const { content, font_family, font_size, font_weight, font_style, text_decoration, line_height, letter_spacing } = props;
+
   // Border radius class
-  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
-  
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.border_radius ?? 'none'];
+
   // Font family classes
   const fontFamilyClass = {
     sans: 'font-sans',
-    serif: 'font-serif', 
+    serif: 'font-serif',
     mono: 'font-mono',
     display: 'font-serif' // Using serif as fallback for display since font-display might not be available
-  }[fontFamily || 'sans'];
+  }[font_family || 'sans'];
 
   // Font size classes
   const fontSizeClass = {
@@ -44,7 +44,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     '4xl': 'text-4xl',
     '5xl': 'text-5xl',
     '6xl': 'text-6xl',
-  }[fontSize || 'base'];
+  }[font_size || 'base'];
 
   // Font weight classes
   const fontWeightClass = {
@@ -56,13 +56,13 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     semibold: 'font-semibold',
     bold: 'font-bold',
     extrabold: 'font-extrabold',
-  }[fontWeight || 'normal'];
+  }[font_weight || 'normal'];
 
   // Font style classes
   const fontStyleClass = {
     normal: '',
     italic: 'italic'
-  }[fontStyle || 'normal'];
+  }[font_style || 'normal'];
 
   // Text decoration classes
   const textDecorationClass = {
@@ -70,10 +70,10 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     underline: 'underline',
     'line-through': 'line-through',
     overline: '' // Will be handled with custom style
-  }[textDecoration || 'none'];
+  }[text_decoration || 'none'];
 
   // Custom text decoration style for overline
-  const textDecorationStyle = textDecoration === 'overline' ? { textDecoration: 'overline' } : {};
+  const textDecorationStyle = text_decoration === 'overline' ? { textDecoration: 'overline' } : {};
 
   // Line height classes
   const lineHeightClass = {
@@ -82,7 +82,7 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     normal: 'leading-normal',
     relaxed: 'leading-relaxed',
     loose: 'leading-loose'
-  }[lineHeight || 'normal'];
+  }[line_height || 'normal'];
 
   // Letter spacing classes
   const letterSpacingClass = {
@@ -92,10 +92,10 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     wide: 'tracking-wide',
     wider: 'tracking-wider',
     widest: 'tracking-widest'
-  }[letterSpacing || 'normal'];
+  }[letter_spacing || 'normal'];
 
 
-  
+
   // Custom box shadow styles for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -110,28 +110,28 @@ const TextWidget: React.FC<TextWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
-  
-  const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
-                        style?.textAlign === 'right' ? 'text-right' : 'text-left';
+
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
+
+  const textAlignClass = style?.text_align === 'center' ? 'text-center' :
+    style?.text_align === 'right' ? 'text-right' : 'text-left';
 
   // Handle text color - default to white text
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   // Determine background styling - default to black
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   if (!content) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BlockWidgetWrapper 
-          block={block} 
-          onSelect={onSelect} 
+        <BlockWidgetWrapper
+          block={block}
+          onSelect={onSelect}
           isSelected={isSelected}
           canMoveUp={canMoveUp}
           canMoveDown={canMoveDown}
@@ -141,15 +141,15 @@ const TextWidget: React.FC<TextWidgetProps> = ({
           onRemove={onRemove}
           className={`${borderRadiusClass} bg-gray-50 border-2 border-dashed border-gray-300`}
           style={{
-            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft,
-            marginTop: style?.marginTop,
-            marginRight: style?.marginRight,
-            marginBottom: style?.marginBottom,
-            marginLeft: style?.marginLeft,
+            backgroundColor: hasCustomBackground ? style.background_color : undefined,
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left,
+            marginTop: style?.margin_top,
+            marginRight: style?.margin_right,
+            marginBottom: style?.margin_bottom,
+            marginLeft: style?.margin_left,
           }}
         >
           <p className={`${fontFamilyClass} ${fontSizeClass} ${fontWeightClass} ${fontStyleClass} ${textDecorationClass} ${lineHeightClass} ${letterSpacingClass} text-gray-500 text-center`} style={textDecorationStyle}>No content provided</p>
@@ -158,11 +158,11 @@ const TextWidget: React.FC<TextWidgetProps> = ({
     );
   }
 
-    return (
+  return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BlockWidgetWrapper 
-        block={block} 
-        onSelect={onSelect} 
+      <BlockWidgetWrapper
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
         canMoveDown={canMoveDown}
@@ -172,15 +172,15 @@ const TextWidget: React.FC<TextWidgetProps> = ({
         onRemove={onRemove}
         className={`${borderRadiusClass} ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         <div className={`${textAlignClass}`}>

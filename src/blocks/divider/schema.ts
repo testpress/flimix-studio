@@ -13,7 +13,7 @@ export interface DividerBlock extends Omit<Block, 'props'> {
 export interface DividerBlockProps {
   thickness: DividerThickness;
   length: DividerLength;
-  percentageValue?: number; // Custom percentage value (1-100)
+  percentage_value?: number; // Custom percentage value (1-100)
   alignment: DividerAlignment;
   style: DividerStyle;
 } 

@@ -19,11 +19,11 @@ interface MockMovie {
   rating?: number;
   badges?: Array<{ label: string }>;
   progress?: number;
-  titleImage?: string;      
-  videoBackground?: string;  
-  year?: string;            
-  language?: string;        
-  hashtag?: string; 
+  titleImage?: string;
+  videoBackground?: string;
+  year?: string;
+  language?: string;
+  hashtag?: string;
 }
 
 /**
@@ -31,25 +31,25 @@ interface MockMovie {
  * Provides methods to fetch movies from the API and map them to Content
  */
 export const mockApi = {
-  
+
   async search(
     params: ContentSearchParams,
     signal?: AbortSignal
   ): Promise<Content[]> {
     const { query, limit = DEFAULT_PAGE_SIZE, offset = 0 } = params;
-    
+
     // Calculate page number from offset and limit
     const page = Math.floor(offset / limit) + 1;
-    
+
     // Build query string
     const queryParams = new URLSearchParams();
     if (query) queryParams.append('search', query);
     queryParams.append('page', page.toString());
     queryParams.append('limit', limit.toString());
-    
+
     // Build URL
     const url = `${MOVIE_API_BASE}/movies?${queryParams.toString()}`;
-    
+
     // Fetch data
     const mockData = await getJSON<MockMovie[]>(url, signal);
 
@@ -72,8 +72,8 @@ export const mockApi = {
         release_year: m.year,
         imdb_rating: m.rating,
         // Preserve mock fields that might be useful even if not in serializer strictly yet
-        videoBackground: m.videoBackground,
-        titleImage: m.titleImage,
+        video_background: m.videoBackground,
+        title_image: m.titleImage,
         hashtag: m.hashtag,
         language: m.language
       }

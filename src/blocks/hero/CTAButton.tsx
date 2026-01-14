@@ -46,7 +46,7 @@ export const getButtonSizeClass = (size?: string, isCircle?: boolean) => {
       default: return 'w-12 h-12 p-0'; // medium (default)
     }
   }
-  
+
   switch (size) {
     case 'small': return 'py-1.5 px-4 text-sm';
     case 'large': return 'py-3 px-8 text-lg';
@@ -63,8 +63,8 @@ export const getButtonVariantClass = (variant?: string) => {
 };
 
 // Helper function to get border radius classes
-export const getBorderRadiusClass = (borderRadius?: string) => {
-  switch (borderRadius) {
+export const getBorderRadiusClass = (border_radius?: string) => {
+  switch (border_radius) {
     case 'none': return '';
     case 'sm': return 'rounded-sm';
     case 'md': return 'rounded-md';
@@ -74,24 +74,24 @@ export const getBorderRadiusClass = (borderRadius?: string) => {
   }
 };
 
-const CTAButton: React.FC<CTAButtonProps> = ({ 
-  cta, 
-  defaultBackgroundColor, 
-  defaultTextColor,  
+const CTAButton: React.FC<CTAButtonProps> = ({
+  cta,
+  defaultBackgroundColor,
+  defaultTextColor,
 }) => {
   const { isReadOnly } = useSelection();
-  const isCircle = cta.borderRadius === 'full';
+  const isCircle = cta.border_radius === 'full';
   const buttonSizeClass = getButtonSizeClass(cta.size, isCircle);
   const variantClass = getButtonVariantClass(cta.variant);
-  const borderRadiusClass = getBorderRadiusClass(cta.borderRadius);
+  const borderRadiusClass = getBorderRadiusClass(cta.border_radius);
 
   const buttonContent = isCircle ? (
     // Circle button: only show icon, no text
     cta.icon && cta.icon !== 'None' ? (
-      <ButtonIcon 
-        icon={cta.icon} 
+      <ButtonIcon
+        icon={cta.icon}
         size={getIconSize(cta.size)}
-        thickness={cta.iconThickness || 'normal'} 
+        thickness={cta.icon_thickness || 'normal'}
       />
     ) : (
       // If no icon, show first letter of label
@@ -103,23 +103,23 @@ const CTAButton: React.FC<CTAButtonProps> = ({
     // Regular button: show icon + text
     <>
       {/* Icon on the left */}
-      {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'left' && (
-        <ButtonIcon 
-          icon={cta.icon} 
+      {cta.icon && cta.icon !== 'None' && cta.icon_position === 'left' && (
+        <ButtonIcon
+          icon={cta.icon}
           size={getIconSize(cta.size)}
-          thickness={cta.iconThickness || 'normal'} 
+          thickness={cta.icon_thickness || 'normal'}
         />
       )}
-      
+
       {/* Button text */}
       <span className="whitespace-pre-line text-left">{cta.label}</span>
-      
+
       {/* Icon on the right */}
-      {cta.icon && cta.icon !== 'None' && cta.iconPosition === 'right' && (
-        <ButtonIcon 
-          icon={cta.icon} 
+      {cta.icon && cta.icon !== 'None' && cta.icon_position === 'right' && (
+        <ButtonIcon
+          icon={cta.icon}
           size={getIconSize(cta.size)}
-          thickness={cta.iconThickness || 'normal'} 
+          thickness={cta.icon_thickness || 'normal'}
         />
       )}
     </>
@@ -127,14 +127,14 @@ const CTAButton: React.FC<CTAButtonProps> = ({
 
   const commonClasses = `font-semibold transition-colors duration-200 ${variantClass} flex items-center justify-center gap-2 ${borderRadiusClass} ${buttonSizeClass} cursor-pointer`;
   const commonStyles = {
-    backgroundColor: cta.backgroundColor || defaultBackgroundColor,
-    color: cta.textColor || defaultTextColor,
-    borderColor: cta.variant === 'outline' ? (cta.textColor || defaultTextColor) : 'transparent'
+    backgroundColor: cta.background_color || defaultBackgroundColor,
+    color: cta.text_color || defaultTextColor,
+    borderColor: cta.variant === 'outline' ? (cta.text_color || defaultTextColor) : 'transparent'
   };
 
   if (isReadOnly && cta.link) {
     return (
-      <a 
+      <a
         href={cta.link}
         className={commonClasses}
         style={commonStyles}
@@ -145,7 +145,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({
   }
 
   return (
-    <button 
+    <button
       type="button"
       className={commonClasses}
       style={commonStyles}

@@ -10,26 +10,26 @@ interface ImageWidgetProps extends Omit<BlockWidgetWrapperProps<ImageBlock>, 'bl
 export const ImageWidget: React.FC<ImageWidgetProps> = ({
   block, onSelect, isSelected, canMoveUp, canMoveDown, onMoveUp, onMoveDown, onDuplicate, onRemove,
 }) => {
-  const { src, alt, link, size, aspectRatio, fit, alignment } = block.props;
+  const { src, alt, link, size, aspect_ratio, fit, alignment } = block.props;
   const { style } = block;
 
 
 
   // Get background color
   const getBackgroundColor = () => {
-    if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
+    if (style?.background_color && style.background_color.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.backgroundColor || 'bg-transparent';
+    return style?.background_color || 'bg-transparent';
   };
 
   const getBackgroundColorStyle = (): React.CSSProperties => {
-    if (style?.backgroundColor) {
-      if (style.backgroundColor.startsWith('rgba')) {
-        return { backgroundColor: style.backgroundColor };
+    if (style?.background_color) {
+      if (style.background_color.startsWith('rgba')) {
+        return { backgroundColor: style.background_color };
       }
-      if (style.backgroundColor.startsWith('#')) {
-        return { backgroundColor: style.backgroundColor };
+      if (style.background_color.startsWith('#')) {
+        return { backgroundColor: style.background_color };
       }
       return {};
     }
@@ -38,7 +38,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
 
   // Get border radius class
   const getBorderRadiusClass = () => {
-    switch (style?.borderRadius) {
+    switch (style?.border_radius) {
       case 'lg': return 'rounded-xl';
       case 'md': return 'rounded-lg';
       case 'sm': return 'rounded-md';
@@ -61,8 +61,8 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
   // Get image size classes
   const getSizeClasses = () => {
@@ -76,7 +76,7 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
 
   // Get aspect ratio classes
   const getAspectRatioClasses = () => {
-    switch (aspectRatio) {
+    switch (aspect_ratio) {
       case '16:9': return 'aspect-video';
       case '4:3': return 'aspect-[4/3]';
       case '1:1': return 'aspect-square';
@@ -131,29 +131,29 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   if (!src) {
     return (
       <div style={{
-        marginTop: style?.marginTop,
-        marginRight: style?.marginRight,
-        marginBottom: style?.marginBottom,
-        marginLeft: style?.marginLeft
+        marginTop: style?.margin_top,
+        marginRight: style?.margin_right,
+        marginBottom: style?.margin_bottom,
+        marginLeft: style?.margin_left
       }}>
-        <BlockWidgetWrapper 
-          block={block} 
-          onSelect={onSelect} 
+        <BlockWidgetWrapper
+          block={block}
+          onSelect={onSelect}
           isSelected={isSelected}
-          canMoveUp={canMoveUp} 
-          canMoveDown={canMoveDown} 
-          onMoveUp={onMoveUp} 
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
-          onDuplicate={onDuplicate} 
+          onDuplicate={onDuplicate}
           onRemove={onRemove}
-          className={`${widgetClasses} ${style?.backgroundColor && style.backgroundColor.startsWith('rgba') ? '!bg-transparent' : ''}`}
+          className={`${widgetClasses} ${style?.background_color && style.background_color.startsWith('rgba') ? '!bg-transparent' : ''}`}
           style={getBackgroundColorStyle()}
         >
           <div className="w-full" style={{
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left
           }}>
             <div className="text-center py-12 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
               <p className="mb-2 text-lg">No image selected</p>
@@ -168,36 +168,36 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
   // Main image rendering
   return (
     <div style={{
-      marginTop: style?.marginTop,
-      marginRight: style?.marginRight,
-      marginBottom: style?.marginBottom,
-      marginLeft: style?.marginLeft
+      marginTop: style?.margin_top,
+      marginRight: style?.margin_right,
+      marginBottom: style?.margin_bottom,
+      marginLeft: style?.margin_left
     }}>
-      <BlockWidgetWrapper 
-        block={block} 
-        onSelect={onSelect} 
+      <BlockWidgetWrapper
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
-        canMoveUp={canMoveUp} 
-        canMoveDown={canMoveDown} 
-        onMoveUp={onMoveUp} 
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
         onMoveDown={onMoveDown}
-        onDuplicate={onDuplicate} 
+        onDuplicate={onDuplicate}
         onRemove={onRemove}
-        className={`${widgetClasses} ${style?.backgroundColor && style.backgroundColor.startsWith('rgba') ? '!bg-transparent' : ''}`}
+        className={`${widgetClasses} ${style?.background_color && style.background_color.startsWith('rgba') ? '!bg-transparent' : ''}`}
         style={getBackgroundColorStyle()}
       >
         {/* Apply padding from style settings */}
         <div className="w-full" style={{
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left
         }}>
           {/* Use flexbox with proper alignment to position the image */}
           <div className={`flex ${getAlignmentClasses()} w-full`}>
             {link ? (
               <a href={link} target="_blank" rel="noopener noreferrer" className="block">
-                <div 
+                <div
                   className={`${imageContainerClasses} transition-transform duration-200 hover:scale-105`}
                   style={{ boxShadow: boxShadowStyle }}
                 >
@@ -210,13 +210,13 @@ export const ImageWidget: React.FC<ImageWidgetProps> = ({
                 </div>
               </a>
             ) : (
-              <div 
+              <div
                 className={imageContainerClasses}
                 style={{ boxShadow: boxShadowStyle }}
               >
-                <img 
-                  src={src} 
-                  alt={alt || ''} 
+                <img
+                  src={src}
+                  alt={alt || ''}
                   style={getImageFitStyles()}
                   className="w-full h-full"
                 />

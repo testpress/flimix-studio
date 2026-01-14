@@ -11,9 +11,9 @@ import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 
 // Carousel block editor schema - only basic properties
 const carouselEditorFields: Field[] = [
-  { 
-    key: 'title', 
-    label: 'Carousel Title', 
+  {
+    key: 'title',
+    label: 'Carousel Title',
     type: 'text',
     placeholder: 'Enter carousel title (e.g., "Trending Now", "Featured Content")...'
   }
@@ -24,10 +24,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   const carouselProps = props as CarouselBlockProps;
   const itemCount = carouselProps.items?.length || 0;
   const isAtLimit = itemCount >= CAROUSEL_ITEM_LIMIT;
-  
+
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
-  
+
   // Cleanup warning timeout on unmount
   useEffect(() => {
     return () => {
@@ -39,7 +39,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
 
   const handleSelectContent = (content: Content) => {
     const numericId = typeof content.id === 'number' ? content.id : parseInt(content.id, 10);
-    
+
     const carouselItem: CarouselItem = {
       id: numericId,
       content_id: numericId,
@@ -59,26 +59,26 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       },
       progress: 0
     };
-    
+
     // Check if item with this ID already exists
     const existingItems = carouselProps.items || [];
     if (existingItems.some(item => item.id === carouselItem.id)) {
       setDuplicateWarning(`"${content.title}" is already in your carousel`);
-      
+
       // Clear warning after 3 seconds
       setTimeout(() => setDuplicateWarning(null), 3000);
       return; // Skip if duplicate
     }
-    
+
     // Clear any existing warnings
     setDuplicateWarning(null);
-    
+
     // Add the new item
     updateProps({
       ...carouselProps,
       items: [...existingItems, carouselItem]
     });
-    
+
   };
 
   const handleStyleChange = (key: keyof StyleProps, value: StyleValue) => {
@@ -97,8 +97,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           enabled: false,
           alignment: 'right',
           icon: 'ArrowRight',
-          iconPosition: 'right',
-          textColor: '#ffffff',
+          icon_position: 'right',
+          text_color: '#ffffff',
           link: ''
         }
       });
@@ -106,10 +106,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   };
   // Initialize progress bar props if they don't exist
   const initializeProgressBarProps = () => {
-    if (!carouselProps.progressBar) {
+    if (!carouselProps.progress_bar) {
       updateProps({
         ...carouselProps,
-        progressBar: {
+        progress_bar: {
           enabled: false,
           color: '#ff0000'
         }
@@ -123,7 +123,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
       initializeButtonProps();
       return;
     }
-    
+
     updateProps({
       ...carouselProps,
       button: {
@@ -134,15 +134,15 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
   };
   // Handle progress bar property changes
   const handleProgressBarChange = (key: keyof ProgressBarProps, value: string | boolean) => {
-    if (!carouselProps.progressBar) {
+    if (!carouselProps.progress_bar) {
       initializeProgressBarProps();
       return;
     }
-    
+
     updateProps({
       ...carouselProps,
-      progressBar: {
-        ...carouselProps.progressBar,
+      progress_bar: {
+        ...carouselProps.progress_bar,
         [key]: value
       }
     });
@@ -156,7 +156,7 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         fieldDefinitions={carouselEditorFields}
         updateProps={updateProps}
       />
-      
+
       {/* Carousel Layout Settings */}
       {/* Content Picker Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
@@ -164,19 +164,19 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
         <p className="text-sm text-gray-600 mb-3">
           Search for Content and add them to your carousel. Content will be added to the end of your carousel.
         </p>
-        
+
         {/* Warning when over limit */}
         {isAtLimit && (
           <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-600" />
               <span className="text-sm font-medium text-red-700">
-               Item Limit
+                Item Limit
               </span>
             </div>
           </div>
         )}
-        
+
         {/* Duplicate item warning */}
         {duplicateWarning && (
           <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -188,13 +188,13 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
             </div>
           </div>
         )}
-        
+
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
           searchFunction={
-              React.useMemo(() => 
-                  contentApi.searchExcludingItems(carouselProps.items || []), [carouselProps.items])
-              }
+            React.useMemo(() =>
+              contentApi.searchExcludingItems(carouselProps.items || []), [carouselProps.items])
+          }
           disabled={isAtLimit}
           placeholder="Search for Content..."
           onSelect={handleSelectContent}
@@ -203,13 +203,13 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
             label: 'Content Type'
           }}
           renderItem={React.useCallback((content, onSelect) => (
-            <div 
+            <div
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
             >
               {(content.thumbnail || content.poster || content.cover) && (
-                <img 
-                  src={content.thumbnail || content.poster || content.cover || ''} 
+                <img
+                  src={content.thumbnail || content.poster || content.cover || ''}
                   alt={content.title}
                   className="w-12 h-8 object-cover rounded flex-shrink-0"
                   onError={(e) => {
@@ -229,89 +229,89 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           noResultsMessage="No Content found. Try a different search."
         />
       </div>
-      
+
       {/* Display Options Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
         <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
         <p className="text-sm text-gray-600 mb-3">
           Control which elements are displayed for carousel items. These settings apply to all items.
         </p>
-        
+
         <div className="space-y-3">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showTitle"
-              checked={carouselProps.showTitle !== false}
-              onChange={e => updateProps({ ...carouselProps, showTitle: e.target.checked })}
+              checked={carouselProps.show_title !== false}
+              onChange={e => updateProps({ ...carouselProps, show_title: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showTitle" className="text-sm text-gray-700">
               Show Title
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showSubtitle"
-              checked={carouselProps.showSubtitle === true}
-              onChange={e => updateProps({ ...carouselProps, showSubtitle: e.target.checked })}
+              checked={carouselProps.show_subtitle === true}
+              onChange={e => updateProps({ ...carouselProps, show_subtitle: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showSubtitle" className="text-sm text-gray-700">
               Show Subtitle
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showRating"
-              checked={carouselProps.showRating === true}
-              onChange={e => updateProps({ ...carouselProps, showRating: e.target.checked })}
+              checked={carouselProps.show_rating === true}
+              onChange={e => updateProps({ ...carouselProps, show_rating: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showRating" className="text-sm text-gray-700">
               Show Rating
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showGenre"
-              checked={carouselProps.showGenre === true}
-              onChange={e => updateProps({ ...carouselProps, showGenre: e.target.checked })}
+              checked={carouselProps.show_genre === true}
+              onChange={e => updateProps({ ...carouselProps, show_genre: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showGenre" className="text-sm text-gray-700">
               Show Genre
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showDuration"
-              checked={carouselProps.showDuration === true}
-              onChange={e => updateProps({ ...carouselProps, showDuration: e.target.checked })}
+              checked={carouselProps.show_duration === true}
+              onChange={e => updateProps({ ...carouselProps, show_duration: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showDuration" className="text-sm text-gray-700">
               Show Duration
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showProgress"
-              checked={carouselProps.progressBar?.enabled || false}
+              checked={carouselProps.progress_bar?.enabled || false}
               onChange={e => {
-                if (!carouselProps.progressBar && e.target.checked) {
+                if (!carouselProps.progress_bar && e.target.checked) {
                   initializeProgressBarProps();
-                } else if (carouselProps.progressBar) {
+                } else if (carouselProps.progress_bar) {
                   handleProgressBarChange('enabled', e.target.checked);
                 }
               }}
@@ -321,8 +321,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               Show Progress Bar
             </label>
           </div>
-          
-                    <div className="flex items-center space-x-2">
+
+          <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showButton"
@@ -340,21 +340,21 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               Show Button
             </label>
           </div>
-          
+
           {/* Progress Bar Color */}
-          {carouselProps.progressBar?.enabled && (
+          {carouselProps.progress_bar?.enabled && (
             <div className="mt-4 p-3 bg-gray-100 rounded-lg">
               <label className="block text-sm text-gray-700 mb-2">Progress Bar Color</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={carouselProps.progressBar?.color || '#ff0000'}
+                  value={carouselProps.progress_bar?.color || '#ff0000'}
                   onChange={e => handleProgressBarChange('color', e.target.value)}
                   className="w-8 h-8 p-0 border-0"
                 />
                 <input
                   type="text"
-                  value={carouselProps.progressBar?.color || '#ff0000'}
+                  value={carouselProps.progress_bar?.color || '#ff0000'}
                   onChange={e => handleProgressBarChange('color', e.target.value)}
                   className="flex-1 p-2 border border-gray-300 rounded text-sm"
                   placeholder="#ff0000"
@@ -362,12 +362,12 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               </div>
             </div>
           )}
-          
+
           {/* Button Configuration */}
           {carouselProps.button?.enabled && (
             <div className="mt-4 p-3 bg-gray-100 rounded-lg space-y-3">
               <h4 className="font-medium text-sm text-gray-700">Button Configuration</h4>
-              
+
               {/* Button Text */}
               <div>
                 <label className="block text-sm text-gray-700 mb-1">Button Text</label>
@@ -438,8 +438,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               <div>
                 <label className="block text-sm text-gray-700 mb-1">Icon Position</label>
                 <select
-                  value={carouselProps.button?.iconPosition || 'right'}
-                  onChange={e => handleButtonChange('iconPosition', e.target.value as ButtonIconPosition)}
+                  value={carouselProps.button?.icon_position || 'right'}
+                  onChange={e => handleButtonChange('icon_position', e.target.value as ButtonIconPosition)}
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                 >
                   <option value="left">Left</option>
@@ -454,14 +454,14 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
-                    value={carouselProps.button?.textColor || '#ffffff'}
-                    onChange={e => handleButtonChange('textColor', e.target.value)}
+                    value={carouselProps.button?.text_color || '#ffffff'}
+                    onChange={e => handleButtonChange('text_color', e.target.value)}
                     className="w-8 h-8 p-0 border-0"
                   />
                   <input
                     type="text"
-                    value={carouselProps.button?.textColor || '#ffffff'}
-                    onChange={e => handleButtonChange('textColor', e.target.value)}
+                    value={carouselProps.button?.text_color || '#ffffff'}
+                    onChange={e => handleButtonChange('text_color', e.target.value)}
                     className="flex-1 p-2 border border-gray-300 rounded text-sm"
                     placeholder="#ffffff"
                   />
@@ -471,10 +471,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           )}
         </div>
       </div>
-      
+
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Carousel Layout Settings</h3>
-        
+
         {/* Item Count and Limit Warning */}
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center justify-between">
@@ -496,14 +496,14 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
             </p>
           )}
         </div>
-        
+
         <div className="space-y-4">
           {/* Item Size */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Size</label>
             <select
-              value={carouselProps.itemSize || 'large'}
-              onChange={e => updateProps({ ...carouselProps, itemSize: e.target.value as ItemSize })}
+              value={carouselProps.item_size || 'large'}
+              onChange={e => updateProps({ ...carouselProps, item_size: e.target.value as ItemSize })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="small">Small</option>
@@ -517,8 +517,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Gap</label>
             <select
-              value={style?.gridGap || 'md'}
-              onChange={e => handleStyleChange('gridGap', e.target.value as GridGap)}
+              value={style?.grid_gap || 'md'}
+              onChange={e => handleStyleChange('grid_gap', e.target.value as GridGap)}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="sm">Small</option>
@@ -531,8 +531,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Shape</label>
             <select
-              value={carouselProps.itemShape || 'rectangle-landscape'}
-              onChange={e => updateProps({ ...carouselProps, itemShape: e.target.value as ItemShape })}
+              value={carouselProps.item_shape || 'rectangle-landscape'}
+              onChange={e => updateProps({ ...carouselProps, item_shape: e.target.value as ItemShape })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="rectangle-landscape">Landscape</option>
@@ -549,8 +549,8 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
               <input
                 type="checkbox"
                 id="showArrows"
-                checked={carouselProps.showArrows !== false}
-                onChange={e => updateProps({ ...carouselProps, showArrows: e.target.checked })}
+                checked={carouselProps.show_arrows !== false}
+                onChange={e => updateProps({ ...carouselProps, show_arrows: e.target.checked })}
                 className="rounded"
               />
               <label htmlFor="showArrows" className="text-sm text-gray-700">
@@ -591,10 +591,10 @@ const CarouselForm: React.FC<BlockFormProps> = ({ block, updateProps, updateStyl
                 min={1000}
                 max={10000}
                 step={500}
-                value={carouselProps.scrollSpeed || 1000}
-                onChange={e => updateProps({ 
-                  ...carouselProps, 
-                  scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 1000))
+                value={carouselProps.scroll_speed || 1000}
+                onChange={e => updateProps({
+                  ...carouselProps,
+                  scroll_speed: Math.max(1000, Math.min(10000, parseInt(e.target.value) || 1000))
                 })}
                 className="w-full p-2 border border-gray-300 rounded text-sm"
                 placeholder="3000"

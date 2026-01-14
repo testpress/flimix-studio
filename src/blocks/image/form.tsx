@@ -38,7 +38,7 @@ const imageEditorFields: Field[] = [
     ],
   },
   {
-    key: 'aspectRatio',
+    key: 'aspect_ratio',
     label: 'Aspect Ratio',
     type: 'select',
     options: [

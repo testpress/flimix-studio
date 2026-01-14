@@ -8,11 +8,11 @@ export const HeroLibraryItem = {
   icon: 'Layout' as const,
   defaultProps: {
     variant: 'single',
-    aspectRatio: '16:9',
-    customHeight: '600px',
-    showArrows: true,
+    aspect_ratio: '16:9',
+    custom_height: '600px',
+    show_arrows: true,
     autoplay: false,
-    scrollSpeed: 5000,
+    scroll_speed: 5000,
     items: []
   } as HeroBlockProps
 }; 

@@ -16,13 +16,13 @@ import type { RowLayoutBlockProps } from '@blocks/row-layout/schema';
  */
 export function createBlock(type: BlockType['type']): BlockType {
   const id = generateUniqueId();
-  
+
   // Default spacing: 10px on all sides for new blocks
   const defaultSpacing = {
-    paddingTop: '10px',
-    paddingRight: '10px',
-    paddingBottom: '10px',
-    paddingLeft: '10px',
+    padding_top: '10px',
+    padding_right: '10px',
+    padding_bottom: '10px',
+    padding_left: '10px',
   };
 
   switch (type) {
@@ -35,7 +35,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         } as TextBlockProps,
         style: {
           ...defaultSpacing,
-          textAlign: 'left'
+          text_align: 'left'
         }
       };
 
@@ -52,8 +52,8 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'left',
-          backgroundColor: '#000000'
+          text_align: 'left',
+          background_color: '#000000'
         }
       };
 
@@ -64,7 +64,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: SectionLibraryItem.defaultProps,
         style: {
           ...defaultSpacing,
-          backgroundColor: '#000000'
+          background_color: '#000000'
         },
         children: []
       };
@@ -76,7 +76,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: PosterGridLibraryItem.defaultProps,
         style: {
           ...defaultSpacing,
-          textAlign: 'left'
+          text_align: 'left'
         }
       };
 
@@ -93,7 +93,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'left'
+          text_align: 'left'
         }
       };
 
@@ -110,7 +110,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'center'
+          text_align: 'center'
         }
       };
 
@@ -128,7 +128,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         props: DividerLibraryItem.defaultProps,
         style: {
           ...defaultSpacing,
-          backgroundColor: '#ffffff'
+          background_color: '#ffffff'
         }
       };
 
@@ -145,7 +145,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'center'
+          text_align: 'center'
         }
       };
 
@@ -162,7 +162,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'left'
+          text_align: 'left'
         }
       };
 
@@ -198,9 +198,9 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          tabAlignment: 'left',
-          tabStyle: 'pill',
-          backgroundColor: '#000000'
+          tab_alignment: 'left',
+          tab_style: 'pill',
+          background_color: '#000000'
         }
       };
 
@@ -213,7 +213,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'center'
+          text_align: 'center'
         }
       };
 
@@ -226,7 +226,7 @@ export function createBlock(type: BlockType['type']): BlockType {
         },
         style: {
           ...defaultSpacing,
-          textAlign: 'center'
+          text_align: 'center'
         }
       };
 

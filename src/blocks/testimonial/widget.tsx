@@ -30,12 +30,12 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     layout = 'carousel',
     items = [],
     autoplay = false,
-    scrollSpeed = 1000,
-    showArrows = true,
-    itemSize = 'large',
+    scroll_speed = 1000,
+    show_arrows = true,
+    item_size = 'large',
     columns = 3,
     rows = 3,
-    itemShape = 'circle'
+    item_shape = 'circle'
   } = props;
 
   const { selectBlockItem, isItemSelected } = useSelection();
@@ -65,9 +65,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     }
   };
 
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' :
-    style?.borderRadius === 'md' ? 'rounded-md' :
-      style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' : '';
 
   // Handle box shadow - custom CSS values for better visibility
   const getBoxShadowStyle = (shadowType: string | undefined) => {
@@ -78,18 +78,18 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
-  const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
-    style?.textAlign === 'right' ? 'text-right' : 'text-left';
+  const textAlignClass = style?.text_align === 'center' ? 'text-center' :
+    style?.text_align === 'right' ? 'text-right' : 'text-left';
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   // Determine background styling
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
@@ -101,7 +101,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   };
 
   const getGapClass = () => {
-    return GAP_CLASSES[style?.gridGap || 'md'] || GAP_CLASSES['md'];
+    return GAP_CLASSES[style?.grid_gap || 'md'] || GAP_CLASSES['md'];
   };
 
 
@@ -253,7 +253,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
           }
         }
-      }, scrollSpeed);
+      }, scroll_speed);
     }
 
     // Cleanup on unmount or when autoplay/scrollSpeed/pause state changes
@@ -267,7 +267,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         manualScrollPauseTimeoutRef.current = null;
       }
     };
-  }, [autoplay, scrollSpeed, items, isAutoplayPaused, layout, getScrollAmount]);
+  }, [autoplay, scroll_speed, items, isAutoplayPaused, layout, getScrollAmount]);
 
   // Handle arrow clicks for carousel
   const handleScrollLeft = () => {
@@ -407,9 +407,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             <img
               src={item.image}
               alt={item.name || 'Customer'}
-              className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4 ${itemShape === 'circle' ? 'rounded-full' :
-                itemShape === 'square' ? 'rounded-md' :
-                  itemShape === 'rectangle-portrait' ? 'rounded-md' :
+              className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-3 sm:mr-4 ${item_shape === 'circle' ? 'rounded-full' :
+                item_shape === 'square' ? 'rounded-md' :
+                  item_shape === 'rectangle-portrait' ? 'rounded-md' :
                     'rounded-md'
                 }`}
               onError={(e) => {
@@ -445,7 +445,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     <div className="relative">
       <div className="flex items-center">
         {/* Left Arrow */}
-        {showArrows && canScrollLeft && (
+        {show_arrows && canScrollLeft && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -470,7 +470,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             <div className="flex-shrink-0 w-2 sm:w-4"></div>
 
             {items.map((item, index) => (
-              <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} px-2`}>
+              <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(item_size)} px-2`}>
                 {renderTestimonialItem(item, index)}
               </div>
             ))}
@@ -481,7 +481,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         </div>
 
         {/* Right Arrow */}
-        {showArrows && canScrollRight && (
+        {show_arrows && canScrollRight && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -495,7 +495,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       </div>
 
       {/* Mobile scroll indicators */}
-      {showArrows && (canScrollLeft || canScrollRight) && (
+      {show_arrows && (canScrollLeft || canScrollRight) && (
         <div className="sm:hidden flex justify-center mt-4 space-x-2">
           {canScrollLeft && (
             <button
@@ -534,7 +534,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     };
 
     const getGapClass = () => {
-      switch (style?.gridGap) {
+      switch (style?.grid_gap) {
         case 'sm':
           return 'gap-2 sm:gap-3';
         case 'lg':
@@ -564,10 +564,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   if (!items || items.length === 0) {
     return (
       <div style={{
-        marginTop: style?.marginTop,
-        marginRight: style?.marginRight,
-        marginBottom: style?.marginBottom,
-        marginLeft: style?.marginLeft,
+        marginTop: style?.margin_top,
+        marginRight: style?.margin_right,
+        marginBottom: style?.margin_bottom,
+        marginLeft: style?.margin_left,
       }}>
         <div style={{ boxShadow: boxShadowStyle }}>
           <BlockWidgetWrapper
@@ -583,11 +583,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             onAddItem={!isAtItemLimit ? handleAddItem : undefined}
             className={`${borderRadiusClass} ${backgroundClass}`}
             style={{
-              backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-              paddingTop: style?.paddingTop,
-              paddingRight: style?.paddingRight,
-              paddingBottom: style?.paddingBottom,
-              paddingLeft: style?.paddingLeft,
+              backgroundColor: hasCustomBackground ? style.background_color : undefined,
+              paddingTop: style?.padding_top,
+              paddingRight: style?.padding_right,
+              paddingBottom: style?.padding_bottom,
+              paddingLeft: style?.padding_left,
             }}
           >
             <div className={`${textAlignClass}`}>
@@ -606,10 +606,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
 
   return (
     <div style={{
-      marginTop: style?.marginTop,
-      marginRight: style?.marginRight,
-      marginBottom: style?.marginBottom,
-      marginLeft: style?.marginLeft,
+      marginTop: style?.margin_top,
+      marginRight: style?.margin_right,
+      marginBottom: style?.margin_bottom,
+      marginLeft: style?.margin_left,
     }}>
       <div style={{ boxShadow: boxShadowStyle }}>
         <BlockWidgetWrapper
@@ -625,11 +625,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
           onAddItem={!isAtItemLimit ? handleAddItem : undefined}
           className={`${borderRadiusClass} ${backgroundClass}`}
           style={{
-            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft,
+            backgroundColor: hasCustomBackground ? style.background_color : undefined,
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left,
           }}
         >
           <div className={`w-full ${textAlignClass}`}>

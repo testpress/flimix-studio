@@ -12,16 +12,16 @@ interface ContentLibraryWidgetProps {
   onRemove?: () => void;
 }
 
-const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
+  block,
+  onSelect,
   isSelected,
-  onRemove 
+  onRemove
 }) => {
   const { props, style } = block;
 
-  const containerStyle = style?.backgroundColor ? { backgroundColor: style.backgroundColor } : {};
-  
+  const containerStyle = style?.background_color ? { backgroundColor: style.background_color } : {};
+
   const [items, setItems] = useState<Content[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -47,7 +47,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
     setLoading(true);
     try {
       const newItems = await contentApi.search({
-        contentType: props.contentTypeId,
+        contentType: props.content_type_id,
         limit: PAGE_SIZE,
         offset: pageIndex * PAGE_SIZE,
       });
@@ -63,7 +63,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [props.contentTypeId]);
+  }, [props.content_type_id]);
 
   // Reset when content type changes
   useEffect(() => {
@@ -71,7 +71,7 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
     setPage(0);
     setHasMore(true);
     fetchItems(0, true);
-  }, [props.contentTypeId, fetchItems]);
+  }, [props.content_type_id, fetchItems]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -97,27 +97,27 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
     small: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6',
     medium: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
     large: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-  }[props.itemSize || 'medium'];
+  }[props.item_size || 'medium'];
 
   // 2. Calculate Aspect Ratio based on Item Shape
   const aspectRatio = {
     landscape: 'aspect-video', // 16:9
     portrait: 'aspect-[2/3]',
     square: 'aspect-square',
-  }[props.itemShape || 'landscape'];
+  }[props.item_shape || 'landscape'];
 
   // 3. Calculate Gap
   const gap = {
     small: 'gap-2',
     medium: 'gap-6',
     large: 'gap-10',
-  }[props.itemGap || 'medium'];
+  }[props.item_gap || 'medium'];
 
   const titleAlignmentClass = {
     left: 'text-left',
     center: 'text-center',
     right: 'text-right',
-  }[props.titleAlignment || 'left'];
+  }[props.title_alignment || 'left'];
 
   const SkeletonItem = () => (
     <div className={`flex flex-col justify-between p-1 bg-neutral-900 border border-neutral-800 rounded-2xl`}>
@@ -128,42 +128,42 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
   );
 
   return (
-    <div 
+    <div
       className={`relative group ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
       style={{
-        marginTop: style?.marginTop,
-        marginRight: style?.marginRight,
-        marginBottom: style?.marginBottom,
-        marginLeft: style?.marginLeft,
+        marginTop: style?.margin_top,
+        marginRight: style?.margin_right,
+        marginBottom: style?.margin_bottom,
+        marginLeft: style?.margin_left,
       }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect?.(block);
       }}
     >
-        {/* Editor Overlay Controls */}
+      {/* Editor Overlay Controls */}
       {isSelected && (
         <>
-            <div className="absolute -top-8 right-0 bg-blue-500 text-white text-xs px-2 py-1 rounded-t flex items-center gap-2 z-10">
-                <span>Content Library</span>
-            </div>
-             <BlockControls 
-                canMoveUp={false}
-                canMoveDown={false}
-                onRemove={onRemove}
-             />
+          <div className="absolute -top-8 right-0 bg-blue-500 text-white text-xs px-2 py-1 rounded-t flex items-center gap-2 z-10">
+            <span>Content Library</span>
+          </div>
+          <BlockControls
+            canMoveUp={false}
+            canMoveDown={false}
+            onRemove={onRemove}
+          />
         </>
       )}
 
       {/* Main Content Area */}
-      <div 
+      <div
         className="bg-black min-h-[500px]"
         style={{
           ...containerStyle,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
         }}
       >
         {/* Optional Block Title */}
@@ -177,43 +177,43 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 
         {/* Grid */}
         <div className={`grid ${gridCols} ${gap}`}>
-           {/* Render Actual Items */}
-           {items.map((item) => (
-              <div 
-                key={item.id} 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleItemClick(item);
-                }}
-                className={`group/card relative ${aspectRatio} bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-600 transition-all cursor-pointer`}
-              >
-                {/* Image */}
-                {(item.poster || item.thumbnail || item.cover) ? (
-                    <img src={item.poster || item.thumbnail || item.cover || ''} alt={item.title} className="w-full h-full object-cover" />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-700">
-                        <span className="text-4xl font-bold opacity-20">?</span>
-                    </div>
-                )}
-                
-                {/* Overlay Info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity p-4 flex flex-col justify-end">
-                    {props.showTitle && <h3 className="text-white font-medium truncate">{item.title}</h3>}
-                    {props.showSubtitle && item.subtitle && (
-                      <p className="text-gray-300 text-xs truncate mt-0.5">{item.subtitle}</p>
-                    )}
-                    
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400 mt-2">
-                        {props.showYear && item.details?.release_year && <span>{item.details.release_year}</span>}
-                        {props.showRating && item.details?.imdb_rating && (
-                            <span className="bg-yellow-500/20 text-yellow-500 px-1 rounded">{item.details.imdb_rating}</span>
-                        )}
-                        {props.showGenres && item.genres && item.genres.length > 0 && (
-                            <span className="bg-gray-700/50 text-gray-300 px-1 rounded">{item.genres[0]}</span>
-                        )}
-                    </div>
+          {/* Render Actual Items */}
+          {items.map((item) => (
+            <div
+              key={item.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleItemClick(item);
+              }}
+              className={`group/card relative ${aspectRatio} bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-600 transition-all cursor-pointer`}
+            >
+              {/* Image */}
+              {(item.poster || item.thumbnail || item.cover) ? (
+                <img src={item.poster || item.thumbnail || item.cover || ''} alt={item.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-700">
+                  <span className="text-4xl font-bold opacity-20">?</span>
                 </div>
-             </div>
+              )}
+
+              {/* Overlay Info */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                {props.show_title && <h3 className="text-white font-medium truncate">{item.title}</h3>}
+                {props.show_subtitle && item.subtitle && (
+                  <p className="text-gray-300 text-xs truncate mt-0.5">{item.subtitle}</p>
+                )}
+
+                <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400 mt-2">
+                  {props.show_year && item.details?.release_year && <span>{item.details.release_year}</span>}
+                  {props.show_rating && item.details?.imdb_rating && (
+                    <span className="bg-yellow-500/20 text-yellow-500 px-1 rounded">{item.details.imdb_rating}</span>
+                  )}
+                  {props.show_genres && item.genres && item.genres.length > 0 && (
+                    <span className="bg-gray-700/50 text-gray-300 px-1 rounded">{item.genres[0]}</span>
+                  )}
+                </div>
+              </div>
+            </div>
           ))}
 
           {/* Render Skeletons when Loading */}
@@ -224,12 +224,12 @@ const ContentLibraryWidget: React.FC<ContentLibraryWidgetProps> = ({
 
         {/* Sentinel / Empty State Messages */}
         <div ref={observerTarget} className="py-8 flex justify-center w-full">
-            {!loading && !hasMore && items.length > 0 && (
-                <span className="text-gray-600 text-sm">End of list</span>
-            )}
-            {!loading && items.length === 0 && (
-                <span className="text-gray-500">{props.emptyStateMessage || 'No content found.'}</span>
-            )}
+          {!loading && !hasMore && items.length > 0 && (
+            <span className="text-gray-600 text-sm">End of list</span>
+          )}
+          {!loading && items.length === 0 && (
+            <span className="text-gray-500">{props.empty_state_message || 'No content found.'}</span>
+          )}
         </div>
       </div>
     </div>

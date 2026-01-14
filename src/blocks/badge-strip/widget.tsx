@@ -19,14 +19,14 @@ interface BadgeDisplayProps {
   children: React.ReactNode;
 }
 
-const BadgeDisplay: React.FC<BadgeDisplayProps> = ({ 
-  item, 
-  children 
+const BadgeDisplay: React.FC<BadgeDisplayProps> = ({
+  item,
+  children
 }) => {
   return (
     <div className="relative">
       {children}
-      
+
       {/* Tailwind CSS Tooltip - positioned below the item */}
       {item.tooltip && (
         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
@@ -39,8 +39,8 @@ const BadgeDisplay: React.FC<BadgeDisplayProps> = ({
   );
 };
 
-const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({ 
-  block, onSelect, isSelected, canMoveUp, canMoveDown, onMoveUp, onMoveDown, onDuplicate, onRemove 
+const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
+  block, onSelect, isSelected, canMoveUp, canMoveDown, onMoveUp, onMoveDown, onDuplicate, onRemove
 }) => {
   const { props, style } = block;
   const { items } = props;
@@ -48,12 +48,12 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
   const { addBlockItem, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   // Get alignment from block style, default to center
-  const alignment = style?.textAlign || 'center';
+  const alignment = style?.text_align || 'center';
   const alignmentClass = alignment === 'left' ? 'justify-start' :
-                         alignment === 'right' ? 'justify-end' : 'justify-center';
+    alignment === 'right' ? 'justify-end' : 'justify-center';
 
-  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
-  
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.border_radius ?? 'none'];
+
   // Handle box shadow - custom CSS values for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -63,30 +63,30 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow ?? 'none');
 
   // Icon mapping for rendering
   const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe, 
+    Award, Star, CheckCircle, Monitor, Volume2, Smartphone, Sun, Globe,
     Zap, Shield, Heart, Camera, Music, Video, Gamepad2, Palette
   };
 
   const handleAddItem = () => {
     const currentItemCount = items?.length || 0;
-    
+
     if (currentItemCount >= BADGE_STRIP_ITEM_LIMIT) {
       return; // Don't add more items if at limit
     }
-    
+
     const newItem: BadgeStripItem = {
       id: generateUniqueId(),
       label: 'New Badge',
       icon: 'Award',
       style: {
-        paddingTop: '15px',
-        paddingRight: '15px',
-        paddingBottom: '15px',
-        paddingLeft: '15px',
+        padding_top: '15px',
+        padding_right: '15px',
+        padding_bottom: '15px',
+        padding_left: '15px',
       }
     };
     addBlockItem(block.id, newItem);
@@ -107,13 +107,13 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
 
   // Helper function to get item styling classes
   const getItemStyleClasses = (item: BadgeStripItem) => {
-    const itemBorderRadiusClass = { lg: 'rounded-xl', md: 'rounded-lg', sm: 'rounded-md', none: 'rounded-none' }[item.style?.borderRadius ?? 'md'];
+    const itemBorderRadiusClass = { lg: 'rounded-xl', md: 'rounded-lg', sm: 'rounded-md', none: 'rounded-none' }[item.style?.border_radius ?? 'md'];
     return itemBorderRadiusClass;
   };
-  
+
   // Helper function to get item box shadow styles
   const getItemBoxShadowStyle = (item: BadgeStripItem) => {
-    return getBoxShadowStyle(item.style?.boxShadow ?? 'none');
+    return getBoxShadowStyle(item.style?.box_shadow ?? 'none');
   };
 
   // Check if we're at the item limit
@@ -134,123 +134,121 @@ const BadgeStripWidget: React.FC<BadgeStripWidgetProps> = ({
         onAddItem={!isAtItemLimit ? handleAddItem : undefined}
         className={`${borderRadiusClass}`}
         style={{
-          backgroundColor: style?.backgroundColor || '#000000',
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: style?.background_color || '#000000',
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
-      <div className={`flex ${alignmentClass} flex-wrap gap-4`}>
-        {items.map((item, index) => {
-          const isItemSelected = isItemSelectedFromContext(block.id, item.id);
-          
-          return (
-            <div key={item.id} className="relative group mt-4">
-              {/* ItemsControl - positioned at the top, visible on hover */}
-              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <BlockItemControl
-                  index={index}
-                  count={items.length}
-                  onMoveLeft={() => moveBlockItemLeft(block.id, index)}
-                  onMoveRight={() => moveBlockItemRight(block.id, index)}
-                  onRemove={() => removeBlockItem(block.id, item.id)}
-                  showMoveControls={items.length > 1}
-                  showRemoveControl={true}
-                  className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
-                />
+        <div className={`flex ${alignmentClass} flex-wrap gap-4`}>
+          {items.map((item, index) => {
+            const isItemSelected = isItemSelectedFromContext(block.id, item.id);
+
+            return (
+              <div key={item.id} className="relative group mt-4">
+                {/* ItemsControl - positioned at the top, visible on hover */}
+                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <BlockItemControl
+                    index={index}
+                    count={items.length}
+                    onMoveLeft={() => moveBlockItemLeft(block.id, index)}
+                    onMoveRight={() => moveBlockItemRight(block.id, index)}
+                    onRemove={() => removeBlockItem(block.id, item.id)}
+                    showMoveControls={items.length > 1}
+                    showRemoveControl={true}
+                    className="flex space-x-1 bg-white/95 rounded-lg p-1.5 shadow-lg border border-gray-300"
+                  />
+                </div>
+
+                {/* Badge Item */}
+                {item.link && item.link !== '#' ? (
+                  // Badge with real link - use anchor tag
+                  <BadgeDisplay
+                    item={item}
+                  >
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${isItemSelected
+                          ? 'ring-2 ring-blue-500 ring-offset-1'
+                          : 'hover:ring-1 hover:ring-blue-300'
+                        }`}
+                      style={{
+                        backgroundColor: item.style?.background_color || '#000000',
+                        color: item.style?.text_color || '#ffffff',
+                        boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
+                        paddingTop: item.style?.padding_top,
+                        paddingRight: item.style?.padding_right,
+                        paddingBottom: item.style?.padding_bottom,
+                        paddingLeft: item.style?.padding_left,
+                        marginTop: item.style?.margin_top,
+                        marginRight: item.style?.margin_right,
+                        marginBottom: item.style?.margin_bottom,
+                        marginLeft: item.style?.margin_left,
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent page reload
+                        e.stopPropagation();
+                        window.open(item.link!, '_blank');
+                      }}
+                    >
+                      {item.icon && renderIcon(item.icon)}
+                      {item.label && <span className="font-medium">{item.label}</span>}
+                    </a>
+                  </BadgeDisplay>
+                ) : (
+                  // Badge without link - use div tag
+                  <BadgeDisplay
+                    item={item}
+                  >
+                    <div
+                      className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${isItemSelected
+                          ? 'ring-2 ring-blue-500 ring-offset-1'
+                          : 'hover:ring-1 hover:ring-blue-300'
+                        }`}
+                      style={{
+                        backgroundColor: item.style?.background_color || '#000000',
+                        color: item.style?.text_color || '#ffffff',
+                        boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
+                        paddingTop: item.style?.padding_top,
+                        paddingRight: item.style?.padding_right,
+                        paddingBottom: item.style?.padding_bottom,
+                        paddingLeft: item.style?.padding_left,
+                        marginTop: item.style?.margin_top,
+                        marginRight: item.style?.margin_right,
+                        marginBottom: item.style?.margin_bottom,
+                        marginLeft: item.style?.margin_left,
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleItemClick(item.id);
+                      }}
+                    >
+                      {item.icon && renderIcon(item.icon)}
+                      {item.label && <span className="font-medium">{item.label}</span>}
+                    </div>
+                  </BadgeDisplay>
+                )}
               </div>
-              
-              {/* Badge Item */}
-              {item.link && item.link !== '#' ? (
-                // Badge with real link - use anchor tag
-                <BadgeDisplay
-                  item={item}
-                >
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${
-                      isItemSelected 
-                        ? 'ring-2 ring-blue-500 ring-offset-1' 
-                        : 'hover:ring-1 hover:ring-blue-300'
-                    }`}
-                    style={{
-                      backgroundColor: item.style?.backgroundColor || '#000000',
-                      color: item.style?.textColor || '#ffffff',
-                      boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
-                      paddingTop: item.style?.paddingTop,
-                      paddingRight: item.style?.paddingRight,
-                      paddingBottom: item.style?.paddingBottom,
-                      paddingLeft: item.style?.paddingLeft,
-                      marginTop: item.style?.marginTop,
-                      marginRight: item.style?.marginRight,
-                      marginBottom: item.style?.marginBottom,
-                      marginLeft: item.style?.marginLeft,
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent page reload
-                      e.stopPropagation();
-                      window.open(item.link!, '_blank');
-                    }}
-                  >
-                    {item.icon && renderIcon(item.icon)}
-                    {item.label && <span className="font-medium">{item.label}</span>}
-                  </a>
-                </BadgeDisplay>
-              ) : (
-                // Badge without link - use div tag
-                <BadgeDisplay
-                  item={item}
-                >
-                  <div
-                    className={`flex items-center gap-2 text-sm transition-all cursor-pointer ${getItemStyleClasses(item)} ${
-                      isItemSelected 
-                        ? 'ring-2 ring-blue-500 ring-offset-1' 
-                        : 'hover:ring-1 hover:ring-blue-300'
-                    }`}
-                    style={{
-                      backgroundColor: item.style?.backgroundColor || '#000000',
-                      color: item.style?.textColor || '#ffffff',
-                      boxShadow: isItemSelected ? undefined : getItemBoxShadowStyle(item),
-                      paddingTop: item.style?.paddingTop,
-                      paddingRight: item.style?.paddingRight,
-                      paddingBottom: item.style?.paddingBottom,
-                      paddingLeft: item.style?.paddingLeft,
-                      marginTop: item.style?.marginTop,
-                      marginRight: item.style?.marginRight,
-                      marginBottom: item.style?.marginBottom,
-                      marginLeft: item.style?.marginLeft,
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleItemClick(item.id);
-                    }}
-                  >
-                    {item.icon && renderIcon(item.icon)}
-                    {item.label && <span className="font-medium">{item.label}</span>}
-                  </div>
-                </BadgeDisplay>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      
-      {items.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-            <span className="text-2xl">🏷️</span>
-          </div>
-          <p className="text-sm font-medium">No badges added yet</p>
-          <p className="text-xs text-gray-400">Click the + button above to add your first badge</p>
+            );
+          })}
         </div>
-      )}
+
+        {items.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <span className="text-2xl">🏷️</span>
+            </div>
+            <p className="text-sm font-medium">No badges added yet</p>
+            <p className="text-xs text-gray-400">Click the + button above to add your first badge</p>
+          </div>
+        )}
       </BlockWidgetWrapper>
     </div>
   );

@@ -12,12 +12,12 @@ import { useSelection } from '@context/SelectionContext';
 
 const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const heroBlock = block as HeroBlock;
-  
+
   const { selectedItemId, selectedItemBlockId } = useSelection();
-  
+
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
-  
+
   // Memoized editing item index calculation
   const editingItemIndex = useMemo(() => {
     if (selectedItemId && selectedItemBlockId === heroBlock.id) {
@@ -28,34 +28,34 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     }
     return 0;
   }, [selectedItemId, selectedItemBlockId, heroBlock.id, heroBlock.props.items]);
-  
+
   const currentItem = heroBlock.props.items?.[editingItemIndex] || {
     id: generateUniqueInt(),
-    content_id: 0,  
+    content_id: 0,
     title: '',
     subtitle: '',
     backgroundImage: ''
   };
-  
+
   const currentItemImage = currentItem.poster || currentItem.cover || currentItem.thumbnail;
-  
+
   // Helper function to create a default hero item
   const createDefaultHeroItem = () => ({
     id: generateUniqueInt(),
     content_id: 0,
-    titleType: 'text' as const,
+    title_type: 'text' as const,
     title: '',
-    titleImage: '',
+    title_image: '',
     subtitle: '',
     thumbnail: null,
     poster: null,
     cover: null,
     hashtag: undefined,
-    showTitle: true,
-    showSubtitle: true,
-    showGenres: true,
-    showMeta: true,
-    showHashtag: true
+    show_title: true,
+    show_subtitle: true,
+    show_genres: true,
+    show_meta: true,
+    show_hashtag: true
   });
 
   const updateHeroItemPrimaryCTA = (primaryCTA: HeroCTABtn) => {
@@ -63,8 +63,8 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     if (!newItems[editingItemIndex]) {
       newItems[editingItemIndex] = createDefaultHeroItem();
     }
-    
-    newItems[editingItemIndex].primaryCTA = primaryCTA;
+
+    newItems[editingItemIndex].primary_cta = primaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
 
@@ -73,18 +73,18 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     if (!newItems[editingItemIndex]) {
       newItems[editingItemIndex] = createDefaultHeroItem();
     }
-    
-    newItems[editingItemIndex].secondaryCTA = secondaryCTA;
+
+    newItems[editingItemIndex].secondary_cta = secondaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
-  
+
   const updateHeroItemTertiaryCTA = (tertiaryCTA: HeroCTABtn | undefined) => {
     const newItems = [...(heroBlock.props.items || [])];
     if (!newItems[editingItemIndex]) {
       newItems[editingItemIndex] = createDefaultHeroItem();
     }
-    
-    newItems[editingItemIndex].tertiaryCTA = tertiaryCTA;
+
+    newItems[editingItemIndex].tertiary_cta = tertiaryCTA;
     updateProps({ ...heroBlock.props, items: newItems });
   };
 
@@ -99,11 +99,11 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       updateProps({ ...heroBlock.props, items: newItems });
     }
   };
-  
+
   // Content picker functionality
   const handleSelectContent = (content: Content) => {
     const numericId = typeof content.id === 'number' ? content.id : parseInt(content.id, 10);
-    
+
     const heroItem = {
       id: numericId,
       content_id: numericId,
@@ -113,50 +113,52 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       thumbnail: content.thumbnail || null,
       poster: content.poster || null,
       cover: content.cover || null,
-      videoBackground: content.details?.videoBackground,
-      titleType: content.details?.titleImage ? 'image' as const : 'text' as const,
-      titleImage: content.details?.titleImage,
+      video_background: content.details?.video_background,
+      title_type: content.details?.title_image ? 'image' as const : 'text' as const,
+      title_image: content.details?.title_image,
       details: {
         release_year: content.details?.release_year,
         language: content.details?.language,
         duration: content.details?.duration,
         imdb_rating: content.details?.imdb_rating,
+        video_background: content.details?.video_background,
+        title_image: content.details?.title_image,
       },
       genres: content.genres || [],
       hashtag: content.details?.hashtag ? { text: content.details.hashtag, color: '#dc2626', size: 'medium' as const } : undefined,
-      showTitle: true,
-      showSubtitle: true,
-      showGenres: true,
-      showMeta: true,
-      showHashtag: true,
-      primaryCTA: {
+      show_title: true,
+      show_subtitle: true,
+      show_genres: true,
+      show_meta: true,
+      show_hashtag: true,
+      primary_cta: {
         label: 'Watch Now',
         link: content.url || 'undefined',
         variant: 'solid' as const,
-        backgroundColor: '#dc2626',
-        textColor: '#ffffff',
+        background_color: '#dc2626',
+        text_color: '#ffffff',
         icon: 'Play' as const,
-        iconPosition: 'left' as const,
-        iconThickness: 'normal' as const,
-        borderRadius: 'md' as const,
+        icon_position: 'left' as const,
+        icon_thickness: 'normal' as const,
+        border_radius: 'md' as const,
         size: 'medium' as const
       }
     };
-    
+
     // Check if item with this ID already exists
     const existingItems = heroBlock.props.items || [];
     if (existingItems.some(item => item.id === heroItem.id)) {
       setDuplicateWarning(`"${content.title}" is already in your hero`);
-      return; 
+      return;
     }
-    
+
     setDuplicateWarning(null);
     updateProps({
       ...heroBlock.props,
       items: [...existingItems, heroItem]
     });
   };
-  
+
   // This useEffect will manage the warning visibility and cleanup
   useEffect(() => {
     if (duplicateWarning) {
@@ -167,23 +169,23 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
       return () => clearTimeout(timer);
     }
   }, [duplicateWarning]);
-  
+
   return (
     <div>
-      
+
       {/* Carousel Controls */}
       <CarouselControls
         heroBlock={heroBlock}
         updateProps={updateProps}
       />
-      
+
       {/* Content Picker Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
         <h3 className="font-medium text-gray-700 mb-4">Content Picker</h3>
         <p className="text-sm text-gray-600 mb-3">
           Search for Content and add them to your hero. Content will be added to the end of your hero items list.
         </p>
-        
+
         {/* Duplicate item warning */}
         {duplicateWarning && (
           <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -195,12 +197,12 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             </div>
           </div>
         )}
-        
+
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
           searchFunction={
-              React.useMemo(() => contentApi.searchExcludingItems(heroBlock.props.items || []), [heroBlock.props.items])
-            }
+            React.useMemo(() => contentApi.searchExcludingItems(heroBlock.props.items || []), [heroBlock.props.items])
+          }
           placeholder="Search for Content..."
           onSelect={handleSelectContent}
           getItemId={(content) => content.id}
@@ -208,13 +210,13 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             label: 'Content Type'
           }}
           renderItem={React.useCallback((content, onSelect) => (
-            <div 
+            <div
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
             >
               {(content.thumbnail || content.poster || content.cover) && (
-                <img 
-                  src={content.thumbnail || content.poster || content.cover || ''} 
+                <img
+                  src={content.thumbnail || content.poster || content.cover || ''}
                   alt={content.title}
                   className="w-12 h-8 object-cover rounded flex-shrink-0"
                   onError={(e) => {
@@ -234,7 +236,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
           noResultsMessage="No Content found. Try a different search."
         />
       </div>
-      
+
       {/* Consolidated Content Section */}
       <div className="space-y-4">
         {/* Block Configuration Section */}
@@ -252,12 +254,12 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 <option value="carousel">Carousel</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
               <select
-                value={heroBlock.props.aspectRatio || '16:9'}
-                onChange={(e) => updateProps({ ...heroBlock.props, aspectRatio: e.target.value as '16:9' | 'auto' | 'custom' })}
+                value={heroBlock.props.aspect_ratio || '16:9'}
+                onChange={(e) => updateProps({ ...heroBlock.props, aspect_ratio: e.target.value as '16:9' | 'auto' | 'custom' })}
                 className="w-full p-2 border border-gray-300 rounded"
               >
                 <option value="16:9">16:9</option>
@@ -266,24 +268,24 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
               </select>
             </div>
           </div>
-          
-          {heroBlock.props.aspectRatio === 'custom' && (
+
+          {heroBlock.props.aspect_ratio === 'custom' && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">Custom Height</label>
               <div className="flex items-center">
                 <input
                   type="number"
-                  value={heroBlock.props.customHeight ? parseInt(heroBlock.props.customHeight) : 600}
+                  value={heroBlock.props.custom_height ? parseInt(heroBlock.props.custom_height) : 600}
                   onChange={(e) => {
                     const value = parseInt(e.target.value);
                     if (!isNaN(value) && value >= 600 && value <= 1000) {
-                      updateProps({ ...heroBlock.props, customHeight: `${value}px` });
+                      updateProps({ ...heroBlock.props, custom_height: `${value}px` });
                     }
                   }}
                   onBlur={(e) => {
                     const value = parseInt(e.target.value);
                     if (isNaN(value) || value < 600 || value > 1000) {
-                      updateProps({ ...heroBlock.props, customHeight: '600px' });
+                      updateProps({ ...heroBlock.props, custom_height: '600px' });
                     }
                   }}
                   className="w-full p-2 border border-gray-300 rounded"
@@ -298,7 +300,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             </div>
           )}
         </div>
-        
+
         {/* Conditional rendering for item-dependent sections */}
         {heroBlock.props.items && heroBlock.props.items.length > 0 ? (
           <>
@@ -316,17 +318,17 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                   </span>
                 )}
               </div>
-              
+
               <div className="space-y-4">
                 {/* Title Preview */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                   <div className="p-3 bg-gray-100 rounded">
-                    {currentItem.titleType === 'image' && currentItem.titleImage ? (
+                    {currentItem.title_type === 'image' && currentItem.title_image ? (
                       <div className="flex justify-center">
-                        <img 
-                          src={currentItem.titleImage} 
-                          alt="Title" 
+                        <img
+                          src={currentItem.title_image}
+                          alt="Title"
                           className="max-h-16"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -342,7 +344,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     Title is automatically populated from the Content API
                   </p>
                 </div>
-                
+
                 {/* Subtitle Preview */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
@@ -353,18 +355,18 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     Subtitle is automatically populated from the Content API
                   </p>
                 </div>
-                
+
                 {/* Background Preview */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Background</label>
                   <div className="p-3 bg-gray-100 rounded">
-                    {currentItem.videoBackground ? (
-                      <div className="text-sm">Video Background: {currentItem.videoBackground}</div>
+                    {currentItem.video_background ? (
+                      <div className="text-sm">Video Background: {currentItem.video_background}</div>
                     ) : currentItemImage ? (
                       <div className="aspect-video bg-gray-200 relative overflow-hidden">
-                        <img 
-                          src={currentItemImage} 
-                          alt="Background" 
+                        <img
+                          src={currentItemImage}
+                          alt="Background"
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -377,7 +379,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     )}
                   </div>
                 </div>
-                
+
                 {/* Metadata Preview */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Metadata</label>
@@ -394,73 +396,73 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Item Display Options */}
             <div className="p-4 bg-gray-50 rounded-lg">
               <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
               <p className="text-sm text-gray-600 mb-3">
                 Control which elements are displayed for the current hero item.
               </p>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showTitle"
-                    checked={currentItem.showTitle !== false}
-                    onChange={e => updateCurrentHeroItem({ showTitle: e.target.checked })}
+                    checked={currentItem.show_title !== false}
+                    onChange={e => updateCurrentHeroItem({ show_title: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showTitle" className="text-sm text-gray-700">
                     Show Title
                   </label>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showSubtitle"
-                    checked={currentItem.showSubtitle !== false}
-                    onChange={e => updateCurrentHeroItem({ showSubtitle: e.target.checked })}
+                    checked={currentItem.show_subtitle !== false}
+                    onChange={e => updateCurrentHeroItem({ show_subtitle: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showSubtitle" className="text-sm text-gray-700">
                     Show Subtitle
                   </label>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showGenres"
-                    checked={currentItem.showGenres !== false}
-                    onChange={e => updateCurrentHeroItem({ showGenres: e.target.checked })}
+                    checked={currentItem.show_genres !== false}
+                    onChange={e => updateCurrentHeroItem({ show_genres: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showGenres" className="text-sm text-gray-700">
                     Show Genres
                   </label>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showMeta"
-                    checked={currentItem.showMeta !== false}
-                    onChange={e => updateCurrentHeroItem({ showMeta: e.target.checked })}
+                    checked={currentItem.show_meta !== false}
+                    onChange={e => updateCurrentHeroItem({ show_meta: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showMeta" className="text-sm text-gray-700">
                     Show Metadata (Year, Language)
                   </label>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="showHashtag"
-                    checked={currentItem.showHashtag !== false}
-                    onChange={e => updateCurrentHeroItem({ showHashtag: e.target.checked })}
+                    checked={currentItem.show_hashtag !== false}
+                    onChange={e => updateCurrentHeroItem({ show_hashtag: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showHashtag" className="text-sm text-gray-700">
@@ -469,7 +471,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Hashtag Customization Section */}
             {currentItem.hashtag && (
               <div className="p-4 bg-gray-50 rounded-lg">
@@ -477,7 +479,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 <p className="text-sm text-gray-600 mb-3">
                   Customize the appearance of your hashtag. The hashtag text comes from the API.
                 </p>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   {/* Hashtag Color */}
                   <div>
@@ -498,7 +500,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                       className="w-full h-10 border border-gray-300 rounded cursor-pointer"
                     />
                   </div>
-                  
+
                   {/* Hashtag Size */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Hashtag Size</label>
@@ -523,11 +525,11 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                     </select>
                   </div>
                 </div>
-                
+
                 {/* Hashtag Preview */}
                 <div className="mt-4 p-3 bg-gray-100 rounded">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
-                  <span 
+                  <span
                     className={`font-bold ${getHashtagSizeClass(currentItem.hashtag.size)}`}
                     style={{ color: currentItem.hashtag.color || '#dc2626' }}
                   >
@@ -536,7 +538,7 @@ const HeroForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 </div>
               </div>
             )}
-            
+
             {/* CTAs Section */}
             <div className="p-4 bg-gray-50 rounded-lg">
               <h3 className="font-medium text-gray-700 mb-4">Call-to-Action Buttons</h3>

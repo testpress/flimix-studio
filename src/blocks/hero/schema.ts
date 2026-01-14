@@ -9,19 +9,19 @@ export interface HeroBlock extends Omit<Block, 'props'> {
 export interface HeroItem {
   id: number;
   content_id: number;
-  titleType?: 'text' | 'image';
+  title_type?: 'text' | 'image';
   title?: string;
   url?: string;
-  titleImage?: string;
+  title_image?: string;
   subtitle?: string;
-  videoBackground?: string;
+  video_background?: string;
   details?: {
     duration?: string | number;
     release_year?: number | string;
     imdb_rating?: string | number;
     language?: string;
-    videoBackground?: string;
-    titleImage?: string;
+    video_background?: string;
+    title_image?: string;
     hashtag?: string;
   };
   genres?: string[];
@@ -31,37 +31,37 @@ export interface HeroItem {
   thumbnail?: string | null;
   poster?: string | null;
   cover?: string | null;
-  primaryCTA?: HeroCTABtn;
-  secondaryCTA?: HeroCTABtn;
-  tertiaryCTA?: HeroCTABtn;
+  primary_cta?: HeroCTABtn;
+  secondary_cta?: HeroCTABtn;
+  tertiary_cta?: HeroCTABtn;
   hashtag?: HeroHashtag;
-  showTitle?: boolean;     
-  showSubtitle?: boolean; 
-  showGenres?: boolean;     
-  showMeta?: boolean;
-  showHashtag?: boolean; 
+  show_title?: boolean;
+  show_subtitle?: boolean;
+  show_genres?: boolean;
+  show_meta?: boolean;
+  show_hashtag?: boolean;
 }
 
 
 export interface HeroBlockProps {
   variant?: 'single' | 'carousel';
-  aspectRatio?: '16:9' | 'auto' | 'custom';
-  customHeight?: string; // Height value in pixels for custom aspect ratio (e.g., '600px')
+  aspect_ratio?: '16:9' | 'auto' | 'custom';
+  custom_height?: string; // Height value in pixels for custom aspect ratio (e.g., '600px')
   items: HeroItem[];
-  showArrows?: boolean;
+  show_arrows?: boolean;
   autoplay?: boolean;
-  scrollSpeed?: number; // in milliseconds
+  scroll_speed?: number; // in milliseconds
 }
 export interface HeroCTABtn {
   label: string;
   link: string;
   variant?: 'solid' | 'outline';
-  backgroundColor?: string;
-  textColor?: string;
+  background_color?: string;
+  text_color?: string;
   icon?: 'Play' | 'Plus' | 'Info' | 'ChevronRight' | 'ChevronLeft' | 'ArrowRight' | 'ArrowLeft' | 'Download' | 'None';
-  iconPosition?: 'left' | 'right';
-  borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
-  iconThickness?: 'thin' | 'normal' | 'thick';
+  icon_position?: 'left' | 'right';
+  border_radius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  icon_thickness?: 'thin' | 'normal' | 'thick';
   size?: 'small' | 'medium' | 'large'; // Button size option
 }
 

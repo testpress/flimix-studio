@@ -31,7 +31,7 @@ const DividerForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     },
     // Show percentage input only when length is 'percentage'
     ...(length === 'percentage' ? [{
-      key: 'percentageValue',
+      key: 'percentage_value',
       label: 'Percentage (%)',
       type: 'number' as const,
       placeholder: 'Enter percentage (1-100)',

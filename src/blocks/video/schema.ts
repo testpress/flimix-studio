@@ -8,7 +8,7 @@ export interface VideoBlockProps {
   muted?: boolean;
   controls?: boolean;
   loop?: boolean;
-  aspectRatio?: '16:9' | '4:3' | '1:1' | 'auto';
+  aspect_ratio?: '16:9' | '4:3' | '1:1' | 'auto';
   alignment?: 'left' | 'center' | 'right';
   size?: 'small' | 'medium' | 'large' | 'full';
 }

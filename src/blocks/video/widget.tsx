@@ -10,7 +10,7 @@ interface VideoWidgetProps extends Omit<BlockWidgetWrapperProps<VideoBlock>, 'bl
 export const VideoWidget: React.FC<VideoWidgetProps> = ({
   block, onSelect, isSelected, canMoveUp, canMoveDown, onMoveUp, onMoveDown, onDuplicate, onRemove,
 }) => {
-  const { src, poster, caption, autoplay, muted, controls, loop, aspectRatio, alignment, size = 'medium' } = block.props;
+  const { src, poster, caption, autoplay, muted, controls, loop, aspect_ratio, alignment, size = 'medium' } = block.props;
   const { style } = block;
 
 
@@ -32,23 +32,23 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
 
   // Get background color
   const getBackgroundColor = () => {
-    if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
+    if (style?.background_color && style.background_color.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.backgroundColor || 'bg-black text-white';
+    return style?.background_color || 'bg-black text-white';
   };
 
   // Get background color as inline style for hex colors
   const getBackgroundColorStyle = (): React.CSSProperties => {
-    if (style?.backgroundColor && style.backgroundColor.startsWith('#')) {
-      return { backgroundColor: style.backgroundColor };
+    if (style?.background_color && style.background_color.startsWith('#')) {
+      return { backgroundColor: style.background_color };
     }
     return {};
   };
 
   // Get border radius class
   const getBorderRadiusClass = () => {
-    switch (style?.borderRadius) {
+    switch (style?.border_radius) {
       case 'lg': return 'rounded-xl';
       case 'md': return 'rounded-lg';
       case 'sm': return 'rounded-md';
@@ -71,12 +71,12 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
   // Get aspect ratio classes
   const getAspectRatioClasses = () => {
-    switch (aspectRatio) {
+    switch (aspect_ratio) {
       case '16:9': return 'aspect-video';
       case '4:3': return 'aspect-[4/3]';
       case '1:1': return 'aspect-square';
@@ -97,7 +97,7 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
 
   // Get caption alignment classes from style settings (independent of video positioning)
   const getCaptionAlignmentClasses = () => {
-    switch (style?.textAlign) {
+    switch (style?.text_align) {
       case 'left': return 'text-left';
       case 'right': return 'text-right';
       case 'center':
@@ -107,16 +107,16 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
 
   // Get text color class (Tailwind approach)
   const getTextColorClass = () => {
-    if (style?.textColor && style.textColor.startsWith('#')) {
+    if (style?.text_color && style.text_color.startsWith('#')) {
       return ''; // Return empty string for hex colors, we'll apply via inline style
     }
-    return style?.textColor || 'text-white'; // Use Tailwind class or default
+    return style?.text_color || 'text-white'; // Use Tailwind class or default
   };
 
   // Get text color style (inline style approach)
   const getTextColorStyle = (): React.CSSProperties => {
-    if (style?.textColor && style.textColor.startsWith('#')) {
-      return { color: style.textColor }; // Apply hex color via inline style
+    if (style?.text_color && style.text_color.startsWith('#')) {
+      return { color: style.text_color }; // Apply hex color via inline style
     }
     return {}; // No inline style needed for Tailwind classes
   };
@@ -146,32 +146,32 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   if (!src) {
     return (
       <div style={{
-        marginTop: style?.marginTop,
-        marginRight: style?.marginRight,
-        marginBottom: style?.marginBottom,
-        marginLeft: style?.marginLeft
+        marginTop: style?.margin_top,
+        marginRight: style?.margin_right,
+        marginBottom: style?.margin_bottom,
+        marginLeft: style?.margin_left
       }}>
-        <BlockWidgetWrapper 
-          block={block} 
-          onSelect={onSelect} 
+        <BlockWidgetWrapper
+          block={block}
+          onSelect={onSelect}
           isSelected={isSelected}
-          canMoveUp={canMoveUp} 
-          canMoveDown={canMoveDown} 
-          onMoveUp={onMoveUp} 
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
-          onDuplicate={onDuplicate} 
+          onDuplicate={onDuplicate}
           onRemove={onRemove}
           className={widgetClasses}
           style={getBackgroundColorStyle()}
         >
           <div className="w-full" style={{
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left
           }}>
             <div className={`w-full ${getContainerAlignmentClasses()}`}>
-              <div 
+              <div
                 className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
                 style={{ boxShadow: boxShadowStyle }}
               >
@@ -190,35 +190,35 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
   // Main video rendering
   return (
     <div style={{
-      marginTop: style?.marginTop,
-      marginRight: style?.marginRight,
-      marginBottom: style?.marginBottom,
-      marginLeft: style?.marginLeft
+      marginTop: style?.margin_top,
+      marginRight: style?.margin_right,
+      marginBottom: style?.margin_bottom,
+      marginLeft: style?.margin_left
     }}>
-      <BlockWidgetWrapper 
-        block={block} 
-        onSelect={onSelect} 
+      <BlockWidgetWrapper
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
-        canMoveUp={canMoveUp} 
-        canMoveDown={canMoveDown} 
-        onMoveUp={onMoveUp} 
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onMoveUp={onMoveUp}
         onMoveDown={onMoveDown}
-        onDuplicate={onDuplicate} 
+        onDuplicate={onDuplicate}
         onRemove={onRemove}
         className={widgetClasses}
         style={getBackgroundColorStyle()}
       >
         {/* Apply padding from style settings */}
         <div className="w-full" style={{
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left
         }}>
           {/* Video container with proper alignment */}
           <div className={`w-full ${getContainerAlignmentClasses()}`}>
             {/* Video wrapper with fixed dimensions and size constraints */}
-            <div 
+            <div
               className={`${getSizeClasses()} ${getAspectRatioClasses()} ${getBorderRadiusClass()} overflow-hidden bg-black ${getVideoContainerClasses()}`}
               style={{ boxShadow: boxShadowStyle }}
             >
@@ -239,11 +239,11 @@ export const VideoWidget: React.FC<VideoWidgetProps> = ({
               </video>
             </div>
           </div>
-          
+
           {/* Caption - alignment controlled by style.textAlign, color by style.textColor */}
           {caption && (
             <div className={`mt-3 ${getCaptionAlignmentClasses()}`}>
-              <p 
+              <p
                 className={`text-sm ${getTextColorClass()}`}
                 style={getTextColorStyle()}
               >

@@ -14,7 +14,7 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
   const { style } = block;
 
   const getAlignmentClass = () => {
-    switch (style?.textAlign) {
+    switch (style?.text_align) {
       case 'left': return 'justify-start';
       case 'right': return 'justify-end';
       default: return 'justify-center';
@@ -31,14 +31,14 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
 
   const getVariantClasses = () => {
     switch (variant) {
-      case 'outline': 
+      case 'outline':
         return 'border-2 border-current bg-transparent';
       default: // solid
         return 'shadow-sm';
     }
   };
 
-  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.borderRadius ?? 'none'];
+  const borderRadiusClass = { lg: 'rounded-lg', md: 'rounded-md', sm: 'rounded-sm', none: 'rounded-none' }[style?.border_radius ?? 'none'];
   // Custom box shadow styles for better visibility on dark backgrounds
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -53,8 +53,8 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
   return (
     <BlockWidgetWrapper
@@ -68,14 +68,14 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
       onDuplicate={onDuplicate}
       onRemove={onRemove}
       style={{
-        paddingTop: style?.paddingTop,
-        paddingRight: style?.paddingRight,
-        paddingBottom: style?.paddingBottom,
-        paddingLeft: style?.paddingLeft,
-        marginTop: style?.marginTop,
-        marginRight: style?.marginRight,
-        marginBottom: style?.marginBottom,
-        marginLeft: style?.marginLeft,
+        paddingTop: style?.padding_top,
+        paddingRight: style?.padding_right,
+        paddingBottom: style?.padding_bottom,
+        paddingLeft: style?.padding_left,
+        marginTop: style?.margin_top,
+        marginRight: style?.margin_right,
+        marginBottom: style?.margin_bottom,
+        marginLeft: style?.margin_left,
       }}
     >
       <div className={`flex ${getAlignmentClass()}`}>
@@ -83,8 +83,8 @@ const CTAButtonWidget: React.FC<CTAButtonWidgetProps> = ({
           href={link}
           className={`inline-block ${getSizeClasses()} ${getVariantClasses()} font-medium ${borderRadiusClass} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
           style={{
-            backgroundColor: (variant === 'solid' && !style?.backgroundColor) ? '#1f2937' : style?.backgroundColor,
-            color: (variant === 'solid' && !style?.textColor) ? '#ffffff' : style?.textColor,
+            backgroundColor: (variant === 'solid' && !style?.background_color) ? '#1f2937' : style?.background_color,
+            color: (variant === 'solid' && !style?.text_color) ? '#ffffff' : style?.text_color,
             boxShadow: boxShadowStyle,
           }}
         >

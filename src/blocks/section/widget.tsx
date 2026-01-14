@@ -18,11 +18,11 @@ interface SectionWidgetProps extends Omit<BlockWidgetWrapperProps<SectionBlock>,
   isColumn?: boolean;
 }
 
-const SectionWidget: React.FC<SectionWidgetProps> = ({ 
-  block, 
-  visibilityContext, 
-  showDebug = false, 
-  onSelect, 
+const SectionWidget: React.FC<SectionWidgetProps> = ({
+  block,
+  visibilityContext,
+  showDebug = false,
+  onSelect,
   isSelected = false,
   selectedBlockId,
   isColumn = false,
@@ -34,15 +34,15 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
   onRemove
 }) => {
   const { props, style, children } = block;
-  const { title, description, backgroundImage } = props;
+  const { title, description, background_image } = props;
   const { openLibrary } = usePanel();
   const hasChildren = children && children.length > 0;
 
-  const textAlignClass = style?.textAlign === 'center' ? 'text-center' : 
-                        style?.textAlign === 'right' ? 'text-right' : 'text-left';
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
-                           style?.borderRadius === 'md' ? 'rounded-md' : 
-                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+  const textAlignClass = style?.text_align === 'center' ? 'text-center' :
+    style?.text_align === 'right' ? 'text-right' : 'text-left';
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' : '';
   const emptyColumnClasses = isColumn
     ? `min-h-[100px] ${!hasChildren ? 'border-2 border-dashed border-gray-300' : ''}`
     : '';
@@ -60,18 +60,18 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
   // Handle background color - default to black
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-white';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
   // Handle text color - default to white text
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   const handleSelect = (sectionBlock: SectionBlock) => {
     onSelect?.(sectionBlock as Block);
@@ -85,8 +85,8 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }} className="h-full">
-      <BlockWidgetWrapper 
-        block={block} 
+      <BlockWidgetWrapper
+        block={block}
         onSelect={handleSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
@@ -97,22 +97,22 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
         onRemove={onRemove}
         className={`relative overflow-hidden ${borderRadiusClass} ${backgroundClass} ${emptyColumnClasses} h-full flex flex-col`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         {/* Background Image */}
-        {backgroundImage && (
+        {background_image && (
           <>
-            <img 
-              src={backgroundImage} 
+            <img
+              src={background_image}
               alt={title || 'Section background'}
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -136,15 +136,15 @@ const SectionWidget: React.FC<SectionWidgetProps> = ({
               )}
             </div>
           )}
-          
+
           {hasChildren ? (
             <div className="space-y-0 w-full">
               {children.map((childBlock) => (
                 <div key={childBlock.id} className="w-full" data-block-id={childBlock.id}>
                   <BlockInsertDropdown position="above" blockId={childBlock.id} visibilityContext={visibilityContext} />
-                  <BlockRenderer 
-                    block={childBlock} 
-                    visibilityContext={visibilityContext} 
+                  <BlockRenderer
+                    block={childBlock}
+                    visibilityContext={visibilityContext}
                     showDebug={showDebug}
                     onSelect={onSelect}
                     selectedBlockId={selectedBlockId}

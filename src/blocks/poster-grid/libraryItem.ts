@@ -10,7 +10,7 @@ export const PosterGridLibraryItem = {
     title: 'Top Picks',
     columns: 3,
     rows: 3,
-    itemShape: 'rectangle-landscape',
+    item_shape: 'rectangle-landscape',
     items: [],
   } as PosterGridBlockProps
 }; 

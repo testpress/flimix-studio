@@ -19,7 +19,7 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
   onRemove,
 }) => {
   const { props, style } = block;
-  const { thickness, length, percentageValue, alignment, style: dividerStyle } = props;
+  const { thickness, length, percentage_value, alignment, style: dividerStyle } = props;
 
   const thicknessClasses: Record<DividerThickness, string> = {
     sm: 'border-t',
@@ -53,15 +53,15 @@ const DividerWidget: React.FC<DividerWidgetProps> = ({
   // Get inline styles for percentage width and color
   const getInlineStyles = () => {
     const styles: React.CSSProperties = {};
-    
+
     // Add percentage width if needed
-    if (length === 'percentage' && percentageValue) {
-      styles.width = `${percentageValue}%`;
+    if (length === 'percentage' && percentage_value) {
+      styles.width = `${percentage_value}%`;
     }
-    
+
     // Add border color - use custom color or default to white
-    styles.borderColor = style?.backgroundColor || '#ffffff';
-    
+    styles.borderColor = style?.background_color || '#ffffff';
+
     return styles;
   };
 

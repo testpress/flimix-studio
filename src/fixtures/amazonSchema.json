@@ -13,19 +13,19 @@
       "id": "hero-amazon-001",
       "props": {
         "variant": "carousel",
-        "aspectRatio": "16:9",
+        "aspect_ratio": "16:9",
         "autoplay": false,
-        "showArrows": true,
-        "scrollSpeed": 5000,
+        "show_arrows": true,
+        "scroll_speed": 5000,
         "items": [
           {
             "id": 1,
             "title": "JURASSIC WORLD REBIRTH",
-            "titleType": "image",
-            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/56699a1c-41e7-4b44-a624-76a2735f4a41._BR-6_AC_SX1000_FMpng_.png",
+            "title_type": "image",
+            "title_image": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/56699a1c-41e7-4b44-a624-76a2735f4a41._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "After the events of Jurassic World Dominion, the planet's ecology has proven largely inhospitable to dinosaurs.",
             "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_CROW_JurassicWorldRebirth_399/da44ae5a-9d30-4f50-af31-4b1e364c624f._UR3840,1440_SX2160_FMjpg_.jpeg",
-            "videoBackground": "",
+            "video_background": "",
             "genres": [
               "Action",
               "Adventure",
@@ -36,49 +36,49 @@
               "color": "#33DF98",
               "size": "small"
             },
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Join Prime\nWatch now",
               "link": "/watch/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "medium",
-              "borderRadius": "lg"
+              "border_radius": "lg"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Watch list",
               "link": "/watchlist",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
-            "tertiaryCTA": {
+            "tertiary_cta": {
               "label": "Details",
               "link": "/info/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Info",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
             "content_id": 2
           },
           {
             "id": 11,
             "title": "KUBERA",
-            "titleType": "image",
-            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/7b4b65b1-8b37-4fb1-b0f4-a36f065b6cab._BR-6_AC_SX1000_FMpng_.png",
+            "title_type": "image",
+            "title_image": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/7b4b65b1-8b37-4fb1-b0f4-a36f065b6cab._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "A fearless warrior, Kubera, embarks on a quest to reclaim his lost kingdom and avenge his father's death.",
             "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_Kuberaa_Tamil/d0fe3280-b79d-4d54-9b0a-1b946ee47704._UR3840,1440_SX2160_FMjpg_.jpeg",
-            "videoBackground": "",
+            "video_background": "",
             "genres": [
               "Action",
               "Adventure",
@@ -89,104 +89,104 @@
               "color": "#33DF98",
               "size": "small"
             },
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Rent \n UHD $19",
               "link": "/watch/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "medium",
-              "borderRadius": "lg"
+              "border_radius": "lg"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Watch list",
               "link": "/watchlist",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
-            "tertiaryCTA": {
+            "tertiary_cta": {
               "label": "Details",
               "link": "/info/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Info",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
             "content_id": 1
           },
           {
             "id": 13,
             "title": "MISSION: IMPOSSIBLE",
-            "titleType": "image",
-            "titleImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/b20bace5-9d55-47c3-9498-3d38709924bb._BR-6_AC_SX1000_FMpng_.png",
+            "title_type": "image",
+            "title_image": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/b20bace5-9d55-47c3-9498-3d38709924bb._BR-6_AC_SX1000_FMpng_.png",
             "subtitle": "Our lives are the sum of our choices. Tom Cruise is Ethan Hunt in Mission: Impossible – The Final Reckoning.",
             "thumbnail": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_MissionImpossibleFinalReckoning_119/2c32baaf-e7d6-4171-817d-0659bb79a944._UR3840,1440_SX2160_FMjpg_.jpeg",
-            "videoBackground": "",
+            "video_background": "",
             "genres": [
               "Action",
               "Adventure",
               "Thriller"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Watch now",
               "link": "/watch/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "medium",
-              "borderRadius": "lg"
+              "border_radius": "lg"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Watch list",
               "link": "/watchlist",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
-            "tertiaryCTA": {
+            "tertiary_cta": {
               "label": "Details",
               "link": "/info/veera-mallu",
               "variant": "solid",
-              "backgroundColor": "#303439",
-              "textColor": "#ffffff",
+              "background_color": "#303439",
+              "text_color": "#ffffff",
               "size": "large",
               "icon": "Info",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "full"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "full"
             },
             "content_id": 3
           }
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "none",
-        "textAlign": "left",
-        "paddingTop": "0px",
-        "paddingRight": "0px",
-        "paddingBottom": "0px",
-        "paddingLeft": "0px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "none",
+        "text_align": "left",
+        "padding_top": "0px",
+        "padding_right": "0px",
+        "padding_bottom": "0px",
+        "padding_left": "0px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -206,19 +206,19 @@
       "id": "carousel-amazon-popular-indian",
       "props": {
         "title": "Popular Indian movies - Free with ads",
-        "itemShape": "landscape-portrait",
+        "item_shape": "landscape-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "See more",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/browse/popular-indian"
         },
         "items": [
@@ -313,18 +313,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "lg",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       }
     },
     {
@@ -332,21 +332,21 @@
       "id": "carousel-amazon-top-movies",
       "props": {
         "title": "Top movies",
-        "itemShape": "landscape-portrait",
+        "item_shape": "landscape-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
+        "scroll_speed": 3000,
+        "show_arrows": true,
         "button": {
           "text": "See more",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/browse/top-movies"
         },
-        "itemSize": "medium",
+        "item_size": "medium",
         "items": [
           {
             "id": "top-1",
@@ -461,18 +461,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "lg",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       }
     },
     {
@@ -480,19 +480,19 @@
       "id": "carousel-amazon-featured-originals",
       "props": {
         "title": "Featured Originals: Movies",
-        "itemShape": "rectangle-portrait",
+        "item_shape": "rectangle-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "See more",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/browse/featured-originals"
         },
         "items": [
@@ -609,18 +609,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "lg",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       }
     },
     {
@@ -629,14 +629,14 @@
       "props": {
         "title": "",
         "description": "",
-        "backgroundImage": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_HCECovercarousel/b7f50a32-d3b8-40a2-aef2-6134494bb002._SX2880_FMjpg_.jpeg"
+        "background_image": "https://m.media-amazon.com/images/S/sonata-images-prod/PV_IN_TVOD_HCECovercarousel/b7f50a32-d3b8-40a2-aef2-6134494bb002._SX2880_FMjpg_.jpeg"
       },
       "style": {
-        "backgroundColor": "#000000",
-        "paddingTop": "24px",
-        "paddingRight": "24px",
-        "paddingBottom": "24px",
-        "paddingLeft": "24px"
+        "background_color": "#000000",
+        "padding_top": "24px",
+        "padding_right": "24px",
+        "padding_bottom": "24px",
+        "padding_left": "24px"
       },
       "children": [
         {
@@ -675,15 +675,15 @@
             "alt": "Beautiful landscape image",
             "link": "",
             "size": "large",
-            "aspectRatio": "auto",
+            "aspect_ratio": "auto",
             "fit": "cover",
             "alignment": "left"
           },
           "style": {
-            "paddingTop": "24px",
-            "paddingRight": "24px",
-            "paddingBottom": "24px",
-            "paddingLeft": "24px"
+            "padding_top": "24px",
+            "padding_right": "24px",
+            "padding_bottom": "24px",
+            "padding_left": "24px"
           }
         },
         {
@@ -691,24 +691,24 @@
           "id": "91841bd3-1ef8-4e14-80d6-c79f1f33a992",
           "props": {
             "content": "Rent and watch your favorite new movies",
-            "fontFamily": "sans",
-            "fontSize": "3xl",
-            "fontWeight": "semibold",
-            "fontStyle": "normal",
-            "textDecoration": "none",
-            "lineHeight": "normal",
-            "letterSpacing": "wider"
+            "font_family": "sans",
+            "font_size": "3xl",
+            "font_weight": "semibold",
+            "font_style": "normal",
+            "text_decoration": "none",
+            "line_height": "normal",
+            "letter_spacing": "wider"
           },
           "style": {
-            "textAlign": "left",
-            "paddingTop": "0px",
-            "paddingRight": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px",
-            "marginTop": "32px",
-            "marginRight": "32px",
-            "marginBottom": "32px",
-            "marginLeft": "32px"
+            "text_align": "left",
+            "padding_top": "0px",
+            "padding_right": "0px",
+            "padding_bottom": "0px",
+            "padding_left": "0px",
+            "margin_top": "32px",
+            "margin_right": "32px",
+            "margin_bottom": "32px",
+            "margin_left": "32px"
           }
         },
         {
@@ -721,13 +721,13 @@
             "size": "md"
           },
           "style": {
-            "textAlign": "left",
-            "borderRadius": "lg",
-            "backgroundColor": "#303439",
-            "paddingTop": "24px",
-            "paddingRight": "24px",
-            "paddingBottom": "24px",
-            "paddingLeft": "24px"
+            "text_align": "left",
+            "border_radius": "lg",
+            "background_color": "#303439",
+            "padding_top": "24px",
+            "padding_right": "24px",
+            "padding_bottom": "24px",
+            "padding_left": "24px"
           }
         },
         {
@@ -756,12 +756,12 @@
           "id": "carousel-amazon-recommended",
           "props": {
             "title": "",
-            "itemShape": "landscape-portrait",
+            "item_shape": "landscape-portrait",
             "alignment": "left",
             "autoplay": true,
-            "scrollSpeed": 2000,
-            "showArrows": false,
-            "itemSize": "medium",
+            "scroll_speed": 2000,
+            "show_arrows": false,
+            "item_size": "medium",
             "items": [
               {
                 "id": "recommended-1",
@@ -865,19 +865,19 @@
             ]
           },
           "style": {
-            "backgroundColor": "rgba(0, 0, 0, 0)",
-            "textColor": "#ffffff",
-            "borderRadius": "lg",
-            "textAlign": "left",
+            "background_color": "rgba(0, 0, 0, 0)",
+            "text_color": "#ffffff",
+            "border_radius": "lg",
+            "text_align": "left",
             "opacity": "0",
-            "paddingTop": "32px",
-            "paddingRight": "32px",
-            "paddingBottom": "32px",
-            "paddingLeft": "32px",
-            "marginTop": "0px",
-            "marginRight": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px"
+            "padding_top": "32px",
+            "padding_right": "32px",
+            "padding_bottom": "32px",
+            "padding_left": "32px",
+            "margin_top": "0px",
+            "margin_right": "0px",
+            "margin_bottom": "0px",
+            "margin_left": "0px"
           }
         }
       ]
@@ -887,19 +887,19 @@
       "id": "carousel-amazon-shop-spotlight",
       "props": {
         "title": "Shop: In the spotlight",
-        "itemShape": "rectangle-portrait",
+        "item_shape": "rectangle-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "See more",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/browse/top-movies"
         },
         "items": [
@@ -983,18 +983,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "lg",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       }
     },
     {
@@ -1002,21 +1002,21 @@
       "id": "carousel-amazon-top-rated-imdb",
       "props": {
         "title": "Top-rated movies on IMDb",
-        "itemShape": "landscape-portrait",
+        "item_shape": "landscape-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
+        "scroll_speed": 3000,
+        "show_arrows": true,
         "button": {
           "text": "See more",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/browse/top-rated-imdb"
         },
-        "itemSize": "medium",
+        "item_size": "medium",
         "items": [
           {
             "id": "imdb-1",
@@ -1120,18 +1120,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "lg",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "lg",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       }
     }
   ]

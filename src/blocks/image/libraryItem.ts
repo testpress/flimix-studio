@@ -10,7 +10,7 @@ export const ImageLibraryItem = {
     alt: 'Beautiful landscape image',
     link: '',
     size: 'medium' as const,
-    aspectRatio: '16:9' as const,
+    aspect_ratio: '16:9' as const,
     fit: 'cover' as const,
     alignment: 'center' as const,
   } as ImageBlockProps,
