@@ -8,59 +8,59 @@ export const BadgeStripLibraryItem = {
   icon: 'Award' as const,   // Lucide icon suggestion
   defaultProps: {
     items: [
-      { 
-        id: generateUniqueId(), 
-        label: '4K UHD', 
+      {
+        id: generateUniqueId(),
+        label: '4K UHD',
         icon: 'Monitor',
         style: {
-          paddingTop: '15px',
-          paddingRight: '15px',
-          paddingBottom: '15px',
-          paddingLeft: '15px'
+          padding_top: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+          padding_left: '15px'
         }
       },
-      { 
-        id: generateUniqueId(), 
-        label: 'Dolby Atmos', 
+      {
+        id: generateUniqueId(),
+        label: 'Dolby Atmos',
         icon: 'Volume2',
         style: {
-          paddingTop: '15px',
-          paddingRight: '15px',
-          paddingBottom: '15px',
-          paddingLeft: '15px'
+          padding_top: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+          padding_left: '15px'
         }
       },
-      { 
-        id: generateUniqueId(), 
-        label: 'iOS/Android', 
+      {
+        id: generateUniqueId(),
+        label: 'iOS/Android',
         icon: 'Smartphone',
         style: {
-          paddingTop: '15px',
-          paddingRight: '15px',
-          paddingBottom: '15px',
-          paddingLeft: '15px'
+          padding_top: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+          padding_left: '15px'
         }
       },
-      { 
-        id: generateUniqueId(), 
-        label: 'HDR10+', 
+      {
+        id: generateUniqueId(),
+        label: 'HDR10+',
         icon: 'Sun',
         style: {
-          paddingTop: '15px',
-          paddingRight: '15px',
-          paddingBottom: '15px',
-          paddingLeft: '15px'
+          padding_top: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+          padding_left: '15px'
         }
       },
-      { 
-        id: generateUniqueId(), 
-        label: 'Multi-Language', 
+      {
+        id: generateUniqueId(),
+        label: 'Multi-Language',
         icon: 'Globe',
         style: {
-          paddingTop: '15px',
-          paddingRight: '15px',
-          paddingBottom: '15px',
-          paddingLeft: '15px'
+          padding_top: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+          padding_left: '15px'
         }
       }
     ],

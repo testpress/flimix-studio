@@ -38,12 +38,12 @@ export interface TestimonialBlockProps {
   items: TestimonialItem[];
   // Carousel-specific props
   autoplay?: boolean;
-  scrollSpeed?: number;
-  showArrows?: boolean;
-  itemSize?: ItemSize;
+  scroll_speed?: number;
+  show_arrows?: boolean;
+  item_size?: ItemSize;
   // Grid-specific props
   columns?: GridDimension;
   rows?: GridDimension;
   // Common props
-  itemShape?: ItemShape;
+  item_shape?: ItemShape;
 } 

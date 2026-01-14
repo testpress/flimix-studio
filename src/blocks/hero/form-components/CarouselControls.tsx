@@ -22,14 +22,14 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
           <label className="flex items-center">
             <input
               type="checkbox"
-              checked={heroBlock.props.showArrows || false}
-              onChange={(e) => updateProps({ ...heroBlock.props, showArrows: e.target.checked })}
+              checked={heroBlock.props.show_arrows || false}
+              onChange={(e) => updateProps({ ...heroBlock.props, show_arrows: e.target.checked })}
               className="mr-2"
             />
             <span className="text-sm text-gray-700">Show Navigation Arrows</span>
           </label>
         </div>
-        
+
         <div>
           <label className="flex items-center">
             <input
@@ -41,14 +41,14 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
             <span className="text-sm text-gray-700">Enable Autoplay</span>
           </label>
         </div>
-        
+
         {heroBlock.props.autoplay && (
           <div>
             <label className="block text-sm text-gray-700 mb-1">Scroll Speed (ms)</label>
             <input
               type="number"
-              value={heroBlock.props.scrollSpeed || 5000}
-              onChange={(e) => updateProps({ ...heroBlock.props, scrollSpeed: parseInt(e.target.value) })}
+              value={heroBlock.props.scroll_speed || 5000}
+              onChange={(e) => updateProps({ ...heroBlock.props, scroll_speed: parseInt(e.target.value) })}
               className="w-full p-2 border border-gray-300 rounded"
               min="1000"
               max="10000"

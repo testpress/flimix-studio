@@ -28,9 +28,9 @@ const faqAccordionItemFields = [
   }
 ];
 
-const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({ 
-  item, 
-  onChange, 
+const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
+  item,
+  onChange,
   title
 }) => {
   const handleFieldChange = (field: keyof FAQAccordionItem, value: string) => {
@@ -50,7 +50,7 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
   // Style control configurations to reduce repetitive code
   const styleControls = [
     {
-      key: 'fontWeight' as const,
+      key: 'font_weight' as const,
       label: 'Font Weight',
       type: 'select' as const,
       options: [
@@ -82,7 +82,7 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
       defaultValue: 'md'
     },
     {
-      key: 'borderRadius' as const,
+      key: 'border_radius' as const,
       label: 'Border Radius',
       type: 'select' as const,
       options: [
@@ -98,7 +98,7 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
   // Render style control based on type
   const renderStyleControl = (control: typeof styleControls[0]) => {
     const currentValue = item.style?.[control.key] || control.defaultValue;
-    
+
     return (
       <div key={control.key}>
         <label className="block text-sm text-gray-700 mb-1">{control.label}</label>
@@ -120,7 +120,7 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
   return (
     <div className="space-y-4">
       <h3 className="font-medium text-gray-700">{title}</h3>
-      
+
       {/* Use BaseItemForm for standard fields */}
       <BaseItemForm<FAQAccordionItem>
         item={item}
@@ -133,7 +133,7 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
       {/* Item Styling */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h4 className="text-sm font-medium text-gray-700 mb-4">Item Styling</h4>
-        
+
         {/* Style Controls */}
         <div className="space-y-4">
           {/* Color Controls */}
@@ -141,8 +141,8 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
             <label className="block text-sm text-gray-700 mb-1">Text Color</label>
             <input
               type="color"
-              value={item.style?.textColor || '#000000'}
-              onChange={(e) => handleStyleChange('textColor', e.target.value)}
+              value={item.style?.text_color || '#000000'}
+              onChange={(e) => handleStyleChange('text_color', e.target.value)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
           </div>
@@ -151,8 +151,8 @@ const FAQAccordionItemForm: React.FC<FAQAccordionItemFormProps> = ({
             <label className="block text-sm text-gray-700 mb-1">Background Color</label>
             <input
               type="color"
-              value={item.style?.backgroundColor || '#ffffff'}
-              onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
+              value={item.style?.background_color || '#ffffff'}
+              onChange={(e) => handleStyleChange('background_color', e.target.value)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
           </div>

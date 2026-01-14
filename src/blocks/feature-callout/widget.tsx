@@ -13,9 +13,9 @@ interface FeatureCalloutWidgetProps extends Omit<BlockWidgetWrapperProps, 'block
   block: FeatureCalloutBlock;
 }
 
-const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
+  block,
+  onSelect,
   isSelected = false,
   canMoveUp,
   canMoveDown,
@@ -25,23 +25,23 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, subtitle, items, itemSize, showIcons, showDescriptions } = props;
-  
+  const { title, subtitle, items, item_size, show_icons, show_descriptions } = props;
+
   const { selectBlockItem, isItemSelected } = useSelection();
   const { addBlockItem, moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
-  
+
   // Function to render icon
   const renderIcon = (iconName: string) => {
     return <Icon name={iconName} size={40} />;
   };
-  
+
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   // Determine background styling
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
@@ -69,7 +69,7 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow ?? 'none');
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow ?? 'none');
 
   // Box shadow is now applied to wrapper div for better selection ring visibility
 
@@ -98,21 +98,21 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
 
   const handleAddItem = () => {
     const currentItemCount = items?.length || 0;
-    
+
     if (currentItemCount >= FEATURE_CALLOUT_ITEM_LIMIT) {
       return; // Don't add more items if at limit
     }
-    
+
     const defaultItem = {
       id: generateUniqueId(),
       icon: 'Star',
       label: 'New Feature',
       description: 'Feature description',
       style: {
-        backgroundColor: '#1f2937',
-        textColor: '#ffffff',
+        background_color: '#1f2937',
+        text_color: '#ffffff',
         margin: 'sm' as const,
-        borderRadius: 'md' as const,
+        border_radius: 'md' as const,
       }
     };
     const newId = addBlockItem(block.id, defaultItem);
@@ -128,9 +128,9 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BlockWidgetWrapper 
-        block={block} 
-        onSelect={onSelect} 
+      <BlockWidgetWrapper
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
         canMoveDown={canMoveDown}
@@ -141,113 +141,112 @@ const FeatureCalloutWidget: React.FC<FeatureCalloutWidgetProps> = ({
         onAddItem={!isAtItemLimit ? handleAddItem : undefined}
         className={`relative ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          color: isHexColor ? style.textColor : undefined,
-          borderRadius: style?.borderRadius ? borderRadiusMap[style.borderRadius] : undefined,
-          maxWidth: style?.maxWidth || undefined,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          color: isHexColor ? style.text_color : undefined,
+          borderRadius: style?.border_radius ? borderRadiusMap[style.border_radius] : undefined,
+          maxWidth: style?.max_width || undefined,
           ...style,
         }}
       >
-      <div 
-        className={`w-full ${alignmentClasses[style?.textAlign || 'center']} ${!style?.paddingTop ? 'p-6' : ''}`}
-        style={{
-           paddingTop: style?.paddingTop,
-           paddingRight: style?.paddingRight,
-           paddingBottom: style?.paddingBottom,
-           paddingLeft: style?.paddingLeft,
-        }}
-      >
-        {/* Title */}
-        {title && (
-          <h2 className={`text-3xl md:text-4xl font-bold mb-2 ${textColorClass}`} style={textColorStyle}>
-            {title}
-          </h2>
-        )}
-        
-        {/* Subtitle */}
-        {subtitle && (
-          <p className={`text-lg md:text-xl mb-8 opacity-80 ${textColorClass}`} style={textColorStyle}>
-            {subtitle}
-          </p>
-        )}
-        
-        {/* Feature Items Grid */}
-        {items && items.length > 0 ? (
-          <div className={`grid ${getGridCols(items.length)} gap-6`}>
-            {items.map((item, index) => {
-              // Build item-specific styles using mappings
-              const itemStyle: React.CSSProperties = {
-                backgroundColor: item.style?.backgroundColor || undefined,
-                color: item.style?.textColor || undefined,
-                // Don't override padding with inline styles - let itemSize control it
-                margin: item.style?.margin ? marginMap[item.style.margin] : undefined,
-                borderRadius: item.style?.borderRadius ? borderRadiusMap[item.style.borderRadius] : undefined,
-                boxShadow: getBoxShadowStyle(item.style?.boxShadow ?? 'none'),
-              };
+        <div
+          className={`w-full ${alignmentClasses[style?.text_align || 'center']} ${!style?.padding_top ? 'p-6' : ''}`}
+          style={{
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left,
+          }}
+        >
+          {/* Title */}
+          {title && (
+            <h2 className={`text-3xl md:text-4xl font-bold mb-2 ${textColorClass}`} style={textColorStyle}>
+              {title}
+            </h2>
+          )}
 
-              // Handle item text color
-              const isItemHexColor = item.style?.textColor && item.style.textColor.startsWith('#');
-              const itemTextColorClass = !isItemHexColor ? '' : '';
-              const itemTextColorStyle = isItemHexColor && item.style?.textColor ? { color: item.style.textColor } : {};
+          {/* Subtitle */}
+          {subtitle && (
+            <p className={`text-lg md:text-xl mb-8 opacity-80 ${textColorClass}`} style={textColorStyle}>
+              {subtitle}
+            </p>
+          )}
 
-              const isSelected = isItemSelected(block.id, item.id);
-              return (
-                <div 
-                  key={item.id} 
-                  className={`relative rounded-lg ${itemSizeClasses[itemSize || 'medium']} text-center transition-transform duration-200 hover:scale-105 cursor-pointer group ${
-                    isSelected 
-                      ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white' 
+          {/* Feature Items Grid */}
+          {items && items.length > 0 ? (
+            <div className={`grid ${getGridCols(items.length)} gap-6`}>
+              {items.map((item, index) => {
+                // Build item-specific styles using mappings
+                const itemStyle: React.CSSProperties = {
+                  backgroundColor: item.style?.background_color || undefined,
+                  color: item.style?.text_color || undefined,
+                  // Don't override padding with inline styles - let item_size control it
+                  margin: item.style?.margin ? marginMap[item.style.margin] : undefined,
+                  borderRadius: item.style?.border_radius ? borderRadiusMap[item.style.border_radius] : undefined,
+                  boxShadow: getBoxShadowStyle(item.style?.box_shadow ?? 'none'),
+                };
+
+                // Handle item text color
+                const isItemHexColor = item.style?.text_color && item.style.text_color.startsWith('#');
+                const itemTextColorClass = !isItemHexColor ? '' : '';
+                const itemTextColorStyle = isItemHexColor && item.style?.text_color ? { color: item.style.text_color } : {};
+
+                const isSelected = isItemSelected(block.id, item.id);
+                return (
+                  <div
+                    key={item.id}
+                    className={`relative rounded-lg ${itemSizeClasses[item_size || 'medium']} text-center transition-transform duration-200 hover:scale-105 cursor-pointer group ${isSelected
+                      ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white'
                       : ''
-                  }`}
-                  style={{
-                    ...itemStyle,
-                    backgroundColor: item.style?.backgroundColor || '#1f2937',
-                    color: item.style?.textColor || '#ffffff',
-                    // Remove conflicting styles when selected to let Tailwind ring work
-                    boxShadow: isSelected ? undefined : itemStyle.boxShadow,
-                    position: 'relative',
-                    zIndex: isSelected ? 10 : 0,
-                  }}
-                  onClick={() => handleItemClick(item.id)}
-                >
-                  {/* Icon */}
-                  {showIcons && item.icon && (
-                    <div className="mb-3 flex justify-center">
-                      {renderIcon(item.icon)}
-                    </div>
-                  )}
-                  
-                  {/* Label */}
-                  <h3 className={`font-semibold mb-2 ${itemTextColorClass}`} style={itemTextColorStyle}>
-                    {item.label}
-                  </h3>
-                  
-                  {/* Description */}
-                  {showDescriptions && item.description && (
-                    <p className={`text-sm leading-relaxed ${itemTextColorClass}`} style={textColorStyle}>
-                      {item.description}
-                    </p>
-                  )}
+                      }`}
+                    style={{
+                      ...itemStyle,
+                      backgroundColor: item.style?.background_color || '#1f2937',
+                      color: item.style?.text_color || '#ffffff',
+                      // Remove conflicting styles when selected to let Tailwind ring work
+                      boxShadow: isSelected ? undefined : itemStyle.boxShadow,
+                      position: 'relative',
+                      zIndex: isSelected ? 10 : 0,
+                    }}
+                    onClick={() => handleItemClick(item.id)}
+                  >
+                    {/* Icon */}
+                    {show_icons && item.icon && (
+                      <div className="mb-3 flex justify-center">
+                        {renderIcon(item.icon)}
+                      </div>
+                    )}
 
-                  {/* Item Controls */}
-                  <BlockItemControl 
-                    index={index}
-                    count={items.length}
-                    onMoveLeft={() => moveBlockItemLeft(block.id, index)}
-                    onMoveRight={() => moveBlockItemRight(block.id, index)}
-                    onRemove={() => removeBlockItem(block.id, item.id)}
-                    className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <p>No feature items yet. Click the + button to add items.</p>
-          </div>
-        )}
-      </div>
+                    {/* Label */}
+                    <h3 className={`font-semibold mb-2 ${itemTextColorClass}`} style={itemTextColorStyle}>
+                      {item.label}
+                    </h3>
+
+                    {/* Description */}
+                    {show_descriptions && item.description && (
+                      <p className={`text-sm leading-relaxed ${itemTextColorClass}`} style={textColorStyle}>
+                        {item.description}
+                      </p>
+                    )}
+
+                    {/* Item Controls */}
+                    <BlockItemControl
+                      index={index}
+                      count={items.length}
+                      onMoveLeft={() => moveBlockItemLeft(block.id, index)}
+                      onMoveRight={() => moveBlockItemRight(block.id, index)}
+                      onRemove={() => removeBlockItem(block.id, item.id)}
+                      className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <p>No feature items yet. Click the + button to add items.</p>
+            </div>
+          )}
+        </div>
       </BlockWidgetWrapper>
     </div>
   );

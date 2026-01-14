@@ -9,13 +9,13 @@ export interface FAQAccordionItem {
   question: string;
   answer: string;
   style?: {
-    backgroundColor?: string;
-    textColor?: string;
-    fontWeight?: 'normal' | 'bold';
+    background_color?: string;
+    text_color?: string;
+    font_weight?: 'normal' | 'bold';
     padding?: 'sm' | 'md' | 'lg';
     margin?: 'sm' | 'md' | 'lg';
-    borderRadius?: 'none' | 'sm' | 'md' | 'lg';
-    boxShadow?: 'none' | 'sm' | 'md' | 'lg';
+    border_radius?: 'none' | 'sm' | 'md' | 'lg';
+    box_shadow?: 'none' | 'sm' | 'md' | 'lg';
   };
 }
 
@@ -29,5 +29,5 @@ export interface FAQAccordionBlock extends Omit<Block, 'props'> {
 export interface FAQAccordionBlockProps {
   title?: string;
   items: FAQAccordionItem[];
-  defaultOpenIndex?: number; // Index of the default open question
+  default_open_index?: number; // Index of the default open question
 } 

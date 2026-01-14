@@ -13,7 +13,7 @@ export interface RowLayoutBlock extends Omit<Block, 'props' | 'children'> {
   props: RowLayoutBlockProps;
 }
 
-export type RowLayoutPreset = 
+export type RowLayoutPreset =
   | '1-col'
   | '2-col'
   | '2-col-heavy-left'  // 66/33 or 70/30
@@ -24,5 +24,5 @@ export type RowLayoutPreset =
 
 export interface RowLayoutBlockProps {
   preset?: RowLayoutPreset;
-  columnGap?: GapSize;
+  column_gap?: GapSize;
 }

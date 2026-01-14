@@ -7,12 +7,12 @@ export const TextLibraryItem: BlockLibraryItem = {
   icon: 'Type',
   defaultProps: {
     content: 'Enter your text content here...',
-    fontFamily: 'sans',
-    fontSize: 'base',
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    textDecoration: 'none',
-    lineHeight: 'normal',
-    letterSpacing: 'normal'
+    font_family: 'sans',
+    font_size: 'base',
+    font_weight: 'normal',
+    font_style: 'normal',
+    text_decoration: 'none',
+    line_height: 'normal',
+    letter_spacing: 'normal'
   }
 };  

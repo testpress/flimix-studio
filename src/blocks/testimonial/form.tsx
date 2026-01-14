@@ -9,9 +9,9 @@ import { AlertCircle } from 'lucide-react';
 
 // Testimonial block editor schema - only basic properties
 const testimonialEditorFields: Field[] = [
-  { 
-    key: 'title', 
-    label: 'Testimonial Title', 
+  {
+    key: 'title',
+    label: 'Testimonial Title',
     type: 'text',
     placeholder: 'Enter testimonial title (e.g., "What Our Viewers Say", "Customer Reviews")...'
   }
@@ -21,7 +21,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
   const { props, style } = block;
   const testimonialProps = props as TestimonialBlockProps;
   const itemCount = testimonialProps.items?.length || 0;
-  
+
   // Calculate max items based on layout
   const getMaxItems = () => {
     if (testimonialProps.layout === 'carousel') {
@@ -32,7 +32,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
       return 1; // single layout
     }
   };
-  
+
   const maxItems = getMaxItems();
   const isAtLimit = itemCount >= maxItems;
 
@@ -54,7 +54,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
       newColumns = 3;
       newRows = 3;
       const maxGridItems = newColumns * newRows;
-      
+
       if (currentItems.length > maxGridItems) {
         updatedItems = currentItems.slice(0, maxGridItems);
         console.log(`${currentItems.length - maxGridItems} items removed when switching to grid layout (3×3)`);
@@ -86,15 +86,15 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
   const handleGridSizeChange = (newColumns: GridDimension, newRows: GridDimension) => {
     const newMaxItems = newColumns * newRows;
     const currentItems = testimonialProps.items || [];
-    
+
     // Remove extra items if the new grid is smaller
     const updatedItems = currentItems.slice(0, newMaxItems);
-    
+
     // Log if items were removed
     if (currentItems.length > newMaxItems) {
       console.log(`${currentItems.length - newMaxItems} items removed due to grid size change from ${testimonialProps.columns}×${testimonialProps.rows} to ${newColumns}×${newRows}`);
     }
-    
+
     updateProps({
       ...testimonialProps,
       columns: newColumns,
@@ -111,11 +111,11 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
         fieldDefinitions={testimonialEditorFields}
         updateProps={updateProps}
       />
-      
+
       {/* Layout Settings */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Layout Settings</h3>
-        
+
         {/* Item Count and Limit Warning */}
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center justify-between">
@@ -137,7 +137,7 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
             </p>
           )}
         </div>
-        
+
         <div className="space-y-4">
           {/* Layout Type */}
           <div>
@@ -163,8 +163,8 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
               <div>
                 <label className="block text-sm text-gray-700 mb-1">Item Size</label>
                 <select
-                  value={testimonialProps.itemSize || 'large'}
-                  onChange={e => updateProps({ ...testimonialProps, itemSize: e.target.value as ItemSize })}
+                  value={testimonialProps.item_size || 'large'}
+                  onChange={e => updateProps({ ...testimonialProps, item_size: e.target.value as ItemSize })}
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                 >
                   <option value="small">Small</option>
@@ -181,8 +181,8 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
                   <input
                     type="checkbox"
                     id="showArrows"
-                    checked={testimonialProps.showArrows !== false}
-                    onChange={e => updateProps({ ...testimonialProps, showArrows: e.target.checked })}
+                    checked={testimonialProps.show_arrows !== false}
+                    onChange={e => updateProps({ ...testimonialProps, show_arrows: e.target.checked })}
                     className="rounded"
                   />
                   <label htmlFor="showArrows" className="text-sm text-gray-700">
@@ -223,10 +223,10 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
                     min={1000}
                     max={10000}
                     step={500}
-                    value={testimonialProps.scrollSpeed || 1000}
-                    onChange={e => updateProps({ 
-                      ...testimonialProps, 
-                      scrollSpeed: Math.max(1000, Math.min(10000, parseInt(e.target.value, 10) || 1000))
+                    value={testimonialProps.scroll_speed || 1000}
+                    onChange={e => updateProps({
+                      ...testimonialProps,
+                      scroll_speed: Math.max(1000, Math.min(10000, parseInt(e.target.value, 10) || 1000))
                     })}
                     className="w-full p-2 border border-gray-300 rounded text-sm"
                     placeholder="1000"
@@ -277,8 +277,8 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Shape</label>
             <select
-              value={testimonialProps.itemShape || 'circle'}
-              onChange={e => updateProps({ ...testimonialProps, itemShape: e.target.value as ItemShape })}
+              value={testimonialProps.item_shape || 'circle'}
+              onChange={e => updateProps({ ...testimonialProps, item_shape: e.target.value as ItemShape })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="square">Square</option>
@@ -290,8 +290,8 @@ const TestimonialForm: React.FC<BlockFormProps> = ({ block, updateProps, updateS
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Gap</label>
             <select
-              value={style?.gridGap || 'md'}
-              onChange={e => handleStyleChange('gridGap', e.target.value as GridGap)}
+              value={style?.grid_gap || 'md'}
+              onChange={e => handleStyleChange('grid_gap', e.target.value as GridGap)}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="sm">Small</option>

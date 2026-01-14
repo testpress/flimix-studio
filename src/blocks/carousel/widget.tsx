@@ -23,7 +23,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, itemShape, showArrows, items, itemSize = 'large', autoplay = false, scrollSpeed = 1000, button } = props;
+  const { title, item_shape, show_arrows, items, item_size = 'large', autoplay = false, scroll_speed = 1000, button } = props;
   const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
   const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
@@ -71,9 +71,9 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     }
   };
 
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' :
-    style?.borderRadius === 'md' ? 'rounded-md' :
-      style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' : '';
 
   // Handle box shadow - custom CSS values for better visibility
   const getBoxShadowStyle = (shadowType: string | undefined) => {
@@ -84,18 +84,18 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
 
-  const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
-    style?.textAlign === 'right' ? 'text-right' : 'text-left';
+  const textAlignClass = style?.text_align === 'center' ? 'text-center' :
+    style?.text_align === 'right' ? 'text-right' : 'text-left';
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   // Determine background styling
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
@@ -107,7 +107,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
   const getGapClass = () => {
-    return GAP_CLASSES[style?.gridGap || 'md'] || GAP_CLASSES['md'];
+    return GAP_CLASSES[style?.grid_gap || 'md'] || GAP_CLASSES['md'];
   };
 
   // Item shape class mapping for better maintainability
@@ -119,7 +119,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
   };
 
   const getItemShapeClass = () => {
-    return ITEM_SHAPE_CLASSES[itemShape] || ITEM_SHAPE_CLASSES['rectangle-landscape'];
+    return ITEM_SHAPE_CLASSES[item_shape] || ITEM_SHAPE_CLASSES['rectangle-landscape'];
   };
 
   // Genre color mapping for better maintainability
@@ -150,13 +150,13 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
     const itemWidth = firstItem.getBoundingClientRect().width;
 
     // Get gap size from CSS classes
-    const gapSize = style?.gridGap === 'sm' ? 16 : // space-x-4 = 1rem = 16px
-      style?.gridGap === 'lg' ? 32 : // space-x-8 = 2rem = 32px
+    const gapSize = style?.grid_gap === 'sm' ? 16 : // space-x-4 = 1rem = 16px
+      style?.grid_gap === 'lg' ? 32 : // space-x-8 = 2rem = 32px
         24; // space-x-6 = 1.5rem = 24px (default md)
 
     // Ensure we scroll at least one full item width
     return Math.max(itemWidth + gapSize, itemWidth);
-  }, [items, style?.gridGap]);
+  }, [items, style?.grid_gap]);
 
   // Check scroll position and update arrow visibility
   const checkScrollPosition = () => {
@@ -287,10 +287,10 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
             scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
           }
         }
-      }, scrollSpeed);
+      }, scroll_speed);
     }
 
-    // Cleanup on unmount or when autoplay/scrollSpeed/pause state changes
+    // Cleanup on unmount or when autoplay/scroll_speed/pause state changes
     return () => {
       if (autoplayIntervalRef.current) {
         clearInterval(autoplayIntervalRef.current);
@@ -301,7 +301,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         manualScrollPauseTimeoutRef.current = null;
       }
     };
-  }, [autoplay, scrollSpeed, items, isAutoplayPaused, getScrollAmount]);
+  }, [autoplay, scroll_speed, items, isAutoplayPaused, getScrollAmount]);
 
   // Handle arrow clicks
   const handleScrollLeft = () => {
@@ -392,15 +392,15 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           onRemove={onRemove}
           className={`${borderRadiusClass} ${backgroundClass}`}
           style={{
-            backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft,
-            marginTop: style?.marginTop,
-            marginRight: style?.marginRight,
-            marginBottom: style?.marginBottom,
-            marginLeft: style?.marginLeft,
+            backgroundColor: hasCustomBackground ? style.background_color : undefined,
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left,
+            marginTop: style?.margin_top,
+            marginRight: style?.margin_right,
+            marginBottom: style?.margin_bottom,
+            marginLeft: style?.margin_left,
           }}
         >
           <div className={`${textAlignClass}`}>
@@ -430,15 +430,15 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
         onRemove={onRemove}
         className={`${borderRadiusClass} ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         <div className={`w-full ${textAlignClass}`}>
@@ -457,12 +457,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                     href={button.link || '#'}
                     className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
                     style={{
-                      color: button.textColor || '#ffffff'
+                      color: button.text_color || '#ffffff'
                     }}
                   >
-                    {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                    {button.icon_position === 'left' && renderButtonIcon(button.icon)}
                     {button.text || 'View All'}
-                    {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                    {button.icon_position === 'right' && renderButtonIcon(button.icon)}
                   </a>
                 </div>
               ) : (
@@ -479,12 +479,12 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                     href={button.link || '#'}
                     className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
                     style={{
-                      color: button.textColor || '#ffffff'
+                      color: button.text_color || '#ffffff'
                     }}
                   >
-                    {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
+                    {button.icon_position === 'left' && renderButtonIcon(button.icon)}
                     {button.text || 'View All'}
-                    {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
+                    {button.icon_position === 'right' && renderButtonIcon(button.icon)}
                   </a>
                 </div>
               )
@@ -501,7 +501,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
           <div className="relative w-full">
             <div className="flex items-center w-full">
               {/* Left Arrow */}
-              {showArrows && canScrollLeft && (
+              {show_arrows && canScrollLeft && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -525,7 +525,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                   {items.map((item, index) => (
                     <div
                       key={item.id}
-                      className={`relative flex-shrink-0 ${getItemSizeClass(itemSize)} group`}
+                      className={`relative flex-shrink-0 ${getItemSizeClass(item_size)} group`}
                       data-item-id={item.id}
                     >
                       <a
@@ -533,15 +533,14 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                           e.preventDefault();
                           handleItemClick(item);
                         }}
-                        className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
-                  isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
-                }`}
+                        className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                          }`}
                       >
-                        <div className={`${getItemShapeClass()} overflow-hidden ${itemShape === 'circle' ? 'rounded-full' :
-                          style?.borderRadius === 'none' ? '' :
-                            style?.borderRadius === 'lg' ? 'rounded-2xl' :
-                              style?.borderRadius === 'md' ? 'rounded-lg' :
-                                style?.borderRadius === 'sm' ? 'rounded-md' : 'rounded-lg'
+                        <div className={`${getItemShapeClass()} overflow-hidden ${item_shape === 'circle' ? 'rounded-full' :
+                          style?.border_radius === 'none' ? '' :
+                            style?.border_radius === 'lg' ? 'rounded-2xl' :
+                              style?.border_radius === 'md' ? 'rounded-lg' :
+                                style?.border_radius === 'sm' ? 'rounded-md' : 'rounded-lg'
                           } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
                           <img
                             src={item.poster || item.cover || item.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image'}
@@ -556,33 +555,33 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                         {/* Content section - only render if there's actual content */}
                         {(item.title && item.title.trim() !== "") ||
                           item.subtitle ||
-                          props.progressBar?.enabled ||
-                          (props.showGenre && item.genres && item.genres.length > 0) ||
-                          (props.showRating && item.details?.imdb_rating) ||
-                          (props.showDuration && item.details?.duration) ? (
+                          props.progress_bar?.enabled ||
+                          (props.show_genre && item.genres && item.genres.length > 0) ||
+                          (props.show_rating && item.details?.imdb_rating) ||
+                          (props.show_duration && item.details?.duration) ? (
                           <div className="mt-3 space-y-1">
                             {/* Title - only render if not empty and global showTitle is not false */}
-                            {props.showTitle !== false && item.title && item.title.trim() !== "" && (
+                            {props.show_title !== false && item.title && item.title.trim() !== "" && (
                               <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
                                 {item.title}
                               </p>
                             )}
 
-                            {/* Subtitle - only render if exists and global showSubtitle is true */}
-                            {props.showSubtitle && item.subtitle && (
+                            {/* Subtitle - only render if exists and global show_subtitle is true */}
+                            {props.show_subtitle && item.subtitle && (
                               <p className={`text-xs ${textColorClass} opacity-80 line-clamp-2`} style={textColorStyle}>
                                 {item.subtitle}
                               </p>
                             )}
                             {/* Progress Bar - only render if enabled */}
-                            {props.progressBar?.enabled && (
+                            {props.progress_bar?.enabled && (
                               <div className="mt-2 mb-2">
                                 <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
                                   <div
                                     className="h-full"
                                     style={{
                                       width: `${item.progress !== undefined ? item.progress : 4}%`,
-                                      backgroundColor: props.progressBar.color || '#ff0000'
+                                      backgroundColor: props.progress_bar.color || '#ff0000'
                                     }}
                                   ></div>
                                 </div>
@@ -590,21 +589,21 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
                             )}
 
                             {/* Meta information - only render if any meta exists and global options are enabled */}
-                            {((props.showGenre && item.genres && item.genres.length > 0) ||
-                              (props.showRating && item.details?.imdb_rating) ||
-                              (props.showDuration && item.details?.duration)) && (
+                            {((props.show_genre && item.genres && item.genres.length > 0) ||
+                              (props.show_rating && item.details?.imdb_rating) ||
+                              (props.show_duration && item.details?.duration)) && (
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  {props.showGenre && item.genres && item.genres.length > 0 && (
+                                  {props.show_genre && item.genres && item.genres.length > 0 && (
                                     <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full ${getGenreColor(item.genres[0])}`}>
                                       {item.genres[0]}
                                     </span>
                                   )}
-                                  {props.showRating && item.details?.imdb_rating && (
+                                  {props.show_rating && item.details?.imdb_rating && (
                                     <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
                                       {item.details.imdb_rating}
                                     </span>
                                   )}
-                                  {props.showDuration && item.details?.duration && (
+                                  {props.show_duration && item.details?.duration && (
                                     <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
                                       {item.details.duration}
                                     </span>
@@ -628,7 +627,7 @@ const CarouselWidget: React.FC<CarouselWidgetProps> = ({
               </div>
 
               {/* Right Arrow */}
-              {showArrows && canScrollRight && (
+              {show_arrows && canScrollRight && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();

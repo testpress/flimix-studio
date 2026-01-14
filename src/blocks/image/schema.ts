@@ -5,7 +5,7 @@ export interface ImageBlockProps {
   alt?: string;
   link?: string;
   size?: 'small' | 'medium' | 'large' | 'full';
-  aspectRatio?: '16:9' | '4:3' | '1:1' | '3:4' | 'auto';
+  aspect_ratio?: '16:9' | '4:3' | '1:1' | '3:4' | 'auto';
   fit?: 'cover' | 'contain' | 'fill';
   alignment?: 'left' | 'center' | 'right';
 }

@@ -13,61 +13,61 @@
       "id": "hero-netflix-001",
       "props": {
         "variant": "single",
-        "aspectRatio": "16:9",
+        "aspect_ratio": "16:9",
         "autoplay": false,
-        "showArrows": false,
-        "scrollSpeed": 3000,
+        "show_arrows": false,
+        "scroll_speed": 3000,
         "items": [
           {
             "id": 1,
             "title": "THE CLIENT",
-            "titleType": "image",
-            "titleImage": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABTK8CGD-smG7qZBEEQcNw734VCF2OONsB_2I8aJBZaAUXZ-ed5r_E3leBm4cX_efOLYBGDMx1bgbcIA8JDUolGXhXFAXTMMRfpLLEEy7CRqP.webp?r=397",
+            "title_type": "image",
+            "title_image": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABTK8CGD-smG7qZBEEQcNw734VCF2OONsB_2I8aJBZaAUXZ-ed5r_E3leBm4cX_efOLYBGDMx1bgbcIA8JDUolGXhXFAXTMMRfpLLEEy7CRqP.webp?r=397",
             "thumbnail": "https://occ-0-3252-3662.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABU0pgEY5kjEHi8lVRi9Mmm6oDAVZLAPS3QXDLSUC6gs6chTusE6uq11ov-C3NQqCg5St6yUiH1wXeYaFA2Tg336-a0kJZOLW-nKf.webp?r=d55",
-            "videoBackground": "",
+            "video_background": "",
             "genres": [
               "Action",
               "Adventure",
               "Crime"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Play",
               "link": "/watch/the-client",
               "variant": "solid",
-              "backgroundColor": "#ffffff",
-              "textColor": "#000000",
+              "background_color": "#ffffff",
+              "text_color": "#000000",
               "icon": "Play",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "sm"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "sm"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "More Info",
               "link": "/info/the-client",
               "variant": "solid",
-              "backgroundColor": "#747573",
-              "textColor": "#ffffff",
+              "background_color": "#747573",
+              "text_color": "#ffffff",
               "icon": "Info",
-              "iconPosition": "left",
-              "iconThickness": "thick"
+              "icon_position": "left",
+              "icon_thickness": "thick"
             },
             "content_id": 1
           }
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "paddingTop": "0px",
-        "paddingRight": "0px",
-        "paddingBottom": "0px",
-        "paddingLeft": "0px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "padding_top": "0px",
+        "padding_right": "0px",
+        "padding_bottom": "0px",
+        "padding_left": "0px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -87,19 +87,19 @@
       "id": "carousel-made-in-india",
       "props": {
         "title": "Made in India",
-        "itemShape": "landscape",
+        "item_shape": "landscape",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "Explore All",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#54b9c5",
+          "icon_position": "right",
+          "text_color": "#54b9c5",
           "link": "/browse/made-in-india"
         },
         "items": [
@@ -183,18 +183,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -215,13 +215,13 @@
       "id": "carousel-continue-watching",
       "props": {
         "title": "Continue Watching for Harish",
-        "itemShape": "landscape",
+        "item_shape": "landscape",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
-        "progressBar": {
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
+        "progress_bar": {
           "enabled": true,
           "color": "#e50914"
         },
@@ -289,18 +289,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -321,19 +321,19 @@
       "id": "carousel-top-10-india",
       "props": {
         "title": "Top 10 TV Shows in India Today",
-        "itemShape": "rectangle-portrait",
+        "item_shape": "rectangle-portrait",
         "alignment": "left",
         "autoplay": true,
-        "scrollSpeed": 1000,
-        "showArrows": false,
-        "itemSize": "small",
+        "scroll_speed": 1000,
+        "show_arrows": false,
+        "item_size": "small",
         "button": {
           "text": "Explore All",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#54b9c5",
+          "icon_position": "right",
+          "text_color": "#54b9c5",
           "link": "/browse/top-10-india"
         },
         "items": [
@@ -450,19 +450,19 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "gridGap": "lg",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "grid_gap": "lg",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -483,19 +483,19 @@
       "id": "carousel-children-family-tv",
       "props": {
         "title": "Children & Family TV",
-        "itemShape": "landscape",
+        "item_shape": "landscape",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "Explore All",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#54b9c5",
+          "icon_position": "right",
+          "text_color": "#54b9c5",
           "link": "/browse/children-family-tv"
         },
         "items": [
@@ -601,18 +601,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -633,19 +633,19 @@
       "id": "carousel-tamil-language-movies",
       "props": {
         "title": "Tamil-Language Movies",
-        "itemShape": "landscape",
+        "item_shape": "landscape",
         "alignment": "left",
         "autoplay": true,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "Explore All",
           "enabled": true,
           "alignment": "left",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#54b9c5",
+          "icon_position": "right",
+          "text_color": "#54b9c5",
           "link": "/browse/tamil-language-movies"
         },
         "items": [
@@ -740,18 +740,18 @@
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "sm",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "sm",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [

@@ -65,8 +65,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <input
             type="number"
             min="0"
-            value={parsePxValue(style.paddingTop)}
-            onChange={(e) => handleStyleChange('paddingTop', `${e.target.value}px`)}
+            value={parsePxValue(style.padding_top)}
+            onChange={(e) => handleStyleChange('padding_top', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -75,8 +75,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <input
             type="number"
             min="0"
-            value={parsePxValue(style.paddingRight)}
-            onChange={(e) => handleStyleChange('paddingRight', `${e.target.value}px`)}
+            value={parsePxValue(style.padding_right)}
+            onChange={(e) => handleStyleChange('padding_right', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -85,8 +85,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <input
             type="number"
             min="0"
-            value={parsePxValue(style.paddingBottom)}
-            onChange={(e) => handleStyleChange('paddingBottom', `${e.target.value}px`)}
+            value={parsePxValue(style.padding_bottom)}
+            onChange={(e) => handleStyleChange('padding_bottom', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -95,8 +95,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <input
             type="number"
             min="0"
-            value={parsePxValue(style.paddingLeft)}
-            onChange={(e) => handleStyleChange('paddingLeft', `${e.target.value}px`)}
+            value={parsePxValue(style.padding_left)}
+            onChange={(e) => handleStyleChange('padding_left', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -113,8 +113,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <label className="block text-xs text-gray-600 mb-1">Top</label>
           <input
             type="number"
-            value={parsePxValue(style.marginTop)}
-            onChange={(e) => handleStyleChange('marginTop', `${e.target.value}px`)}
+            value={parsePxValue(style.margin_top)}
+            onChange={(e) => handleStyleChange('margin_top', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -122,8 +122,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <label className="block text-xs text-gray-600 mb-1">Right</label>
           <input
             type="number"
-            value={parsePxValue(style.marginRight)}
-            onChange={(e) => handleStyleChange('marginRight', `${e.target.value}px`)}
+            value={parsePxValue(style.margin_right)}
+            onChange={(e) => handleStyleChange('margin_right', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -131,8 +131,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <label className="block text-xs text-gray-600 mb-1">Bottom</label>
           <input
             type="number"
-            value={parsePxValue(style.marginBottom)}
-            onChange={(e) => handleStyleChange('marginBottom', `${e.target.value}px`)}
+            value={parsePxValue(style.margin_bottom)}
+            onChange={(e) => handleStyleChange('margin_bottom', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -140,8 +140,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           <label className="block text-xs text-gray-600 mb-1">Left</label>
           <input
             type="number"
-            value={parsePxValue(style.marginLeft)}
-            onChange={(e) => handleStyleChange('marginLeft', `${e.target.value}px`)}
+            value={parsePxValue(style.margin_left)}
+            onChange={(e) => handleStyleChange('margin_left', `${e.target.value}px`)}
             className="w-full p-2 border border-gray-300 rounded text-sm"
           />
         </div>
@@ -156,8 +156,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
         {blockType === 'cta-button' || blockType === 'badge-strip' || blockType === 'hero' ? 'Alignment' : 'Text Alignment'}
       </label>
       <select
-        value={style.textAlign || 'left'}
-        onChange={(e) => handleStyleChange('textAlign', e.target.value as TextAlign)}
+        value={style.text_align || 'left'}
+        onChange={(e) => handleStyleChange('text_align', e.target.value as TextAlign)}
         className="w-full p-2 border border-gray-300 rounded text-sm"
       >
         <option value="left">Left</option>
@@ -169,10 +169,10 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
 
   // Helper function to render Background Color field with transparency support
   const renderBackgroundColorField = () => {
-    const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#ffffff');
+    const { color, opacity } = parseColorAndOpacity(style.background_color, '#ffffff');
 
     const handleColorChange = (hexColor: string, opacityValue: number) => {
-      handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
+      handleStyleChange('background_color', convertToRgba(hexColor, opacityValue));
     };
 
     return (
@@ -214,10 +214,10 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
 
   // Helper function to render Text Color field with transparency support
   const renderTextColorField = () => {
-    const { color, opacity } = parseColorAndOpacity(style.textColor, '#000000');
+    const { color, opacity } = parseColorAndOpacity(style.text_color, '#000000');
 
     const handleColorChange = (hexColor: string, opacityValue: number) => {
-      handleStyleChange('textColor', convertToRgba(hexColor, opacityValue));
+      handleStyleChange('text_color', convertToRgba(hexColor, opacityValue));
     };
 
     return (
@@ -259,10 +259,10 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
 
   // Helper function to render Color field (for divider blocks) with transparency support
   const renderColorField = () => {
-    const { color, opacity } = parseColorAndOpacity(style.backgroundColor, '#000000');
+    const { color, opacity } = parseColorAndOpacity(style.background_color, '#000000');
 
     const handleColorChange = (hexColor: string, opacityValue: number) => {
-      handleStyleChange('backgroundColor', convertToRgba(hexColor, opacityValue));
+      handleStyleChange('background_color', convertToRgba(hexColor, opacityValue));
     };
 
     return (
@@ -308,8 +308,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     <div>
       <label className="block text-sm text-gray-700 mb-1">Border Radius</label>
       <select
-        value={style.borderRadius || 'none'}
-        onChange={(e) => handleStyleChange('borderRadius', e.target.value as BorderRadius)}
+        value={style.border_radius || 'none'}
+        onChange={(e) => handleStyleChange('border_radius', e.target.value as BorderRadius)}
         className="w-full p-2 border border-gray-300 rounded text-sm"
       >
         <option value="none">None</option>
@@ -325,8 +325,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     <div>
       <label className="block text-sm text-gray-700 mb-1">Box Shadow</label>
       <select
-        value={style.boxShadow || 'none'}
-        onChange={(e) => handleStyleChange('boxShadow', e.target.value as BoxShadow)}
+        value={style.box_shadow || 'none'}
+        onChange={(e) => handleStyleChange('box_shadow', e.target.value as BoxShadow)}
         className="w-full p-2 border border-gray-300 rounded text-sm"
       >
         <option value="none">None</option>
@@ -342,8 +342,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     <div>
       <label className="block text-sm text-gray-700 mb-1">Tab Alignment</label>
       <select
-        value={style.tabAlignment || 'center'}
-        onChange={(e) => handleStyleChange('tabAlignment', e.target.value as TabAlignment)}
+        value={style.tab_alignment || 'center'}
+        onChange={(e) => handleStyleChange('tab_alignment', e.target.value as TabAlignment)}
         className="w-full p-2 border border-gray-300 rounded text-sm"
       >
         <option value="left">Left</option>
@@ -358,8 +358,8 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
     <div>
       <label className="block text-sm text-gray-700 mb-1">Tab Style</label>
       <select
-        value={style.tabStyle || 'pill'}
-        onChange={(e) => handleStyleChange('tabStyle', e.target.value as TabStyle)}
+        value={style.tab_style || 'pill'}
+        onChange={(e) => handleStyleChange('tab_style', e.target.value as TabStyle)}
         className="w-full p-2 border border-gray-300 rounded text-sm"
       >
         <option value="underline">Underline</option>
@@ -428,7 +428,7 @@ const StyleForm: React.FC<StyleFormProps> = ({ style, onChange, blockType }) => 
           ...layoutOnlyFields,
           renderTextAlignField(),
         ];
-        
+
       case 'badge-strip-item':
         return [
           renderPaddingField(),

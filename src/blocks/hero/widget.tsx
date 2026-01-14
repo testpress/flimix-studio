@@ -59,7 +59,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
 
 
   // Determine background styling - default to black
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const backgroundClass = hasCustomBackground ? '' : 'bg-black';
 
 
@@ -77,7 +77,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
       autoplayIntervalRef.current = window.setInterval(() => {
         const nextIndex = (currentItemIndex + 1) % props.items!.length;
         changeSlide(nextIndex);
-      }, props.scrollSpeed || 5000);
+      }, props.scroll_speed || 5000);
     }
 
     // Cleanup on unmount or when props change
@@ -87,20 +87,20 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         autoplayIntervalRef.current = null;
       }
     };
-  }, [props.variant, props.autoplay, props.scrollSpeed, props.items, isAutoplayPaused, currentItemIndex, changeSlide]);
+  }, [props.variant, props.autoplay, props.scroll_speed, props.items, isAutoplayPaused, currentItemIndex, changeSlide]);
 
   useEffect(() => {
-    const isNewItemAdded = previousItemsLengthRef.current > 0 && 
-                           props.items && 
-                           props.items.length > previousItemsLengthRef.current;
-    
+    const isNewItemAdded = previousItemsLengthRef.current > 0 &&
+      props.items &&
+      props.items.length > previousItemsLengthRef.current;
+
     const currentLength = props.items?.length || 0;
-    
+
     if (isSelected && isNewItemAdded) {
       const timer = setTimeout(() => {
         selectBlockItem(block.id, props.items[props.items.length - 1].id.toString());
       }, 100);
-      
+
       previousItemsLengthRef.current = currentLength;
       return () => clearTimeout(timer);
     }
@@ -178,11 +178,11 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
         onRemove={onRemove}
         className={`relative overflow-hidden ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         {/* Hero Content */}
@@ -196,17 +196,17 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
                   handleItemClick(props.items[currentItemIndex]);
                 }}
                 className={`cursor-pointer transition-all duration-200 ${isItemSelected(block.id, props.items[currentItemIndex].id.toString())
-                    ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black'
-                    : ''
+                  ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-black'
+                  : ''
                   }`}
               >
                 <ItemWidget
                   item={props.items[currentItemIndex]}
-                  aspectRatio={props.aspectRatio}
-                  customHeight={props.customHeight}
-                  textAlign={style?.textAlign}
-                  textColor={style?.textColor}
-                  backgroundColor={style?.backgroundColor}
+                  aspectRatio={props.aspect_ratio}
+                  customHeight={props.custom_height}
+                  textAlign={style?.text_align}
+                  textColor={style?.text_color}
+                  backgroundColor={style?.background_color}
                   autoplay={!isAutoplayPaused}
                 />
 
@@ -246,7 +246,7 @@ const HeroWidget: React.FC<HeroWidgetProps> = ({
           {props.variant === 'carousel' && props.items && props.items.length > 1 && (
             <>
               {/* Navigation Arrows - only show if enabled */}
-              {props.showArrows && (
+              {props.show_arrows && (
                 <>
                   {/* Previous Button */}
                   <button

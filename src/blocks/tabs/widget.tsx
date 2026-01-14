@@ -16,11 +16,11 @@ interface TabsWidgetProps extends Omit<BlockWidgetWrapperProps<TabsBlock>, 'bloc
   onSelect?: (block: Block) => void;
 }
 
-const TabsWidget: React.FC<TabsWidgetProps> = ({ 
-  block, 
-  visibilityContext, 
-  showDebug = false, 
-  onSelect, 
+const TabsWidget: React.FC<TabsWidgetProps> = ({
+  block,
+  visibilityContext,
+  showDebug = false,
+  onSelect,
   isSelected = false,
   selectedBlockId,
   canMoveUp,
@@ -33,15 +33,15 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
   const { props, style } = block;
   const { tabs } = props;
   const { activeTabId, setActiveTabId, setSelectedItemId, setSelectedItemBlockId, selectedBlockId: contextSelectedBlockId, setSelectedBlockId, setSelectedBlock } = useSelection();
-  
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
-                           style?.borderRadius === 'md' ? 'rounded-md' : 
-                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
+
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' : '';
   // Handle background color - default to black
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
-  
+
   // Handle box shadow - custom CSS values for better visibility
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -51,15 +51,15 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
-  
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
+
   // Initialize activeTabId if not set
   useEffect(() => {
     if (!activeTabId && tabs[0]?.id) {
       setActiveTabId(tabs[0].id);
     }
   }, [activeTabId, tabs, setActiveTabId]);
-  
+
   useEffect(() => {
     if (activeTabId && !tabs.some(tab => tab.id === activeTabId)) {
       const newActiveTabId = tabs[0]?.id;
@@ -68,10 +68,10 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
       }
     }
   }, [tabs, activeTabId, setActiveTabId]);
-  
+
   // Memoize the current tab to prevent unnecessary recalculations
   const currentTab = useMemo(() => tabs.find(tab => tab.id === activeTabId), [tabs, activeTabId]);
-  
+
   // Helper function to check if a block is a child of this tabs block
   const isChildOfThisTabsBlock = useCallback((blockId: string): boolean => {
     for (const tab of tabs) {
@@ -85,7 +85,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
     }
     return false;
   }, [tabs]);
-  
+
   const handleTabChange = useCallback((tabId: string) => {
     if (tabId !== activeTabId) {
       setActiveTabId(tabId);
@@ -104,21 +104,21 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 
   // Memoize tab alignment class
   const tabAlignmentClass = useMemo(() => {
-    switch (style?.tabAlignment) {
+    switch (style?.tab_alignment) {
       case 'left': return 'justify-start';
       case 'right': return 'justify-end';
       case 'center': return 'justify-center';
       default: return 'justify-center';
     }
-  }, [style?.tabAlignment]);
+  }, [style?.tab_alignment]);
 
   // Memoize tab style class function
   const getTabStyleClass = useCallback((isActive: boolean) => {
     const baseClass = 'px-4 py-2 rounded transition-all duration-200 font-medium';
     const activeClass = 'bg-blue-600 text-white shadow-md';
     const inactiveClass = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
-    
-    switch (style?.tabStyle) {
+
+    switch (style?.tab_style) {
       case 'pill':
         return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
       case 'boxed':
@@ -128,7 +128,7 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
       default:
         return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
     }
-  }, [style?.tabStyle]);
+  }, [style?.tab_style]);
 
   // Memoize the tab navigation section to prevent re-rendering
   const tabNavigation = useMemo(() => (
@@ -164,23 +164,23 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         {currentTab.children && currentTab.children.length > 0 ? (
           currentTab.children.map((childBlock) => (
             <div key={childBlock.id} data-block-id={childBlock.id}>
-              <BlockInsertDropdown 
-                position="above" 
-                blockId={childBlock.id} 
-                visibilityContext={visibilityContext} 
+              <BlockInsertDropdown
+                position="above"
+                blockId={childBlock.id}
+                visibilityContext={visibilityContext}
               />
-              <BlockRenderer 
-                block={childBlock} 
-                visibilityContext={visibilityContext} 
+              <BlockRenderer
+                block={childBlock}
+                visibilityContext={visibilityContext}
                 showDebug={showDebug}
                 onSelect={onSelect}
                 selectedBlockId={selectedBlockId}
                 isSelected={selectedBlockId === childBlock.id}
               />
-              <BlockInsertDropdown 
-                position="below" 
-                blockId={childBlock.id} 
-                visibilityContext={visibilityContext} 
+              <BlockInsertDropdown
+                position="below"
+                blockId={childBlock.id}
+                visibilityContext={visibilityContext}
               />
             </div>
           ))
@@ -196,8 +196,8 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 
   if (!tabs || tabs.length === 0) {
     return (
-      <BlockWidgetWrapper 
-        block={block} 
+      <BlockWidgetWrapper
+        block={block}
         onSelect={handleSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
@@ -208,16 +208,16 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         onRemove={onRemove}
         className={`${borderRadiusClass} border-2 border-dashed border-gray-300 ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          maxWidth: style?.maxWidth,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          maxWidth: style?.max_width,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         <p className="text-gray-500 text-center">No tabs configured</p>
@@ -227,8 +227,8 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BlockWidgetWrapper 
-        block={block} 
+      <BlockWidgetWrapper
+        block={block}
         onSelect={handleSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
@@ -239,16 +239,16 @@ const TabsWidget: React.FC<TabsWidgetProps> = ({
         onRemove={onRemove}
         className={`${borderRadiusClass} ${backgroundClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          maxWidth: style?.maxWidth,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          maxWidth: style?.max_width,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
         <div className="flex flex-col">

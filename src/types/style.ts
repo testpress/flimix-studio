@@ -33,22 +33,22 @@ export type StyleValue =
 export interface StyleProps {
   theme?: Theme;
   // Individual padding sides (in pixels as strings, e.g., "10px")
-  paddingTop?: string;
-  paddingRight?: string;
-  paddingBottom?: string;
-  paddingLeft?: string;
+  padding_top?: string;
+  padding_right?: string;
+  padding_bottom?: string;
+  padding_left?: string;
   // Individual margin sides (in pixels as strings, e.g., "10px")
-  marginTop?: string;
-  marginRight?: string;
-  marginBottom?: string;
-  marginLeft?: string;
-  textAlign?: TextAlign;
-  backgroundColor?: string;
-  textColor?: string;
-  borderRadius?: BorderRadius;
-  boxShadow?: BoxShadow;
-  maxWidth?: string;
-  gridGap?: GridGap;
-  tabAlignment?: TabAlignment;
-  tabStyle?: TabStyle;
+  margin_top?: string;
+  margin_right?: string;
+  margin_bottom?: string;
+  margin_left?: string;
+  text_align?: TextAlign;
+  background_color?: string;
+  text_color?: string;
+  border_radius?: BorderRadius;
+  box_shadow?: BoxShadow;
+  max_width?: string;
+  grid_gap?: GridGap;
+  tab_alignment?: TabAlignment;
+  tab_style?: TabStyle;
 } 

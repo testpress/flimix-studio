@@ -17,10 +17,10 @@ interface GutterControlProps {
   onChange: (val: GapSize) => void;
 }
 
-const GutterControl: React.FC<GutterControlProps> = ({ 
-  label, 
-  value, 
-  onChange 
+const GutterControl: React.FC<GutterControlProps> = ({
+  label,
+  value,
+  onChange
 }) => (
   <div className="space-y-2">
     <div className="flex justify-between items-center">
@@ -31,11 +31,10 @@ const GutterControl: React.FC<GutterControlProps> = ({
         <button
           key={size}
           onClick={() => onChange(size)}
-          className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
-            (value || 'md') === size
+          className={`flex-1 py-1.5 text-xs font-medium transition-colors ${(value || 'md') === size
               ? 'bg-blue-50 text-blue-600'
               : 'bg-white text-gray-600 hover:bg-gray-50'
-          } ${size !== 'lg' ? 'border-r border-gray-200' : ''}`}
+            } ${size !== 'lg' ? 'border-r border-gray-200' : ''}`}
         >
           {size.toUpperCase()}
         </button>
@@ -48,7 +47,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const { selectedBlockId } = useSelection();
   const { modifyRowColumnCount } = useBlockEditing();
   const { pageSchema, updatePageWithHistory } = useHistory();
-  
+
   const rowBlock = block as RowLayoutBlock;
   const columnCount = rowBlock.children.length;
   const props = rowBlock.props || {};
@@ -86,7 +85,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   return (
     <div className="space-y-6">
       <div className="p-4 space-y-6">
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
             Columns
@@ -120,19 +119,17 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 key={preset.id}
                 onClick={() => handlePresetChange(preset.id, preset.cols)}
                 title={preset.label}
-                className={`h-10 border rounded flex items-center justify-center p-1 transition-all ${
-                  props.preset === preset.id
+                className={`h-10 border rounded flex items-center justify-center p-1 transition-all ${props.preset === preset.id
                     ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
                     : 'border-gray-300 bg-white hover:border-gray-400'
-                }`}
+                  }`}
               >
                 <div className={`w-full h-full grid gap-0.5 ${preset.previewClass}`}>
                   {Array.from({ length: preset.cols }).map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`rounded-[1px] ${
-                        props.preset === preset.id ? 'bg-blue-300' : 'bg-gray-300'
-                      }`} 
+                    <div
+                      key={i}
+                      className={`rounded-[1px] ${props.preset === preset.id ? 'bg-blue-300' : 'bg-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
@@ -143,8 +140,8 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
         <div className="space-y-4 pt-2 border-t border-gray-100">
           <GutterControl
             label="Column Gutter"
-            value={props.columnGap}
-            onChange={(val) => updateProps({ columnGap: val } as Partial<BlockProps>)}
+            value={props.column_gap}
+            onChange={(val) => updateProps({ column_gap: val } as Partial<BlockProps>)}
           />
         </div>
       </div>

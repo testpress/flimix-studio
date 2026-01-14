@@ -10,9 +10,9 @@ import { ApiSearchDropdown } from '@components/ApiSearchDropdown';
 
 // Poster grid block editor schema - only basic properties
 const posterGridEditorFields: Field[] = [
-  { 
-    key: 'title', 
-    label: 'Title', 
+  {
+    key: 'title',
+    label: 'Title',
     type: 'text',
     placeholder: 'Enter grid title...'
   }
@@ -26,10 +26,10 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
   const maxItems = (posterGridProps.columns || 3) * (posterGridProps.rows || 3);
   const currentItems = posterGridProps.items?.length || 0;
   const isAtItemLimit = currentItems >= maxItems;
-  
+
   // Warning state for duplicate items
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
-  
+
   // Clear warning after a delay
   useEffect(() => {
     if (duplicateWarning) {
@@ -43,7 +43,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
 
   const handleSelectContent = (content: Content) => {
     const numericId = typeof content.id === 'number' ? content.id : parseInt(content.id, 10);
-    
+
     const posterGridItem: PosterGridItem = {
       id: numericId,
       content_id: numericId,
@@ -63,7 +63,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       },
       progress: 0
     };
-    
+
     // Check if item with this ID already exists
     const existingItems = posterGridProps.items || [];
     if (existingItems.some(item => item.id === posterGridItem.id)) {
@@ -71,10 +71,10 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       setDuplicateWarning(`"${content.title}" is already in your poster grid`);
       return; // Skip if duplicate
     }
-    
+
     // Clear any existing warnings
     setDuplicateWarning(null);
-    
+
     // Add the new item
     updateProps({
       ...posterGridProps,
@@ -98,20 +98,21 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           enabled: false,
           alignment: 'right',
           icon: 'ArrowRight',
-          iconPosition: 'right',
-          textColor: '#ffffff',
+          icon_position: 'right',
+          text_color: '#ffffff',
           link: ''
         }
       });
     }
   };
-  
+
+  // Initialize progress bar props if they don't exist
   // Initialize progress bar props if they don't exist
   const initializeProgressBarProps = () => {
-    if (!posterGridProps.progressBar) {
+    if (!posterGridProps.progress_bar) {
       updateProps({
         ...posterGridProps,
-        progressBar: {
+        progress_bar: {
           enabled: false,
           color: '#ff0000'
         }
@@ -125,7 +126,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       initializeButtonProps();
       return;
     }
-    
+
     updateProps({
       ...posterGridProps,
       button: {
@@ -134,18 +135,18 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       }
     });
   };
-  
+
   // Handle progress bar property changes
   const handleProgressBarChange = (key: keyof ProgressBarProps, value: string | boolean) => {
-    if (!posterGridProps.progressBar) {
+    if (!posterGridProps.progress_bar) {
       initializeProgressBarProps();
       return;
     }
-    
+
     updateProps({
       ...posterGridProps,
-      progressBar: {
-        ...posterGridProps.progressBar,
+      progress_bar: {
+        ...posterGridProps.progress_bar,
         [key]: value
       }
     });
@@ -154,15 +155,15 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
   const handleGridSizeChange = (newColumns: GridDimension, newRows: GridDimension) => {
     const newMaxItems = newColumns * newRows;
     const currentItems = posterGridProps.items || [];
-    
+
     // Remove extra items if the new grid is smaller
     const updatedItems = currentItems.slice(0, newMaxItems);
-    
+
     // Log if items were removed
     if (currentItems.length > newMaxItems) {
       console.log(`${currentItems.length - newMaxItems} items removed due to grid size change from ${posterGridProps.columns}×${posterGridProps.rows} to ${newColumns}×${newRows}`);
     }
-    
+
     updateProps({
       ...posterGridProps,
       columns: newColumns,
@@ -179,11 +180,11 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
         fieldDefinitions={posterGridEditorFields}
         updateProps={updateProps}
       />
-      
+
       {/* Grid Layout Settings */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Grid Layout Settings</h3>
-        
+
         {/* Item Limit Warning Message */}
         {isAtItemLimit && (
           <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded">
@@ -192,7 +193,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             </p>
           </div>
         )}
-        
+
         <div className="space-y-4">
           {/* Grid Size */}
           <div className="grid grid-cols-2 gap-4">
@@ -226,8 +227,8 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           <div>
             <label className="block text-sm text-gray-700 mb-1">Grid Gap</label>
             <select
-              value={style?.gridGap || 'md'}
-              onChange={e => handleStyleChange('gridGap', e.target.value as GridGap)}
+              value={style?.grid_gap || 'md'}
+              onChange={e => handleStyleChange('grid_gap', e.target.value as GridGap)}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="sm">Small</option>
@@ -240,8 +241,8 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Shape</label>
             <select
-              value={posterGridProps.itemShape || 'rectangle-landscape'}
-              onChange={e => updateProps({ ...posterGridProps, itemShape: e.target.value as ItemShape })}
+              value={posterGridProps.item_shape || 'rectangle-landscape'}
+              onChange={e => updateProps({ ...posterGridProps, item_shape: e.target.value as ItemShape })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="rectangle-landscape">Landscape</option>
@@ -259,19 +260,19 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
         <p className="text-sm text-gray-600 mb-3">
           Search for Content and add them to your poster grid. Content will be added to the end of your grid.
         </p>
-        
+
         {/* Warning when over limit */}
         {isAtItemLimit && (
           <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-600" />
               <span className="text-sm font-medium text-red-700">
-               Item Limit
+                Item Limit
               </span>
             </div>
           </div>
         )}
-        
+
         {/* Duplicate item warning */}
         {duplicateWarning && (
           <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -283,7 +284,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             </div>
           </div>
         )}
-        
+
         {/* Generic API Search Dropdown */}
         <ApiSearchDropdown<Content>
           searchFunction={
@@ -297,13 +298,13 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             label: 'Content Type'
           }}
           renderItem={React.useCallback((content, onSelect) => (
-            <div 
+            <div
               className="px-4 py-2 cursor-pointer hover:bg-blue-50 flex items-start gap-3"
               onClick={() => onSelect(content)}
             >
               {(content.thumbnail || content.poster || content.cover) && (
-                <img 
-                  src={content.thumbnail || content.poster || content.cover || ''} 
+                <img
+                  src={content.thumbnail || content.poster || content.cover || ''}
                   alt={content.title}
                   className="w-12 h-8 object-cover rounded flex-shrink-0"
                   onError={(e) => {
@@ -323,89 +324,89 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
           noResultsMessage="No Content found. Try a different search."
         />
       </div>
-      
+
       {/* Display Options Section */}
       <div className="p-4 bg-gray-50 rounded-lg mb-4">
         <h3 className="font-medium text-gray-700 mb-4">Display Options</h3>
         <p className="text-sm text-gray-600 mb-3">
           Control which elements are displayed for poster grid items. These settings apply to all items.
         </p>
-        
+
         <div className="space-y-3">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showTitle"
-              checked={posterGridProps.showTitle ?? true}
-              onChange={e => updateProps({ ...posterGridProps, showTitle: e.target.checked })}
+              checked={posterGridProps.show_title ?? true}
+              onChange={e => updateProps({ ...posterGridProps, show_title: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showTitle" className="text-sm text-gray-700">
               Show Title
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showSubtitle"
-              checked={posterGridProps.showSubtitle ?? false}
-              onChange={e => updateProps({ ...posterGridProps, showSubtitle: e.target.checked })}
+              checked={posterGridProps.show_subtitle ?? false}
+              onChange={e => updateProps({ ...posterGridProps, show_subtitle: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showSubtitle" className="text-sm text-gray-700">
               Show Subtitle
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showRating"
-              checked={posterGridProps.showRating ?? false}
-              onChange={e => updateProps({ ...posterGridProps, showRating: e.target.checked })}
+              checked={posterGridProps.show_rating ?? false}
+              onChange={e => updateProps({ ...posterGridProps, show_rating: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showRating" className="text-sm text-gray-700">
               Show Rating
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showGenre"
-              checked={posterGridProps.showGenre ?? false}
-              onChange={e => updateProps({ ...posterGridProps, showGenre: e.target.checked })}
+              checked={posterGridProps.show_genre ?? false}
+              onChange={e => updateProps({ ...posterGridProps, show_genre: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showGenre" className="text-sm text-gray-700">
               Show Genre
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showDuration"
-              checked={posterGridProps.showDuration ?? false}
-              onChange={e => updateProps({ ...posterGridProps, showDuration: e.target.checked })}
+              checked={posterGridProps.show_duration ?? false}
+              onChange={e => updateProps({ ...posterGridProps, show_duration: e.target.checked })}
               className="rounded"
             />
             <label htmlFor="showDuration" className="text-sm text-gray-700">
               Show Duration
             </label>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="showProgress"
-              checked={posterGridProps.progressBar?.enabled || false}
+              checked={posterGridProps.progress_bar?.enabled || false}
               onChange={e => {
-                if (!posterGridProps.progressBar && e.target.checked) {
+                if (!posterGridProps.progress_bar && e.target.checked) {
                   initializeProgressBarProps();
-                } else if (posterGridProps.progressBar) {
+                } else if (posterGridProps.progress_bar) {
                   handleProgressBarChange('enabled', e.target.checked);
                 }
               }}
@@ -421,7 +422,7 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       {/* Button Settings */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Button Settings</h3>
-        
+
         {/* Enable Button */}
         <div className="mb-4">
           <div className="flex items-center space-x-2">
@@ -519,8 +520,8 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             <div>
               <label className="block text-sm text-gray-700 mb-1">Icon Position</label>
               <select
-                value={posterGridProps.button?.iconPosition || 'right'}
-                onChange={e => handleButtonChange('iconPosition', e.target.value as ButtonIconPosition)}
+                value={posterGridProps.button?.icon_position || 'right'}
+                onChange={e => handleButtonChange('icon_position', e.target.value as ButtonIconPosition)}
                 className="w-full p-2 border border-gray-300 rounded text-sm"
               >
                 <option value="left">Left</option>
@@ -535,14 +536,14 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={posterGridProps.button?.textColor || '#ffffff'}
-                  onChange={e => handleButtonChange('textColor', e.target.value)}
+                  value={posterGridProps.button?.text_color || '#ffffff'}
+                  onChange={e => handleButtonChange('text_color', e.target.value)}
                   className="w-8 h-8 p-0 border-0"
                 />
                 <input
                   type="text"
-                  value={posterGridProps.button?.textColor || '#ffffff'}
-                  onChange={e => handleButtonChange('textColor', e.target.value)}
+                  value={posterGridProps.button?.text_color || '#ffffff'}
+                  onChange={e => handleButtonChange('text_color', e.target.value)}
                   className="flex-1 p-2 border border-gray-300 rounded text-sm"
                   placeholder="#ffffff"
                 />
@@ -555,18 +556,18 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
       {/* Progress Bar Settings */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Progress Bar Settings</h3>
-        
+
         {/* Enable Progress Bar */}
         <div className="mb-4">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="progressBarEnabled"
-              checked={posterGridProps.progressBar?.enabled || false}
+              checked={posterGridProps.progress_bar?.enabled || false}
               onChange={e => {
-                if (!posterGridProps.progressBar && e.target.checked) {
+                if (!posterGridProps.progress_bar && e.target.checked) {
                   initializeProgressBarProps();
-                } else if (posterGridProps.progressBar) {
+                } else if (posterGridProps.progress_bar) {
                   handleProgressBarChange('enabled', e.target.checked);
                 }
               }}
@@ -580,8 +581,8 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
             Display a progress bar for each item (set percentage in item settings)
           </p>
         </div>
-        
-        {posterGridProps.progressBar?.enabled && (
+
+        {posterGridProps.progress_bar?.enabled && (
           <div className="space-y-4">
             {/* Progress Bar Color */}
             <div>
@@ -589,20 +590,20 @@ const PosterGridForm: React.FC<BlockFormProps> = ({ block, updateProps, updateSt
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={posterGridProps.progressBar?.color || '#ff0000'}
+                  value={posterGridProps.progress_bar?.color || '#ff0000'}
                   onChange={e => handleProgressBarChange('color', e.target.value)}
                   className="w-8 h-8 p-0 border-0"
                 />
                 <input
                   type="text"
-                  value={posterGridProps.progressBar?.color || '#ff0000'}
+                  value={posterGridProps.progress_bar?.color || '#ff0000'}
                   onChange={e => handleProgressBarChange('color', e.target.value)}
                   className="flex-1 p-2 border border-gray-300 rounded text-sm"
                   placeholder="#ff0000"
                 />
               </div>
             </div>
-            
+
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-xs text-blue-800">
                 Set the progress percentage for each item in the item settings panel.

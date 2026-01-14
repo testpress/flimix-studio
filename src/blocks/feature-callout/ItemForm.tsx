@@ -9,9 +9,9 @@ interface FeatureCalloutItemFormProps {
   title: string;
 }
 
-const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({ 
-  item, 
-  onChange, 
+const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
+  item,
+  onChange,
   title
 }) => {
   const fields = [
@@ -75,7 +75,7 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
       defaultValue: 'sm'
     },
     {
-      key: 'borderRadius' as const,
+      key: 'border_radius' as const,
       label: 'Border Radius',
       type: 'select' as const,
       options: [
@@ -87,7 +87,7 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
       defaultValue: 'md'
     },
     {
-      key: 'boxShadow' as const,
+      key: 'box_shadow' as const,
       label: 'Box Shadow',
       type: 'select' as const,
       options: [
@@ -103,7 +103,7 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
   // Render style control based on type
   const renderStyleControl = (control: typeof styleControls[0]) => {
     const currentValue = item.style?.[control.key] || control.defaultValue;
-    
+
     return (
       <div key={control.key}>
         <label className="block text-sm text-gray-700 mb-1">{control.label}</label>
@@ -130,11 +130,11 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
         title={title}
         fields={fields}
       />
-      
+
       {/* Item Styling */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h4 className="text-sm font-medium text-gray-700 mb-4">Item Styling</h4>
-        
+
         {/* Style Controls */}
         <div className="space-y-4">
           {/* Color Controls */}
@@ -142,8 +142,8 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
             <label className="block text-sm text-gray-700 mb-1">Background Color</label>
             <input
               type="color"
-              value={item.style?.backgroundColor || '#ffffff'}
-              onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
+              value={item.style?.background_color || '#ffffff'}
+              onChange={(e) => handleStyleChange('background_color', e.target.value)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
           </div>
@@ -152,8 +152,8 @@ const FeatureCalloutItemForm: React.FC<FeatureCalloutItemFormProps> = ({
             <label className="block text-sm text-gray-700 mb-1">Text Color</label>
             <input
               type="color"
-              value={item.style?.textColor || '#000000'}
-              onChange={(e) => handleStyleChange('textColor', e.target.value)}
+              value={item.style?.text_color || '#000000'}
+              onChange={(e) => handleStyleChange('text_color', e.target.value)}
               className="w-full h-10 border border-gray-300 rounded text-sm"
             />
           </div>

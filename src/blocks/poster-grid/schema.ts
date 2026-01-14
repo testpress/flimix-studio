@@ -18,8 +18,8 @@ export interface ButtonProps {
   enabled: boolean;
   alignment: ButtonAlignment;
   icon: string;
-  iconPosition: ButtonIconPosition;
-  textColor?: string;
+  icon_position: ButtonIconPosition;
+  text_color?: string;
   link?: string;
 }
 
@@ -40,15 +40,15 @@ export interface PosterGridBlockProps {
   title?: string;
   columns?: GridDimension;
   rows?: GridDimension;
-  itemShape?: ItemShape;
+  item_shape?: ItemShape;
   items?: PosterGridItem[];
   button?: ButtonProps;
-  progressBar?: ProgressBarProps;
-  showTitle?: boolean;
-  showSubtitle?: boolean;
-  showRating?: boolean;
-  showGenre?: boolean;
-  showDuration?: boolean;
+  progress_bar?: ProgressBarProps;
+  show_title?: boolean;
+  show_subtitle?: boolean;
+  show_rating?: boolean;
+  show_genre?: boolean;
+  show_duration?: boolean;
 }
 
 // Individual poster item interface

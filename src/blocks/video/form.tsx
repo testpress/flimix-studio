@@ -50,7 +50,7 @@ const videoEditorFields: Field[] = [
     required: false,
   },
   {
-    key: 'aspectRatio',
+    key: 'aspect_ratio',
     label: 'Aspect Ratio',
     type: 'select',
     options: [

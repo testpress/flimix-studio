@@ -8,7 +8,7 @@ export const DividerLibraryItem = {
   defaultProps: {
     thickness: 'md',
     length: 'full',
-    percentageValue: 75,
+    percentage_value: 75,
     alignment: 'center',
     style: 'solid',
   } as DividerBlockProps,

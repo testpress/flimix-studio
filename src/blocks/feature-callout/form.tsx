@@ -8,15 +8,15 @@ import { AlertCircle } from 'lucide-react';
 
 // Feature callout block editor schema - only basic properties
 const featureCalloutEditorFields: Field[] = [
-  { 
-    key: 'title', 
-    label: 'Title', 
+  {
+    key: 'title',
+    label: 'Title',
     type: 'text',
     placeholder: 'Enter feature callout title...'
   },
-  { 
-    key: 'subtitle', 
-    label: 'Subtitle', 
+  {
+    key: 'subtitle',
+    label: 'Subtitle',
     type: 'text',
     placeholder: 'Enter subtitle...'
   }
@@ -27,7 +27,7 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
   const featureCalloutProps = props as FeatureCalloutBlockProps;
   const itemCount = featureCalloutProps.items?.length || 0;
   const isAtLimit = itemCount >= FEATURE_CALLOUT_ITEM_LIMIT;
-  
+
   return (
     <div className="space-y-4">
       {/* Basic Properties */}
@@ -36,7 +36,7 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
         fieldDefinitions={featureCalloutEditorFields}
         updateProps={updateProps}
       />
-      
+
       {/* Item Count and Limit Warning */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <div className="flex items-center justify-between">
@@ -58,18 +58,18 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
           </p>
         )}
       </div>
-      
+
       {/* Layout Settings */}
       <div className="p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-700 mb-4">Layout Settings</h3>
-        
+
         <div className="space-y-4">
           {/* Item Size */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Item Size</label>
             <select
-              value={featureCalloutProps.itemSize || 'medium'}
-                   onChange={(e) => updateProps({ itemSize: e.target.value as ItemSize })}
+              value={featureCalloutProps.item_size || 'medium'}
+              onChange={(e) => updateProps({ item_size: e.target.value as ItemSize })}
               className="w-full p-2 border border-gray-300 rounded text-sm"
             >
               <option value="small">Small</option>
@@ -83,8 +83,8 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
-                checked={featureCalloutProps.showIcons}
-                onChange={(e) => updateProps({ showIcons: e.target.checked })}
+                checked={featureCalloutProps.show_icons}
+                onChange={(e) => updateProps({ show_icons: e.target.checked })}
                 className="rounded"
               />
               <span>Show Icons</span>
@@ -92,8 +92,8 @@ const FeatureCalloutForm: React.FC<BlockFormProps> = ({ block, updateProps }) =>
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
-                checked={featureCalloutProps.showDescriptions}
-                onChange={(e) => updateProps({ showDescriptions: e.target.checked })}
+                checked={featureCalloutProps.show_descriptions}
+                onChange={(e) => updateProps({ show_descriptions: e.target.checked })}
                 className="rounded"
               />
               <span>Show Descriptions</span>

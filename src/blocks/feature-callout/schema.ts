@@ -25,12 +25,12 @@ export interface FeatureCalloutItem {
   description?: string;
   // Item-level styling
   style?: {
-    backgroundColor?: string;
-    textColor?: string;
+    background_color?: string;
+    text_color?: string;
     padding?: 'sm' | 'md' | 'lg';
     margin?: 'sm' | 'md' | 'lg';
-    borderRadius?: 'none' | 'sm' | 'md' | 'lg';
-    boxShadow?: 'none' | 'sm' | 'md' | 'lg';
+    border_radius?: 'none' | 'sm' | 'md' | 'lg';
+    box_shadow?: 'none' | 'sm' | 'md' | 'lg';
   };
 }
 
@@ -45,7 +45,7 @@ export interface FeatureCalloutBlockProps {
   title?: string;
   subtitle?: string;
   items: FeatureCalloutItem[];
-  itemSize?: ItemSize;
-  showIcons: boolean;
-  showDescriptions: boolean;
+  item_size?: ItemSize;
+  show_icons: boolean;
+  show_descriptions: boolean;
 } 

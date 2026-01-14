@@ -13,39 +13,39 @@
       "id": "hero-001",
       "props": {
         "variant": "carousel",
-        "aspectRatio": "16:9",
+        "aspect_ratio": "16:9",
         "autoplay": false,
-        "showArrows": true,
-        "scrollSpeed": 3000,
+        "show_arrows": true,
+        "scroll_speed": 3000,
         "items": [
           {
             "id": 1,
             "title": "Coolie",
             "subtitle": "A porter at a railway station becomes involved in a dangerous conflict when he stands up against a powerful criminal who exploits the poor.",
             "thumbnail": "",
-            "videoBackground": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/4P3nJXp2xFT/video.m3u8",
+            "video_background": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/4P3nJXp2xFT/video.m3u8",
             "genres": [
               "Action",
               "Drama",
               "Thriller"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Watch Now",
               "link": "/watch/coolie",
               "variant": "solid",
-              "backgroundColor": "#dc2626",
-              "textColor": "#ffffff"
+              "background_color": "#dc2626",
+              "text_color": "#ffffff"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Add to Watchlist",
               "link": "/watchlist/coolie",
               "variant": "outline",
-              "backgroundColor": "#ffffff",
-              "textColor": "#000000",
+              "background_color": "#ffffff",
+              "text_color": "#000000",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "sm"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "sm"
             },
             "content_id": 1
           },
@@ -54,29 +54,29 @@
             "title": "Cooku with Comali",
             "subtitle": "When cooking chaos meets comic charm! Comalis pair up with stars for a rib-tickling contest, judged by chefs Damu, Koushik Shankar and Madhampatty Rangaraj.",
             "thumbnail": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/5887/1754983435887-i",
-            "videoBackground": "",
+            "video_background": "",
             "genres": [
               "Reality",
               "Comedy",
               "Culinary"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Watch Now",
               "link": "/watch",
               "variant": "solid",
-              "backgroundColor": "#dc2626",
-              "textColor": "#ffffff"
+              "background_color": "#dc2626",
+              "text_color": "#ffffff"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Add to Watchlist",
               "link": "/watchlist",
               "variant": "outline",
-              "backgroundColor": "#ffffff",
-              "textColor": "#000000",
+              "background_color": "#ffffff",
+              "text_color": "#000000",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "sm"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "sm"
             },
             "content_id": 2
           },
@@ -85,29 +85,29 @@
             "title": "Leo",
             "subtitle": "A café owner and animal rescuer becomes the target of a drug cartel who believes he is the infamous vigilante they've been hunting for years.",
             "thumbnail": "",
-            "videoBackground": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/As5D9fDscz2/video.m3u8",
+            "video_background": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/As5D9fDscz2/video.m3u8",
             "genres": [
               "Action",
               "Thriller",
               "Drama"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Watch Now",
               "link": "/watch/leo",
               "variant": "solid",
-              "backgroundColor": "#dc2626",
-              "textColor": "#ffffff"
+              "background_color": "#dc2626",
+              "text_color": "#ffffff"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Add to Watchlist",
               "link": "/watchlist/leo",
               "variant": "outline",
-              "backgroundColor": "#ffffff",
-              "textColor": "#000000",
+              "background_color": "#ffffff",
+              "text_color": "#000000",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "sm"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "sm"
             },
             "content_id": 3
           },
@@ -116,47 +116,47 @@
             "title": "Vikram",
             "subtitle": "A special agent investigates a murder committed by a masked group of serial killers. However, a tangled maze of clues soon leads him to the drug kingpin of Chennai.",
             "thumbnail": "",
-            "videoBackground": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/57gHcHDBxKX/video.m3u8",
+            "video_background": "https://dlbdnoa93s0gw.cloudfront.net/transcoded/57gHcHDBxKX/video.m3u8",
             "genres": [
               "Action",
               "Thriller",
               "Crime"
             ],
-            "primaryCTA": {
+            "primary_cta": {
               "label": "Watch Now",
               "link": "/watch/vikram",
               "variant": "solid",
-              "backgroundColor": "#dc2626",
-              "textColor": "#ffffff"
+              "background_color": "#dc2626",
+              "text_color": "#ffffff"
             },
-            "secondaryCTA": {
+            "secondary_cta": {
               "label": "Add to Watchlist",
               "link": "/watchlist/vikram",
               "variant": "outline",
-              "backgroundColor": "#ffffff",
-              "textColor": "#000000",
+              "background_color": "#ffffff",
+              "text_color": "#000000",
               "icon": "Plus",
-              "iconPosition": "left",
-              "iconThickness": "thick",
-              "borderRadius": "sm"
+              "icon_position": "left",
+              "icon_thickness": "thick",
+              "border_radius": "sm"
             },
             "content_id": 4
           }
         ]
       },
       "style": {
-        "backgroundColor": "#000000",
-        "textColor": "#ffffff",
-        "borderRadius": "none",
-        "textAlign": "left",
-        "paddingTop": "32px",
-        "paddingRight": "32px",
-        "paddingBottom": "32px",
-        "paddingLeft": "32px",
-        "marginTop": "0px",
-        "marginRight": "0px",
-        "marginBottom": "0px",
-        "marginLeft": "0px"
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "border_radius": "none",
+        "text_align": "left",
+        "padding_top": "32px",
+        "padding_right": "32px",
+        "padding_bottom": "32px",
+        "padding_left": "32px",
+        "margin_top": "0px",
+        "margin_right": "0px",
+        "margin_bottom": "0px",
+        "margin_left": "0px"
       },
       "visibility": {
         "platform": [
@@ -174,19 +174,19 @@
       "id": "carousel-latest",
       "props": {
         "title": "Latest Releases",
-        "itemShape": "rectangle-portrait",
+        "item_shape": "rectangle-portrait",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "medium",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "medium",
         "button": {
           "text": "View All",
           "enabled": true,
           "alignment": "right",
           "icon": "ChevronRight",
-          "iconPosition": "right",
-          "textColor": "#ffffff",
+          "icon_position": "right",
+          "text_color": "#ffffff",
           "link": "/latest"
         },
         "items": [
@@ -284,8 +284,8 @@
         ]
       },
       "style": {
-        "backgroundColor": "black",
-        "textColor": "#ffffff"
+        "background_color": "black",
+        "text_color": "#ffffff"
       }
     },
     {
@@ -293,12 +293,12 @@
       "id": "carousel-sports",
       "props": {
         "title": "Non-Stop Sports",
-        "itemShape": "rectangle-landscape",
+        "item_shape": "rectangle-landscape",
         "alignment": "left",
         "autoplay": false,
-        "scrollSpeed": 3000,
-        "showArrows": true,
-        "itemSize": "large",
+        "scroll_speed": 3000,
+        "show_arrows": true,
+        "item_size": "large",
         "items": [
           {
             "id": "sports-1",
@@ -381,12 +381,12 @@
         ]
       },
       "style": {
-        "backgroundColor": "black",
-        "textColor": "#ffffff",
-        "paddingTop": "0px",
-        "paddingRight": "0px",
-        "paddingBottom": "0px",
-        "paddingLeft": "0px"
+        "background_color": "black",
+        "text_color": "#ffffff",
+        "padding_top": "0px",
+        "padding_right": "0px",
+        "padding_bottom": "0px",
+        "padding_left": "0px"
       }
     },
     {
@@ -394,11 +394,11 @@
       "id": "section-independence-day",
       "props": {
         "title": "",
-        "backgroundImage": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/4574/1754455844574-uwb"
+        "background_image": "https://img.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/4574/1754455844574-uwb"
       },
       "style": {
-        "backgroundColor": "black",
-        "textColor": "#ffffff"
+        "background_color": "black",
+        "text_color": "#ffffff"
       },
       "children": [
         {
@@ -408,13 +408,13 @@
             "content": "One Tiranga. Infinite Stories."
           },
           "style": {
-            "textAlign": "center",
-            "backgroundColor": "transparent",
-            "textColor": "#ffffff",
-            "paddingTop": "0px",
-            "paddingRight": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px"
+            "text_align": "center",
+            "background_color": "transparent",
+            "text_color": "#ffffff",
+            "padding_top": "0px",
+            "padding_right": "0px",
+            "padding_bottom": "0px",
+            "padding_left": "0px"
           }
         },
         {
@@ -424,13 +424,13 @@
             "content": "Tales of the Tricolour"
           },
           "style": {
-            "textAlign": "center",
-            "backgroundColor": "transparent",
-            "textColor": "#999999",
-            "paddingTop": "0px",
-            "paddingRight": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px"
+            "text_align": "center",
+            "background_color": "transparent",
+            "text_color": "#999999",
+            "padding_top": "0px",
+            "padding_right": "0px",
+            "padding_bottom": "0px",
+            "padding_left": "0px"
           }
         },
         {
@@ -438,19 +438,19 @@
           "id": "carousel-independence",
           "props": {
             "title": "",
-            "itemShape": "square",
+            "item_shape": "square",
             "alignment": "left",
             "autoplay": true,
-            "scrollSpeed": 2000,
-            "showArrows": false,
-            "itemSize": "medium",
+            "scroll_speed": 2000,
+            "show_arrows": false,
+            "item_size": "medium",
             "button": {
               "text": "View All",
               "enabled": true,
               "alignment": "right",
               "icon": "ChevronRight",
-              "iconPosition": "right",
-              "textColor": "#ffffff",
+              "icon_position": "right",
+              "text_color": "#ffffff",
               "link": "/latest"
             },
             "items": [
@@ -538,12 +538,12 @@
             ]
           },
           "style": {
-            "backgroundColor": "transparent",
-            "textColor": "#ffffff",
-            "paddingTop": "0px",
-            "paddingRight": "0px",
-            "paddingBottom": "0px",
-            "paddingLeft": "0px"
+            "background_color": "transparent",
+            "text_color": "#ffffff",
+            "padding_top": "0px",
+            "padding_right": "0px",
+            "padding_bottom": "0px",
+            "padding_left": "0px"
           }
         }
       ]
@@ -553,12 +553,12 @@
       "id": "carousel-studios",
       "props": {
         "title": "Studio",
-        "itemShape": "rectangle-landscape",
+        "item_shape": "rectangle-landscape",
         "alignment": "left",
         "autoplay": true,
-        "scrollSpeed": 2000,
-        "showArrows": false,
-        "itemSize": "extra-large",
+        "scroll_speed": 2000,
+        "show_arrows": false,
+        "item_size": "extra-large",
         "items": [
           {
             "id": "studio-1",
@@ -618,13 +618,13 @@
         ]
       },
       "style": {
-        "backgroundColor": "transparent",
-        "textColor": "#ffffff",
-        "gridGap": "lg",
-        "paddingTop": "0px",
-        "paddingRight": "0px",
-        "paddingBottom": "0px",
-        "paddingLeft": "0px"
+        "background_color": "transparent",
+        "text_color": "#ffffff",
+        "grid_gap": "lg",
+        "padding_top": "0px",
+        "padding_right": "0px",
+        "padding_bottom": "0px",
+        "padding_left": "0px"
       }
     },
     {
@@ -632,12 +632,12 @@
       "id": "carousel-latest1",
       "props": {
         "title": "Action Extravaganza",
-        "itemShape": "rectangle-portrait",
+        "item_shape": "rectangle-portrait",
         "alignment": "left",
         "autoplay": true,
-        "scrollSpeed": 2000,
-        "showArrows": false,
-        "itemSize": "medium",
+        "scroll_speed": 2000,
+        "show_arrows": false,
+        "item_size": "medium",
         "items": [
           {
             "id": "item1-1",
@@ -723,8 +723,8 @@
         ]
       },
       "style": {
-        "backgroundColor": "black",
-        "textColor": "#ffffff"
+        "background_color": "black",
+        "text_color": "#ffffff"
       }
     }
   ]

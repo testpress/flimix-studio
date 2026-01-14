@@ -37,11 +37,11 @@ export const TestimonialLibraryItem = {
       }
     ],
     autoplay: true,
-    scrollSpeed: 1000,
-    showArrows: true,
-    itemSize: 'large' as const,
+    scroll_speed: 1000,
+    show_arrows: true,
+    item_size: 'large' as const,
     columns: 3 as const,
     rows: 2 as const,
-    itemShape: 'circle' as const
+    item_shape: 'circle' as const
   } as TestimonialBlockProps
 }; 

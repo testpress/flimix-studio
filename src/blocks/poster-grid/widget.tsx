@@ -9,9 +9,9 @@ interface PosterGridWidgetProps extends Omit<BlockWidgetWrapperProps<PosterGridB
   block: PosterGridBlock;
 }
 
-const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({ 
-  block, 
-  onSelect, 
+const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
+  block,
+  onSelect,
   isSelected = false,
   canMoveUp,
   canMoveDown,
@@ -21,14 +21,14 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   onRemove
 }) => {
   const { props, style } = block;
-  const { title, columns = 3, itemShape, items, button, progressBar, showTitle, showSubtitle, showRating, showGenre, showDuration } = props;
-  const { gridGap = 'md' } = style || {};
+  const { title, columns = 3, item_shape: itemShape, items, button, progress_bar: progressBar, show_title: showTitle, show_subtitle: showSubtitle, show_rating: showRating, show_genre: showGenre, show_duration: showDuration } = props;
+  const { grid_gap = 'md' } = style || {};
   const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
-  
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
-                           style?.borderRadius === 'md' ? 'rounded-md' : 
-                           style?.borderRadius === 'sm' ? 'rounded-sm' : '';
-  
+
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' : '';
+
   // Handle box shadow - custom CSS values for better visibility
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -38,18 +38,18 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
       default: return undefined;
     }
   };
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
-  
-  const textAlignClass = style?.textAlign === 'center' ? 'text-center' :
-                        style?.textAlign === 'right' ? 'text-right' : 'text-left';
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
+
+  const textAlignClass = style?.text_align === 'center' ? 'text-center' :
+    style?.text_align === 'right' ? 'text-right' : 'text-left';
 
   // Handle text color - if it's a hex value, use inline style, otherwise use Tailwind class
-  const isHexColor = style?.textColor && style.textColor.startsWith('#');
-  const textColorClass = !isHexColor ? (style?.textColor || 'text-white') : '';
-  const textColorStyle = isHexColor ? { color: style.textColor } : {};
+  const isHexColor = style?.text_color && style.text_color.startsWith('#');
+  const textColorClass = !isHexColor ? (style?.text_color || 'text-white') : '';
+  const textColorStyle = isHexColor ? { color: style.text_color } : {};
 
   // Determine background styling
-  const hasCustomBackground = !!style?.backgroundColor;
+  const hasCustomBackground = !!style?.background_color;
   const defaultBackgroundClass = 'bg-black';
   const backgroundClass = hasCustomBackground ? '' : defaultBackgroundClass;
 
@@ -76,14 +76,14 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
       case 'square':
         return 'aspect-square';
       case 'circle':
-        return 'aspect-square'; 
+        return 'aspect-square';
       default: // rectangle-landscape
         return 'aspect-[16/9]';
     }
   };
 
   const getGapClass = () => {
-    switch (gridGap) {
+    switch (grid_gap) {
       case 'sm':
         return 'gap-2';
       case 'lg':
@@ -109,7 +109,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   const getGridRowsClass = () => {
     // Calculate how many rows we actually need based on items count
     const actualRows = Math.ceil((items?.length || 0) / (columns || 3));
-    
+
     switch (actualRows) {
       case 0:
       case 1:
@@ -137,9 +137,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   if (!items || items.length === 0) {
     return (
       <div style={{ boxShadow: boxShadowStyle }}>
-        <BlockWidgetWrapper 
-          block={block} 
-          onSelect={onSelect} 
+        <BlockWidgetWrapper
+          block={block}
+          onSelect={onSelect}
           isSelected={isSelected}
           canMoveUp={canMoveUp}
           canMoveDown={canMoveDown}
@@ -149,15 +149,15 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           onRemove={onRemove}
           className={`${borderRadiusClass} ${backgroundClass}`}
           style={{
-            ...(hasCustomBackground ? { backgroundColor: style.backgroundColor } : {}),
-            paddingTop: style?.paddingTop,
-            paddingRight: style?.paddingRight,
-            paddingBottom: style?.paddingBottom,
-            paddingLeft: style?.paddingLeft,
-            marginTop: style?.marginTop,
-            marginRight: style?.marginRight,
-            marginBottom: style?.marginBottom,
-            marginLeft: style?.marginLeft,
+            ...(hasCustomBackground ? { backgroundColor: style.background_color } : {}),
+            paddingTop: style?.padding_top,
+            paddingRight: style?.padding_right,
+            paddingBottom: style?.padding_bottom,
+            paddingLeft: style?.padding_left,
+            marginTop: style?.margin_top,
+            marginRight: style?.margin_right,
+            marginBottom: style?.margin_bottom,
+            marginLeft: style?.margin_left,
           }}
         >
           <div className={`${textAlignClass}`}>
@@ -175,9 +175,9 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
-      <BlockWidgetWrapper 
-        block={block} 
-        onSelect={onSelect} 
+      <BlockWidgetWrapper
+        block={block}
+        onSelect={onSelect}
         isSelected={isSelected}
         canMoveUp={canMoveUp}
         canMoveDown={canMoveDown}
@@ -187,162 +187,160 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
         onRemove={onRemove}
         className={`${borderRadiusClass} ${backgroundClass}`}
         style={{
-          ...(hasCustomBackground ? { backgroundColor: style.backgroundColor } : {}),
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          ...(hasCustomBackground ? { backgroundColor: style.background_color } : {}),
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
       >
-      <div className={`w-full ${textAlignClass}`}>
-        {/* Header with title and button */}
-        <div className="mb-6">
-          {button?.enabled ? (
-            button.alignment === 'left' ? (
-              /* Left alignment: title and button on same line */
-              <div className="flex items-center gap-4">
-                {title && title.trim() !== "" && (
-                  <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
-                    {title}
-                  </h2>
-                )}
-                <a 
-                  href={button.link || '#'} 
-                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
-                  style={{
-                    color: button.textColor || '#ffffff'
-                  }}
-                >
-                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
-                  {button.text || 'View All'}
-                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
-                </a>
-              </div>
-            ) : (
-              /* Right alignment: title on left, button on right */
-              <div className="flex items-center justify-between w-full">
-                <div className="flex-1">
+        <div className={`w-full ${textAlignClass}`}>
+          {/* Header with title and button */}
+          <div className="mb-6">
+            {button?.enabled ? (
+              button.alignment === 'left' ? (
+                /* Left alignment: title and button on same line */
+                <div className="flex items-center gap-4">
                   {title && title.trim() !== "" && (
                     <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
                       {title}
                     </h2>
                   )}
+                  <a
+                    href={button.link || '#'}
+                    className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                    style={{
+                      color: button.text_color || '#ffffff'
+                    }}
+                  >
+                    {button.icon_position === 'left' && renderButtonIcon(button.icon)}
+                    {button.text || 'View All'}
+                    {button.icon_position === 'right' && renderButtonIcon(button.icon)}
+                  </a>
                 </div>
-                <a 
-                  href={button.link || '#'} 
-                  className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
-                  style={{
-                    color: button.textColor || '#ffffff'
-                  }}
-                >
-                  {button.iconPosition === 'left' && renderButtonIcon(button.icon)}
-                  {button.text || 'View All'}
-                  {button.iconPosition === 'right' && renderButtonIcon(button.icon)}
-                </a>
-              </div>
-            )
-          ) : (
-            /* No button: just title */
-            title && title.trim() !== "" && (
-              <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
-                {title}
-              </h2>
-            )
-          )}
-        </div>
-
-        <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
-          {items.map((item) => (
-            <div key={item.id} className="relative group">
-              <a
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleItemClick(item);
-                }}
-                className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${
-                  isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
-                }`}
-              >
-                <div className={`${getAspectRatioClass()} overflow-hidden ${
-                  itemShape === 'circle' ? 'rounded-full' : 'rounded-lg'
-                } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
-                  <img
-                    src={item.poster || item.cover || item.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image'}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                {/* Content section - only render if there's actual content */}
-                {(showTitle !== false && item.title && item.title.trim() !== "") || 
-                 (showSubtitle && item.subtitle) ||
-                 (showRating && item.details?.imdb_rating) ||
-                 (showGenre && item.genres && item.genres.length > 0) ||
-                 (showDuration && item.details?.duration) ||
-                 progressBar?.enabled ? (
-                  <div className="mt-3 space-y-1">
-                    {/* Title - only render if enabled and not empty */}
-                    {showTitle !== false && item.title && item.title.trim() !== "" && (
-                      <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
-                        {item.title}
-                      </p>
-                    )}
-                    
-                    {/* Subtitle - only render if enabled */}
-                    {showSubtitle && item.subtitle && (
-                      <p className={`text-xs ${textColorClass} line-clamp-1 opacity-80`} style={textColorStyle}>
-                        {item.subtitle}
-                      </p>
-                    )}
-                    
-                    {/* Meta information row */}
-                    {(showRating && item.details?.imdb_rating) ||
-                     (showGenre && item.genres && item.genres.length > 0) ||
-                     (showDuration && item.details?.duration) ? (
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {showRating && item.details?.imdb_rating && (
-                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                            {item.details.imdb_rating}
-                          </span>
-                        )}
-                        {showGenre && item.genres && item.genres.length > 0 && (
-                          <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
-                            {item.genres[0]}
-                          </span>
-                        )}
-                        {showDuration && item.details?.duration && (
-                          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
-                            {item.details.duration}
-                          </span>
-                        )}
-                      </div>
-                    ) : null}
-                    
-                    {/* Progress Bar - only render if enabled */}
-                    {progressBar?.enabled && (
-                      <div className="mt-2 mb-2">
-                        <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full" 
-                            style={{ 
-                              width: `${item.progress !== undefined ? item.progress : 4}%`,
-                              backgroundColor: progressBar.color || '#ff0000'
-                            }}
-                          ></div>
-                        </div>
-                      </div>
+              ) : (
+                /* Right alignment: title on left, button on right */
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex-1">
+                    {title && title.trim() !== "" && (
+                      <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                        {title}
+                      </h2>
                     )}
                   </div>
-                ) : null}
-              </a>
-            </div>
-          ))}
+                  <a
+                    href={button.link || '#'}
+                    className="px-4 py-2 rounded-md flex items-center gap-2 transition-all hover:opacity-90"
+                    style={{
+                      color: button.text_color || '#ffffff'
+                    }}
+                  >
+                    {button.icon_position === 'left' && renderButtonIcon(button.icon)}
+                    {button.text || 'View All'}
+                    {button.icon_position === 'right' && renderButtonIcon(button.icon)}
+                  </a>
+                </div>
+              )
+            ) : (
+              /* No button: just title */
+              title && title.trim() !== "" && (
+                <h2 className={`text-xl font-semibold ${textColorClass}`} style={textColorStyle}>
+                  {title}
+                </h2>
+              )
+            )}
+          </div>
+
+          <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
+            {items.map((item) => (
+              <div key={item.id} className="relative group">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleItemClick(item);
+                  }}
+                  className={`block transition-all duration-200 hover:scale-105 cursor-pointer ${isItemSelected(block.id, item.id.toString()) ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                    }`}
+                >
+                  <div className={`${getAspectRatioClass()} overflow-hidden ${itemShape === 'circle' ? 'rounded-full' : 'rounded-lg'
+                    } shadow-md group-hover:shadow-lg transition-shadow duration-200`}>
+                    <img
+                      src={item.poster || item.cover || item.thumbnail || 'https://placehold.co/300x170/cccccc/666666?text=No+Image'}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Content section - only render if there's actual content */}
+                  {(showTitle !== false && item.title && item.title.trim() !== "") ||
+                    (showSubtitle && item.subtitle) ||
+                    (showRating && item.details?.imdb_rating) ||
+                    (showGenre && item.genres && item.genres.length > 0) ||
+                    (showDuration && item.details?.duration) ||
+                    progressBar?.enabled ? (
+                    <div className="mt-3 space-y-1">
+                      {/* Title - only render if enabled and not empty */}
+                      {showTitle !== false && item.title && item.title.trim() !== "" && (
+                        <p className={`text-sm font-semibold ${textColorClass} line-clamp-1`} style={textColorStyle}>
+                          {item.title}
+                        </p>
+                      )}
+
+                      {/* Subtitle - only render if enabled */}
+                      {showSubtitle && item.subtitle && (
+                        <p className={`text-xs ${textColorClass} line-clamp-1 opacity-80`} style={textColorStyle}>
+                          {item.subtitle}
+                        </p>
+                      )}
+
+                      {/* Meta information row */}
+                      {(showRating && item.details?.imdb_rating) ||
+                        (showGenre && item.genres && item.genres.length > 0) ||
+                        (showDuration && item.details?.duration) ? (
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {showRating && item.details?.imdb_rating && (
+                            <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                              {item.details.imdb_rating}
+                            </span>
+                          )}
+                          {showGenre && item.genres && item.genres.length > 0 && (
+                            <span className={`inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-gray-700`}>
+                              {item.genres[0]}
+                            </span>
+                          )}
+                          {showDuration && item.details?.duration && (
+                            <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gray-100 text-gray-700">
+                              {item.details.duration}
+                            </span>
+                          )}
+                        </div>
+                      ) : null}
+
+                      {/* Progress Bar - only render if enabled */}
+                      {progressBar?.enabled && (
+                        <div className="mt-2 mb-2">
+                          <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full"
+                              style={{
+                                width: `${item.progress !== undefined ? item.progress : 4}%`,
+                                backgroundColor: progressBar.color || '#ff0000'
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : null}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       </BlockWidgetWrapper>
     </div>
   );

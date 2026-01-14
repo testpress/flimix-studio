@@ -34,7 +34,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   const { setSelectedBlock } = useSelection();
 
   const handleLayoutSelect = (presetId: RowLayoutPreset, cols: number) => {
-    const newChildren = Array.from({ length: cols }).map(() => 
+    const newChildren = Array.from({ length: cols }).map(() =>
       createBlock('section')
     ) as SectionBlock[];
 
@@ -44,18 +44,18 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
     if (blockPosition && blockPosition.children) {
       const updatedBlock = {
         ...block,
-        props: { 
-          ...block.props, 
-          preset: presetId, 
-          columnGap: 'md' as const 
+        props: {
+          ...block.props,
+          preset: presetId,
+          column_gap: 'md' as const
         },
         children: newChildren
       };
-      
+
       blockPosition.children[blockPosition.index] = updatedBlock as BlockType;
-      
+
       updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
-      setSelectedBlock(updatedBlock); 
+      setSelectedBlock(updatedBlock);
     }
   };
 
@@ -64,31 +64,31 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
       case 'none': return 'gap-x-0';
       case 'sm': return 'gap-x-2';
       case 'lg': return 'gap-x-8';
-      case 'md': 
+      case 'md':
       default: return 'gap-x-4';
     }
   };
 
-  const gapClass = getColumnGapClass(block.props.columnGap);
+  const gapClass = getColumnGapClass(block.props.column_gap);
   const currentPreset = ROW_LAYOUT_PRESETS.find(p => p.id === block.props.preset);
   const actualChildrenCount = block.children.length;
-  
+
   const gridTemplateClass = (currentPreset && currentPreset.cols === actualChildrenCount)
     ? currentPreset.class
     : ({
-        1: 'grid-cols-1',
-        2: 'grid-cols-2',
-        3: 'grid-cols-3',
-        4: 'grid-cols-4',
-      }[actualChildrenCount] || 'grid-cols-1');
+      1: 'grid-cols-1',
+      2: 'grid-cols-2',
+      3: 'grid-cols-3',
+      4: 'grid-cols-4',
+    }[actualChildrenCount] || 'grid-cols-1');
 
   const layoutClass = `grid ${gridTemplateClass} ${gapClass}`;
 
   const { style } = block;
-  const borderRadiusClass = style?.borderRadius === 'lg' ? 'rounded-lg' : 
-                           style?.borderRadius === 'md' ? 'rounded-md' : 
-                           style?.borderRadius === 'sm' ? 'rounded-sm' : 
-                           style?.borderRadius === 'none' ? 'rounded-none' : '';
+  const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
+    style?.border_radius === 'md' ? 'rounded-md' :
+      style?.border_radius === 'sm' ? 'rounded-sm' :
+        style?.border_radius === 'none' ? 'rounded-none' : '';
 
   const getBoxShadowStyle = (shadowType: string | undefined) => {
     switch (shadowType) {
@@ -103,10 +103,10 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         return 'none';
     }
   };
-  
-  const boxShadowStyle = getBoxShadowStyle(style?.boxShadow);
 
-  const hasCustomBackground = !!style?.backgroundColor;
+  const boxShadowStyle = getBoxShadowStyle(style?.box_shadow);
+
+  const hasCustomBackground = !!style?.background_color;
 
   return (
     <div style={{ boxShadow: boxShadowStyle }}>
@@ -116,15 +116,15 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         isSelected={isSelected}
         className={`relative ${borderRadiusClass}`}
         style={{
-          backgroundColor: hasCustomBackground ? style.backgroundColor : undefined,
-          paddingTop: style?.paddingTop,
-          paddingRight: style?.paddingRight,
-          paddingBottom: style?.paddingBottom,
-          paddingLeft: style?.paddingLeft,
-          marginTop: style?.marginTop,
-          marginRight: style?.marginRight,
-          marginBottom: style?.marginBottom,
-          marginLeft: style?.marginLeft,
+          backgroundColor: hasCustomBackground ? style.background_color : undefined,
+          paddingTop: style?.padding_top,
+          paddingRight: style?.padding_right,
+          paddingBottom: style?.padding_bottom,
+          paddingLeft: style?.padding_left,
+          marginTop: style?.margin_top,
+          marginRight: style?.margin_right,
+          marginBottom: style?.margin_bottom,
+          marginLeft: style?.margin_left,
         }}
         {...widgetControlProps}
       >
