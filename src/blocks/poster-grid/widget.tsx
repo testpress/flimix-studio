@@ -3,6 +3,8 @@ import BlockWidgetWrapper from '@layout/BlockWidgetWrapper';
 import type { BlockWidgetWrapperProps } from '@layout/BlockWidgetWrapper';
 import type { PosterGridBlock, PosterGridItem } from './schema';
 import { useSelection } from '@context/SelectionContext';
+import { useBlockEditing } from '@context/BlockEditingContext';
+import BlockItemControl from '@layout/BlockItemControl';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PosterGridWidgetProps extends Omit<BlockWidgetWrapperProps<PosterGridBlock>, 'block'> {
@@ -24,6 +26,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
   const { title, columns = 3, item_shape: itemShape, items, button, progress_bar: progressBar, show_title: showTitle, show_subtitle: showSubtitle, show_rating: showRating, show_genre: showGenre, show_duration: showDuration } = props;
   const { grid_gap = 'md' } = style || {};
   const { selectBlockItem, isItemSelected, isReadOnly } = useSelection();
+  const { moveBlockItemLeft, moveBlockItemRight, removeBlockItem } = useBlockEditing();
 
   const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
     style?.border_radius === 'md' ? 'rounded-md' :
@@ -256,7 +259,7 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
           </div>
 
           <div className={`grid ${getGridColsClass()} ${getGridRowsClass()} ${getGapClass()}`}>
-            {items.map((item) => (
+            {items.map((item, index) => (
               <div key={item.id} className="relative group">
                 <a
                   onClick={(e) => {
@@ -337,6 +340,14 @@ const PosterGridWidget: React.FC<PosterGridWidgetProps> = ({
                     </div>
                   ) : null}
                 </a>
+                <BlockItemControl
+                  index={index}
+                  count={items.length}
+                  onMoveLeft={() => moveBlockItemLeft(block.id, index)}
+                  onMoveRight={() => moveBlockItemRight(block.id, index)}
+                  onRemove={() => removeBlockItem(block.id, item.id.toString())}
+                  className="absolute top-2 right-2 flex space-x-1 bg-white/95 rounded-lg p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                />
               </div>
             ))}
           </div>
