@@ -471,7 +471,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
             <div className="flex-shrink-0 w-2 sm:w-4"></div>
 
             {items.map((item, index) => (
-              <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(item_size)} px-2`}>
+              <div key={item.id} className={`relative flex-shrink-0 ${getItemSizeClass(item_size)}`}>
                 {renderTestimonialItem(item, index)}
               </div>
             ))}
