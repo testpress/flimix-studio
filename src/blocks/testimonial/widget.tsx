@@ -49,19 +49,18 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   const autoplayIntervalRef = useRef<number | null>(null);
   const manualScrollPauseTimeoutRef = useRef<number | null>(null);
 
-  // Map abstract item size values to Tailwind classes for carousel - now responsive
   const getItemSizeClass = (size: ItemSize): string => {
     switch (size) {
       case 'small':
-        return 'w-full sm:w-64 md:w-72 lg:w-80';
+        return 'w-[16rem] sm:w-[18rem] md:w-[20rem]';
       case 'medium':
-        return 'w-full sm:w-72 md:w-80 lg:w-96';
+        return 'w-[18rem] sm:w-[20rem] md:w-[22rem]';
       case 'large':
-        return 'w-full sm:w-80 md:w-96 lg:w-[28rem]';
+        return 'w-[20rem] sm:w-[24rem] md:w-[28rem]';
       case 'extra-large':
-        return 'w-full sm:w-96 md:w-[28rem] lg:w-[32rem]';
+        return 'w-[22rem] sm:w-[28rem] md:w-[32rem]';
       default:
-        return 'w-full sm:w-80 md:w-96 lg:w-[28rem]'; // fallback to large
+        return 'w-[20rem] sm:w-[24rem] md:w-[28rem]';
     }
   };
 
@@ -123,7 +122,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
   }, [items]);
 
   // Check scroll position and update arrow visibility
-  const checkScrollPosition = () => {
+  const checkScrollPosition = useCallback(() => {
     if (!scrollContainerRef.current) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -137,10 +136,10 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
     const canScrollRight = scrollLeft < scrollWidth - clientWidth - tolerance;
 
     // Also check if we have more items than can fit in the visible area
-    const hasOverflow = scrollWidth > clientWidth;
+    const hasOverflow = scrollWidth > clientWidth || items.length > 1;
 
     setCanScrollRight(canScrollRight && hasOverflow);
-  };
+  }, [items]);
 
   // Handle scroll events
   useEffect(() => {
@@ -160,8 +159,9 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         scrollContainer.scrollLeft = currentScrollLeft;
       }
 
-      // Always check scroll position after items change
-      checkScrollPosition();
+      const initialStabilizationDelay = setTimeout(() => {
+        checkScrollPosition();
+      }, 300);
 
       // Add a small delay to ensure layout is stable after items change
       const delayedCheck = setTimeout(() => {
@@ -177,10 +177,11 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
         window.removeEventListener('resize', checkScrollPosition);
+        clearTimeout(initialStabilizationDelay);
         clearTimeout(delayedCheck);
       };
     }
-  }, [items]);
+  }, [items, checkScrollPosition]);
 
   // Add effect to handle layout changes (like settings panel opening/closing)
   useEffect(() => {
@@ -222,7 +223,7 @@ const TestimonialWidget: React.FC<TestimonialWidgetProps> = ({
         clearInterval(periodicCheck);
       };
     }
-  }, []); // Empty dependency array - only run once on mount
+  }, [checkScrollPosition]); // Run when checkScrollPosition changes
 
   // Autoplay functionality for carousel layout
   useEffect(() => {
