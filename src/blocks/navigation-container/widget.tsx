@@ -31,9 +31,9 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
   const { 
     items = [], 
     alignment,
-    fontSize,
-    iconSize,
-    hideIcons,
+    font_size,
+    icon_size,
+    hide_icons,
     hover,
     colors,
   } = block.props;
@@ -41,7 +41,7 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
   // Extract nested configs with defaults
   const hoverEffect = hover?.effect;
   const disableHover = hover?.disabled || false;
-  const hoverTextColor = colors?.hoverText;
+  const hoverTextColor = colors?.hover_text;
 
   // Auto-open dropdown when a dropdown item is selected
   useEffect(() => {
@@ -160,34 +160,34 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
     const appliedColor = (isHovered && !disableHover && hoverTextColor)
       ? hoverTextColor
       : isSubItem
-      ? item.style?.textColor || colors?.dropdownText || '#ffffff'
-      : item.style?.textColor || colors?.itemText || block.style?.textColor || '#ffffff';
+      ? item.style?.text_color || colors?.dropdown_text || '#ffffff'
+      : item.style?.text_color || colors?.item_text || block.style?.text_color || '#ffffff';
 
     // Determine background color based on hover state and whether this is a sub-item
     // Sub-items use dropdown background, main items use item background
-    const appliedBackgroundColor = (isHovered && !disableHover && colors?.hoverBackground)
-      ? colors.hoverBackground
+    const appliedBackgroundColor = (isHovered && !disableHover && colors?.hover_background)
+      ? colors.hover_background
       : isSubItem
-      ? item.style?.backgroundColor || colors?.dropdownBackground || '#1a1a1a'
-      : item.style?.backgroundColor || colors?.itemBackground || 'transparent';
+      ? item.style?.background_color || colors?.dropdown_background || '#1a1a1a'
+      : item.style?.background_color || colors?.item_background || 'transparent';
 
     const itemStyle = {
       color: appliedColor,
       backgroundColor: appliedBackgroundColor,
-      paddingTop: item.style?.paddingTop,
-      paddingRight: item.style?.paddingRight,
-      paddingBottom: item.style?.paddingBottom,
-      paddingLeft: item.style?.paddingLeft,
-      gap: item.appearance?.iconGap ? `${item.appearance.iconGap}px` : '8px',
-      marginTop: item.style?.marginTop,
-      marginRight: item.style?.marginRight,
-      marginBottom: item.style?.marginBottom,
-      marginLeft: item.style?.marginLeft,
-      borderRadius: item.style?.borderRadius || '4px', // Default radius for background
+      paddingTop: item.style?.padding_top,
+      paddingRight: item.style?.padding_right,
+      paddingBottom: item.style?.padding_bottom,
+      paddingLeft: item.style?.padding_left,
+      gap: item.appearance?.icon_gap ? `${item.appearance.icon_gap}px` : '8px',
+      marginTop: item.style?.margin_top,
+      marginRight: item.style?.margin_right,
+      marginBottom: item.style?.margin_bottom,
+      marginLeft: item.style?.margin_left,
+      borderRadius: item.style?.border_radius || '4px', // Default radius for background
     };
 
     // Check if we have custom colors defined to determine if we should disable default opacity logic
-    const hasCustomColors = !!hoverTextColor || !!colors?.hoverBackground;
+    const hasCustomColors = !!hoverTextColor || !!colors?.hover_background;
 
     const hoverClass = !disableHover
       ? hoverEffect === 'underline'
@@ -243,7 +243,7 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
           }}
         >
           {/* Icon or Image */}
-          {!hideIcons && (item.appearance?.icon || item.appearance?.image?.src) && (
+          {!hide_icons && (item.appearance?.icon || item.appearance?.image?.src) && (
             <div className="flex-shrink-0">
               {item.appearance?.image?.src ? (
                 <img
@@ -255,8 +255,8 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
                 <Icon
                   name={item.appearance?.icon || ''}
                   size={
-                    iconSize === 'sm' ? 16 :
-                      iconSize === 'lg' ? 24 :
+                    icon_size === 'sm' ? 16 :
+                      icon_size === 'lg' ? 24 :
                         20
                   }
                   className="text-current"
@@ -268,7 +268,7 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
           {/* Label and Subtitle */}
           <div className="flex flex-col flex-1">
             {item.label && (
-              <span className={`${getFontSizeClass(fontSize)}`}>
+              <span className={`${getFontSizeClass(font_size)}`}>
                 {item.label}
               </span>
             )}
@@ -301,11 +301,11 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
                 : 'flex flex-col min-w-[200px]'
             }`}
             style={{ 
-              backgroundColor: colors?.dropdownBackground || '#1a1a1a',
-              paddingTop: item.dropdown?.paddingTop !== undefined ? `${item.dropdown.paddingTop}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
-              paddingRight: item.dropdown?.paddingRight !== undefined ? `${item.dropdown.paddingRight}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
-              paddingBottom: item.dropdown?.paddingBottom !== undefined ? `${item.dropdown.paddingBottom}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
-              paddingLeft: item.dropdown?.paddingLeft !== undefined ? `${item.dropdown.paddingLeft}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
+              backgroundColor: colors?.dropdown_background || '#1a1a1a',
+              paddingTop: item.dropdown?.padding_top !== undefined ? `${item.dropdown.padding_top}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
+              paddingRight: item.dropdown?.padding_right !== undefined ? `${item.dropdown.padding_right}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
+              paddingBottom: item.dropdown?.padding_bottom !== undefined ? `${item.dropdown.padding_bottom}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
+              paddingLeft: item.dropdown?.padding_left !== undefined ? `${item.dropdown.padding_left}px` : (item.dropdown?.layout === 'grid-2x2' ? '8px' : '0px'),
               gap: '0px'
             }}
           >
@@ -313,10 +313,10 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
               <div 
                 key={subItem.id}
                 style={{
-                  marginTop: item.dropdown?.itemMarginTop !== undefined ? `${item.dropdown.itemMarginTop}px` : '0px',
-                  marginRight: item.dropdown?.itemMarginRight !== undefined ? `${item.dropdown.itemMarginRight}px` : '0px',
-                  marginBottom: item.dropdown?.itemMarginBottom !== undefined ? `${item.dropdown.itemMarginBottom}px` : '0px',
-                  marginLeft: item.dropdown?.itemMarginLeft !== undefined ? `${item.dropdown.itemMarginLeft}px` : '0px',
+                  marginTop: item.dropdown?.item_margin_top !== undefined ? `${item.dropdown.item_margin_top}px` : '0px',
+                  marginRight: item.dropdown?.item_margin_right !== undefined ? `${item.dropdown.item_margin_right}px` : '0px',
+                  marginBottom: item.dropdown?.item_margin_bottom !== undefined ? `${item.dropdown.item_margin_bottom}px` : '0px',
+                  marginLeft: item.dropdown?.item_margin_left !== undefined ? `${item.dropdown.item_margin_left}px` : '0px',
                 }}
               >
                 {renderNavigationItem(subItem, subIndex, true)}
@@ -343,21 +343,21 @@ const NavigationContainerWidget: React.FC<NavigationContainerWidgetProps> = ({
       <nav
         className="relative"
         style={{ 
-          backgroundColor: block.style?.backgroundColor,
-          paddingTop: block.style?.paddingTop,
-          paddingRight: block.style?.paddingRight,
-          paddingBottom: block.style?.paddingBottom,
-          paddingLeft: block.style?.paddingLeft,
-          marginTop: block.style?.marginTop,
-          marginRight: block.style?.marginRight,
-          marginBottom: block.style?.marginBottom,
-          marginLeft: block.style?.marginLeft,
+          backgroundColor: block.style?.background_color,
+          paddingTop: block.style?.padding_top,
+          paddingRight: block.style?.padding_right,
+          paddingBottom: block.style?.padding_bottom,
+          paddingLeft: block.style?.padding_left,
+          marginTop: block.style?.margin_top,
+          marginRight: block.style?.margin_right,
+          marginBottom: block.style?.margin_bottom,
+          marginLeft: block.style?.margin_left,
         }}
       >
         {/* Navigation Items */}
         <div
           className={`flex items-center ${getAlignmentClass()}`}
-          style={{ gap: `${block.props.itemGap ?? 24}px` }}
+          style={{ gap: `${block.props.item_gap ?? 24}px` }}
         >
           {items.map((item, index) => renderNavigationItem(item, index))}
         </div>

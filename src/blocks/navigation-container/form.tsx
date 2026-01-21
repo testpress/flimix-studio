@@ -21,7 +21,7 @@ const navigationContainerEditorFields: Field[] = [
     ],
   },
   {
-    key: 'fontSize',
+    key: 'font_size',
     label: 'Font Size',
     type: 'select',
     options: [
@@ -31,7 +31,7 @@ const navigationContainerEditorFields: Field[] = [
     ],
   },
   {
-    key: 'iconSize',
+    key: 'icon_size',
     label: 'Icon Size',
     type: 'select',
     options: [
@@ -41,14 +41,14 @@ const navigationContainerEditorFields: Field[] = [
     ],
   },
   {
-    key: 'itemGap',
+    key: 'item_gap',
     label: 'Item Spacing (px)',
     type: 'range',
     min: 0,
     max: 100,
   },
   {
-    key: 'hideIcons',
+    key: 'hide_icons',
     label: 'Hide Icons',
     type: 'boolean',
   },
@@ -168,12 +168,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
             <div className="flex gap-2">
               <input
                 type="color"
-                value={currentProps.colors?.itemText || '#ffffff'}
-                onChange={(e) => handleColorChange('itemText', e.target.value)}
+                value={currentProps.colors?.item_text || '#ffffff'}
+                onChange={(e) => handleColorChange('item_text', e.target.value)}
                 className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
               />
               <button
-                onClick={() => handleColorChange('itemText', '')}
+                onClick={() => handleColorChange('item_text', '')}
                 className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                 title="Clear color"
               >
@@ -186,12 +186,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
             <div className="flex gap-2">
               <input
                 type="color"
-                value={currentProps.colors?.itemBackground || '#000000'}
-                onChange={(e) => handleColorChange('itemBackground', e.target.value)}
+                value={currentProps.colors?.item_background || '#000000'}
+                onChange={(e) => handleColorChange('item_background', e.target.value)}
                 className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
               />
               <button
-                onClick={() => handleColorChange('itemBackground', '')}
+                onClick={() => handleColorChange('item_background', '')}
                 className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                 title="Clear color"
               >
@@ -242,12 +242,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
                   <div className="flex gap-2">
                     <input
                       type="color"
-                      value={currentProps.colors?.hoverText || '#ffffff'}
-                      onChange={(e) => handleColorChange('hoverText', e.target.value)}
+                      value={currentProps.colors?.hover_text || '#ffffff'}
+                      onChange={(e) => handleColorChange('hover_text', e.target.value)}
                       className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
                     />
                     <button
-                      onClick={() => handleColorChange('hoverText', '')}
+                      onClick={() => handleColorChange('hover_text', '')}
                       className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                       title="Clear color"
                     >
@@ -260,12 +260,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
                   <div className="flex gap-2">
                     <input
                       type="color"
-                      value={currentProps.colors?.hoverBackground || '#000000'}
-                      onChange={(e) => handleColorChange('hoverBackground', e.target.value)}
+                      value={currentProps.colors?.hover_background || '#000000'}
+                      onChange={(e) => handleColorChange('hover_background', e.target.value)}
                       className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
                     />
                     <button
-                      onClick={() => handleColorChange('hoverBackground', '')}
+                      onClick={() => handleColorChange('hover_background', '')}
                       className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                       title="Clear color"
                     >
@@ -283,12 +283,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
                 <div className="flex gap-2">
                   <input
                     type="color"
-                    value={currentProps.colors?.dropdownText || '#ffffff'}
-                    onChange={(e) => handleColorChange('dropdownText', e.target.value)}
+                    value={currentProps.colors?.dropdown_text || '#ffffff'}
+                    onChange={(e) => handleColorChange('dropdown_text', e.target.value)}
                     className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
                   />
                   <button
-                    onClick={() => handleColorChange('dropdownText', '')}
+                    onClick={() => handleColorChange('dropdown_text', '')}
                     className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                     title="Clear color"
                   >
@@ -301,12 +301,12 @@ const NavigationContainerForm: React.FC<BlockFormProps> = ({ block, updateProps 
                 <div className="flex gap-2">
                   <input
                     type="color"
-                    value={currentProps.colors?.dropdownBackground || '#1a1a1a'}
-                    onChange={(e) => handleColorChange('dropdownBackground', e.target.value)}
+                    value={currentProps.colors?.dropdown_background || '#1a1a1a'}
+                    onChange={(e) => handleColorChange('dropdown_background', e.target.value)}
                     className="flex-1 h-10 border border-gray-300 rounded text-sm cursor-pointer"
                   />
                   <button
-                    onClick={() => handleColorChange('dropdownBackground', '')}
+                    onClick={() => handleColorChange('dropdown_background', '')}
                     className="px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded"
                     title="Clear color"
                   >

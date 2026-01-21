@@ -267,19 +267,19 @@ export function createBlock(type: BlockType['type']): BlockType {
             },
           ],
           alignment: 'left',
-          fontSize: 'md',
-          iconSize: 'md',
+          font_size: 'md',
+          icon_size: 'md',
           hover: {
             effect: 'color',
             disabled: false,
           },
-          hideIcons: false,
-          itemGap: 24,
+          hide_icons: false,
+          item_gap: 24,
         },
         style: {
-          padding: 'md',
-          backgroundColor: 'transparent',
-          textColor: '#ffffff',
+          ...defaultSpacing,
+          background_color: 'transparent',
+          text_color: '#ffffff',
         },
       };
 

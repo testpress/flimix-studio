@@ -17,19 +17,19 @@ export const DROPDOWN_ITEM_LIMIT = 10;
 // Grouped configuration interfaces
 export interface DropdownConfig {
   layout?: DropdownLayout;
-  paddingTop?: number;
-  paddingRight?: number;
-  paddingBottom?: number;
-  paddingLeft?: number;
-  itemMarginTop?: number;
-  itemMarginRight?: number;
-  itemMarginBottom?: number;
-  itemMarginLeft?: number;
+  padding_top?: number;
+  padding_right?: number;
+  padding_bottom?: number;
+  padding_left?: number;
+  item_margin_top?: number;
+  item_margin_right?: number;
+  item_margin_bottom?: number;
+  item_margin_left?: number;
 }
 
 export interface ItemAppearance {
   icon?: string;
-  iconGap?: number;
+  icon_gap?: number;
   badge?: string;
   image?: {
     src?: string;
@@ -40,12 +40,12 @@ export interface ItemAppearance {
 }
 
 export interface NavigationColors {
-  itemText?: string;
-  itemBackground?: string;
-  hoverText?: string;
-  hoverBackground?: string;
-  dropdownText?: string;
-  dropdownBackground?: string;
+  item_text?: string;
+  item_background?: string;
+  hover_text?: string;
+  hover_background?: string;
+  dropdown_text?: string;
+  dropdown_background?: string;
 }
 
 export interface HoverConfig {
@@ -71,10 +71,10 @@ export interface NavigationItem {
 export interface NavigationContainerProps {
   items: NavigationItem[];
   alignment?: NavigationAlignment;
-  fontSize?: Size;
-  iconSize?: Size;
-  itemGap?: number;
-  hideIcons?: boolean;
+  font_size?: Size;
+  icon_size?: Size;
+  item_gap?: number;
+  hide_icons?: boolean;
   colors?: NavigationColors;
   hover?: HoverConfig;
 }

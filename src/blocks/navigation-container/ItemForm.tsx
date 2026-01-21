@@ -259,14 +259,14 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
             <div className="mt-3">
               <div className="flex justify-between mb-1">
                 <label className="text-sm text-gray-700">Icon Gap (px)</label>
-                <span className="text-xs text-gray-500">{item.appearance?.iconGap || 0}px</span>
+                <span className="text-xs text-gray-500">{item.appearance?.icon_gap || 0}px</span>
               </div>
               <input
                 type="range"
                 min="0"
                 max="50"
-                value={item.appearance?.iconGap || 0}
-                onChange={(e) => handleAppearanceChange('iconGap', parseInt(e.target.value) || 0)}
+                value={item.appearance?.icon_gap || 0}
+                onChange={(e) => handleAppearanceChange('icon_gap', parseInt(e.target.value) || 0)}
                 className="w-full"
               />
             </div>
@@ -375,8 +375,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={item.dropdown?.paddingTop || 0}
-                  onChange={(e) => handleDropdownChange('paddingTop', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.padding_top || 0}
+                  onChange={(e) => handleDropdownChange('padding_top', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="T"
                   title="Top Padding"
@@ -385,8 +385,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={item.dropdown?.paddingRight || 0}
-                  onChange={(e) => handleDropdownChange('paddingRight', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.padding_right || 0}
+                  onChange={(e) => handleDropdownChange('padding_right', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="R"
                   title="Right Padding"
@@ -395,8 +395,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={item.dropdown?.paddingBottom || 0}
-                  onChange={(e) => handleDropdownChange('paddingBottom', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.padding_bottom || 0}
+                  onChange={(e) => handleDropdownChange('padding_bottom', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="B"
                   title="Bottom Padding"
@@ -405,8 +405,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={item.dropdown?.paddingLeft || 0}
-                  onChange={(e) => handleDropdownChange('paddingLeft', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.padding_left || 0}
+                  onChange={(e) => handleDropdownChange('padding_left', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="L"
                   title="Left Padding"
@@ -422,8 +422,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="50"
-                  value={item.dropdown?.itemMarginTop || 0}
-                  onChange={(e) => handleDropdownChange('itemMarginTop', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.item_margin_top || 0}
+                  onChange={(e) => handleDropdownChange('item_margin_top', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="T"
                   title="Top Margin"
@@ -432,8 +432,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="50"
-                  value={item.dropdown?.itemMarginRight || 0}
-                  onChange={(e) => handleDropdownChange('itemMarginRight', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.item_margin_right || 0}
+                  onChange={(e) => handleDropdownChange('item_margin_right', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="R"
                   title="Right Margin"
@@ -442,8 +442,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="50"
-                  value={item.dropdown?.itemMarginBottom || 0}
-                  onChange={(e) => handleDropdownChange('itemMarginBottom', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.item_margin_bottom || 0}
+                  onChange={(e) => handleDropdownChange('item_margin_bottom', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="B"
                   title="Bottom Margin"
@@ -452,8 +452,8 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                   type="number"
                   min="0"
                   max="50"
-                  value={item.dropdown?.itemMarginLeft || 0}
-                  onChange={(e) => handleDropdownChange('itemMarginLeft', parseInt(e.target.value) || 0)}
+                  value={item.dropdown?.item_margin_left || 0}
+                  onChange={(e) => handleDropdownChange('item_margin_left', parseInt(e.target.value) || 0)}
                   className="p-1 px-2 border border-blue-300 rounded text-sm text-center"
                   placeholder="L"
                   title="Left Margin"

@@ -11,315 +11,147 @@
     {
       "type": "rowLayout",
       "props": {
-        "preset": "3-col-wide-center",
-        "columnGap": "md"
+        "preset": "2-col-heavy-right",
+        "column_gap": "md"
       },
-      "id": "fe5be124-f82a-474d-b43b-999c0f22c457",
+      "id": "5cecd95b-12be-4f5a-885f-f5421a594929",
       "style": {
-        "paddingTop": "24px",
-        "paddingRight": "24px",
-        "paddingBottom": "24px",
-        "paddingLeft": "24px"
+        "padding_top": "10px",
+        "padding_right": "10px",
+        "padding_bottom": "10px",
+        "padding_left": "10px"
       },
       "children": [
         {
           "type": "section",
-          "id": "534bd1fc-9bad-4f53-924e-20fbc951b25e",
+          "id": "491b80e7-6661-47a5-a294-7b674f6a04dc",
           "props": {},
           "style": {
-            "backgroundColor": "#000000",
-            "paddingTop": "24px",
-            "paddingRight": "24px",
-            "paddingBottom": "24px",
-            "paddingLeft": "24px"
+            "padding_top": "10px",
+            "padding_right": "10px",
+            "padding_bottom": "10px",
+            "padding_left": "10px",
+            "background_color": "#000000"
           },
           "children": [
             {
               "type": "text",
-              "id": "147e44d3-4831-47a3-954a-41a4d9539235",
+              "id": "a4704eea-d737-49d2-bd75-7c48ffe2d3c6",
               "props": {
                 "content": "Flimix",
-                "fontFamily": "mono",
-                "fontSize": "3xl",
-                "fontWeight": "bold",
-                "fontStyle": "italic",
-                "textDecoration": "line-through",
-                "lineHeight": "loose",
-                "letterSpacing": "widest"
+                "font_family": "mono",
+                "font_size": "5xl",
+                "font_weight": "normal",
+                "font_style": "italic",
+                "text_decoration": "line-through",
+                "line_height": "normal",
+                "letter_spacing": "normal"
               },
               "style": {
-                "textAlign": "right",
-                "paddingTop": "0px",
-                "paddingRight": "0px",
-                "paddingBottom": "0px",
-                "paddingLeft": "0px",
-                "marginTop": "0px",
-                "marginRight": "0px",
-                "marginBottom": "0px",
-                "marginLeft": "0px"
+                "text_align": "right"
               }
             }
           ]
         },
         {
           "type": "section",
-          "id": "88187217-ee43-4c40-8171-95f6cac97072",
+          "id": "a5b1431b-3d3f-4c68-bacc-2f145f02f889",
           "props": {},
           "style": {
-            "backgroundColor": "#000000",
-            "paddingTop": "16px",
-            "paddingRight": "16px",
-            "paddingBottom": "16px",
-            "paddingLeft": "16px",
-            "marginTop": "0px",
-            "marginRight": "0px",
-            "marginBottom": "0px",
-            "marginLeft": "0px"
+            "padding_top": "010px",
+            "padding_right": "10px",
+            "padding_bottom": "px",
+            "padding_left": "10px",
+            "background_color": "#000000"
           },
           "children": [
             {
               "type": "navigation-container",
-              "id": "8644f480-2326-4444-8eb6-3ed2ec941ee6",
+              "id": "39ed4c4a-6e9d-4626-9b73-8f414f113714",
               "props": {
                 "items": [
                   {
-                    "id": "57461643-ee97-4d55-9256-50833664d2ab",
+                    "id": "3bfaafb5-0bc9-4d7b-904a-7d195ad09394",
                     "type": "internal",
                     "label": "Home",
-                    "link": "/home"
+                    "link": "/"
                   },
                   {
-                    "id": "8bfa1b1e-5a54-4454-bbec-6032cfee92e3",
+                    "id": "b208fbf6-9c48-4ffb-80eb-5065102b9402",
                     "type": "internal",
                     "label": "Movies",
-                    "link": "/Movies"
+                    "link": "/movie"
                   },
                   {
-                    "id": "f48edb01-4826-4662-8024-1f90d6898104",
+                    "id": "76ec9c4e-9db8-4da6-a50c-29a9ca63469e",
                     "type": "internal",
                     "label": "Series",
-                    "link": "/Series"
+                    "link": "/series"
                   },
                   {
-                    "id": "39b4a69c-0850-4ce8-9c43-6b26594b73a5",
+                    "id": "3a9fbd24-9b57-4f4e-85d5-27773e0133ed",
                     "type": "dropdown",
                     "label": "Live",
                     "link": "/",
                     "items": [
                       {
-                        "id": "f7e25cad-28fb-4cf1-b193-dcd497097923",
+                        "id": "69c653bd-28f7-4aec-8eea-17e669c56ac8",
                         "type": "internal",
-                        "label": "Live Streams",
+                        "label": "Livestream",
                         "link": "/",
-                        "subtitle": "Real-time broadcasts of live events and sessions",
                         "appearance": {
-                          "icon": "Radio",
-                          "iconGap": 22
-                        }
+                          "icon": "Radio"
+                        },
+                        "subtitle": "Real-time brodcast of live events and sessions"
                       },
                       {
-                        "id": "db6d85e8-4a6d-4f94-b22a-a24301d6e0d5",
+                        "id": "262058ab-cb8d-4b00-98f9-6be03f93cbb3",
                         "type": "internal",
                         "label": "Zoom Classes",
                         "link": "/",
-                        "subtitle": "Scheduled interactive session via Zoom",
                         "appearance": {
-                          "icon": "Video",
-                          "iconGap": 23
-                        }
-                      }
-                    ],
-                    "dropdown": {
-                      "paddingTop": 10,
-                      "paddingRight": 10,
-                      "paddingBottom": 10,
-                      "paddingLeft": 10,
-                      "itemMarginBottom": 10
-                    }
-                  },
-                  {
-                    "id": "93cbc6fc-e9f5-4f94-9880-676f3a522793",
-                    "type": "internal",
-                    "label": "Podcasts",
-                    "link": "/podcasts"
-                  },
-                  {
-                    "id": "c1ab827e-05ca-4c5a-8b49-c0ed6ef056b8",
-                    "type": "internal",
-                    "label": "Albums",
-                    "link": "/albums"
-                  },
-                  {
-                    "id": "d2175639-b970-4268-8f48-86ea222c79d8",
-                    "type": "internal",
-                    "label": "Books",
-                    "link": "/books"
-                  }
-                ],
-                "alignment": "left",
-                "fontSize": "md",
-                "iconSize": "md",
-                "hover": {
-                  "effect": "color",
-                  "disabled": false
-                },
-                "hideIcons": false,
-                "itemGap": 2,
-                "colors": {
-                  "itemText": "#ffffff",
-                  "hoverText": "#a0a0a0"
-                }
-              },
-              "style": {
-                "backgroundColor": "transparent",
-                "textColor": "#ffffff",
-                "paddingTop": "16px",
-                "paddingRight": "16px",
-                "paddingBottom": "16px",
-                "paddingLeft": "16px"
-              }
-            }
-          ]
-        },
-        {
-          "type": "section",
-          "id": "d410d84b-b0fc-402f-9f61-718ff4f9feae",
-          "props": {},
-          "style": {
-            "backgroundColor": "#000000",
-            "paddingTop": "0px",
-            "paddingRight": "24px",
-            "paddingBottom": "0px",
-            "paddingLeft": "24px"
-          },
-          "children": [
-            {
-              "type": "navigation-container",
-              "id": "50f6caf5-beb0-4f2c-99f2-465931de089f",
-              "props": {
-                "items": [
-                  {
-                    "id": "adb4e5f9-4e20-43ae-9c71-75e5872d8129",
-                    "type": "internal",
-                    "label": "",
-                    "link": "/searc",
-                    "appearance": {
-                      "icon": "Search"
-                    }
-                  },
-                  {
-                    "id": "35ea39b3-92ba-47a6-9985-04d55d673d26",
-                    "type": "internal",
-                    "label": "",
-                    "link": "/notification",
-                    "appearance": {
-                      "icon": "Bell"
-                    }
-                  },
-                  {
-                    "id": "dda3a9d8-d9e5-46c9-95ac-97a5b2232b85",
-                    "type": "dropdown",
-                    "label": "Harish V",
-                    "link": "/",
-                    "appearance": {
-                      "image": {
-                        "src": "https://m.media-amazon.com/images/G/02/CerberusPrimeVideo-FN38FSBD/adult-2.png"
-                      }
-                    },
-                    "items": [
-                      {
-                        "id": "f04d9d1d-600a-4200-b894-685d42fd9ecf",
-                        "type": "internal",
-                        "label": "Harish V",
-                        "link": "/",
-                        "subtitle": "9952807662",
-                        "appearance": {
-                          "image": {
-                            "src": "https://m.media-amazon.com/images/G/02/CerberusPrimeVideo-FN38FSBD/adult-2.png"
-                          }
-                        }
-                      },
-                      {
-                        "id": "642af776-adb4-4576-b4aa-8feffcbb1a59",
-                        "type": "internal",
-                        "label": "Plan and Billing",
-                        "link": "/",
-                        "appearance": {
-                          "icon": "Box"
-                        }
-                      },
-                      {
-                        "id": "1c59826b-c344-4240-b3cc-505b58e26651",
-                        "type": "internal",
-                        "label": "Subscription",
-                        "link": "/",
-                        "appearance": {
-                          "icon": "DollarSign"
-                        }
-                      },
-                      {
-                        "id": "e681032f-8b5c-48d7-8961-00f3fe19cd70",
-                        "type": "internal",
-                        "label": "My account",
-                        "link": "/",
-                        "appearance": {
-                          "icon": "Users"
-                        }
-                      },
-                      {
-                        "id": "6d302e5c-88d3-40cb-b574-bcf6d5808149",
-                        "type": "internal",
-                        "label": "Watch History",
-                        "link": "/"
-                      },
-                      {
-                        "id": "f71c401b-0397-4535-8cec-5512f944b120",
-                        "type": "internal",
-                        "label": "Downloads",
-                        "link": "/"
-                      },
-                      {
-                        "id": "d4e0ee0d-65a2-4f1d-84dd-80919fb57e04",
-                        "type": "internal",
-                        "label": "Sign out",
-                        "link": "/"
-                      },
-                      {
-                        "id": "d535dc89-1c50-4da0-8f48-9feb9ab346a2",
-                        "type": "internal",
-                        "label": "Help & Support",
-                        "link": "/",
-                        "appearance": {
-                          "icon": "CircleQuestionMark"
-                        }
+                          "icon": "Video"
+                        },
+                        "subtitle": "Schedule interactive session via zoom"
                       }
                     ]
+                  },
+                  {
+                    "id": "c15f42ee-5da2-4582-b55d-5fb0d9c2968d",
+                    "type": "internal",
+                    "label": "Podcasts",
+                    "link": "/"
+                  },
+                  {
+                    "id": "9b5564a8-bc4a-4828-b566-12f72dddde0e",
+                    "type": "internal",
+                    "label": "Albums",
+                    "link": "/"
+                  },
+                  {
+                    "id": "754197c8-eb4a-4c9d-a2a9-06a36c1460f7",
+                    "type": "internal",
+                    "label": "Books",
+                    "link": "/"
                   }
                 ],
                 "alignment": "left",
-                "fontSize": "md",
-                "iconSize": "md",
+                "font_size": "lg",
+                "icon_size": "md",
                 "hover": {
                   "effect": "color",
                   "disabled": false
                 },
-                "hideIcons": false,
-                "itemGap": 0,
-                "colors": {
-                  "hoverText": "#949494"
-                }
+                "hide_icons": false,
+                "item_gap": 5
               },
               "style": {
-                "backgroundColor": "transparent",
-                "textColor": "#ffffff",
-                "paddingTop": "16px",
-                "paddingRight": "16px",
-                "paddingBottom": "16px",
-                "paddingLeft": "16px",
-                "marginTop": "13px",
-                "marginRight": "7px",
-                "marginBottom": "5px",
-                "marginLeft": "px"
+                "padding_top": "16px",
+                "padding_right": "16px",
+                "padding_bottom": "16px",
+                "padding_left": "16px",
+                "background_color": "transparent",
+                "text_color": "#ffffff"
               }
             }
           ]
