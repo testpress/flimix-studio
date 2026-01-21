@@ -247,6 +247,42 @@ export function createBlock(type: BlockType['type']): BlockType {
         style: { ...defaultSpacing },
       };
 
+    case 'navigation-container':
+      return {
+        type: 'navigation-container',
+        id,
+        props: {
+          items: [
+            {
+              id: generateUniqueId(),
+              type: 'internal',
+              label: 'Home',
+              link: '/',
+            },
+            {
+              id: generateUniqueId(),
+              type: 'internal',
+              label: 'About',
+              link: '/about',
+            },
+          ],
+          alignment: 'left',
+          font_size: 'md',
+          icon_size: 'md',
+          hover: {
+            effect: 'color',
+            disabled: false,
+          },
+          hide_icons: false,
+          item_gap: 24,
+        },
+        style: {
+          ...defaultSpacing,
+          background_color: 'transparent',
+          text_color: '#ffffff',
+        },
+      };
+
     default: {
       // This will cause a compile-time error if a case is missed.
       const exhaustiveCheck: never = type;
