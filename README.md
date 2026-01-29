@@ -280,7 +280,18 @@ Renders the Flimix Studio interface into a DOM element.
     theme: 'dark', // or 'light'
     blocks: [] // Array of block objects
   },
-  onSavePage: async function(id, schema) {
+  // Optional: Restrict available blocks (Whitelist)
+  // If provided, only these blocks will be available.
+  allowedBlocks: ['hero', 'text', 'image'],
+
+  // Optional: Restrict specific blocks (Blacklist)
+  // Ignored if allowedBlocks is provided.
+  restrictedBlocks: ['navigation-container', 'contentLibrary'],
+
+  // Optional: Maximum number of blocks allowed on the page
+  maxBlockCount: 15,
+
+  onSavePage: async function(schema) {
     // Handle page saving - called when user saves a page
     // Return a Promise
   }
