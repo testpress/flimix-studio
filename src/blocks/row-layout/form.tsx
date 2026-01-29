@@ -55,6 +55,64 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
   const canDecrease = columnCount > MinColumns;
   const canIncrease = columnCount < MaxColumns;
 
+  const getCurrentWidths = (): number[] => {
+    if (props.custom_widths && props.custom_widths.length === columnCount) {
+      return props.custom_widths;
+    }
+    
+    // Get widths from preset
+    const preset = ROW_LAYOUT_PRESETS.find(p => p.id === props.preset);
+    if (preset && preset.cols === columnCount) {
+      return preset.widths;
+    }
+    
+    // Fallback: equal distribution
+    const equalWidth = Math.floor(100 / columnCount);
+    const widths = Array(columnCount).fill(equalWidth);
+    widths[0] += 100 - (equalWidth * columnCount); // Add remainder to first
+    return widths;
+  };
+
+  const currentWidths = getCurrentWidths();
+  const isCustomized = !!props.custom_widths;
+
+  const handleWidthChange = (index: number, value: number) => {
+    const newWidths = [...currentWidths];
+    const oldValue = newWidths[index];
+    const delta = value - oldValue;
+    
+    newWidths[index] = value;
+    
+    // Distribute the delta across other columns proportionally
+    const otherIndices = newWidths
+      .map((_, i) => i)
+      .filter(i => i !== index);
+    
+    if (otherIndices.length > 0) {
+      const totalOther = otherIndices.reduce((sum, i) => sum + newWidths[i], 0);
+      
+      if (totalOther > 0) {
+        otherIndices.forEach(i => {
+          const proportion = newWidths[i] / totalOther;
+          newWidths[i] = Math.max(5, newWidths[i] - (delta * proportion));
+        });
+      }
+      
+      // Ensure total is exactly 100
+      const total = newWidths.reduce((sum, w) => sum + w, 0);
+      newWidths[0] += 100 - total;
+    }
+    
+    // Round all values
+    const roundedWidths = newWidths.map(w => Math.round(w));
+    
+    updateProps({ custom_widths: roundedWidths } as Partial<BlockProps>);
+  };
+
+  const handleResetToPreset = () => {
+    updateProps({ custom_widths: undefined } as Partial<BlockProps>);
+  };
+
   const handlePresetChange = (presetId: RowLayoutPreset, requiredCols: number) => {
     if (!selectedBlockId) return;
 
@@ -64,7 +122,12 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
     const targetBlock = blockPosition.children[blockPosition.index] as RowLayoutBlock;
 
-    targetBlock.props = { ...targetBlock.props, preset: presetId };
+    // Update preset and clear custom widths
+    targetBlock.props = { 
+      ...targetBlock.props, 
+      preset: presetId,
+      custom_widths: undefined  // Reset custom widths when changing preset
+    };
 
     const currentLen = targetBlock.children.length;
     const diff = requiredCols - currentLen;
@@ -81,6 +144,10 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
 
     updatePageWithHistory({ ...pageSchema, blocks: newBlocks });
   };
+
+  const totalWidth = currentWidths.reduce((sum, w) => sum + w, 0);
+  const isValidTotal = Math.abs(totalWidth - 100) < 1; // Allow 1% tolerance for rounding
+
 
   return (
     <div className="space-y-6">
@@ -137,6 +204,61 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
             ))}
           </div>
         </div>
+
+        {/* Custom Column Widths Section */}
+        <div className="border-t border-gray-200 pt-4">
+          <div className="flex justify-between items-center mb-3">
+            <label className="block text-sm font-medium text-gray-700">
+              Column Widths
+              {isCustomized && (
+                <span className="ml-2 text-xs text-blue-600 font-normal">(Customized)</span>
+              )}
+            </label>
+            {isCustomized && (
+              <button
+                onClick={handleResetToPreset}
+                className="text-xs text-gray-600 hover:text-gray-800 underline"
+              >
+                Reset to Preset
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            {currentWidths.map((width, index) => (
+              <div key={index} className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-gray-600">
+                    Column {index + 1}
+                  </span>
+                  <span className="text-xs font-mono font-bold text-gray-900">
+                    {Math.round(width)}%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="5"
+                  max="95"
+                  step="1"
+                  value={Math.round(width)}
+                  onChange={(e) => handleWidthChange(index, parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+                <div className="flex justify-between text-[10px] text-gray-400">
+                  <span>5%</span>
+                  <span>95%</span>
+                </div>
+              </div>
+            ))}
+
+            <div className={`text-xs font-medium ${
+              isValidTotal ? 'text-green-600' : 'text-red-600'
+            }`}>
+              Total: {Math.round(totalWidth)}% {isValidTotal ? '✓' : '⚠ Must equal 100%'}
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-4 pt-2 border-t border-gray-100">
           <GutterControl
             label="Column Gutter"
