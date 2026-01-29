@@ -162,9 +162,6 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    if (!canInsertBlock()) {
-      return;
-    }
 
     let newBlock;
     try {
@@ -181,6 +178,9 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     const result = findBlockPositionById(pageSchema.blocks, selectedBlockId);
     if (!result) {
       console.error(`Target block with ID ${selectedBlockId} not found`);
+      return;
+    }
+    if (!result.parent && !canInsertBlock()) {
       return;
     }
     const insertIndex = position === InsertPosition.AFTER ? result.index + 1 : result.index;
@@ -335,9 +335,6 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    if (!canInsertBlock()) {
-      return;
-    }
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -386,9 +383,6 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
-    if (!canInsertBlock()) {
-      return;
-    }
 
     let newBlock;
     try {

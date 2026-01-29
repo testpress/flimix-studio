@@ -35,7 +35,7 @@ const LibraryPanel: React.FC = () => {
   const { selectedBlockId, selectedBlock } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
-  const { getFilteredBlocks, canAddMoreBlocks, config } = useBuilderConfig();
+  const { getFilteredBlocks, config } = useBuilderConfig();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Helper function to check if a block is a child of a Section or Tab
@@ -96,7 +96,6 @@ const LibraryPanel: React.FC = () => {
 
   const isContentLibraryPresent = pageSchema.blocks.some(block => block.type === ('contentLibrary' as BlockType['type']));
   const hasBlocks = pageSchema.blocks.length > 0;
-  const isLimitReached = !canAddMoreBlocks(pageSchema.blocks.length);
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (!selectedBlock) {
@@ -177,7 +176,14 @@ const LibraryPanel: React.FC = () => {
               <div className="mt-1">
                 Block limit: {pageSchema.blocks.length}/{config.maxBlockCount}
                 {pageSchema.blocks.length >= config.maxBlockCount && (
-                  <span className="text-red-600 ml-1">(Maximum reached)</span>
+                  <>
+                    <span className="text-red-600 ml-1">(Maximum reached)</span>
+                     <div className="mt-2 text-gray-500 font-medium">
+                      {config.maxBlockCount === 1 
+                        ? "Note: To customize the header, please select the Row Layout block and add elements inside it." 
+                        : "Note: Maximum root blocks reached. You can still add elements inside existing sections."}
+                    </div>
+                  </>
                 )}
               </div>
             )}
@@ -210,9 +216,6 @@ const LibraryPanel: React.FC = () => {
                    } else if (hasBlocks && (template.type as string) === 'contentLibrary') {
                       isDisabled = true;
                       tooltipMessage = "This block requires an empty page. Please remove other blocks first.";
-                   } else if (isLimitReached) {
-                      isDisabled = true;
-                      tooltipMessage = "Maximum block limit reached. Cannot add more blocks.";
                    }
 
                    return (
@@ -269,9 +272,6 @@ const LibraryPanel: React.FC = () => {
                 if (isContentLibraryPresent) {
                    isDisabled = true;
                    tooltipMessage = "Content Library takes up the entire page. Remove it to add other blocks.";
-                } else if (isLimitReached) {
-                   isDisabled = true;
-                   tooltipMessage = "Maximum block limit reached. Cannot add more blocks.";
                 }
 
                 return (
