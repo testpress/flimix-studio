@@ -3,6 +3,7 @@ import type { BlockType } from '@type/block';
 import type { VisibilityContext, VisibilityProps, Platform } from '@type/visibility';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
+import { useBuilderConfig } from '@context/BuilderConfigContext';
 import { Plus, Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpaceBetween, Minus, MessageSquare, Sparkles, HelpCircle, Image, Video, Columns3Cog, CreditCard, RectangleEllipsis, Search } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useHistory } from '@context/HistoryContext';
@@ -293,6 +294,7 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
   const { selectedBlockId } = useSelection();
   const { insertBlockAfter, insertBlockBefore, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
+  const { getFilteredBlocks } = useBuilderConfig();
 
   // State
   const [isOpen, setIsOpen] = useState(false);
@@ -350,7 +352,9 @@ const BlockInsertDropdown: React.FC<BlockInsertDropdownProps> = ({
   const allTemplates = getAllBlockLibraryItems().filter(
     item => item.type !== 'contentLibrary'
   );
-  const contextFilteredTemplates = filterTemplatesByContext(allTemplates, selectedBlockId, pageSchema.blocks);
+  // Filter by allowed blocks
+  const allowedTemplates = getFilteredBlocks(allTemplates);
+  const contextFilteredTemplates = filterTemplatesByContext(allowedTemplates, selectedBlockId, pageSchema.blocks);
   const searchFilteredTemplates = filterTemplatesBySearch(contextFilteredTemplates, searchQuery);
 
   // Render

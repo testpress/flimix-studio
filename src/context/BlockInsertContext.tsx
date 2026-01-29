@@ -4,6 +4,7 @@ import { createBlock, findBlockPositionById, findBlockAndParent, updateBlockInTr
 import { getAvailableBlockTypes } from '@type/library';
 import { useHistory } from './HistoryContext';
 import { useSelection } from './SelectionContext';
+import { useBuilderConfig } from './BuilderConfigContext';
 import type { TabsBlock } from '@blocks/tabs/schema';
 
 // Const for insertion position relative to selected block
@@ -66,12 +67,29 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     setSelectedItemBlockId,
     activeTabId
   } = useSelection();
+  const { isBlockAllowed, canAddMoreBlocks } = useBuilderConfig();
 
   // Helper function to validate block types
   const isBlockTypeValid = (blockType: string): boolean => {
     const availableTypes = getAvailableBlockTypes();
     if (!availableTypes.includes(blockType)) {
       console.error(`Invalid block type: ${blockType}. Available types: ${availableTypes.join(', ')}`);
+      return false;
+    }
+    
+    // Check allowed/restricted blocks
+    if (!isBlockAllowed(blockType as BlockType['type'])) {
+      console.warn(`Block type '${blockType}' is not allowed in this builder configuration`);
+      return false;
+    }
+    
+    return true;
+  };
+
+  // Helper function to check if more blocks can be added
+  const canInsertBlock = (): boolean => {
+    if (!canAddMoreBlocks(pageSchema.blocks.length)) {
+      console.warn('Cannot add more blocks: maximum block count reached');
       return false;
     }
     return true;
@@ -141,6 +159,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     if (!selectedBlockId) return;
 
     if (!isBlockTypeValid(blockType)) {
+      return;
+    }
+
+    if (!canInsertBlock()) {
       return;
     }
 
@@ -237,6 +259,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
       return;
     }
 
+    if (!canInsertBlock()) {
+      return;
+    }
+
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -308,6 +334,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     if (!isBlockTypeValid(blockType)) {
       return;
     }
+
+    if (!canInsertBlock()) {
+      return;
+    }
     let newBlock;
     try {
       newBlock = createBlock(blockType);
@@ -353,6 +383,10 @@ export const BlockInsertProvider: React.FC<BlockInsertProviderProps> = ({ childr
     }
   ) => {
     if (!isBlockTypeValid(blockType) || blockType === 'rowLayout') {
+      return;
+    }
+
+    if (!canInsertBlock()) {
       return;
     }
 

@@ -3,6 +3,7 @@ import { Type, Layout, Square, Grid2x2, GalleryHorizontalEnd, AlignVerticalSpace
 import type { LucideIcon } from 'lucide-react';
 import { useSelection } from '@context/SelectionContext';
 import { useBlockInsert } from '@context/BlockInsertContext';
+import { useBuilderConfig } from '@context/BuilderConfigContext';
 import { getAllBlockLibraryItems } from '@type/library';
 import type { BlockType } from '@type/block';
 import { useHistory } from '@context/HistoryContext';
@@ -34,6 +35,7 @@ const LibraryPanel: React.FC = () => {
   const { selectedBlockId, selectedBlock } = useSelection();
   const { insertBlockAfter, insertBlockAtEnd, insertBlockInsideSection, insertBlockIntoTabs } = useBlockInsert();
   const { pageSchema } = useHistory();
+  const { getFilteredBlocks, canAddMoreBlocks, config } = useBuilderConfig();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Helper function to check if a block is a child of a Section or Tab
@@ -78,19 +80,23 @@ const LibraryPanel: React.FC = () => {
   // Get all block templates using the helper function
   const allTemplates = getAllBlockLibraryItems();
   
-  // Filter templates based on search query
+  // Filter by allowed blocks first
+  const allowedTemplates = getFilteredBlocks(allTemplates);
+  
+  // Then filter templates based on search query
   const filteredTemplates = searchQuery 
-    ? allTemplates.filter(template => 
+    ? allowedTemplates.filter(template => 
         template.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
         template.description.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : allTemplates;
+    : allowedTemplates;
 
   const contentLibraryTemplate = filteredTemplates.find(t => t.type === 'contentLibrary');
   const regularTemplates = filteredTemplates.filter(t => t.type !== 'contentLibrary');
 
   const isContentLibraryPresent = pageSchema.blocks.some(block => block.type === ('contentLibrary' as BlockType['type']));
   const hasBlocks = pageSchema.blocks.length > 0;
+  const isLimitReached = !canAddMoreBlocks(pageSchema.blocks.length);
 
   const handleBlockInsert = (blockType: BlockType['type']) => {
     if (!selectedBlock) {
@@ -161,6 +167,22 @@ const LibraryPanel: React.FC = () => {
             />
           </div>
         </div>
+        {/* Restriction Info */}
+        {(config.allowedBlocks || config.maxBlockCount) && (
+          <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded">
+            {config.allowedBlocks && (
+              <div>Showing {allowedTemplates.length} allowed block types</div>
+            )}
+            {config.maxBlockCount && (
+              <div className="mt-1">
+                Block limit: {pageSchema.blocks.length}/{config.maxBlockCount}
+                {pageSchema.blocks.length >= config.maxBlockCount && (
+                  <span className="text-red-600 ml-1">(Maximum reached)</span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {/* Block Templates */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
@@ -188,6 +210,9 @@ const LibraryPanel: React.FC = () => {
                    } else if (hasBlocks && (template.type as string) === 'contentLibrary') {
                       isDisabled = true;
                       tooltipMessage = "This block requires an empty page. Please remove other blocks first.";
+                   } else if (isLimitReached) {
+                      isDisabled = true;
+                      tooltipMessage = "Maximum block limit reached. Cannot add more blocks.";
                    }
 
                    return (
@@ -244,6 +269,9 @@ const LibraryPanel: React.FC = () => {
                 if (isContentLibraryPresent) {
                    isDisabled = true;
                    tooltipMessage = "Content Library takes up the entire page. Remove it to add other blocks.";
+                } else if (isLimitReached) {
+                   isDisabled = true;
+                   tooltipMessage = "Maximum block limit reached. Cannot add more blocks.";
                 }
 
                 return (
