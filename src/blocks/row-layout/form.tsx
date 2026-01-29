@@ -80,32 +80,35 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
     const newWidths = [...currentWidths];
     const oldValue = newWidths[index];
     const delta = value - oldValue;
-    
+
     newWidths[index] = value;
-    
+
     // Distribute the delta across other columns proportionally
     const otherIndices = newWidths
       .map((_, i) => i)
-      .filter(i => i !== index);
-    
+      .filter((i) => i !== index);
+
     if (otherIndices.length > 0) {
-      const totalOther = otherIndices.reduce((sum, i) => sum + newWidths[i], 0);
-      
+      const totalOther = otherIndices.reduce((sum, i) => sum + currentWidths[i], 0);
+
       if (totalOther > 0) {
-        otherIndices.forEach(i => {
-          const proportion = newWidths[i] / totalOther;
-          newWidths[i] = Math.max(5, newWidths[i] - (delta * proportion));
+        otherIndices.forEach((i) => {
+          const proportion = currentWidths[i] / totalOther;
+          newWidths[i] = Math.max(5, currentWidths[i] - delta * proportion);
         });
       }
-      
-      // Ensure total is exactly 100
-      const total = newWidths.reduce((sum, w) => sum + w, 0);
-      newWidths[0] += 100 - total;
     }
-    
-    // Round all values
-    const roundedWidths = newWidths.map(w => Math.round(w));
-    
+
+    // Round all values and adjust to ensure the total is exactly 100
+    const roundedWidths = newWidths.map((w) => Math.round(w));
+    const roundedTotal = roundedWidths.reduce((sum, w) => sum + w, 0);
+    const diff = 100 - roundedTotal;
+
+    if (diff !== 0) {
+      const maxIndex = roundedWidths.reduce((maxI, x, i, arr) => (x > arr[maxI] ? i : maxI), 0);
+      roundedWidths[maxIndex] += diff;
+    }
+
     updateProps({ custom_widths: roundedWidths } as Partial<BlockProps>);
   };
 
@@ -238,7 +241,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 <input
                   type="range"
                   min="5"
-                  max="95"
+                  max={100 - (currentWidths.length - 1) * 5}
                   step="1"
                   value={Math.round(width)}
                   onChange={(e) => handleWidthChange(index, parseInt(e.target.value))}
@@ -246,7 +249,7 @@ const RowLayoutForm: React.FC<BlockFormProps> = ({ block, updateProps }) => {
                 />
                 <div className="flex justify-between text-[10px] text-gray-400">
                   <span>5%</span>
-                  <span>95%</span>
+                  <span>{100 - (currentWidths.length - 1) * 5}%</span>
                 </div>
               </div>
             ))}
