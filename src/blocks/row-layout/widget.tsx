@@ -70,19 +70,43 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
   };
 
   const gapClass = getColumnGapClass(block.props.column_gap);
-  const currentPreset = ROW_LAYOUT_PRESETS.find(p => p.id === block.props.preset);
   const actualChildrenCount = block.children.length;
 
-  const gridTemplateClass = (currentPreset && currentPreset.cols === actualChildrenCount)
-    ? currentPreset.class
-    : ({
+  // Generate grid configuration based on custom widths or preset
+  const getGridConfig = (): { className: string; style?: React.CSSProperties } => {
+    const { custom_widths, preset } = block.props;
+
+    // If custom widths exist and match column count, use inline style
+    if (custom_widths && custom_widths.length === actualChildrenCount) {
+      const gridTemplateColumns = custom_widths.map(w => `${w}fr`).join(' ');
+      return {
+        className: `grid ${gapClass}`,
+        style: { gridTemplateColumns }
+      };
+    }
+
+    // Otherwise, use preset class
+    const currentPreset = ROW_LAYOUT_PRESETS.find(p => p.id === preset);
+    if (currentPreset && currentPreset.cols === actualChildrenCount) {
+      return {
+        className: `grid ${currentPreset.class} ${gapClass}`
+      };
+    }
+
+    // Fallback: equal columns
+    const fallbackClass = {
       1: 'grid-cols-1',
       2: 'grid-cols-2',
       3: 'grid-cols-3',
       4: 'grid-cols-4',
-    }[actualChildrenCount] || 'grid-cols-1');
+    }[actualChildrenCount] || 'grid-cols-1';
 
-  const layoutClass = `grid ${gridTemplateClass} ${gapClass}`;
+    return {
+      className: `grid ${fallbackClass} ${gapClass}`
+    };
+  };
+
+  const gridConfig = getGridConfig();
 
   const { style } = block;
   const borderRadiusClass = style?.border_radius === 'lg' ? 'rounded-lg' :
@@ -131,7 +155,7 @@ const RowLayoutWidget: React.FC<RowLayoutWidgetProps> = ({
         {block.children.length === 0 ? (
           <LayoutSelector onLayoutSelect={handleLayoutSelect} />
         ) : (
-          <div className={layoutClass}>
+          <div className={gridConfig.className} style={gridConfig.style}>
             {block.children.map((childSection) => (
               <BlockRenderer
                 key={childSection.id}

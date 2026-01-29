@@ -24,5 +24,6 @@ export type RowLayoutPreset =
 
 export interface RowLayoutBlockProps {
   preset?: RowLayoutPreset;
+  custom_widths?: number[]; 
   column_gap?: GapSize;
 }

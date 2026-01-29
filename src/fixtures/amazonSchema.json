@@ -12,7 +12,11 @@
       "type": "rowLayout",
       "props": {
         "preset": "2-col-heavy-right",
-        "column_gap": "md"
+        "column_gap": "md",
+        "custom_widths": [
+          5,
+          95
+        ]
       },
       "id": "5cecd95b-12be-4f5a-885f-f5421a594929",
       "style": {
