@@ -37,11 +37,10 @@ const sanitizeConfig = (config?: BuilderConfig): BuilderConfig => {
 
   if (config.allowedBlocks) {
     const validAllowed = filterValidBlocks(config.allowedBlocks, 'allowedBlocks');
+    result.allowedBlocks = validAllowed;
 
-    if (validAllowed.length > 0) {
-      result.allowedBlocks = validAllowed;
-    } else {
-      console.warn('[BuilderConfig] No valid blocks in allowedBlocks. Allowing all blocks.');
+    if (config.allowedBlocks.length > 0 && validAllowed.length === 0) {
+      console.warn('[BuilderConfig] `allowedBlocks` contained only invalid types, so no blocks will be allowed.');
     }
   }
 
